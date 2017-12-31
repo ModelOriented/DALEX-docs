@@ -1,0 +1,17 @@
+# Contitional structure
+
+## Individual Conditional Expectation Plot
+
+**ICEbox** package [@ICEbox]
+
+## Partial Dependence Plots
+
+**pdp** package [@pdp]
+
+## Factor Merger
+
+**factorMerger** package [@factorMerger]
+
+
+
+@archivist
