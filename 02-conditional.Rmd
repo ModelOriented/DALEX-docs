@@ -1,4 +1,8 @@
-# Contitional structure
+# Conditional structure
+
+* [3.1 Individual Conditional Expectation](3-1-individual-conditional-expectation-plot.html)
+* [3.2 Partial Dependence Plots](3-2-partial-dependence-plots.html)
+* [3.3 Factor Merger](3-3-factor-merger.html)
 
 ## Individual Conditional Expectation Plot
 

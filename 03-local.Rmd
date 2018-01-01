@@ -1,2 +1,61 @@
 # Local structure
 
+* [4.1 Local Interpretable model-agnostic Visual Explanations](4-1-local-interpretable-model-agnostic-visual-explanations.html)
+* [4.2 breakDown](4-2-breakdown.html)
+
+
+Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:
+
+* explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.
+* examination of curvature around a specific point (single observation). Can be used to determine the strength of influence onto a final model. Is it an outlier?
+
+There are more interesting applications. Find out some of them in the *Why Should I Trust You?* article [@lime].
+
+## Local Interpretable (Model-agnostic) Visual Explanations 
+
+The **live** package (see [@live]) may be seen as an extension of the lime method (see [@lime]). It is based on **mlr** general framework for training of machine learning models (see more [@mlr]).
+
+Let's see an example. We will use the `HR_rf_model` trained with the **randomForest** package on Human Resources Analytics data.
+
+Around a selected point we will fit a linear model.
+
+```{r, eval=FALSE}
+library("live")
+library("randomForest")
+library("breakDown")
+
+HR_rf_model <- randomForest(left~., data = HR_data,
+ntree=100)
+
+similar <- sample_locally(data = HR_data, explained_instance = HR_data[2,], explained_var = "left", size = 2000)
+trained <- fit_explanation( live_object = similar, white_box = "regr.lm", selection = FALSE)
+```
+**TODO**
+
+Instructions above results in: `Error in n_distinct_multi(list(...), na.rm) : is of unsupported type NULL`
+
+**TODO**
+
+
+
+Fitted model may be plotted with *waterfall plot* ...
+
+```{r, eval=FALSE}
+plot_explanation(trained, "waterfallplot", explained_instance = HR_data[1,])
+```
+
+... or *forest plot* ...
+
+```{r, eval=FALSE}
+plot_explanation(trained, "forestplot", explained_instance = HR_data[1,])
+```
+
+For more details consult the following vignette.
+
+![](https://raw.githubusercontent.com/MI2DataLab/live/master/cheatsheets/liveCheatsheet.png)
+
+
+## breakDown
+
+[@breakDown]
+
