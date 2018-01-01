@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="DALEX: Descriptive mAchine Learning EXplanations" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="MI2DataLab" />
+
+<meta name="date" content="2018-01-01" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook.">
+
+<title>DALEX: Descriptive mAchine Learning EXplanations</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#basics"><span class="toc-section-number">1</span> Basics</a><ul>
+<li><a href="1-1-introduction.html#introduction"><span class="toc-section-number">1.1</span> Introduction</a></li>
+<li><a href="1-2-notation.html#notation"><span class="toc-section-number">1.2</span> Notation</a></li>
+<li class="has-sub"><a href="1-3-use-case-human-resources-analytics.html#use-case---human-resources-analytics"><span class="toc-section-number">1.3</span> Use case - Human Resources Analytics</a><ul>
+<li><a href="1-3-use-case-human-resources-analytics.html#logistic-regression"><span class="toc-section-number">1.3.1</span> Logistic regression</a></li>
+<li><a href="1-3-use-case-human-resources-analytics.html#random-forest"><span class="toc-section-number">1.3.2</span> Random forest</a></li>
+</ul></li>
+<li class="has-sub"><a href="1-4-use-case-wine-quality.html#use-case---wine-quality"><span class="toc-section-number">1.4</span> Use case - Wine quality</a><ul>
+<li><a href="1-4-use-case-wine-quality.html#linear-regression"><span class="toc-section-number">1.4.1</span> Linear regression</a></li>
+</ul></li>
+<li><a href="1-5-reproducibility.html#reproducibility"><span class="toc-section-number">1.5</span> Reproducibility</a></li>
+<li><a href="1-6-trivia.html#trivia"><span class="toc-section-number">1.6</span> Trivia</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-global-structure.html#global-structure"><span class="toc-section-number">2</span> Global structure</a><ul>
+<li><a href="2-1-forest-plots.html#forest-plots"><span class="toc-section-number">2.1</span> Forest plots</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-conditional-structure.html#conditional-structure"><span class="toc-section-number">3</span> Conditional structure</a><ul>
+<li><a href="3-1-individual-conditional-expectation-plot.html#individual-conditional-expectation-plot"><span class="toc-section-number">3.1</span> Individual Conditional Expectation Plot</a></li>
+<li><a href="3-2-partial-dependence-plots.html#partial-dependence-plots"><span class="toc-section-number">3.2</span> Partial Dependence Plots</a></li>
+<li><a href="3-3-factor-merger.html#factor-merger"><span class="toc-section-number">3.3</span> Factor Merger</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-local-structure.html#local-structure"><span class="toc-section-number">4</span> Local structure</a><ul>
+<li><a href="4-1-local-interpretable-model-agnostic-visual-explanations.html#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.1</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
+<li><a href="4-2-breakdown.html#breakdown"><span class="toc-section-number">4.2</span> breakDown</a></li>
+</ul></li>
+<li><a href="5-model-performance.html#model-performance"><span class="toc-section-number">5</span> Model performance</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="individual-conditional-expectation-plot" class="section level2">
+<h2><span class="header-section-number">3.1</span> Individual Conditional Expectation Plot</h2>
+<p><strong>ICEbox</strong> package <span class="citation">(Goldstein et al. <label for="tufte-mn-6" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-6" class="margin-toggle">2015<span class="marginnote">Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1): 44–65. doi:<a href="https://doi.org/10.1080/10618600.2014.907095">10.1080/10618600.2014.907095</a>.</span>)</span></p>
+</div>
+<p style="text-align: center;">
+<a href="3-conditional-structure.html"><button class="btn btn-default">Previous</button></a>
+<a href="https://github.com/pbiecek/DALEX/edit/master/02-conditional.Rmd"><button class="btn btn-default">Edit</button></a>
+<a href="3-2-partial-dependence-plots.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>
