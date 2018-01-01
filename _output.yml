@@ -2,6 +2,7 @@ bookdown::gitbook:
   css: style.css
   config:
     split_by: section+number
+    fig.width: 12
     toc:
       before: |
         <li><a href="./">The DALEX project</a></li>
