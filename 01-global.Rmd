@@ -1,13 +1,34 @@
-# Global structure {#intro}
+# Global structure
 
-All are mode specific
+## Forest plots
 
-## Variable importance
+[Forest plots](https://en.wikipedia.org/wiki/Forest_plot) were initially used in the meta analysis to visualise effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure like these created with `lm` or `glm` functions.
 
-## forestplot
+There are various implementations of forest plots in R. Below we present examples for a glm model.
 
-**forestplot** package [@forestplot]
+```{r}
+library("breakDown")
+HR_glm_model <- glm(left~., data = HR_data, family = "binomial")
 
-## survminer
 
+#HR_glm_model <- archivist::aread("pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234")
+```
+
+In the package **forestmodel** (see [@forestmodel]) one can use `forest_model()` function to draw a forest plot. This package is based on the **broom** package (see [@broom]) and this is why it handles a large variety of different regression models. An example for `glm`.
+
+```{r forestmodel, fig.width=10, fig.width=8, fig.cap='Forest plot created with forestmodel package'}
+library("forestmodel")
+forest_model(HR_glm_model)
+```
+
+In the package **sjPlot** (see [@sjPlot]) one can use `sjp.*()` to visualise structure of a `*` model or a wrapper `plot_model()`. Here is an example for `glm` model.
+
+```{r sjpglm, fig.width=10, fig.width=8, fig.cap='Forest plot created with sjPlot package'}
+library("sjPlot")
+plot_model(HR_glm_model, type = "est", sort.est = TRUE)
+```
+
+**Note!** 
+
+The **forestmodel** package handles factor variables in a better way while the plots from **sjPlot** are easier to read.
 
