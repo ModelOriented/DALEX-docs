@@ -27,13 +27,10 @@ library("breakDown")
 HR_rf_model <- randomForest(left~., data = HR_data,
 ntree=100)
 
-similar <- sample_locally(data = HR_data, explained_instance = HR_data[2,], explained_var = "left", size = 2000)
+similar <- sample_locally(data = HR_data, explained_instance = HR_data[1,], explained_var = "left", size = 2000)
 similar <- add_predictions(HR_data, similar, HR_rf_model)
 trained <- fit_explanation( live_object = similar, white_box = "regr.lm", selection = FALSE)
 ```
-**TODO**
-
-Instructions above results in: `Error in n_distinct_multi(list(...), na.rm) : is of unsupported type NULL`
 
 **TODO**
 
