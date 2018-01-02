@@ -19,10 +19,12 @@ Let's see an example. We will use the `HR_rf_model` trained with the **randomFor
 
 Around a selected point we will fit a linear model.
 
-```{r, eval=FALSE}
+```{r live_train}
 library("live")
 library("randomForest")
 library("breakDown")
+
+HR_data$left <- as.numeric(as.character(HR_data$left))
 
 HR_rf_model <- randomForest(left~., data = HR_data,
 ntree=100)
@@ -32,19 +34,15 @@ similar <- add_predictions(HR_data, similar, HR_rf_model)
 trained <- fit_explanation( live_object = similar, white_box = "regr.lm", selection = FALSE)
 ```
 
-**TODO**
-
-
-
 Fitted model may be plotted with *waterfall plot* ...
 
-```{r, eval=FALSE}
+```{r live_water}
 plot_explanation(trained, "waterfallplot", explained_instance = HR_data[1,])
 ```
 
 ... or *forest plot* ...
 
-```{r, eval=FALSE}
+```{r live_forest}
 plot_explanation(trained, "forestplot", explained_instance = HR_data[1,])
 ```
 
