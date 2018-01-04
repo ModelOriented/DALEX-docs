@@ -1,5 +1,9 @@
 # Local structure
 
+* [4.1 Local Interpretable model-agnostic Visual Explanations](4-1-local-interpretable-model-agnostic-visual-explanations.html)
+* [4.2 breakDown](4-2-breakdown.html)
+
+
 Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:
 
 * explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.
@@ -15,28 +19,30 @@ Let's see an example. We will use the `HR_rf_model` trained with the **randomFor
 
 Around a selected point we will fit a linear model.
 
-```{r}
+```{r live_train}
 library("live")
 library("randomForest")
 library("breakDown")
 
-HR_rf_model <- randomForest(left~., data = breakDown::HR_data,
-ntree = 100)
+HR_data$left <- as.numeric(as.character(HR_data$left))
 
-similar <- sample_locally(data = HR_data, explained_instance = HR_data[2,], explained_var = "left", size = 2000)
+HR_rf_model <- randomForest(left~., data = HR_data,
+ntree=100)
+
+similar <- sample_locally(data = HR_data, explained_instance = HR_data[1,], explained_var = "left", size = 2000)
 similar <- add_predictions(HR_data, similar, HR_rf_model)
 trained <- fit_explanation( live_object = similar, white_box = "regr.lm", selection = FALSE)
 ```
 
 Fitted model may be plotted with *waterfall plot* ...
 
-```{r limeWaterfallPlot, fig.cap='Waterfall plot created with live::plot_explanation'}
+```{r live_water}
 plot_explanation(trained, "waterfallplot", explained_instance = HR_data[1,])
 ```
 
 ... or *forest plot* ...
 
-```{r limeForestPlot, fig.cap='Fotest plot created with live::plot_explanation'}
+```{r live_forest}
 plot_explanation(trained, "forestplot", explained_instance = HR_data[1,])
 ```
 

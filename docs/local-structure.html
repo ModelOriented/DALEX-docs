@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>DALEX: Descriptive mAchine Learning EXplanations</title>
+  <meta name="description" content="Do not trust a black-box model. Unless it explains itself.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="DALEX: Descriptive mAchine Learning EXplanations" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Do not trust a black-box model. Unless it explains itself." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="DALEX: Descriptive mAchine Learning EXplanations" />
+  
+  <meta name="twitter:description" content="Do not trust a black-box model. Unless it explains itself." />
+  
+
+<meta name="author" content="MI2DataLab">
+
+
+<meta name="date" content="2018-01-04">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="conditional-structure.html">
+<link rel="next" href="model-performance.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">The DALEX project</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Basics</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#notation"><i class="fa fa-check"></i><b>1.2</b> Notation</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#use-case---human-resources-analytics"><i class="fa fa-check"></i><b>1.3</b> Use case - Human Resources Analytics</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#logistic-regression"><i class="fa fa-check"></i><b>1.3.1</b> Logistic regression</a></li>
+<li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#random-forest"><i class="fa fa-check"></i><b>1.3.2</b> Random forest</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#use-case---wine-quality"><i class="fa fa-check"></i><b>1.4</b> Use case - Wine quality</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="index.html"><a href="index.html#linear-regression"><i class="fa fa-check"></i><b>1.4.1</b> Linear regression</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#reproducibility"><i class="fa fa-check"></i><b>1.5</b> Reproducibility</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#trivia"><i class="fa fa-check"></i><b>1.6</b> Trivia</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="global-structure.html"><a href="global-structure.html"><i class="fa fa-check"></i><b>2</b> Global structure</a><ul>
+<li class="chapter" data-level="2.1" data-path="global-structure.html"><a href="global-structure.html#forest-plots"><i class="fa fa-check"></i><b>2.1</b> Forest plots</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conditional-structure.html"><a href="conditional-structure.html"><i class="fa fa-check"></i><b>3</b> Conditional structure</a><ul>
+<li class="chapter" data-level="3.1" data-path="conditional-structure.html"><a href="conditional-structure.html#partial-dependence-plots"><i class="fa fa-check"></i><b>3.1</b> Partial Dependence Plots</a></li>
+<li class="chapter" data-level="3.2" data-path="conditional-structure.html"><a href="conditional-structure.html#individual-conditional-expectation-plot"><i class="fa fa-check"></i><b>3.2</b> Individual Conditional Expectation Plot</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-structure.html"><a href="conditional-structure.html#factor-merger"><i class="fa fa-check"></i><b>3.3</b> Factor Merger</a></li>
+<li class="chapter" data-level="3.4" data-path="conditional-structure.html"><a href="conditional-structure.html#aleplot"><i class="fa fa-check"></i><b>3.4</b> ALEPlot</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="local-structure.html"><a href="local-structure.html"><i class="fa fa-check"></i><b>4</b> Local structure</a><ul>
+<li class="chapter" data-level="4.1" data-path="local-structure.html"><a href="local-structure.html#local-interpretable-model-agnostic-visual-explanations"><i class="fa fa-check"></i><b>4.1</b> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
+<li class="chapter" data-level="4.2" data-path="local-structure.html"><a href="local-structure.html#breakdown"><i class="fa fa-check"></i><b>4.2</b> breakDown</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="model-performance.html"><a href="model-performance.html"><i class="fa fa-check"></i><b>5</b> Model performance</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/MI2DataLab" target="blank">Find more at</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">DALEX: Descriptive mAchine Learning EXplanations</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="local-structure" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Local structure</h1>
+<p>Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:</p>
+<ul>
+<li>explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.</li>
+<li>examination of curvature around a specific point (single observation). Can be used to determine the strength of influence onto a final model. Is it an outlier?</li>
+</ul>
+<p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation">(Ribeiro, Singh, and Guestrin <a href="#ref-lime">2016</a>)</span>.</p>
+<div id="local-interpretable-model-agnostic-visual-explanations" class="section level2">
+<h2><span class="header-section-number">4.1</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
+<p>The <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <a href="#ref-live">2017</a>)</span>) may be seen as an extension of the lime method (see <span class="citation">(Ribeiro, Singh, and Guestrin <a href="#ref-lime">2016</a>)</span>). It is based on <strong>mlr</strong> general framework for training of machine learning models (see more <span class="citation">(Bischl et al. <a href="#ref-mlr">2016</a>)</span>).</p>
+<p>Let’s see an example. We will use the <code>HR_rf_model</code> trained with the <strong>randomForest</strong> package on Human Resources Analytics data.</p>
+<p>Around a selected point we will fit a linear model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;live&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)
+
+HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data,
+<span class="dt">ntree =</span> <span class="dv">100</span>)
+
+similar &lt;-<span class="st"> </span><span class="kw">sample_locally</span>(<span class="dt">data =</span> HR_data, <span class="dt">explained_instance =</span> HR_data[<span class="dv">2</span>,], <span class="dt">explained_var =</span> <span class="st">&quot;left&quot;</span>, <span class="dt">size =</span> <span class="dv">2000</span>)
+similar &lt;-<span class="st"> </span><span class="kw">add_predictions</span>(HR_data, similar, HR_rf_model)
+trained &lt;-<span class="st"> </span><span class="kw">fit_explanation</span>( <span class="dt">live_object =</span> similar, <span class="dt">white_box =</span> <span class="st">&quot;regr.lm&quot;</span>, <span class="dt">selection =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>Fitted model may be plotted with <em>waterfall plot</em> …</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;waterfallplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</code></pre></div>
+<div class="figure"><span id="fig:limeWaterfallPlot"></span>
+<img src="DALEX_files/figure-html/limeWaterfallPlot-1.png" alt="Waterfall plot created with live::plot_explanation" width="672" />
+<p class="caption">
+Figure 4.1: Waterfall plot created with live::plot_explanation
+</p>
+</div>
+<p>… or <em>forest plot</em> …</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;forestplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</code></pre></div>
+<div class="figure"><span id="fig:limeForestPlot"></span>
+<img src="DALEX_files/figure-html/limeForestPlot-1.png" alt="Fotest plot created with live::plot_explanation" width="672" />
+<p class="caption">
+Figure 4.2: Fotest plot created with live::plot_explanation
+</p>
+</div>
+<p>For more details consult the following vignette.</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/MI2DataLab/live/master/cheatsheets/liveCheatsheet.png" />
+
+</div>
+</div>
+<div id="breakdown" class="section level2">
+<h2><span class="header-section-number">4.2</span> breakDown</h2>
+<p><span class="citation">(P. Biecek <a href="#ref-breakDown">2017</a>)</span></p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-lime">
+<p>Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. doi:<a href="https://doi.org/10.1145/2939672.2939778">10.1145/2939672.2939778</a>.</p>
+</div>
+<div id="ref-live">
+<p>Staniak, Mateusz, and Przemysław Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>.</p>
+</div>
+<div id="ref-mlr">
+<p>Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170): 1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</p>
+</div>
+<div id="ref-breakDown">
+<p>Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="conditional-structure.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-performance.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-local.Rmd",
+"text": "Edit"
+},
+"download": ["DALEX.pdf", "DALEX.epub"],
+"toc": {
+"collapse": "subsection"
+},
+"split_by": "section+number",
+"fig.width": 12
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

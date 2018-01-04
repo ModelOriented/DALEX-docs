@@ -17,7 +17,7 @@
 
 <meta name="author" content="MI2DataLab" />
 
-<meta name="date" content="2018-01-01" />
+<meta name="date" content="2018-01-02" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -105,6 +105,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="3-1-individual-conditional-expectation-plot.html#individual-conditional-expectation-plot"><span class="toc-section-number">3.1</span> Individual Conditional Expectation Plot</a></li>
 <li><a href="3-2-partial-dependence-plots.html#partial-dependence-plots"><span class="toc-section-number">3.2</span> Partial Dependence Plots</a></li>
 <li><a href="3-3-factor-merger.html#factor-merger"><span class="toc-section-number">3.3</span> Factor Merger</a></li>
+<li><a href="3-4-aleplot.html#aleplot"><span class="toc-section-number">3.4</span> ALEPlot</a></li>
 </ul></li>
 <li class="has-sub"><a href="4-local-structure.html#local-structure"><span class="toc-section-number">4</span> Local structure</a><ul>
 <li><a href="4-1-local-interpretable-model-agnostic-visual-explanations.html#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.1</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
@@ -119,25 +120,35 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="col-sm-12">
 <div id="local-interpretable-model-agnostic-visual-explanations" class="section level2">
 <h2><span class="header-section-number">4.1</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
-<p>The <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <label for="tufte-mn-10" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-10" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemysław Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>.</span>)</span>) may be seen as an extension of the lime method (see <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-11" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-11" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. doi:<a href="https://doi.org/10.1145/2939672.2939778">10.1145/2939672.2939778</a>.</span>)</span>). It is based on <strong>mlr</strong> general framework for training of machine learning models (see more <span class="citation">(Bischl et al. <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170): 1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span>).</p>
+<p>The <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <label for="tufte-mn-11" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-11" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemysław Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>.</span>)</span>) may be seen as an extension of the lime method (see <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. doi:<a href="https://doi.org/10.1145/2939672.2939778">10.1145/2939672.2939778</a>.</span>)</span>). It is based on <strong>mlr</strong> general framework for training of machine learning models (see more <span class="citation">(Bischl et al. <label for="tufte-mn-13" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-13" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170): 1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span>).</p>
 <p>Let’s see an example. We will use the <code>HR_rf_model</code> trained with the <strong>randomForest</strong> package on Human Resources Analytics data.</p>
 <p>Around a selected point we will fit a linear model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;live&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)
 
-HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data,
-<span class="dt">ntree=</span><span class="dv">100</span>)
+HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data,
+<span class="dt">ntree =</span> <span class="dv">100</span>)
 
 similar &lt;-<span class="st"> </span><span class="kw">sample_locally</span>(<span class="dt">data =</span> HR_data, <span class="dt">explained_instance =</span> HR_data[<span class="dv">2</span>,], <span class="dt">explained_var =</span> <span class="st">&quot;left&quot;</span>, <span class="dt">size =</span> <span class="dv">2000</span>)
+similar &lt;-<span class="st"> </span><span class="kw">add_predictions</span>(HR_data, similar, HR_rf_model)
 trained &lt;-<span class="st"> </span><span class="kw">fit_explanation</span>( <span class="dt">live_object =</span> similar, <span class="dt">white_box =</span> <span class="st">&quot;regr.lm&quot;</span>, <span class="dt">selection =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p><strong>TODO</strong></p>
-<p>Instructions above results in: <code>Error in n_distinct_multi(list(...), na.rm) : is of unsupported type NULL</code></p>
-<p><strong>TODO</strong></p>
 <p>Fitted model may be plotted with <em>waterfall plot</em> …</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;waterfallplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</code></pre></div>
+<div class="figure"><span id="fig:limeWaterfallPlot"></span>
+<p class="caption marginnote shownote">
+Figure 4.1: Waterfall plot created with live::plot_explanation
+</p>
+<img src="DALEX_files/figure-html/limeWaterfallPlot-1.png" alt="Waterfall plot created with live::plot_explanation" width="672"  />
+</div>
 <p>… or <em>forest plot</em> …</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;forestplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</code></pre></div>
+<div class="figure"><span id="fig:limeForestPlot"></span>
+<p class="caption marginnote shownote">
+Figure 4.2: Fotest plot created with live::plot_explanation
+</p>
+<img src="DALEX_files/figure-html/limeForestPlot-1.png" alt="Fotest plot created with live::plot_explanation" width="672"  />
+</div>
 <p>For more details consult the following vignette.</p>
 <div class="figure">
 <img src="https://raw.githubusercontent.com/MI2DataLab/live/master/cheatsheets/liveCheatsheet.png" />
