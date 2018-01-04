@@ -1,18 +1,85 @@
 # Conditional structure
 
-* [3.1 Individual Conditional Expectation](3-1-individual-conditional-expectation-plot.html)
-* [3.2 Partial Dependence Plots](3-2-partial-dependence-plots.html)
-* [3.3 Factor Merger](3-3-factor-merger.html)
+## Partial Dependence Plots
+
+Partial Dependence Plots (see **pdp** package [@pdp]) for a black box $f(x; \theta)$ calculates the expected output given a selected variable.
+
+$$
+p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
+$$
+
+Of course this expectation cannot be calculated directly as we do not know fully the $f()$ neither the distribution of $x_{-i}$. This value is estimated by 
+
+$$
+\hat p_i(x_i) = \frac{1}{n} \sum_{j=1}^{n} f(x^i_j, x_j^{-i}, \hat \theta) 
+$$
+
+
+Let's see an example for the model `HR_rf_model`. Below we are using `pdp::partial` function to calculate pdp curve for variable `satisfaction_level`. Then the curve is plotted with `plotPartial` (based on `lattice`) or `autoplot` (based on `ggplot2`).
+
+```{r, message=FALSE, warning=FALSE}
+library("pdp")
+library("randomForest")
+library("breakDown")
+
+HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
+
+part <- partial(HR_rf_model, "satisfaction_level")
+
+plotPartial(part)
+
+library("ggplot2")
+autoplot(part)
+```
 
 ## Individual Conditional Expectation Plot
 
-**ICEbox** package [@ICEbox]
+Individual Conditional Expectations (ICE) may be considered as an extension of the PDP curves (see **ICEbox** package [@ICEbox]).
+Instead of plotting expected value over all observations, for ICE we are plotting individual conditional model responses. Average of ICE curves results in PDP curve.
 
-## Partial Dependence Plots
+An ICE curve for observation $k$ over variable $i$ may be defined as
 
-**pdp** package [@pdp]
+$$
+ice_k(x_i) = f(x^i, x_k^{-i}; \theta) 
+$$
+
+ICE curves can be plotted with `pdp` package. Note that curves may be cantered in a given point, this helps in identification of possible interactions.
+
+```{r, message=FALSE, warning=FALSE}
+library("pdp")
+library("randomForest")
+library("breakDown")
+library("ggplot2")
+
+HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
+
+part_rf_satisfaction <- partial(HR_rf_model, "satisfaction_level")
+
+part_rf_satisfaction <- partial(HR_rf_model, pred.var = "satisfaction_level", ice = TRUE)
+plotPartial(part_rf_satisfaction, rug = TRUE, train = HR_data, alpha = 0.2)
+autoplot(part_rf_satisfaction, center = TRUE, alpha = 0.2, rug = TRUE, train = HR_data)
+```
+
+Or with the `ICEbox` package.
+
+```{r, message=FALSE, warning=FALSE}
+library("ICEbox")
+part_rf_satisfaction = ice(object = HR_rf_model, X = HR_data, y = HR_data$satisfaction_level, predictor = "satisfaction_level", frac_to_build = .1)
+plot(part_rf_satisfaction)
+```
+
+As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the `clusterICE` function.
+
+```{r, message=FALSE, warning=FALSE}
+clusterICE(part_rf_satisfaction, nClusters = 3, plot_legend = TRUE, center = TRUE)
+```
 
 ## Factor Merger
 
 **factorMerger** package [@factorMerger]
+
+## ALEPlot
+
+**ALEPlot** package [@ALEPlot]
+
 
