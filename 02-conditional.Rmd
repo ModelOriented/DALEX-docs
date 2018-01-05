@@ -76,7 +76,29 @@ clusterICE(part_rf_satisfaction, nClusters = 3, plot_legend = TRUE, center = TRU
 
 ## Factor Merger
 
-**factorMerger** package [@factorMerger]
+The package `ICEbox` is not working for factor variables while the `pdp` package returns plots that are hard to interpret.
+
+An interesting tool that helps to understand what is happening with factor variables is the **factorMerger** package (see [@factorMerger]).
+
+Here we have Merging Path Plot for a factor variable `sales`.
+
+```{r, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+library("factorMerger")
+path <- mergeFactors(HR_data$left, HR_data$sales, method = "fast-adaptive", family = "binomial", abbreviate = FALSE)
+plot(path, panel = "all")
+```
+
+Note that you can use the `factorMerger` package to understand predictions calculated with a black-box model. The random forest model `HR_rf_model` returns continuous response. But the `factorMerger` works for such variables as well.
+
+In the top right panel one mey see the distribution of predictions for the selected group.
+
+```{r, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+
+HR_data$left_predicted <- predict(HR_rf_model)
+
+path <- mergeFactors(HR_data$left_predicted, HR_data$sales, method = "fast-adaptive",  abbreviate = FALSE)
+plot(path, panel = "all", responsePanel = "boxplot")
+```
 
 ## ALEPlot
 

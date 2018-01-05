@@ -1,9 +1,5 @@
 # Local structure
 
-* [4.1 Local Interpretable model-agnostic Visual Explanations](4-1-local-interpretable-model-agnostic-visual-explanations.html)
-* [4.2 breakDown](4-2-breakdown.html)
-
-
 Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:
 
 * explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.
