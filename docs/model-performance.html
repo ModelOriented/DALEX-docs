@@ -33,7 +33,7 @@
   
   
 <link rel="prev" href="local-structure.html">
-
+<link rel="next" href="reproducibility.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -112,23 +112,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#use-case---wine-quality"><i class="fa fa-check"></i><b>1.3</b> Use case - Wine quality</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#linear-regression"><i class="fa fa-check"></i><b>1.3.1</b> Linear regression</a></li>
 </ul></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#reproducibility"><i class="fa fa-check"></i><b>1.4</b> Reproducibility</a></li>
-<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#trivia"><i class="fa fa-check"></i><b>1.5</b> Trivia</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#trivia"><i class="fa fa-check"></i><b>1.4</b> Trivia</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="global-structure.html"><a href="global-structure.html"><i class="fa fa-check"></i><b>2</b> Global structure</a><ul>
 <li class="chapter" data-level="2.1" data-path="global-structure.html"><a href="global-structure.html#forest-plots"><i class="fa fa-check"></i><b>2.1</b> Forest plots</a></li>
+<li class="chapter" data-level="2.2" data-path="global-structure.html"><a href="global-structure.html#variable-importance-plot"><i class="fa fa-check"></i><b>2.2</b> Variable Importance Plot</a></li>
+<li class="chapter" data-level="2.3" data-path="global-structure.html"><a href="global-structure.html#ctree"><i class="fa fa-check"></i><b>2.3</b> ctree</a></li>
+<li class="chapter" data-level="2.4" data-path="global-structure.html"><a href="global-structure.html#randomforestexplainer"><i class="fa fa-check"></i><b>2.4</b> RandomForestExplainer</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="conditional-structure.html"><a href="conditional-structure.html"><i class="fa fa-check"></i><b>3</b> Conditional structure</a><ul>
-<li class="chapter" data-level="3.1" data-path="conditional-structure.html"><a href="conditional-structure.html#partial-dependence-plots"><i class="fa fa-check"></i><b>3.1</b> Partial Dependence Plots</a></li>
+<li class="chapter" data-level="3.1" data-path="conditional-structure.html"><a href="conditional-structure.html#pdpchapter"><i class="fa fa-check"></i><b>3.1</b> Partial Dependence Plot</a></li>
 <li class="chapter" data-level="3.2" data-path="conditional-structure.html"><a href="conditional-structure.html#individual-conditional-expectation-plot"><i class="fa fa-check"></i><b>3.2</b> Individual Conditional Expectation Plot</a></li>
-<li class="chapter" data-level="3.3" data-path="conditional-structure.html"><a href="conditional-structure.html#factor-merger"><i class="fa fa-check"></i><b>3.3</b> Factor Merger</a></li>
-<li class="chapter" data-level="3.4" data-path="conditional-structure.html"><a href="conditional-structure.html#aleplot"><i class="fa fa-check"></i><b>3.4</b> ALEPlot</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-structure.html"><a href="conditional-structure.html#accumulated-local-effects-plot"><i class="fa fa-check"></i><b>3.3</b> Accumulated Local Effects Plot</a></li>
+<li class="chapter" data-level="3.4" data-path="conditional-structure.html"><a href="conditional-structure.html#mering-path-plot"><i class="fa fa-check"></i><b>3.4</b> Mering Path Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="local-structure.html"><a href="local-structure.html"><i class="fa fa-check"></i><b>4</b> Local structure</a><ul>
 <li class="chapter" data-level="4.1" data-path="local-structure.html"><a href="local-structure.html#local-interpretable-model-agnostic-visual-explanations"><i class="fa fa-check"></i><b>4.1</b> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
 <li class="chapter" data-level="4.2" data-path="local-structure.html"><a href="local-structure.html#breakdown"><i class="fa fa-check"></i><b>4.2</b> breakDown</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="model-performance.html"><a href="model-performance.html"><i class="fa fa-check"></i><b>5</b> Model performance</a></li>
+<li class="chapter" data-level="6" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i><b>6</b> Reproducibility</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/MI2DataLab" target="blank">Find more at</a></li>
 
@@ -151,239 +154,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="model-performance" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Model performance</h1>
-<p>We have finished a nice book.</p>
-<p>You can label chapter and section titles using <code>{#label}</code> after them, e.g., we can reference Chapter <a href="#intro"><strong>??</strong></a>. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter <a href="#methods"><strong>??</strong></a>.</p>
-<p>Figures and tables with captions will be placed in <code>figure</code> and <code>table</code> environments, respectively.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">1</span>))
-<span class="kw">plot</span>(pressure, <span class="dt">type =</span> <span class="st">&#39;b&#39;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:nice-fig"></span>
-<img src="DALEX_files/figure-html/nice-fig-1.png" alt="Here is a nice figure!" width="80%" />
-<p class="caption">
-Figure 5.1: Here is a nice figure!
-</p>
-</div>
-<p>Reference a figure by its code chunk label with the <code>fig:</code> prefix, e.g., see Figure <a href="model-performance.html#fig:nice-fig">5.1</a>. Similarly, you can reference tables generated from <code>knitr::kable()</code>, e.g., see Table <a href="model-performance.html#tab:nice-tab">5.1</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(
-  <span class="kw">head</span>(iris, <span class="dv">20</span>), <span class="dt">caption =</span> <span class="st">&#39;Here is a nice table!&#39;</span>,
-  <span class="dt">booktabs =</span> <span class="ot">TRUE</span>
-)</code></pre></div>
-<table>
-<caption><span id="tab:nice-tab">Table 5.1: </span>Here is a nice table!</caption>
-<thead>
-<tr class="header">
-<th align="right">Sepal.Length</th>
-<th align="right">Sepal.Width</th>
-<th align="right">Petal.Length</th>
-<th align="right">Petal.Width</th>
-<th align="left">Species</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">5.1</td>
-<td align="right">3.5</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.9</td>
-<td align="right">3.0</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">4.7</td>
-<td align="right">3.2</td>
-<td align="right">1.3</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.6</td>
-<td align="right">3.1</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.0</td>
-<td align="right">3.6</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.4</td>
-<td align="right">3.9</td>
-<td align="right">1.7</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">4.6</td>
-<td align="right">3.4</td>
-<td align="right">1.4</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.0</td>
-<td align="right">3.4</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">4.4</td>
-<td align="right">2.9</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.9</td>
-<td align="right">3.1</td>
-<td align="right">1.5</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.4</td>
-<td align="right">3.7</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.8</td>
-<td align="right">3.4</td>
-<td align="right">1.6</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">4.8</td>
-<td align="right">3.0</td>
-<td align="right">1.4</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.3</td>
-<td align="right">3.0</td>
-<td align="right">1.1</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.8</td>
-<td align="right">4.0</td>
-<td align="right">1.2</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.7</td>
-<td align="right">4.4</td>
-<td align="right">1.5</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.4</td>
-<td align="right">3.9</td>
-<td align="right">1.3</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.1</td>
-<td align="right">3.5</td>
-<td align="right">1.4</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.7</td>
-<td align="right">3.8</td>
-<td align="right">1.7</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.1</td>
-<td align="right">3.8</td>
-<td align="right">1.5</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-</tbody>
-</table>
-<p>You can write citations, too. For example, we are using the <strong>bookdown</strong> package <span class="citation">(Xie <a href="#ref-R-bookdown">2017</a>)</span> in this sample book, which was built on top of R Markdown and <strong>knitr</strong> <span class="citation">(Xie <a href="#ref-xie2015">2015</a>)</span>.</p>
 
-<div id="refs" class="references">
-<div>
-<p>Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</p>
-</div>
-<div>
-<p>Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</p>
-</div>
-<div>
-<p>Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11): 1–28. doi:<a href="https://doi.org/10.18637/jss.v082.i11">10.18637/jss.v082.i11</a>.</p>
-</div>
-<div>
-<p>Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170): 1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</p>
-</div>
-<div>
-<p>Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1): 44–65. doi:<a href="https://doi.org/10.1080/10618600.2014.907095">10.1080/10618600.2014.907095</a>.</p>
-</div>
-<div>
-<p>Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1): 421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</p>
-</div>
-<div>
-<p>Kennedy, Nick. 2017. <em>Forestmodel: Forest Plots from Regression Models</em>. <a href="https://CRAN.R-project.org/package=forestmodel" class="uri">https://CRAN.R-project.org/package=forestmodel</a>.</p>
-</div>
-<div>
-<p>Lüdecke, Daniel. 2017. <em>SjPlot: Data Visualization for Statistics in Social Science</em>. <a href="https://CRAN.R-project.org/package=sjPlot" class="uri">https://CRAN.R-project.org/package=sjPlot</a>.</p>
-</div>
-<div>
-<p>Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. doi:<a href="https://doi.org/10.1145/2939672.2939778">10.1145/2939672.2939778</a>.</p>
-</div>
-<div>
-<p>Robinson, David. 2017. <em>Broom: Convert Statistical Analysis Objects into Tidy Data Frames</em>. <a href="https://CRAN.R-project.org/package=broom" class="uri">https://CRAN.R-project.org/package=broom</a>.</p>
-</div>
-<div>
-<p>Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</p>
-</div>
-<div>
-<p>Staniak, Mateusz, and Przemysław Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>.</p>
-</div>
-<div>
-<p>Xie, Yihui. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="http://yihui.name/knitr/" class="uri">http://yihui.name/knitr/</a>.</p>
-</div>
-<div>
-<p>———. 2017. <em>Bookdown: Authoring Books and Technical Documents with R Markdown</em>. <a href="https://CRAN.R-project.org/package=bookdown" class="uri">https://CRAN.R-project.org/package=bookdown</a>.</p>
-</div>
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-R-bookdown">
-<p>Xie, Yihui. 2017. <em>Bookdown: Authoring Books and Technical Documents with R Markdown</em>. <a href="https://CRAN.R-project.org/package=bookdown" class="uri">https://CRAN.R-project.org/package=bookdown</a>.</p>
-</div>
-<div id="ref-xie2015">
-<p>Xie, Yihui. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="http://yihui.name/knitr/" class="uri">http://yihui.name/knitr/</a>.</p>
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="local-structure.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="local-structure.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reproducibility.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -112,23 +112,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#use-case---wine-quality"><i class="fa fa-check"></i><b>1.3</b> Use case - Wine quality</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#linear-regression"><i class="fa fa-check"></i><b>1.3.1</b> Linear regression</a></li>
 </ul></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#reproducibility"><i class="fa fa-check"></i><b>1.4</b> Reproducibility</a></li>
-<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#trivia"><i class="fa fa-check"></i><b>1.5</b> Trivia</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#trivia"><i class="fa fa-check"></i><b>1.4</b> Trivia</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="global-structure.html"><a href="global-structure.html"><i class="fa fa-check"></i><b>2</b> Global structure</a><ul>
 <li class="chapter" data-level="2.1" data-path="global-structure.html"><a href="global-structure.html#forest-plots"><i class="fa fa-check"></i><b>2.1</b> Forest plots</a></li>
+<li class="chapter" data-level="2.2" data-path="global-structure.html"><a href="global-structure.html#variable-importance-plot"><i class="fa fa-check"></i><b>2.2</b> Variable Importance Plot</a></li>
+<li class="chapter" data-level="2.3" data-path="global-structure.html"><a href="global-structure.html#ctree"><i class="fa fa-check"></i><b>2.3</b> ctree</a></li>
+<li class="chapter" data-level="2.4" data-path="global-structure.html"><a href="global-structure.html#randomforestexplainer"><i class="fa fa-check"></i><b>2.4</b> RandomForestExplainer</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="conditional-structure.html"><a href="conditional-structure.html"><i class="fa fa-check"></i><b>3</b> Conditional structure</a><ul>
-<li class="chapter" data-level="3.1" data-path="conditional-structure.html"><a href="conditional-structure.html#partial-dependence-plots"><i class="fa fa-check"></i><b>3.1</b> Partial Dependence Plots</a></li>
+<li class="chapter" data-level="3.1" data-path="conditional-structure.html"><a href="conditional-structure.html#pdpchapter"><i class="fa fa-check"></i><b>3.1</b> Partial Dependence Plot</a></li>
 <li class="chapter" data-level="3.2" data-path="conditional-structure.html"><a href="conditional-structure.html#individual-conditional-expectation-plot"><i class="fa fa-check"></i><b>3.2</b> Individual Conditional Expectation Plot</a></li>
-<li class="chapter" data-level="3.3" data-path="conditional-structure.html"><a href="conditional-structure.html#factor-merger"><i class="fa fa-check"></i><b>3.3</b> Factor Merger</a></li>
-<li class="chapter" data-level="3.4" data-path="conditional-structure.html"><a href="conditional-structure.html#aleplot"><i class="fa fa-check"></i><b>3.4</b> ALEPlot</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-structure.html"><a href="conditional-structure.html#accumulated-local-effects-plot"><i class="fa fa-check"></i><b>3.3</b> Accumulated Local Effects Plot</a></li>
+<li class="chapter" data-level="3.4" data-path="conditional-structure.html"><a href="conditional-structure.html#mering-path-plot"><i class="fa fa-check"></i><b>3.4</b> Mering Path Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="local-structure.html"><a href="local-structure.html"><i class="fa fa-check"></i><b>4</b> Local structure</a><ul>
 <li class="chapter" data-level="4.1" data-path="local-structure.html"><a href="local-structure.html#local-interpretable-model-agnostic-visual-explanations"><i class="fa fa-check"></i><b>4.1</b> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
 <li class="chapter" data-level="4.2" data-path="local-structure.html"><a href="local-structure.html#breakdown"><i class="fa fa-check"></i><b>4.2</b> breakDown</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="model-performance.html"><a href="model-performance.html"><i class="fa fa-check"></i><b>5</b> Model performance</a></li>
+<li class="chapter" data-level="6" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i><b>6</b> Reproducibility</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/MI2DataLab" target="blank">Find more at</a></li>
 
@@ -151,8 +154,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="conditional-structure" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Conditional structure</h1>
-<div id="partial-dependence-plots" class="section level2">
-<h2><span class="header-section-number">3.1</span> Partial Dependence Plots</h2>
+<p>The dimension of input <span class="math inline">\(x\)</span> for black box models is usually high (large <span class="math inline">\(p\)</span>). But in many cases small number of variables play important role in the model OR there are some reasons to believe that variables work in an additive fashion/low-level interactions in the model.</p>
+<p>In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like.</p>
+<p>Methods presented below help to understand the conditional structure of a model.</p>
+<div id="pdpchapter" class="section level2">
+<h2><span class="header-section-number">3.1</span> Partial Dependence Plot</h2>
 <p>Partial Dependence Plots (see <strong>pdp</strong> package <span class="citation">(Greenwell <a href="#ref-pdp">2017</a>)</span>) for a black box <span class="math inline">\(f(x; \theta)\)</span> calculates the expected output given a selected variable.</p>
 <p><span class="math display">\[
 p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
@@ -171,10 +177,10 @@ HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(l
 part &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="st">&quot;satisfaction_level&quot;</span>)
 
 <span class="kw">plotPartial</span>(part)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)
 <span class="kw">autoplot</span>(part)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
 </div>
 <div id="individual-conditional-expectation-plot" class="section level2">
 <h2><span class="header-section-number">3.2</span> Individual Conditional Expectation Plot</h2>
@@ -195,39 +201,64 @@ part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</spa
 
 part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="dt">pred.var =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">ice =</span> <span class="ot">TRUE</span>)
 <span class="kw">plotPartial</span>(part_rf_satisfaction, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data, <span class="dt">alpha =</span> <span class="fl">0.2</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(part_rf_satisfaction, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
 <p>Or with the <code>ICEbox</code> package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;ICEbox&quot;</span>)
-part_rf_satisfaction =<span class="st"> </span><span class="kw">ice</span>(<span class="dt">object =</span> HR_rf_model, <span class="dt">X =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>satisfaction_level, <span class="dt">predictor =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">frac_to_build =</span> .<span class="dv">1</span>)</code></pre></div>
+part_rf_satisfaction =<span class="st"> </span><span class="kw">ice</span>(<span class="dt">object =</span> HR_rf_model, <span class="dt">X =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>satisfaction_level, 
+          <span class="dt">predictor =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">frac_to_build =</span> .<span class="dv">1</span>)</code></pre></div>
 <pre><code>## ............................................................................................</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(part_rf_satisfaction)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the <code>clusterICE</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">clusterICE</span>(part_rf_satisfaction, <span class="dt">nClusters =</span> <span class="dv">3</span>, <span class="dt">plot_legend =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
-<div id="factor-merger" class="section level2">
-<h2><span class="header-section-number">3.3</span> Factor Merger</h2>
+<div id="accumulated-local-effects-plot" class="section level2">
+<h2><span class="header-section-number">3.3</span> Accumulated Local Effects Plot</h2>
+<p>As it is presented in the chapter @(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of <span class="math inline">\(x_{-i}\)</span>. In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see <span class="citation">(Apley <a href="#ref-ALEPlot">2017</a>)</span> for more details).</p>
+<p>Accumulated local effects (ALE) plots (see <strong>ALEPlot</strong> package <span class="citation">(Apley <a href="#ref-ALEPlot">2017</a>)</span>) solves this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
+<p>Let see an example for ALE plots.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;ALEPlot&quot;</span>)
+
+HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)
+
+HR_data_small &lt;-<span class="st"> </span>HR_data[,<span class="kw">c</span>(<span class="st">&quot;satisfaction_level&quot;</span>, <span class="st">&quot;last_evaluation&quot;</span>, <span class="st">&quot;number_project&quot;</span>, 
+<span class="st">&quot;average_montly_hours&quot;</span>, <span class="st">&quot;time_spend_company&quot;</span>, <span class="st">&quot;Work_accident&quot;</span>, <span class="st">&quot;promotion_last_5years&quot;</span>, <span class="st">&quot;sales&quot;</span>, <span class="st">&quot;salary&quot;</span>)]</code></pre></div>
+<p>Estimation of main effects for <code>satisfaction_level</code> is similar to the PDP curves</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ale1d &lt;-<span class="st"> </span><span class="kw">ALEPlot</span>(<span class="dt">X =</span> HR_data_small, <span class="dt">X.model =</span> HR_rf_model, 
+               <span class="dt">pred.fun =</span> <span class="cf">function</span>(X.model, newdata) {
+                 <span class="kw">predict</span>(X.model, newdata)
+               }, 
+               <span class="dt">J =</span> <span class="dv">1</span>)</code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>And here we have predictions for <code>satisfaction_level</code> and <code>last_evaluation</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ale2d &lt;-<span class="st"> </span><span class="kw">ALEPlot</span>(<span class="dt">X =</span> HR_data_small, <span class="dt">X.model =</span> HR_rf_model, 
+               <span class="dt">pred.fun =</span> <span class="cf">function</span>(X.model, newdata) {
+                 <span class="kw">predict</span>(X.model, newdata)
+               }, 
+               <span class="dt">J =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="mering-path-plot" class="section level2">
+<h2><span class="header-section-number">3.4</span> Mering Path Plot</h2>
 <p>The package <code>ICEbox</code> is not working for factor variables while the <code>pdp</code> package returns plots that are hard to interpret.</p>
 <p>An interesting tool that helps to understand what is happening with factor variables is the <strong>factorMerger</strong> package (see <span class="citation">(Sitko and Biecek <a href="#ref-factorMerger">2017</a>)</span>).</p>
 <p>Here we have Merging Path Plot for a factor variable <code>sales</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;factorMerger&quot;</span>)
-path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)
+path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, 
+                     <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)
 <span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;all&quot;</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-16-1.png" width="1152" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-18-1.png" width="1152" /></p>
 <p>Note that you can use the <code>factorMerger</code> package to understand predictions calculated with a black-box model. The random forest model <code>HR_rf_model</code> returns continuous response. But the <code>factorMerger</code> works for such variables as well.</p>
 <p>In the top right panel one mey see the distribution of predictions for the selected group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HR_data<span class="op">$</span>left_predicted &lt;-<span class="st"> </span><span class="kw">predict</span>(HR_rf_model)
 
-path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left_predicted, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>,  <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)
-<span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;all&quot;</span>, <span class="dt">responsePanel =</span> <span class="st">&quot;boxplot&quot;</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-17-1.png" width="1152" /></p>
-</div>
-<div id="aleplot" class="section level2">
-<h2><span class="header-section-number">3.4</span> ALEPlot</h2>
-<p><strong>ALEPlot</strong> package <span class="citation">(Apley <a href="#ref-ALEPlot">2017</a>)</span></p>
+path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left_predicted, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, 
+                     <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)
+<span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;all&quot;</span>, <span class="dt">responsePanel =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">nodesSpacing =</span> <span class="st">&quot;effects&quot;</span>)</code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-19-1.png" width="1152" /></p>
 
 </div>
 </div>
@@ -239,11 +270,11 @@ path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<
 <div id="ref-ICEbox">
 <p>Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1): 44–65. doi:<a href="https://doi.org/10.1080/10618600.2014.907095">10.1080/10618600.2014.907095</a>.</p>
 </div>
-<div id="ref-factorMerger">
-<p>Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</p>
-</div>
 <div id="ref-ALEPlot">
 <p>Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</p>
+</div>
+<div id="ref-factorMerger">
+<p>Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</p>
 </div>
 </div>
             </section>

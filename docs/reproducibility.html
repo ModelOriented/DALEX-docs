@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>DALEX: Descriptive mAchine Learning EXplanations</title>
+  <meta name="description" content="Do not trust a black-box model. Unless it explains itself.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="DALEX: Descriptive mAchine Learning EXplanations" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Do not trust a black-box model. Unless it explains itself." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="DALEX: Descriptive mAchine Learning EXplanations" />
+  
+  <meta name="twitter:description" content="Do not trust a black-box model. Unless it explains itself." />
+  
+
+<meta name="author" content="MI2DataLab">
+
+
+<meta name="date" content="2018-01-05">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="model-performance.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">The DALEX project</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#notation"><i class="fa fa-check"></i><b>1.1</b> Notation</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#use-case---human-resources-analytics"><i class="fa fa-check"></i><b>1.2</b> Use case - Human Resources Analytics</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#logistic-regression"><i class="fa fa-check"></i><b>1.2.1</b> Logistic regression</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#random-forest"><i class="fa fa-check"></i><b>1.2.2</b> Random forest</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#use-case---wine-quality"><i class="fa fa-check"></i><b>1.3</b> Use case - Wine quality</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#linear-regression"><i class="fa fa-check"></i><b>1.3.1</b> Linear regression</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#trivia"><i class="fa fa-check"></i><b>1.4</b> Trivia</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="global-structure.html"><a href="global-structure.html"><i class="fa fa-check"></i><b>2</b> Global structure</a><ul>
+<li class="chapter" data-level="2.1" data-path="global-structure.html"><a href="global-structure.html#forest-plots"><i class="fa fa-check"></i><b>2.1</b> Forest plots</a></li>
+<li class="chapter" data-level="2.2" data-path="global-structure.html"><a href="global-structure.html#variable-importance-plot"><i class="fa fa-check"></i><b>2.2</b> Variable Importance Plot</a></li>
+<li class="chapter" data-level="2.3" data-path="global-structure.html"><a href="global-structure.html#ctree"><i class="fa fa-check"></i><b>2.3</b> ctree</a></li>
+<li class="chapter" data-level="2.4" data-path="global-structure.html"><a href="global-structure.html#randomforestexplainer"><i class="fa fa-check"></i><b>2.4</b> RandomForestExplainer</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conditional-structure.html"><a href="conditional-structure.html"><i class="fa fa-check"></i><b>3</b> Conditional structure</a><ul>
+<li class="chapter" data-level="3.1" data-path="conditional-structure.html"><a href="conditional-structure.html#pdpchapter"><i class="fa fa-check"></i><b>3.1</b> Partial Dependence Plot</a></li>
+<li class="chapter" data-level="3.2" data-path="conditional-structure.html"><a href="conditional-structure.html#individual-conditional-expectation-plot"><i class="fa fa-check"></i><b>3.2</b> Individual Conditional Expectation Plot</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-structure.html"><a href="conditional-structure.html#accumulated-local-effects-plot"><i class="fa fa-check"></i><b>3.3</b> Accumulated Local Effects Plot</a></li>
+<li class="chapter" data-level="3.4" data-path="conditional-structure.html"><a href="conditional-structure.html#mering-path-plot"><i class="fa fa-check"></i><b>3.4</b> Mering Path Plot</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="local-structure.html"><a href="local-structure.html"><i class="fa fa-check"></i><b>4</b> Local structure</a><ul>
+<li class="chapter" data-level="4.1" data-path="local-structure.html"><a href="local-structure.html#local-interpretable-model-agnostic-visual-explanations"><i class="fa fa-check"></i><b>4.1</b> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
+<li class="chapter" data-level="4.2" data-path="local-structure.html"><a href="local-structure.html#breakdown"><i class="fa fa-check"></i><b>4.2</b> breakDown</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="model-performance.html"><a href="model-performance.html"><i class="fa fa-check"></i><b>5</b> Model performance</a></li>
+<li class="chapter" data-level="6" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i><b>6</b> Reproducibility</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/MI2DataLab" target="blank">Find more at</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">DALEX: Descriptive mAchine Learning EXplanations</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="reproducibility" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Reproducibility</h1>
+<p>Packages are changing quite fast, especially in actively developed areas. Below you will find list of packages that were installed on my computer when I was preparing this documentation.</p>
+<p>It is likely that some of described packages will change names of functions or arguments or structure of results. Use the version listed below to reproduce results form this book.</p>
+<p>Note, that results, models and plots created in are were recorded with the <strong>archivist</strong> package <span class="citation">(P. Biecek and Kosinski <a href="#ref-archivist">2017</a>)</span>. Use archivist links to retrieve their binary copies directly to your R console.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">session_info</span>()</code></pre></div>
+<pre><code>##  setting  value                       
+##  version  R version 3.4.2 (2017-09-28)
+##  system   x86_64, darwin15.6.0        
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  tz       Europe/Warsaw               
+##  date     2018-01-05                  
+## 
+##  package      * version    date      
+##  abind          1.4-5      2016-07-21
+##  agricolae      1.2-8      2017-09-12
+##  ALEPlot      * 1.0        2017-11-13
+##  AlgDesign      1.1-7.3    2014-10-15
+##  arm            1.9-3      2016-11-27
+##  assertthat     0.2.0      2017-04-11
+##  backports      1.1.1      2017-09-25
+##  base         * 3.4.2      2017-10-04
+##  bayesplot      1.4.0      2017-09-12
+##  BBmisc         1.11       2017-03-10
+##  bindr          0.1        2016-11-13
+##  bindrcpp     * 0.2        2017-06-17
+##  blme           1.0-4      2015-06-14
+##  bookdown       0.5        2017-08-20
+##  boot           1.3-20     2017-08-06
+##  breakDown    * 0.1.2      2018-01-02
+##  broom          0.4.2      2017-02-13
+##  carData        3.0-0      2017-08-28
+##  checkmate      1.8.4      2017-09-25
+##  cli            1.0.0      2017-11-05
+##  cluster        2.0.6      2017-03-10
+##  coda           0.19-1     2016-12-08
+##  codetools      0.2-15     2016-10-05
+##  coin           1.2-1      2017-07-17
+##  colorspace     1.3-2      2016-12-14
+##  combinat       0.0-8      2012-10-29
+##  compiler       3.4.2      2017-10-04
+##  cowplot        0.9.1      2017-11-16
+##  crayon         1.3.4      2017-09-16
+##  data.table     1.10.4-3   2017-10-27
+##  datasets     * 3.4.2      2017-10-04
+##  deldir         0.1-14     2017-04-22
+##  devtools       1.13.3     2017-08-02
+##  digest         0.6.13     2017-12-14
+##  dplyr        * 0.7.4      2017-09-28
+##  DT             0.1        2015-06-09
+##  effects        4.0-0      2017-09-15
+##  evaluate       0.10.1     2017-06-24
+##  expm           0.999-2    2017-03-29
+##  factorMerger * 0.3.4      2018-01-05
+##  forcats        0.2.0      2017-01-23
+##  foreign        0.8-69     2017-06-22
+##  forestmodel  * 0.4.3      2017-04-16
+##  forestplot     1.7.2      2017-09-16
+##  gdata          2.17.0     2015-07-04
+##  ggeffects      0.3.0      2017-11-27
+##  ggplot2      * 2.2.1      2016-12-30
+##  ggpubr         0.1.6      2017-11-14
+##  glmmTMB        0.2.0      2017-12-11
+##  glue           1.1.1      2017-06-21
+##  gmodels        2.16.2     2015-07-22
+##  graphics     * 3.4.2      2017-10-04
+##  grDevices    * 3.4.2      2017-10-04
+##  grid           3.4.2      2017-10-04
+##  gridExtra      2.3        2017-09-09
+##  gtable         0.2.0      2016-02-26
+##  gtools         3.5.0      2015-05-29
+##  haven          1.1.0      2017-07-09
+##  highr          0.6        2016-05-09
+##  htmltools      0.3.6      2017-04-28
+##  htmlwidgets    0.9        2017-07-10
+##  httpuv         1.3.5      2017-07-04
+##  ICEbox       * 1.1.2      2017-07-13
+##  klaR           0.6-12     2014-08-06
+##  knitr          1.18       2017-12-27
+##  labeling       0.3        2014-08-23
+##  lattice        0.20-35    2017-03-25
+##  lazyeval       0.2.0      2016-06-12
+##  LearnBayes     2.15       2014-05-29
+##  live         * 0.2.0      2017-12-07
+##  lme4           1.1-15     2017-12-21
+##  lmtest         0.9-34     2015-06-06
+##  magrittr       1.5        2014-11-22
+##  MASS           7.3-47     2017-02-26
+##  Matrix         1.2-12     2017-11-15
+##  memoise        1.1.0      2017-04-21
+##  merTools       0.3.0      2016-12-12
+##  methods      * 3.4.2      2017-10-04
+##  mime           0.5        2016-07-07
+##  minqa          1.2.4      2014-10-09
+##  mlr          * 2.11       2017-03-15
+##  mnormt         1.5-5      2016-10-15
+##  modelr         0.1.1      2017-07-24
+##  modeltools     0.2-21     2013-09-02
+##  multcomp       1.4-7      2017-09-07
+##  munsell        0.4.3      2016-02-13
+##  mvtnorm        1.0-6      2017-03-02
+##  nlme           3.1-131    2017-02-06
+##  nloptr         1.0.4      2014-08-04
+##  nnet           7.3-12     2016-02-02
+##  parallel       3.4.2      2017-10-04
+##  parallelMap    1.3        2015-06-10
+##  ParamHelpers * 1.10       2017-01-05
+##  pdp          * 0.6.0      2017-07-20
+##  pkgconfig      2.0.1      2017-03-21
+##  plyr           1.8.4      2016-06-08
+##  prediction     0.2.0      2017-04-19
+##  proxy          0.4-20     2017-12-12
+##  psych          1.7.3.21   2017-03-22
+##  purrr          0.2.4      2017-10-18
+##  pwr            1.2-1      2017-03-25
+##  R6             2.2.2      2017-06-17
+##  randomForest * 4.6-12     2015-10-07
+##  RColorBrewer   1.1-2      2014-12-07
+##  Rcpp           0.12.14    2017-11-23
+##  reshape2       1.4.3      2017-12-11
+##  rlang          0.1.4.9000 2017-11-30
+##  rmarkdown      1.8        2017-11-17
+##  rprojroot      1.2        2017-01-16
+##  rstudioapi     0.7        2017-09-07
+##  sandwich       2.4-0      2017-07-26
+##  scales         0.5.0      2017-08-24
+##  sfsmisc      * 1.1-1      2017-06-08
+##  shiny          1.0.5      2017-08-23
+##  sjlabelled     1.0.5      2017-11-09
+##  sjmisc         2.6.3      2017-11-28
+##  sjPlot       * 2.4.0      2017-10-19
+##  sjstats        0.13.0     2017-11-23
+##  snakecase      0.5.1      2017-09-20
+##  sp             1.2-5      2017-06-29
+##  spData         0.2.6.4    2017-11-12
+##  spdep          0.7-4      2017-11-22
+##  splines        3.4.2      2017-10-04
+##  stats        * 3.4.2      2017-10-04
+##  stats4         3.4.2      2017-10-04
+##  stringdist     0.9.4.1    2016-01-02
+##  stringi        1.1.6      2017-11-17
+##  stringr        1.2.0      2017-02-18
+##  survey         3.30-3     2014-08-15
+##  survival       2.41-3     2017-04-04
+##  TH.data        1.0-8      2017-01-23
+##  tibble         1.3.4      2017-08-22
+##  tidyr          0.7.2      2017-10-16
+##  tidyselect     0.2.2      2017-10-10
+##  TMB            1.7.12     2017-12-11
+##  tools          3.4.2      2017-10-04
+##  utils        * 3.4.2      2017-10-04
+##  withr          2.1.0      2017-11-01
+##  xtable         1.8-2      2016-02-05
+##  yaImpute       1.0-29     2017-12-10
+##  yaml           2.1.16     2017-12-12
+##  zoo            1.8-0      2017-04-12
+##  source                                  
+##  cran (@1.4-5)                           
+##  cran (@1.2-8)                           
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.2.0)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.2)                          
+##  local                                   
+##  CRAN (R 3.4.3)                          
+##  cran (@1.11)                            
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.2)                          
+##  local (pbiecek/breakDown@NA)            
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.1)                          
+##  cran (@1.8.4)                           
+##  cran (@1.0.0)                           
+##  CRAN (R 3.4.2)                          
+##  cran (@0.19-1)                          
+##  CRAN (R 3.4.2)                          
+##  cran (@1.2-1)                           
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.1.0)                          
+##  local                                   
+##  cran (@0.9.1)                           
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.2)                          
+##  local                                   
+##  cran (@0.1-14)                          
+##  CRAN (R 3.4.1)                          
+##  cran (@0.6.13)                          
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.2.0)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.1)                          
+##  cran (@0.999-2)                         
+##  Github (MI2DataLab/factorMerger@0ccb928)
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.0)                          
+##  cran (@1.7.2)                           
+##  CRAN (R 3.2.0)                          
+##  CRAN (R 3.4.3)                          
+##  CRAN (R 3.4.0)                          
+##  cran (@0.1.6)                           
+##  CRAN (R 3.4.3)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.0)                          
+##  local                                   
+##  local                                   
+##  local                                   
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.2.3)                          
+##  CRAN (R 3.2.0)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.2.0)                          
+##  cran (@1.18)                            
+##  CRAN (R 3.2.2)                          
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.2.0)                          
+##  Github (MI2DataLab/live@ec7e71d)        
+##  cran (@1.1-15)                          
+##  CRAN (R 3.2.0)                          
+##  CRAN (R 3.2.2)                          
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.0)                          
+##  local                                   
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.1.1)                          
+##  cran (@2.11)                            
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.1.2)                          
+##  cran (@1.4-7)                           
+##  CRAN (R 3.2.3)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.2.2)                          
+##  CRAN (R 3.4.2)                          
+##  local                                   
+##  cran (@1.3)                             
+##  cran (@1.10)                            
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.0)                          
+##  cran (@0.4-20)                          
+##  CRAN (R 3.4.0)                          
+##  cran (@0.2.4)                           
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.2.0)                          
+##  CRAN (R 3.2.2)                          
+##  cran (@0.12.14)                         
+##  cran (@1.4.3)                           
+##  Github (tidyverse/rlang@5c3e30f)        
+##  cran (@1.8)                             
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.1)                          
+##  cran (@2.4-0)                           
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.4.1)                          
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
+##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
+##  CRAN (R 3.4.2)                          
+##  cran (@1.2-5)                           
+##  cran (@0.2.6.4)                         
+##  cran (@0.7-4)                           
+##  local                                   
+##  local                                   
+##  local                                   
+##  CRAN (R 3.2.3)                          
+##  cran (@1.1.6)                           
+##  CRAN (R 3.4.0)                          
+##  CRAN (R 3.1.2)                          
+##  CRAN (R 3.4.2)                          
+##  cran (@1.0-8)                           
+##  CRAN (R 3.4.1)                          
+##  cran (@0.7.2)                           
+##  cran (@0.2.2)                           
+##  CRAN (R 3.4.3)                          
+##  local                                   
+##  local                                   
+##  cran (@2.1.0)                           
+##  CRAN (R 3.2.3)                          
+##  CRAN (R 3.4.3)                          
+##  cran (@2.1.16)                          
+##  CRAN (R 3.4.0)</code></pre>
+
+<div id="refs" class="references">
+<div>
+<p>Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</p>
+</div>
+<div>
+<p>Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</p>
+</div>
+<div>
+<p>Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11): 1–28. doi:<a href="https://doi.org/10.18637/jss.v082.i11">10.18637/jss.v082.i11</a>.</p>
+</div>
+<div>
+<p>Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170): 1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</p>
+</div>
+<div>
+<p>Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1): 44–65. doi:<a href="https://doi.org/10.1080/10618600.2014.907095">10.1080/10618600.2014.907095</a>.</p>
+</div>
+<div>
+<p>Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1): 421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</p>
+</div>
+<div>
+<p>Kennedy, Nick. 2017. <em>Forestmodel: Forest Plots from Regression Models</em>. <a href="https://CRAN.R-project.org/package=forestmodel" class="uri">https://CRAN.R-project.org/package=forestmodel</a>.</p>
+</div>
+<div>
+<p>Lüdecke, Daniel. 2017. <em>SjPlot: Data Visualization for Statistics in Social Science</em>. <a href="https://CRAN.R-project.org/package=sjPlot" class="uri">https://CRAN.R-project.org/package=sjPlot</a>.</p>
+</div>
+<div>
+<p>Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. doi:<a href="https://doi.org/10.1145/2939672.2939778">10.1145/2939672.2939778</a>.</p>
+</div>
+<div>
+<p>Robinson, David. 2017. <em>Broom: Convert Statistical Analysis Objects into Tidy Data Frames</em>. <a href="https://CRAN.R-project.org/package=broom" class="uri">https://CRAN.R-project.org/package=broom</a>.</p>
+</div>
+<div>
+<p>Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</p>
+</div>
+<div>
+<p>Staniak, Mateusz, and Przemysław Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>.</p>
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-archivist">
+<p>Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11): 1–28. doi:<a href="https://doi.org/10.18637/jss.v082.i11">10.18637/jss.v082.i11</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="model-performance.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-reproducibility.Rmd",
+"text": "Edit"
+},
+"download": ["DALEX.pdf", "DALEX.epub"],
+"toc": {
+"collapse": "subsection"
+},
+"split_by": "section+number",
+"fig.width": 12
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
