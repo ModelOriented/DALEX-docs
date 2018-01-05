@@ -1,6 +1,12 @@
 # Conditional structure
 
-## Partial Dependence Plots
+The dimension of input $x$ for black box models is usually high (large $p$). But in many cases small number of variables play important role in the model OR there are some reasons to believe that variables work in an additive fashion/low-level interactions in the model.
+
+In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like. 
+
+Methods presented below help to understand the conditional structure of a model.
+
+## Partial Dependence Plot {#pdpchapter}
 
 Partial Dependence Plots (see **pdp** package [@pdp]) for a black box $f(x; \theta)$ calculates the expected output given a selected variable.
 
@@ -64,7 +70,8 @@ Or with the `ICEbox` package.
 
 ```{r, message=FALSE, warning=FALSE}
 library("ICEbox")
-part_rf_satisfaction = ice(object = HR_rf_model, X = HR_data, y = HR_data$satisfaction_level, predictor = "satisfaction_level", frac_to_build = .1)
+part_rf_satisfaction = ice(object = HR_rf_model, X = HR_data, y = HR_data$satisfaction_level, 
+          predictor = "satisfaction_level", frac_to_build = .1)
 plot(part_rf_satisfaction)
 ```
 
@@ -74,7 +81,48 @@ As ICE curves are useful tool for identification of interactions, these individu
 clusterICE(part_rf_satisfaction, nClusters = 3, plot_legend = TRUE, center = TRUE)
 ```
 
-## Factor Merger
+
+## Accumulated Local Effects Plot
+
+As it is presented in the chapter \@(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of $x_{-i}$. 
+In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see [@ALEPlot] for more details).
+
+Accumulated local effects (ALE) plots (see **ALEPlot** package [@ALEPlot]) solves this problem by using conditional distribution $x_{-i}|x_i = x_i^*$. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).
+
+Let see an example for ALE plots.
+
+```{r, message=FALSE, warning=FALSE}
+library("ALEPlot")
+
+HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
+
+HR_data_small <- HR_data[,c("satisfaction_level", "last_evaluation", "number_project", 
+"average_montly_hours", "time_spend_company", "Work_accident", "promotion_last_5years", "sales", "salary")]
+```
+
+Estimation of main effects for `satisfaction_level` is similar to the PDP curves
+
+```{r, message=FALSE, warning=FALSE}
+ale1d <- ALEPlot(X = HR_data_small, X.model = HR_rf_model, 
+               pred.fun = function(X.model, newdata) {
+                 predict(X.model, newdata)
+               }, 
+               J = 1)
+```
+
+And here we have predictions for `satisfaction_level` and `last_evaluation`.
+
+```{r, message=FALSE, warning=FALSE}
+ale2d <- ALEPlot(X = HR_data_small, X.model = HR_rf_model, 
+               pred.fun = function(X.model, newdata) {
+                 predict(X.model, newdata)
+               }, 
+               J = c(1,2))
+
+```
+
+
+## Mering Path Plot
 
 The package `ICEbox` is not working for factor variables while the `pdp` package returns plots that are hard to interpret.
 
@@ -84,7 +132,8 @@ Here we have Merging Path Plot for a factor variable `sales`.
 
 ```{r, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
 library("factorMerger")
-path <- mergeFactors(HR_data$left, HR_data$sales, method = "fast-adaptive", family = "binomial", abbreviate = FALSE)
+path <- mergeFactors(HR_data$left, HR_data$sales, method = "fast-adaptive", 
+                     family = "binomial", abbreviate = FALSE)
 plot(path, panel = "all")
 ```
 
@@ -96,12 +145,9 @@ In the top right panel one mey see the distribution of predictions for the selec
 
 HR_data$left_predicted <- predict(HR_rf_model)
 
-path <- mergeFactors(HR_data$left_predicted, HR_data$sales, method = "fast-adaptive",  abbreviate = FALSE)
-plot(path, panel = "all", responsePanel = "boxplot")
+path <- mergeFactors(HR_data$left_predicted, HR_data$sales, method = "fast-adaptive", 
+                     abbreviate = FALSE)
+plot(path, panel = "all", responsePanel = "boxplot", nodesSpacing = "effects")
 ```
-
-## ALEPlot
-
-**ALEPlot** package [@ALEPlot]
 
 

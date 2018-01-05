@@ -1,5 +1,7 @@
 # Global structure
 
+Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?
+
 ## Forest plots
 
 [Forest plots](https://en.wikipedia.org/wiki/Forest_plot) were initially used in the meta analysis to visualise effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure like these created with `lm` or `glm` functions.
@@ -31,4 +33,15 @@ plot_model(HR_glm_model, type = "est", sort.est = TRUE)
 **Note!** 
 
 The **forestmodel** package handles factor variables in a better way while the plots from **sjPlot** are easier to read.
+
+
+## Variable Importance Plot
+
+
+## ctree
+
+
+## RandomForestExplainer
+
+
 
