@@ -1,0 +1,5 @@
+# Goodness of fit / Model diagnostic
+
+## halfnorm plot
+
+

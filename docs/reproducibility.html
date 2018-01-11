@@ -25,14 +25,14 @@
 <meta name="author" content="MI2DataLab">
 
 
-<meta name="date" content="2018-01-05">
+<meta name="date" content="2018-01-11">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="model-performance.html">
+<link rel="prev" href="goodness-of-fit-model-diagnostic.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -130,8 +130,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.1" data-path="local-structure.html"><a href="local-structure.html#local-interpretable-model-agnostic-visual-explanations"><i class="fa fa-check"></i><b>4.1</b> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
 <li class="chapter" data-level="4.2" data-path="local-structure.html"><a href="local-structure.html#breakdown"><i class="fa fa-check"></i><b>4.2</b> breakDown</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="model-performance.html"><a href="model-performance.html"><i class="fa fa-check"></i><b>5</b> Model performance</a></li>
-<li class="chapter" data-level="6" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i><b>6</b> Reproducibility</a></li>
+<li class="chapter" data-level="5" data-path="model-performance.html"><a href="model-performance.html"><i class="fa fa-check"></i><b>5</b> Model performance</a><ul>
+<li class="chapter" data-level="5.1" data-path="model-performance.html"><a href="model-performance.html#roc"><i class="fa fa-check"></i><b>5.1</b> ROC</a></li>
+<li class="chapter" data-level="5.2" data-path="model-performance.html"><a href="model-performance.html#lift-curve"><i class="fa fa-check"></i><b>5.2</b> Lift curve</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="goodness-of-fit-model-diagnostic.html"><a href="goodness-of-fit-model-diagnostic.html"><i class="fa fa-check"></i><b>6</b> Goodness of fit / Model diagnostic</a><ul>
+<li class="chapter" data-level="6.1" data-path="goodness-of-fit-model-diagnostic.html"><a href="goodness-of-fit-model-diagnostic.html#halfnorm-plot"><i class="fa fa-check"></i><b>6.1</b> halfnorm plot</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i><b>7</b> Reproducibility</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/MI2DataLab" target="blank">Find more at</a></li>
 
@@ -153,163 +159,163 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="reproducibility" class="section level1">
-<h1><span class="header-section-number">Chapter 6</span> Reproducibility</h1>
+<h1><span class="header-section-number">Chapter 7</span> Reproducibility</h1>
 <p>Packages are changing quite fast, especially in actively developed areas. Below you will find list of packages that were installed on my computer when I was preparing this documentation.</p>
 <p>It is likely that some of described packages will change names of functions or arguments or structure of results. Use the version listed below to reproduce results form this book.</p>
 <p>Note, that results, models and plots created in are were recorded with the <strong>archivist</strong> package <span class="citation">(P. Biecek and Kosinski <a href="#ref-archivist">2017</a>)</span>. Use archivist links to retrieve their binary copies directly to your R console.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">session_info</span>()</code></pre></div>
 <pre><code>##  setting  value                       
-##  version  R version 3.4.2 (2017-09-28)
+##  version  R version 3.4.3 (2017-11-30)
 ##  system   x86_64, darwin15.6.0        
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       Europe/Warsaw               
-##  date     2018-01-05                  
+##  date     2018-01-11                  
 ## 
-##  package      * version    date      
-##  abind          1.4-5      2016-07-21
-##  agricolae      1.2-8      2017-09-12
-##  ALEPlot      * 1.0        2017-11-13
-##  AlgDesign      1.1-7.3    2014-10-15
-##  arm            1.9-3      2016-11-27
-##  assertthat     0.2.0      2017-04-11
-##  backports      1.1.1      2017-09-25
-##  base         * 3.4.2      2017-10-04
-##  bayesplot      1.4.0      2017-09-12
-##  BBmisc         1.11       2017-03-10
-##  bindr          0.1        2016-11-13
-##  bindrcpp     * 0.2        2017-06-17
-##  blme           1.0-4      2015-06-14
-##  bookdown       0.5        2017-08-20
-##  boot           1.3-20     2017-08-06
-##  breakDown    * 0.1.2      2018-01-02
-##  broom          0.4.2      2017-02-13
-##  carData        3.0-0      2017-08-28
-##  checkmate      1.8.4      2017-09-25
-##  cli            1.0.0      2017-11-05
-##  cluster        2.0.6      2017-03-10
-##  coda           0.19-1     2016-12-08
-##  codetools      0.2-15     2016-10-05
-##  coin           1.2-1      2017-07-17
-##  colorspace     1.3-2      2016-12-14
-##  combinat       0.0-8      2012-10-29
-##  compiler       3.4.2      2017-10-04
-##  cowplot        0.9.1      2017-11-16
-##  crayon         1.3.4      2017-09-16
-##  data.table     1.10.4-3   2017-10-27
-##  datasets     * 3.4.2      2017-10-04
-##  deldir         0.1-14     2017-04-22
-##  devtools       1.13.3     2017-08-02
-##  digest         0.6.13     2017-12-14
-##  dplyr        * 0.7.4      2017-09-28
-##  DT             0.1        2015-06-09
-##  effects        4.0-0      2017-09-15
-##  evaluate       0.10.1     2017-06-24
-##  expm           0.999-2    2017-03-29
-##  factorMerger * 0.3.4      2018-01-05
-##  forcats        0.2.0      2017-01-23
-##  foreign        0.8-69     2017-06-22
-##  forestmodel  * 0.4.3      2017-04-16
-##  forestplot     1.7.2      2017-09-16
-##  gdata          2.17.0     2015-07-04
-##  ggeffects      0.3.0      2017-11-27
-##  ggplot2      * 2.2.1      2016-12-30
-##  ggpubr         0.1.6      2017-11-14
-##  glmmTMB        0.2.0      2017-12-11
-##  glue           1.1.1      2017-06-21
-##  gmodels        2.16.2     2015-07-22
-##  graphics     * 3.4.2      2017-10-04
-##  grDevices    * 3.4.2      2017-10-04
-##  grid           3.4.2      2017-10-04
-##  gridExtra      2.3        2017-09-09
-##  gtable         0.2.0      2016-02-26
-##  gtools         3.5.0      2015-05-29
-##  haven          1.1.0      2017-07-09
-##  highr          0.6        2016-05-09
-##  htmltools      0.3.6      2017-04-28
-##  htmlwidgets    0.9        2017-07-10
-##  httpuv         1.3.5      2017-07-04
-##  ICEbox       * 1.1.2      2017-07-13
-##  klaR           0.6-12     2014-08-06
-##  knitr          1.18       2017-12-27
-##  labeling       0.3        2014-08-23
-##  lattice        0.20-35    2017-03-25
-##  lazyeval       0.2.0      2016-06-12
-##  LearnBayes     2.15       2014-05-29
-##  live         * 0.2.0      2017-12-07
-##  lme4           1.1-15     2017-12-21
-##  lmtest         0.9-34     2015-06-06
-##  magrittr       1.5        2014-11-22
-##  MASS           7.3-47     2017-02-26
-##  Matrix         1.2-12     2017-11-15
-##  memoise        1.1.0      2017-04-21
-##  merTools       0.3.0      2016-12-12
-##  methods      * 3.4.2      2017-10-04
-##  mime           0.5        2016-07-07
-##  minqa          1.2.4      2014-10-09
-##  mlr          * 2.11       2017-03-15
-##  mnormt         1.5-5      2016-10-15
-##  modelr         0.1.1      2017-07-24
-##  modeltools     0.2-21     2013-09-02
-##  multcomp       1.4-7      2017-09-07
-##  munsell        0.4.3      2016-02-13
-##  mvtnorm        1.0-6      2017-03-02
-##  nlme           3.1-131    2017-02-06
-##  nloptr         1.0.4      2014-08-04
-##  nnet           7.3-12     2016-02-02
-##  parallel       3.4.2      2017-10-04
-##  parallelMap    1.3        2015-06-10
-##  ParamHelpers * 1.10       2017-01-05
-##  pdp          * 0.6.0      2017-07-20
-##  pkgconfig      2.0.1      2017-03-21
-##  plyr           1.8.4      2016-06-08
-##  prediction     0.2.0      2017-04-19
-##  proxy          0.4-20     2017-12-12
-##  psych          1.7.3.21   2017-03-22
-##  purrr          0.2.4      2017-10-18
-##  pwr            1.2-1      2017-03-25
-##  R6             2.2.2      2017-06-17
-##  randomForest * 4.6-12     2015-10-07
-##  RColorBrewer   1.1-2      2014-12-07
-##  Rcpp           0.12.14    2017-11-23
-##  reshape2       1.4.3      2017-12-11
-##  rlang          0.1.4.9000 2017-11-30
-##  rmarkdown      1.8        2017-11-17
-##  rprojroot      1.2        2017-01-16
-##  rstudioapi     0.7        2017-09-07
-##  sandwich       2.4-0      2017-07-26
-##  scales         0.5.0      2017-08-24
-##  sfsmisc      * 1.1-1      2017-06-08
-##  shiny          1.0.5      2017-08-23
-##  sjlabelled     1.0.5      2017-11-09
-##  sjmisc         2.6.3      2017-11-28
-##  sjPlot       * 2.4.0      2017-10-19
-##  sjstats        0.13.0     2017-11-23
-##  snakecase      0.5.1      2017-09-20
-##  sp             1.2-5      2017-06-29
-##  spData         0.2.6.4    2017-11-12
-##  spdep          0.7-4      2017-11-22
-##  splines        3.4.2      2017-10-04
-##  stats        * 3.4.2      2017-10-04
-##  stats4         3.4.2      2017-10-04
-##  stringdist     0.9.4.1    2016-01-02
-##  stringi        1.1.6      2017-11-17
-##  stringr        1.2.0      2017-02-18
-##  survey         3.30-3     2014-08-15
-##  survival       2.41-3     2017-04-04
-##  TH.data        1.0-8      2017-01-23
-##  tibble         1.3.4      2017-08-22
-##  tidyr          0.7.2      2017-10-16
-##  tidyselect     0.2.2      2017-10-10
-##  TMB            1.7.12     2017-12-11
-##  tools          3.4.2      2017-10-04
-##  utils        * 3.4.2      2017-10-04
-##  withr          2.1.0      2017-11-01
-##  xtable         1.8-2      2016-02-05
-##  yaImpute       1.0-29     2017-12-10
-##  yaml           2.1.16     2017-12-12
-##  zoo            1.8-0      2017-04-12
+##  package      * version  date      
+##  abind          1.4-5    2016-07-21
+##  agricolae      1.2-8    2017-09-12
+##  ALEPlot      * 1.0      2017-11-13
+##  AlgDesign      1.1-7.3  2014-10-15
+##  arm            1.9-3    2016-11-27
+##  assertthat     0.2.0    2017-04-11
+##  backports      1.1.1    2017-09-25
+##  base         * 3.4.3    2017-12-07
+##  bayesplot      1.4.0    2017-09-12
+##  BBmisc         1.11     2017-03-10
+##  bindr          0.1      2016-11-13
+##  bindrcpp     * 0.2      2017-06-17
+##  blme           1.0-4    2015-06-14
+##  bookdown       0.5      2017-08-20
+##  boot           1.3-20   2017-08-06
+##  breakDown    * 0.1.2    2018-01-02
+##  broom          0.4.2    2017-02-13
+##  carData        3.0-0    2017-08-28
+##  checkmate      1.8.4    2017-09-25
+##  cli            1.0.0    2017-11-05
+##  cluster        2.0.6    2017-03-10
+##  coda           0.19-1   2016-12-08
+##  codetools      0.2-15   2016-10-05
+##  coin           1.2-1    2017-07-17
+##  colorspace     1.3-2    2016-12-14
+##  combinat       0.0-8    2012-10-29
+##  compiler       3.4.3    2017-12-07
+##  cowplot        0.9.1    2017-11-16
+##  crayon         1.3.4    2017-09-16
+##  data.table     1.10.4-3 2017-10-27
+##  datasets     * 3.4.3    2017-12-07
+##  deldir         0.1-14   2017-04-22
+##  devtools       1.13.3   2017-08-02
+##  digest         0.6.13   2017-12-14
+##  dplyr        * 0.7.4    2017-09-28
+##  DT             0.1      2015-06-09
+##  effects        4.0-0    2017-09-15
+##  evaluate       0.10.1   2017-06-24
+##  expm           0.999-2  2017-03-29
+##  factorMerger * 0.3.4    2018-01-05
+##  forcats        0.2.0    2017-01-23
+##  foreign        0.8-69   2017-06-22
+##  forestmodel  * 0.4.3    2017-04-16
+##  forestplot     1.7.2    2017-09-16
+##  gdata          2.17.0   2015-07-04
+##  ggeffects      0.3.0    2017-11-27
+##  ggplot2      * 2.2.1    2016-12-30
+##  ggpubr         0.1.6    2017-11-14
+##  glmmTMB        0.2.0    2017-12-11
+##  glue           1.1.1    2017-06-21
+##  gmodels        2.16.2   2015-07-22
+##  graphics     * 3.4.3    2017-12-07
+##  grDevices    * 3.4.3    2017-12-07
+##  grid           3.4.3    2017-12-07
+##  gridExtra      2.3      2017-09-09
+##  gtable         0.2.0    2016-02-26
+##  gtools         3.5.0    2015-05-29
+##  haven          1.1.0    2017-07-09
+##  highr          0.6      2016-05-09
+##  htmltools      0.3.6    2017-04-28
+##  htmlwidgets    0.9      2017-07-10
+##  httpuv         1.3.5    2017-07-04
+##  ICEbox       * 1.1.2    2017-07-13
+##  klaR           0.6-12   2014-08-06
+##  knitr          1.18     2017-12-27
+##  labeling       0.3      2014-08-23
+##  lattice        0.20-35  2017-03-25
+##  lazyeval       0.2.0    2016-06-12
+##  LearnBayes     2.15     2014-05-29
+##  live         * 0.2.0    2017-12-07
+##  lme4           1.1-15   2017-12-21
+##  lmtest         0.9-34   2015-06-06
+##  magrittr       1.5      2014-11-22
+##  MASS           7.3-47   2017-02-26
+##  Matrix         1.2-12   2017-11-15
+##  memoise        1.1.0    2017-04-21
+##  merTools       0.3.0    2016-12-12
+##  methods      * 3.4.3    2017-12-07
+##  mime           0.5      2016-07-07
+##  minqa          1.2.4    2014-10-09
+##  mlr          * 2.11     2017-03-15
+##  mnormt         1.5-5    2016-10-15
+##  modelr         0.1.1    2017-07-24
+##  modeltools     0.2-21   2013-09-02
+##  multcomp       1.4-7    2017-09-07
+##  munsell        0.4.3    2016-02-13
+##  mvtnorm        1.0-6    2017-03-02
+##  nlme           3.1-131  2017-02-06
+##  nloptr         1.0.4    2014-08-04
+##  nnet           7.3-12   2016-02-02
+##  parallel       3.4.3    2017-12-07
+##  parallelMap    1.3      2015-06-10
+##  ParamHelpers * 1.10     2017-01-05
+##  pdp          * 0.6.0    2017-07-20
+##  pkgconfig      2.0.1    2017-03-21
+##  plyr           1.8.4    2016-06-08
+##  prediction     0.2.0    2017-04-19
+##  proxy          0.4-20   2017-12-12
+##  psych          1.7.3.21 2017-03-22
+##  purrr          0.2.4    2017-10-18
+##  pwr            1.2-1    2017-03-25
+##  R6             2.2.2    2017-06-17
+##  randomForest * 4.6-12   2015-10-07
+##  RColorBrewer   1.1-2    2014-12-07
+##  Rcpp           0.12.14  2017-11-23
+##  reshape2       1.4.3    2017-12-11
+##  rlang          0.1.6    2017-12-21
+##  rmarkdown      1.8      2017-11-17
+##  rprojroot      1.2      2017-01-16
+##  rstudioapi     0.7      2017-09-07
+##  sandwich       2.4-0    2017-07-26
+##  scales         0.5.0    2017-08-24
+##  sfsmisc      * 1.1-1    2017-06-08
+##  shiny          1.0.5    2017-08-23
+##  sjlabelled     1.0.5    2017-11-09
+##  sjmisc         2.6.3    2017-11-28
+##  sjPlot       * 2.4.0    2017-10-19
+##  sjstats        0.13.0   2017-11-23
+##  snakecase      0.5.1    2017-09-20
+##  sp             1.2-5    2017-06-29
+##  spData         0.2.6.4  2017-11-12
+##  spdep          0.7-4    2017-11-22
+##  splines        3.4.3    2017-12-07
+##  stats        * 3.4.3    2017-12-07
+##  stats4         3.4.3    2017-12-07
+##  stringdist     0.9.4.1  2016-01-02
+##  stringi        1.1.6    2017-11-17
+##  stringr        1.2.0    2017-02-18
+##  survey         3.30-3   2014-08-15
+##  survival       2.41-3   2017-04-04
+##  TH.data        1.0-8    2017-01-23
+##  tibble         1.3.4    2017-08-22
+##  tidyr          0.7.2    2017-10-16
+##  tidyselect     0.2.2    2017-10-10
+##  TMB            1.7.12   2017-12-11
+##  tools          3.4.3    2017-12-07
+##  utils        * 3.4.3    2017-12-07
+##  withr          2.1.0    2017-11-01
+##  xtable         1.8-2    2016-02-05
+##  yaImpute       1.0-29   2017-12-10
+##  yaml           2.1.16   2017-12-12
+##  zoo            1.8-0    2017-04-12
 ##  source                                  
 ##  cran (@1.4-5)                           
 ##  cran (@1.2-8)                           
@@ -325,15 +331,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  CRAN (R 3.4.0)                          
 ##  CRAN (R 3.4.0)                          
 ##  CRAN (R 3.4.1)                          
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  local (pbiecek/breakDown@NA)            
 ##  CRAN (R 3.4.0)                          
 ##  CRAN (R 3.4.1)                          
 ##  cran (@1.8.4)                           
 ##  cran (@1.0.0)                           
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  cran (@0.19-1)                          
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  cran (@1.2-1)                           
 ##  CRAN (R 3.4.0)                          
 ##  CRAN (R 3.1.0)                          
@@ -352,7 +358,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  cran (@0.999-2)                         
 ##  Github (MI2DataLab/factorMerger@0ccb928)
 ##  CRAN (R 3.4.0)                          
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  CRAN (R 3.4.0)                          
 ##  cran (@1.7.2)                           
 ##  CRAN (R 3.2.0)                          
@@ -377,14 +383,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  CRAN (R 3.2.0)                          
 ##  cran (@1.18)                            
 ##  CRAN (R 3.2.2)                          
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  CRAN (R 3.4.0)                          
 ##  CRAN (R 3.2.0)                          
 ##  Github (MI2DataLab/live@ec7e71d)        
 ##  cran (@1.1-15)                          
 ##  CRAN (R 3.2.0)                          
 ##  CRAN (R 3.2.2)                          
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  CRAN (R 3.4.2)                          
 ##  CRAN (R 3.4.0)                          
 ##  CRAN (R 3.4.0)                          
@@ -398,9 +404,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  cran (@1.4-7)                           
 ##  CRAN (R 3.2.3)                          
 ##  CRAN (R 3.4.0)                          
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  CRAN (R 3.2.2)                          
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  local                                   
 ##  cran (@1.3)                             
 ##  cran (@1.10)                            
@@ -417,7 +423,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  CRAN (R 3.2.2)                          
 ##  cran (@0.12.14)                         
 ##  cran (@1.4.3)                           
-##  Github (tidyverse/rlang@5c3e30f)        
+##  CRAN (R 3.4.3)                          
 ##  cran (@1.8)                             
 ##  CRAN (R 3.4.0)                          
 ##  CRAN (R 3.4.1)                          
@@ -440,7 +446,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  cran (@1.1.6)                           
 ##  CRAN (R 3.4.0)                          
 ##  CRAN (R 3.1.2)                          
-##  CRAN (R 3.4.2)                          
+##  CRAN (R 3.4.3)                          
 ##  cran (@1.0-8)                           
 ##  CRAN (R 3.4.1)                          
 ##  cran (@0.7.2)                           
@@ -504,7 +510,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-<a href="model-performance.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="goodness-of-fit-model-diagnostic.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -534,7 +540,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-reproducibility.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/06-reproducibility.Rmd",
 "text": "Edit"
 },
 "download": ["DALEX.pdf", "DALEX.epub"],
