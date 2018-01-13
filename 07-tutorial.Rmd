@@ -1,0 +1,79 @@
+# Hands-on tutorial
+
+## Title 
+
+DALEX: Descriptive mAchine Learning EXplanations
+
+Tools for exploration, validation and explanation of complex machine learning models
+
+## Outline 
+provide a paragraph with topics to be covered and rough timing
+
+Complex machine learning models are frequently used in predictive modelling. There are a lot of examples for random forest like or boosting like models in medicine, finance, agriculture etc.
+In this workshop we will show why and how one would analyse the structure of the black-box model.
+
+This will be a hands-on workshop with four parts. In each part there will be a short lecture (around 20-25 minutes) and then time for practice and discussion (around 20-25 min).
+
+* Introduction
+
+Here we will show what problems may arise from blind application of black-box models. Also we will show situations in which the understanding of a model structure leads to model improvements, model stability and larger trust in the model.
+
+During the hands-on part we will fit few complex models (like xgboost, randomForest) with the mlr package and discuss basic diagnostic tools for these models.
+
+* Conditional Explainers
+
+In this part we will introduce techniques for understanding of marginal/conditional response of a model given a one- two- variables.
+We will cover PDP (Partial Dependence Plots) and ICE (Individual Conditional Expectations) packages for continuous variables and MPP (Merging Path Plot from factorMerger package) for categorical variables.
+
+* Local Explainers
+
+In this part we will introduce techniques that explain key factors that drive single model predictions. This covers Break Down plots for linear models (lm / glm) and tree-based models (randomForestExplainer, xgboostExplainer) along with model agnostic approaches implemented in the live package (an extension of the LIME method).
+
+* Global Explainers
+
+In this part we will introduce tools for global analysis of the black-box model, like variable importance plots, interaction importance plots and tools for model diagnostic.
+
+
+Literature
+
+Staniak, Mateusz, and Przemysław Biecek. 2017. Live: Local Interpretable (Model-Agnostic) Visual Explanations.
+
+Sitko, Agnieszka, and Przemyslaw Biecek. 2017. FactorMerger: Hierarchical Algorithm for Post-Hoc Testing. https://github.com/MI2DataLab/factorMerger.
+
+Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” The R Journal 9 (1): 421–36. https://journal.r-project.org/archive/2017/RJ-2017-016/index.html.
+
+Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” Journal of Computational and Graphical Statistics 24 (1): 44–65. doi:10.1080/10618600.2014.907095.
+
+Apley, Dan. 2017. ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots. https://CRAN.R-project.org/package=ALEPlot.
+
+Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. doi:10.1145/2939672.2939778.
+
+Biecek, Przemyslaw. 2017. BreakDown: BreakDown Plots. https://CRAN.R-project.org/package=breakDown.
+
+
+## Keywords 
+
+machine learning, black-box model, model explainers, model auditing, model visualization
+
+
+## Equipment 
+what do you and participants need
+
+Laptop with preinstalled R and selected packages. All necessary models and dataset will be provided in advance.
+
+## Target audience
+
+Applied data scientists, analysts interested in machine learning models.
+
+## Motivation
+
+There are at least three good reasons why this tutoial will be interesting for conference participants.
+
+1) The topic is super interesting. Even short blog posts on R Bloggers (like http://smarterpoland.pl/index.php/2017/12/explain-explain-explain/) got lots of reactions. There is a large community around model explainer sin python (the ELI5 package) and there is growing community for R. I had a talk about explainers during the last UseR conference 2017 (https://user2017.sched.com/event-goers/10415a8ff5675f10deb3fd27b43db5a7) more than 500 users sign for it.
+
+2) We have developed consistent toolbox of R packages - called DALEX - that supports model explanations. Participants of the workshop will learn easy-to-use tools that can be applied in their every-day data analyses. Methods that we will describe work for most of popular ML models (random forest, glm, boosting).
+
+3) Anything related to Machine Learning brings a lot of participants. I’ve attended ML-related workshops during UseR 2015, UseR 2016 and UseR 2017. Demand for such tutorials was always the highest.
+
+This is why we expect a high interest in this tutorial.
+
