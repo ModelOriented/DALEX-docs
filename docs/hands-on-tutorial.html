@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="local-structure.html">
-<link rel="next" href="goodness-of-fit-model-diagnostic.html">
+<link rel="prev" href="reproducibility.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -166,14 +166,105 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="model-performance" class="section level1">
-<h1><span class="header-section-number">Chapter 5</span> Model performance</h1>
-<div id="roc" class="section level2">
-<h2><span class="header-section-number">5.1</span> ROC</h2>
+<div id="hands-on-tutorial" class="section level1">
+<h1><span class="header-section-number">Chapter 8</span> Hands-on tutorial</h1>
+<div id="title" class="section level2">
+<h2><span class="header-section-number">8.1</span> Title</h2>
+<p>DALEX: Descriptive mAchine Learning EXplanations</p>
+<p>Tools for exploration, validation and explanation of complex machine learning models</p>
 </div>
-<div id="lift-curve" class="section level2">
-<h2><span class="header-section-number">5.2</span> Lift curve</h2>
+<div id="outline" class="section level2">
+<h2><span class="header-section-number">8.2</span> Outline</h2>
+<p>provide a paragraph with topics to be covered and rough timing</p>
+<p>Complex machine learning models are frequently used in predictive modelling. There are a lot of examples for random forest like or boosting like models in medicine, finance, agriculture etc. In this workshop we will show why and how one would analyse the structure of the black-box model.</p>
+<p>This will be a hands-on workshop with four parts. In each part there will be a short lecture (around 20-25 minutes) and then time for practice and discussion (around 20-25 min).</p>
+<ul>
+<li>Introduction</li>
+</ul>
+<p>Here we will show what problems may arise from blind application of black-box models. Also we will show situations in which the understanding of a model structure leads to model improvements, model stability and larger trust in the model.</p>
+<p>During the hands-on part we will fit few complex models (like xgboost, randomForest) with the mlr package and discuss basic diagnostic tools for these models.</p>
+<ul>
+<li>Conditional Explainers</li>
+</ul>
+<p>In this part we will introduce techniques for understanding of marginal/conditional response of a model given a one- two- variables. We will cover PDP (Partial Dependence Plots) and ICE (Individual Conditional Expectations) packages for continuous variables and MPP (Merging Path Plot from factorMerger package) for categorical variables.</p>
+<ul>
+<li>Local Explainers</li>
+</ul>
+<p>In this part we will introduce techniques that explain key factors that drive single model predictions. This covers Break Down plots for linear models (lm / glm) and tree-based models (randomForestExplainer, xgboostExplainer) along with model agnostic approaches implemented in the live package (an extension of the LIME method).</p>
+<ul>
+<li>Global Explainers</li>
+</ul>
+<p>In this part we will introduce tools for global analysis of the black-box model, like variable importance plots, interaction importance plots and tools for model diagnostic.</p>
+<p>Literature</p>
+<p>Staniak, Mateusz, and Przemysław Biecek. 2017. Live: Local Interpretable (Model-Agnostic) Visual Explanations.</p>
+<p>Sitko, Agnieszka, and Przemyslaw Biecek. 2017. FactorMerger: Hierarchical Algorithm for Post-Hoc Testing. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</p>
+<p>Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” The R Journal 9 (1): 421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</p>
+<p>Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” Journal of Computational and Graphical Statistics 24 (1): 44–65. <a href="doi:10.1080/10618600.2014.907095" class="uri">doi:10.1080/10618600.2014.907095</a>.</p>
+<p>Apley, Dan. 2017. ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</p>
+<p>Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="doi:10.1145/2939672.2939778" class="uri">doi:10.1145/2939672.2939778</a>.</p>
+<p>Biecek, Przemyslaw. 2017. BreakDown: BreakDown Plots. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</p>
+</div>
+<div id="keywords" class="section level2">
+<h2><span class="header-section-number">8.3</span> Keywords</h2>
+<p>machine learning, black-box model, model explainers, model auditing, model visualization</p>
+</div>
+<div id="equipment" class="section level2">
+<h2><span class="header-section-number">8.4</span> Equipment</h2>
+<p>what do you and participants need</p>
+<p>Laptop with preinstalled R and selected packages. All necessary models and dataset will be provided in advance.</p>
+</div>
+<div id="target-audience" class="section level2">
+<h2><span class="header-section-number">8.5</span> Target audience</h2>
+<p>Applied data scientists, analysts interested in machine learning models.</p>
+</div>
+<div id="motivation" class="section level2">
+<h2><span class="header-section-number">8.6</span> Motivation</h2>
+<p>There are at least three good reasons why this tutoial will be interesting for conference participants.</p>
+<ol style="list-style-type: decimal">
+<li><p>The topic is super interesting. Even short blog posts on R Bloggers (like <a href="http://smarterpoland.pl/index.php/2017/12/explain-explain-explain/" class="uri">http://smarterpoland.pl/index.php/2017/12/explain-explain-explain/</a>) got lots of reactions. There is a large community around model explainer sin python (the ELI5 package) and there is growing community for R. I had a talk about explainers during the last UseR conference 2017 (<a href="https://user2017.sched.com/event-goers/10415a8ff5675f10deb3fd27b43db5a7" class="uri">https://user2017.sched.com/event-goers/10415a8ff5675f10deb3fd27b43db5a7</a>) more than 500 users sign for it.</p></li>
+<li><p>We have developed consistent toolbox of R packages - called DALEX - that supports model explanations. Participants of the workshop will learn easy-to-use tools that can be applied in their every-day data analyses. Methods that we will describe work for most of popular ML models (random forest, glm, boosting).</p></li>
+<li><p>Anything related to Machine Learning brings a lot of participants. I’ve attended ML-related workshops during UseR 2015, UseR 2016 and UseR 2017. Demand for such tutorials was always the highest.</p></li>
+</ol>
+<p>This is why we expect a high interest in this tutorial.</p>
 
+<div id="refs" class="references">
+<div>
+<p>Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</p>
+</div>
+<div>
+<p>Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</p>
+</div>
+<div>
+<p>Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11): 1–28. doi:<a href="https://doi.org/10.18637/jss.v082.i11">10.18637/jss.v082.i11</a>.</p>
+</div>
+<div>
+<p>Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170): 1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</p>
+</div>
+<div>
+<p>Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1): 44–65. doi:<a href="https://doi.org/10.1080/10618600.2014.907095">10.1080/10618600.2014.907095</a>.</p>
+</div>
+<div>
+<p>Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1): 421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</p>
+</div>
+<div>
+<p>Kennedy, Nick. 2017. <em>Forestmodel: Forest Plots from Regression Models</em>. <a href="https://CRAN.R-project.org/package=forestmodel" class="uri">https://CRAN.R-project.org/package=forestmodel</a>.</p>
+</div>
+<div>
+<p>Lüdecke, Daniel. 2017. <em>SjPlot: Data Visualization for Statistics in Social Science</em>. <a href="https://CRAN.R-project.org/package=sjPlot" class="uri">https://CRAN.R-project.org/package=sjPlot</a>.</p>
+</div>
+<div>
+<p>Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. doi:<a href="https://doi.org/10.1145/2939672.2939778">10.1145/2939672.2939778</a>.</p>
+</div>
+<div>
+<p>Robinson, David. 2017. <em>Broom: Convert Statistical Analysis Objects into Tidy Data Frames</em>. <a href="https://CRAN.R-project.org/package=broom" class="uri">https://CRAN.R-project.org/package=broom</a>.</p>
+</div>
+<div>
+<p>Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</p>
+</div>
+<div>
+<p>Staniak, Mateusz, and Przemysław Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>.</p>
+</div>
+</div>
 </div>
 </div>
             </section>
@@ -181,8 +272,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-<a href="local-structure.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="goodness-of-fit-model-diagnostic.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="reproducibility.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -211,7 +302,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-performance.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/07-tutorial.Rmd",
 "text": "Edit"
 },
 "download": ["DALEX.pdf", "DALEX.epub"],
