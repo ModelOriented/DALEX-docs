@@ -7,7 +7,6 @@ DALEX: Descriptive mAchine Learning EXplanations
 Tools for exploration, validation and explanation of complex machine learning models
 
 ## Outline 
-provide a paragraph with topics to be covered and rough timing
 
 Complex machine learning models are frequently used in predictive modelling. There are a lot of examples for random forest like or boosting like models in medicine, finance, agriculture etc.
 In this workshop we will show why and how one would analyse the structure of the black-box model.
@@ -34,7 +33,7 @@ In this part we will introduce techniques that explain key factors that drive si
 In this part we will introduce tools for global analysis of the black-box model, like variable importance plots, interaction importance plots and tools for model diagnostic.
 
 
-Literature
+* Literature
 
 Staniak, Mateusz, and Przemysław Biecek. 2017. Live: Local Interpretable (Model-Agnostic) Visual Explanations.
 
@@ -57,9 +56,8 @@ machine learning, black-box model, model explainers, model auditing, model visua
 
 
 ## Equipment 
-what do you and participants need
 
-Laptop with preinstalled R and selected packages. All necessary models and dataset will be provided in advance.
+Laptop with preinstalled R and selected packages. All necessary models and datasets will be provided in advance.
 
 ## Target audience
 
