@@ -7,6 +7,16 @@ Explainers presented in this chapter are designed to better understand the local
 
 There are more interesting applications. Find out some of them in the *Why Should I Trust You?* article [@lime].
 
+
+### Reason
+
+Most ML algorithms do not learn from mistakes. 
+One calculates predictions and there is no room for improvement.
+
+But! The local predictions can change that! Understanding what causes wrong decisions may lead to model improvements.
+After all, if our prediction is wrong we shall update the model.
+
+
 ## Local Interpretable (Model-agnostic) Visual Explanations 
 
 The **live** package (see [@live]) may be seen as an extension of the lime method (see [@lime]). It is based on **mlr** general framework for training of machine learning models (see more [@mlr]).
