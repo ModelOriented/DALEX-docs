@@ -10,10 +10,11 @@ plot.explainer.feature <- function(response1, ...) {
       }
   }
 
-  ggplot(df, aes(x, y, color=type, shape=label)) +
+  variable_name <- head(df$var, 1)
+  ggplot(df, aes(x, y, color = label, shape = type)) +
     geom_point() +
     geom_line() +
-    xlab(df$var[1])
+    xlab(variable_name) + ylab(expression(hat("y")))
 
 }
 
