@@ -7,6 +7,7 @@
 #'
 #' @return a ggplot2 object
 #' @export
+#' @import ggplot2
 #'
 #' @examples
 #'

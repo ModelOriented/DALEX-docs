@@ -19,6 +19,8 @@
 #' It's a data frame with calculated average response.
 #'
 #' @export
+#' @importFrom pdp partial
+#' @importFrom ALEPlot ALEPlot
 #'
 #' @examples
 #'
