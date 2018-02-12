@@ -5,7 +5,7 @@
 #' @param response1 a single variable exlainer produced with the 'single_variable' function
 #' @param ... other explainers that shall be plotted together
 #'
-#' @return
+#' @return a ggplot2 object
 #' @export
 #'
 #' @examples

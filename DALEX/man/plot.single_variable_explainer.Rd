@@ -11,6 +11,9 @@
 
 \item{...}{other explainers that shall be plotted together}
 }
+\value{
+a ggplot2 object
+}
 \description{
 Function 'plot.single_variable_explainer' plots marginal responses for one or more explainers.
 }
