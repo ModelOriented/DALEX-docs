@@ -21,21 +21,96 @@ $$
 $$
 
 
-Let's see an example for the model `HR_rf_model`. Below we are using `pdp::partial` function to calculate pdp curve for variable `satisfaction_level`. Then the curve is plotted with `plotPartial` (based on `lattice`) or `autoplot` (based on `ggplot2`).
+Let's see an example for the model `HR_rf_model`. Below we are using `DALEX::single_variable` function that is calling   `pdp::partial` function to calculate pdp curve for variable `satisfaction_level`. Then the curve is plotted with generic `plot.single_variable_explainer()` function.
+
+Marginal response plots are created in four steps.
+
+1. We need to fit model. For example a Random Forest model.
 
 ```{r, message=FALSE, warning=FALSE}
-library("pdp")
 library("randomForest")
 library("breakDown")
 
 HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
+```
 
-part <- partial(HR_rf_model, "satisfaction_level")
+2. We need to create an explainer. It's an interface that can be used to explain a black-box model.
 
-plotPartial(part)
+```{r, message=FALSE, warning=FALSE}
+library("DALEX")
+explainer_rf  <- explain(HR_rf_model, data = HR_data)
+```
 
-library("ggplot2")
-autoplot(part)
+3. Now we can calculate the marginal response with the PDP method.
+
+```{r, message=FALSE, warning=FALSE}
+expl_rf  <- single_variable(explainer_rf, variable =  "satisfaction_level", type = "pdp")
+```
+
+4. And we are ready to plot it.
+
+```{r, message=FALSE, warning=FALSE}
+plot(expl_rf)
+```
+
+
+### Model Comparisons
+
+Marginal response plots are very useful in comparisons of different models. Let's fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.
+
+Then we can use PDP plots to compare these models. Random Forest Model was fitted in the previous chapter. Here we are training remaining models.
+
+```{r, message=FALSE, warning=FALSE}
+HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
+
+library("xgboost")
+model_martix_train <- model.matrix(left~.-1, breakDown::HR_data)
+data_train <- xgb.DMatrix(model_martix_train, label = breakDown::HR_data$left)
+param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
+              objective = "binary:logistic", eval_metric = "auc")
+HR_xgb_model <- xgb.train(param, data_train, nrounds = 50)
+```
+
+Models are trained. Now we can create explainers and single variable explanations
+
+```{r}
+logit <- function(x) exp(x)/(1+exp(x))
+
+explainer_glm <- explain(HR_glm_model, data = HR_data)
+expl_glm <- single_variable(explainer_glm, "satisfaction_level", "pdp", trans=logit)
+
+explainer_xgb <- explain(HR_xgb_model, data = model_martix_train)
+expl_xgb <- single_variable(explainer_xgb, "satisfaction_level", "pdp", trans=logit)
+```
+
+In order to compare these models it's enough to plot all of them into a single chart.
+
+```{r}
+plot(expl_rf, expl_glm, expl_xgb)
+```
+
+## Accumulated Local Effects Plot
+
+As it is presented in the chapter \@(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of $x_{-i}$. 
+In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see [@ALEPlot] for more details).
+
+Accumulated local effects (ALE) plots (see **ALEPlot** package [@ALEPlot]) solves this problem by using conditional distribution $x_{-i}|x_i = x_i^*$. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).
+
+Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.
+
+Estimation of main effects for `satisfaction_level` is similar to the PDP curves. Here we are using `DALEX::single_variable` function that is calling   `ALEPlot::ALEPlot` function to calculate ALE curve for variable `satisfaction_level`. 
+
+```{r, message=FALSE, warning=FALSE}
+exel_rf  <- single_variable(explainer_rf, variable = "satisfaction_level", type = "ale")
+
+plot(exel_rf)
+```
+
+It may be useful to compare ALEPlots and PDP plots.
+Again, it's simple with the generic DALEX function.
+
+```{r, message=FALSE, warning=FALSE}
+plot(expl_rf, exel_rf)
 ```
 
 ## Individual Conditional Expectation Plot
@@ -82,45 +157,6 @@ clusterICE(part_rf_satisfaction, nClusters = 3, plot_legend = TRUE, center = TRU
 ```
 
 
-## Accumulated Local Effects Plot
-
-As it is presented in the chapter \@(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of $x_{-i}$. 
-In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see [@ALEPlot] for more details).
-
-Accumulated local effects (ALE) plots (see **ALEPlot** package [@ALEPlot]) solves this problem by using conditional distribution $x_{-i}|x_i = x_i^*$. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).
-
-Let see an example for ALE plots.
-
-```{r, message=FALSE, warning=FALSE}
-library("ALEPlot")
-
-HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
-
-HR_data_small <- HR_data[,c("satisfaction_level", "last_evaluation", "number_project", 
-"average_montly_hours", "time_spend_company", "Work_accident", "promotion_last_5years", "sales", "salary")]
-```
-
-Estimation of main effects for `satisfaction_level` is similar to the PDP curves
-
-```{r, message=FALSE, warning=FALSE}
-ale1d <- ALEPlot(X = HR_data_small, X.model = HR_rf_model, 
-               pred.fun = function(X.model, newdata) {
-                 predict(X.model, newdata)
-               }, 
-               J = 1)
-```
-
-And here we have predictions for `satisfaction_level` and `last_evaluation`.
-
-```{r, message=FALSE, warning=FALSE}
-ale2d <- ALEPlot(X = HR_data_small, X.model = HR_rf_model, 
-               pred.fun = function(X.model, newdata) {
-                 predict(X.model, newdata)
-               }, 
-               J = c(1,2))
-
-```
-
 
 ## Mering Path Plot
 
@@ -139,7 +175,7 @@ plot(path, panel = "all")
 
 Note that you can use the `factorMerger` package to understand predictions calculated with a black-box model. The random forest model `HR_rf_model` returns continuous response. But the `factorMerger` works for such variables as well.
 
-In the top right panel one mey see the distribution of predictions for the selected group.
+In the top right panel one may see the distribution of predictions for the selected group.
 
 ```{r, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
 
