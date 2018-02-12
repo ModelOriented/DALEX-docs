@@ -26,6 +26,9 @@ It's a data frame with calculated average response.
 Calculates the average model response as a function of a single selected variable.
 Use the 'type' parameter to select the type of marginal response to be calculated.
 Currently we have Partial Dependency and Accumulated Local Effects implemented.
+Current implementation uses the 'pdp' package (Brandon M. Greenwell (2017).
+pdp: An R Package for Constructing Partial Dependence Plots. The R Journal, 9(1), 421--436.)
+and 'ALEPlot' (Dan Apley (2017). ALEPlot: Accumulated Local Effects Plots and Partial Dependence Plots.)
 }
 \examples{
 
