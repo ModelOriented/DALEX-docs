@@ -3,6 +3,10 @@
 #' Calculates the average model response as a function of a single selected variable.
 #' Use the 'type' parameter to select the type of marginal response to be calculated.
 #' Currently we have Partial Dependency and Accumulated Local Effects implemented.
+#' Current implementation uses the 'pdp' package (Brandon M. Greenwell (2017).
+#' pdp: An R Package for Constructing Partial Dependence Plots. The R Journal, 9(1), 421--436.)
+#' and 'ALEPlot' (Dan Apley (2017). ALEPlot: Accumulated Local Effects Plots and Partial Dependence Plots.)
+#'
 #'
 #' @param explainer a model to be explained, preprocessed by the 'explain' function
 #' @param variable character - name of a single variable
@@ -21,13 +25,18 @@
 single_variable <- function(explainer, variable, type = "pdp", trans = I, ...) {
   switch(type,
          pdp = {
-           part <- partial(explainer$model, variable)
+           part <- partial(explainer$model, pred.var = variable, train = explainer$data, ...)
            res <- data.frame(x = part[,1], y = trans(part$yhat), var = variable, type = type, label = explainer$label)
            class(res) <- c("single_variable_explainer", "data.frame", "pdp")
            res
          },
          ale = {
-
+           part <- ALEPlot(X = explainer$data, X.model = explainer$model, yhat, J = variable)
+           res <- data.frame(x = part$x.values, y = trans(part$f.values), var = variable, type = type, label = explainer$label)
+           class(res) <- c("single_variable_explainer", "data.frame", "ale")
+           res
          },
          stop("Currently only 'pdp' and 'ale' methods are implemented"))
 }
+
+
