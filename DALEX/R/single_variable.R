@@ -33,7 +33,12 @@ single_variable <- function(explainer, variable, type = "pdp", trans = I, ...) {
            res
          },
          ale = {
+           # need to create a temporary file to stop ALEPlot function from plotting anytihing
+           tmpfn <- tempfile()
+           pdf(tmpfn)
            part <- ALEPlot(X = explainer$data, X.model = explainer$model, yhat, J = variable)
+           dev.off()
+           unlink(tmpfn)
            res <- data.frame(x = part$x.values, y = trans(part$f.values), var = variable, type = type, label = explainer$label)
            class(res) <- c("single_variable_explainer", "data.frame", "ale")
            res

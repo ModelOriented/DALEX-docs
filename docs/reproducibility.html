@@ -25,7 +25,7 @@
 <meta name="author" content="MI2DataLab">
 
 
-<meta name="date" content="2018-01-20">
+<meta name="date" content="2018-02-13">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -122,9 +122,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.4" data-path="global-structure.html"><a href="global-structure.html#randomforestexplainer"><i class="fa fa-check"></i><b>2.4</b> RandomForestExplainer</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="conditional-structure.html"><a href="conditional-structure.html"><i class="fa fa-check"></i><b>3</b> Conditional structure</a><ul>
-<li class="chapter" data-level="3.1" data-path="conditional-structure.html"><a href="conditional-structure.html#pdpchapter"><i class="fa fa-check"></i><b>3.1</b> Partial Dependence Plot</a></li>
-<li class="chapter" data-level="3.2" data-path="conditional-structure.html"><a href="conditional-structure.html#individual-conditional-expectation-plot"><i class="fa fa-check"></i><b>3.2</b> Individual Conditional Expectation Plot</a></li>
-<li class="chapter" data-level="3.3" data-path="conditional-structure.html"><a href="conditional-structure.html#accumulated-local-effects-plot"><i class="fa fa-check"></i><b>3.3</b> Accumulated Local Effects Plot</a></li>
+<li class="chapter" data-level="3.1" data-path="conditional-structure.html"><a href="conditional-structure.html#pdpchapter"><i class="fa fa-check"></i><b>3.1</b> Partial Dependence Plot</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="conditional-structure.html"><a href="conditional-structure.html#model-comparisons"><i class="fa fa-check"></i><b>3.1.1</b> Model Comparisons</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="conditional-structure.html"><a href="conditional-structure.html#accumulated-local-effects-plot"><i class="fa fa-check"></i><b>3.2</b> Accumulated Local Effects Plot</a></li>
+<li class="chapter" data-level="3.3" data-path="conditional-structure.html"><a href="conditional-structure.html#individual-conditional-expectation-plot"><i class="fa fa-check"></i><b>3.3</b> Individual Conditional Expectation Plot</a></li>
 <li class="chapter" data-level="3.4" data-path="conditional-structure.html"><a href="conditional-structure.html#mering-path-plot"><i class="fa fa-check"></i><b>3.4</b> Mering Path Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="local-structure.html"><a href="local-structure.html"><i class="fa fa-check"></i><b>4</b> Local structure</a><ul>
@@ -180,13 +182,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       Europe/Warsaw               
-##  date     2018-01-20                  
+##  tz       Asia/Singapore              
+##  date     2018-02-13                  
 ## 
 ##  package      * version  date       source                                
 ##  abind          1.4-5    2016-07-21 cran (@1.4-5)                         
 ##  agricolae      1.2-8    2017-09-12 cran (@1.2-8)                         
-##  ALEPlot      * 1.0      2017-11-13 CRAN (R 3.4.2)                        
+##  ALEPlot        1.0      2017-11-13 CRAN (R 3.4.2)                        
 ##  AlgDesign      1.1-7.3  2014-10-15 CRAN (R 3.2.0)                        
 ##  arm            1.9-3    2016-11-27 CRAN (R 3.4.0)                        
 ##  assertthat     0.2.0    2017-04-11 CRAN (R 3.4.0)                        
@@ -199,7 +201,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  blme           1.0-4    2015-06-14 CRAN (R 3.4.0)                        
 ##  bookdown       0.5      2017-08-20 CRAN (R 3.4.1)                        
 ##  boot           1.3-20   2017-08-06 CRAN (R 3.4.3)                        
-##  breakDown    * 0.1.2    2018-01-14 local (pbiecek/breakDown@e5d5f38)     
+##  breakDown    * 0.1.3    2018-01-27 local (pbiecek/breakDown@NA)          
 ##  broom          0.4.2    2017-02-13 CRAN (R 3.4.0)                        
 ##  carData        3.0-0    2017-08-28 CRAN (R 3.4.1)                        
 ##  checkmate      1.8.4    2017-09-25 cran (@1.8.4)                         
@@ -213,12 +215,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  compiler       3.4.3    2017-12-07 local                                 
 ##  cowplot        0.9.1    2017-11-16 cran (@0.9.1)                         
 ##  crayon         1.3.4    2017-09-16 CRAN (R 3.4.1)                        
+##  DALEX        * 0.1      2018-02-12 local (@0.1)                          
 ##  data.table     1.10.4-3 2017-10-27 CRAN (R 3.4.2)                        
 ##  datasets     * 3.4.3    2017-12-07 local                                 
 ##  deldir         0.1-14   2017-04-22 cran (@0.1-14)                        
 ##  devtools       1.13.3   2017-08-02 CRAN (R 3.4.1)                        
 ##  digest         0.6.13   2017-12-14 cran (@0.6.13)                        
-##  dplyr        * 0.7.4    2017-09-28 CRAN (R 3.4.2)                        
+##  dplyr          0.7.4    2017-09-28 CRAN (R 3.4.2)                        
 ##  DT             0.1      2015-06-09 CRAN (R 3.2.0)                        
 ##  effects        4.0-0    2017-09-15 CRAN (R 3.4.1)                        
 ##  evaluate       0.10.1   2017-06-24 CRAN (R 3.4.1)                        
@@ -252,7 +255,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  lattice        0.20-35  2017-03-25 CRAN (R 3.4.3)                        
 ##  lazyeval       0.2.0    2016-06-12 CRAN (R 3.4.0)                        
 ##  LearnBayes     2.15     2014-05-29 CRAN (R 3.2.0)                        
-##  live         * 1.3.2    2018-01-14 local (MI2DataLab/live@db8dfb0)       
+##  live         * 1.3.2    2018-01-25 local (MI2DataLab/live@f38ef48)       
 ##  lme4           1.1-15   2017-12-21 cran (@1.1-15)                        
 ##  lmtest         0.9-34   2015-06-06 CRAN (R 3.2.0)                        
 ##  lubridate      1.7.1    2017-11-03 cran (@1.7.1)                         
@@ -278,6 +281,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  parallelMap    1.3      2015-06-10 cran (@1.3)                           
 ##  ParamHelpers * 1.10     2017-01-05 cran (@1.10)                          
 ##  pdp          * 0.6.0    2017-07-20 CRAN (R 3.4.1)                        
+##  pillar         1.1.0    2018-01-14 cran (@1.1.0)                         
 ##  pkgconfig      2.0.1    2017-03-21 CRAN (R 3.4.0)                        
 ##  plyr           1.8.4    2016-06-08 CRAN (R 3.4.0)                        
 ##  prediction     0.2.0    2017-04-19 CRAN (R 3.4.0)                        
@@ -287,8 +291,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  pwr            1.2-1    2017-03-25 CRAN (R 3.4.0)                        
 ##  R6             2.2.2    2017-06-17 CRAN (R 3.4.0)                        
 ##  randomForest * 4.6-12   2015-10-07 CRAN (R 3.2.0)                        
+##  ranger         0.9.0    2018-01-09 cran (@0.9.0)                         
 ##  RColorBrewer   1.1-2    2014-12-07 CRAN (R 3.2.2)                        
-##  Rcpp           0.12.14  2017-11-23 cran (@0.12.14)                       
+##  Rcpp           0.12.15  2018-01-20 cran (@0.12.15)                       
 ##  reshape2       1.4.3    2017-12-11 cran (@1.4.3)                         
 ##  rlang          0.1.6    2017-12-21 CRAN (R 3.4.3)                        
 ##  rmarkdown      1.8      2017-11-17 cran (@1.8)                           
@@ -315,13 +320,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  survey         3.30-3   2014-08-15 CRAN (R 3.1.2)                        
 ##  survival       2.41-3   2017-04-04 CRAN (R 3.4.3)                        
 ##  TH.data        1.0-8    2017-01-23 cran (@1.0-8)                         
-##  tibble         1.3.4    2017-08-22 CRAN (R 3.4.1)                        
+##  tibble         1.4.2    2018-01-22 cran (@1.4.2)                         
 ##  tidyr          0.7.2    2017-10-16 cran (@0.7.2)                         
 ##  tidyselect     0.2.2    2017-10-10 cran (@0.2.2)                         
 ##  TMB            1.7.12   2017-12-11 CRAN (R 3.4.3)                        
 ##  tools          3.4.3    2017-12-07 local                                 
 ##  utils        * 3.4.3    2017-12-07 local                                 
 ##  withr          2.1.0    2017-11-01 cran (@2.1.0)                         
+##  xgboost      * 0.6-4    2017-01-05 cran (@0.6-4)                         
 ##  xtable         1.8-2    2016-02-05 CRAN (R 3.2.3)                        
 ##  yaImpute       1.0-29   2017-12-10 CRAN (R 3.4.3)                        
 ##  yaml           2.1.16   2017-12-12 cran (@2.1.16)                        

@@ -170,7 +170,7 @@ Here we have Merging Path Plot for a factor variable `sales`.
 library("factorMerger")
 path <- mergeFactors(HR_data$left, HR_data$sales, method = "fast-adaptive", 
                      family = "binomial", abbreviate = FALSE)
-plot(path, panel = "all")
+plot(path, panel = "response") + theme_mi2()
 ```
 
 Note that you can use the `factorMerger` package to understand predictions calculated with a black-box model. The random forest model `HR_rf_model` returns continuous response. But the `factorMerger` works for such variables as well.
@@ -183,7 +183,7 @@ HR_data$left_predicted <- predict(HR_rf_model)
 
 path <- mergeFactors(HR_data$left_predicted, HR_data$sales, method = "fast-adaptive", 
                      abbreviate = FALSE)
-plot(path, panel = "all", responsePanel = "boxplot", nodesSpacing = "effects")
+plot(path, panel = "response", responsePanel = "boxplot", nodesSpacing = "effects") + theme_mi2()
 ```
 
 

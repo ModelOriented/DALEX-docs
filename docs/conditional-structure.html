@@ -207,7 +207,7 @@ explainer_rf  &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_r
 <li>And we are ready to plot it.</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(expl_rf)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <div id="model-comparisons" class="section level3">
 <h3><span class="header-section-number">3.1.1</span> Model Comparisons</h3>
 <p>Marginal response plots are very useful in comparisons of different models. Let’s fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.</p>
@@ -230,7 +230,7 @@ explainer_xgb &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_x
 expl_xgb &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_xgb, <span class="st">&quot;satisfaction_level&quot;</span>, <span class="st">&quot;pdp&quot;</span>, <span class="dt">trans=</span>logit)</code></pre></div>
 <p>In order to compare these models it’s enough to plot all of them into a single chart.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(expl_rf, expl_glm, expl_xgb)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 </div>
 <div id="accumulated-local-effects-plot" class="section level2">
@@ -239,13 +239,13 @@ expl_xgb &lt;-<span class="st"> </span><span class="kw">single_variable</span>(e
 <p>Accumulated local effects (ALE) plots (see <strong>ALEPlot</strong> package <span class="citation">(Apley <a href="#ref-ALEPlot">2017</a>)</span>) solves this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
 <p>Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.</p>
 <p>Estimation of main effects for <code>satisfaction_level</code> is similar to the PDP curves. Here we are using <code>DALEX::single_variable</code> function that is calling <code>ALEPlot::ALEPlot</code> function to calculate ALE curve for variable <code>satisfaction_level</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exel_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;ale&quot;</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(exel_rf)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exel_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;ale&quot;</span>)
+
+<span class="kw">plot</span>(exel_rf)</code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>It may be useful to compare ALEPlots and PDP plots. Again, it’s simple with the generic DALEX function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(expl_rf, exel_rf)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="individual-conditional-expectation-plot" class="section level2">
 <h2><span class="header-section-number">3.3</span> Individual Conditional Expectation Plot</h2>
@@ -266,19 +266,19 @@ part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</spa
 
 part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="dt">pred.var =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">ice =</span> <span class="ot">TRUE</span>)
 <span class="kw">plotPartial</span>(part_rf_satisfaction, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data, <span class="dt">alpha =</span> <span class="fl">0.2</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(part_rf_satisfaction, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
 <p>Or with the <code>ICEbox</code> package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;ICEbox&quot;</span>)
 part_rf_satisfaction =<span class="st"> </span><span class="kw">ice</span>(<span class="dt">object =</span> HR_rf_model, <span class="dt">X =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>satisfaction_level, 
           <span class="dt">predictor =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">frac_to_build =</span> .<span class="dv">1</span>)</code></pre></div>
 <pre><code>## ............................................................................................</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(part_rf_satisfaction)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the <code>clusterICE</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">clusterICE</span>(part_rf_satisfaction, <span class="dt">nClusters =</span> <span class="dv">3</span>, <span class="dt">plot_legend =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="mering-path-plot" class="section level2">
 <h2><span class="header-section-number">3.4</span> Mering Path Plot</h2>
@@ -288,16 +288,16 @@ part_rf_satisfaction =<span class="st"> </span><span class="kw">ice</span>(<span
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;factorMerger&quot;</span>)
 path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, 
                      <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)
-<span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;all&quot;</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="1152" /></p>
+<span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-23-1.png" width="1152" /></p>
 <p>Note that you can use the <code>factorMerger</code> package to understand predictions calculated with a black-box model. The random forest model <code>HR_rf_model</code> returns continuous response. But the <code>factorMerger</code> works for such variables as well.</p>
 <p>In the top right panel one may see the distribution of predictions for the selected group.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HR_data<span class="op">$</span>left_predicted &lt;-<span class="st"> </span><span class="kw">predict</span>(HR_rf_model)
 
 path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left_predicted, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, 
                      <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)
-<span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;all&quot;</span>, <span class="dt">responsePanel =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">nodesSpacing =</span> <span class="st">&quot;effects&quot;</span>)</code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-15-1.png" width="1152" /></p>
+<span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>, <span class="dt">responsePanel =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">nodesSpacing =</span> <span class="st">&quot;effects&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-24-1.png" width="1152" /></p>
 
 </div>
 </div>
