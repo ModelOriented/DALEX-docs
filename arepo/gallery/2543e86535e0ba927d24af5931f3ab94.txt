@@ -1,0 +1,7 @@
+       x            y                var type        label
+1 0.0900 0.729068.... satisfaction_level  pdp randomForest
+2 0.1082 0.710918.... satisfaction_level  pdp randomForest
+3 0.1264 0.138945.... satisfaction_level  pdp randomForest
+4 0.1446 0.131416.... satisfaction_level  pdp randomForest
+5 0.1628 0.093013.... satisfaction_level  pdp randomForest
+6 0.1810 0.081242.... satisfaction_level  pdp randomForest
