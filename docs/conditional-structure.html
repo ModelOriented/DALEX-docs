@@ -172,6 +172,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="conditional-structure" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Conditional structure</h1>
+<div class="figure">
+<img src="images/DALEX_single_variable.png" alt="Cheatsheet" />
+<p class="caption">Cheatsheet</p>
+</div>
 <p>The dimension of input <span class="math inline">\(x\)</span> for black box models is usually high (large <span class="math inline">\(p\)</span>). But in many cases small number of variables play important role in the model OR there are some reasons to believe that variables work in an additive fashion/low-level interactions in the model.</p>
 <p>In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like.</p>
 <p>Methods presented below help to understand the conditional structure of a model.</p>
@@ -193,7 +197,9 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)
 
-HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</code></pre></div>
+HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)
+<span class="co"># a79f3c7ec27499fb91e46ee70d423ac8</span>
+<span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/a79f3c7ec27&quot;)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>We need to create an explainer. It’s an interface that can be used to explain a black-box model.</li>
 </ol>
@@ -208,6 +214,8 @@ explainer_rf  &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_r
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(expl_rf)</code></pre></div>
 <p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ad0f1699de646c78a46a3bf23aeea799</span>
+<span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/ad0f1699&quot;)</span></code></pre></div>
 <div id="model-comparisons" class="section level3">
 <h3><span class="header-section-number">3.1.1</span> Model Comparisons</h3>
 <p>Marginal response plots are very useful in comparisons of different models. Let’s fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.</p>

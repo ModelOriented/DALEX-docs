@@ -1,5 +1,7 @@
 # Conditional structure
 
+![Cheatsheet](images/DALEX_single_variable.png)
+
 The dimension of input $x$ for black box models is usually high (large $p$). But in many cases small number of variables play important role in the model OR there are some reasons to believe that variables work in an additive fashion/low-level interactions in the model.
 
 In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like. 
@@ -32,6 +34,8 @@ library("randomForest")
 library("breakDown")
 
 HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
+# a79f3c7ec27499fb91e46ee70d423ac8
+# archivist::aread("pbiecek/DALEX/arepo/a79f3c7ec27")
 ```
 
 2. We need to create an explainer. It's an interface that can be used to explain a black-box model.
@@ -51,6 +55,8 @@ expl_rf  <- single_variable(explainer_rf, variable =  "satisfaction_level", type
 
 ```{r, message=FALSE, warning=FALSE}
 plot(expl_rf)
+# ad0f1699de646c78a46a3bf23aeea799
+# archivist::aread("pbiecek/DALEX/arepo/ad0f1699")
 ```
 
 
