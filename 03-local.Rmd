@@ -8,7 +8,7 @@ Explainers presented in this chapter are designed to better understand the local
 There are more interesting applications. Find out some of them in the *Why Should I Trust You?* article [@lime].
 
 
-### Reason
+## Basics
 
 Most ML algorithms do not learn from mistakes. 
 One calculates predictions and there is no room for improvement.
@@ -18,6 +18,8 @@ After all, if our prediction is wrong we shall update the model.
 
 
 ## Local Interpretable (Model-agnostic) Visual Explanations 
+
+![Cheatsheet](images/DALEX_live.png)
 
 The **live** package (see [@live]) may be seen as an extension of the lime method (see [@lime]). It is based on **mlr** general framework for training of machine learning models (see more [@mlr]).
 
@@ -54,10 +56,78 @@ plot_explanation(trained, "forestplot", explained_instance = HR_data[1,])
 
 For more details consult the following vignette.
 
-![](https://raw.githubusercontent.com/MI2DataLab/live/master/cheatsheets/liveCheatsheet.png)
-
 
 ## breakDown
 
-[@breakDown]
+![Cheatsheet](images/DALEX_breakDown.png)
+
+The `breakDown` package [@breakDown] explains components of model prediction for a single observation. Right now it's working for `lm` and `glm` models. Break Down Plots are inspired by waterfall plots created by [`xgboostExplainer` package](https://github.com/AppliedDataSciencePartners/xgboostExplainer). 
+
+Break Down Plots show the contribution of every variable present in the model. 
+
+Let's see an use case  for the `wine` dataset. 
+
+The problem that we are going to solve is to create a model that predicts wine quality and then use the model and explain it’s prediction for a single wine.
+
+We start with a linear Gaussian model for `quality` with three dependent variables `citric.acid`, `sulphates`, `alcohol`.
+
+```{r}
+model <- lm(quality ~ citric.acid +  sulphates + alcohol,
+               data = wine)
+model$coefficients
+```
+
+There are just four model coefficients, so it's easy to write down the formula for model predictions. 
+
+$$
+\hat y = 2.2847360  + 0.1480342 *  citric.acid + 0.4660404    * sulphates + 0.3153252 * alcohol
+$$
+
+But is it easy to explain prediction for a single observation?
+
+```{r}
+new.wine <- data.frame(citric.acid = 0.35,
+                       sulphates = 0.6,
+                       alcohol = 12.5)
+predict(model, newdata = new.wine)
+```
+
+We see, that this wine got higher quality score than the average. But why?
+
+This is where `breakDown` package is useful. It takes parts of predictions and visualize them. These parts are being calculated by the `predict` function with `type = "terms"`.
+
+```{r}
+predict(model, newdata = new.wine, type = "terms")
+```
+
+Now it's easy to see that impact of the predicted score have  the high `alcohol` level in this particular wine.
+
+Please note, that these values are *NOT* calculated as x*beta.
+
+```{r}
+model$coefficients * cbind(intercept = 1, new.wine)
+```
+
+This is because, when we think about effect of an `alcohol` we would like to compare this particular wine with *wine with  average alcohol concentration* not *wine with zero alcohol*. 
+
+So, since this particular wine is $1.985733$ units of alcohol stronger than an average wine
+```{r}
+new.wine$alcohol - mean(wine$alcohol)
+```
+thus the final effect of the `alcohol` on the wine quality will be
+```{r}
+model$coefficients["alcohol"] * (new.wine$alcohol - mean(wine$alcohol))
+```
+
+Same with other variables.
+
+These calculations are easy to do with `breakDown` package.
+
+
+```{r, fig.height=3}
+library("breakDown")
+br <- broken(model, new.wine, baseline = "Intercept")
+br
+plot(br)
+```
 

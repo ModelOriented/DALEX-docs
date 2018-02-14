@@ -25,7 +25,7 @@
 <meta name="author" content="MI2DataLab">
 
 
-<meta name="date" content="2018-02-13">
+<meta name="date" content="2018-02-15">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -130,9 +130,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.4" data-path="conditional-structure.html"><a href="conditional-structure.html#mering-path-plot"><i class="fa fa-check"></i><b>3.4</b> Mering Path Plot</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="local-structure.html"><a href="local-structure.html"><i class="fa fa-check"></i><b>4</b> Local structure</a><ul>
-<li class="chapter" data-level="4.0.1" data-path="local-structure.html"><a href="local-structure.html#reason"><i class="fa fa-check"></i><b>4.0.1</b> Reason</a></li>
-<li class="chapter" data-level="4.1" data-path="local-structure.html"><a href="local-structure.html#local-interpretable-model-agnostic-visual-explanations"><i class="fa fa-check"></i><b>4.1</b> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
-<li class="chapter" data-level="4.2" data-path="local-structure.html"><a href="local-structure.html#breakdown"><i class="fa fa-check"></i><b>4.2</b> breakDown</a></li>
+<li class="chapter" data-level="4.1" data-path="local-structure.html"><a href="local-structure.html#basics"><i class="fa fa-check"></i><b>4.1</b> Basics</a></li>
+<li class="chapter" data-level="4.2" data-path="local-structure.html"><a href="local-structure.html#local-interpretable-model-agnostic-visual-explanations"><i class="fa fa-check"></i><b>4.2</b> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
+<li class="chapter" data-level="4.3" data-path="local-structure.html"><a href="local-structure.html#breakdown"><i class="fa fa-check"></i><b>4.3</b> breakDown</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="model-performance.html"><a href="model-performance.html"><i class="fa fa-check"></i><b>5</b> Model performance</a><ul>
 <li class="chapter" data-level="5.1" data-path="model-performance.html"><a href="model-performance.html#roc"><i class="fa fa-check"></i><b>5.1</b> ROC</a></li>
@@ -178,13 +178,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>examination of curvature around a specific point (single observation). Can be used to determine the strength of influence onto a final model. Is it an outlier?</li>
 </ul>
 <p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation">(Ribeiro, Singh, and Guestrin <a href="#ref-lime">2016</a>)</span>.</p>
-<div id="reason" class="section level3">
-<h3><span class="header-section-number">4.0.1</span> Reason</h3>
+<div id="basics" class="section level2">
+<h2><span class="header-section-number">4.1</span> Basics</h2>
 <p>Most ML algorithms do not learn from mistakes. One calculates predictions and there is no room for improvement.</p>
 <p>But! The local predictions can change that! Understanding what causes wrong decisions may lead to model improvements. After all, if our prediction is wrong we shall update the model.</p>
 </div>
 <div id="local-interpretable-model-agnostic-visual-explanations" class="section level2">
-<h2><span class="header-section-number">4.1</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
+<h2><span class="header-section-number">4.2</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
+<div class="figure">
+<img src="images/DALEX_live.png" alt="Cheatsheet" />
+<p class="caption">Cheatsheet</p>
+</div>
 <p>The <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <a href="#ref-live">2017</a>)</span>) may be seen as an extension of the lime method (see <span class="citation">(Ribeiro, Singh, and Guestrin <a href="#ref-lime">2016</a>)</span>). It is based on <strong>mlr</strong> general framework for training of machine learning models (see more <span class="citation">(Bischl et al. <a href="#ref-mlr">2016</a>)</span>).</p>
 <p>Let’s see an example. We will use the <code>HR_rf_model</code> trained with the <strong>randomForest</strong> package on Human Resources Analytics data.</p>
 <p>Around a selected point we will fit a linear model.</p>
@@ -207,14 +211,67 @@ trained &lt;-<span class="st"> </span><span class="kw">fit_explanation</span>( <
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;forestplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</code></pre></div>
 <p><img src="DALEX_files/figure-html/live_forest-1.png" width="672" /></p>
 <p>For more details consult the following vignette.</p>
-<div class="figure">
-<img src="https://raw.githubusercontent.com/MI2DataLab/live/master/cheatsheets/liveCheatsheet.png" />
-
-</div>
 </div>
 <div id="breakdown" class="section level2">
-<h2><span class="header-section-number">4.2</span> breakDown</h2>
-<p><span class="citation">(P. Biecek <a href="#ref-breakDown">2017</a>)</span></p>
+<h2><span class="header-section-number">4.3</span> breakDown</h2>
+<div class="figure">
+<img src="images/DALEX_breakDown.png" alt="Cheatsheet" />
+<p class="caption">Cheatsheet</p>
+</div>
+<p>The <code>breakDown</code> package <span class="citation">(P. Biecek <a href="#ref-breakDown">2017</a>)</span> explains components of model prediction for a single observation. Right now it’s working for <code>lm</code> and <code>glm</code> models. Break Down Plots are inspired by waterfall plots created by <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>.</p>
+<p>Break Down Plots show the contribution of every variable present in the model.</p>
+<p>Let’s see an use case for the <code>wine</code> dataset.</p>
+<p>The problem that we are going to solve is to create a model that predicts wine quality and then use the model and explain it’s prediction for a single wine.</p>
+<p>We start with a linear Gaussian model for <code>quality</code> with three dependent variables <code>citric.acid</code>, <code>sulphates</code>, <code>alcohol</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st">  </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,
+               <span class="dt">data =</span> wine)
+model<span class="op">$</span>coefficients</code></pre></div>
+<pre><code>## (Intercept) citric.acid   sulphates     alcohol 
+##   2.2847360   0.1480342   0.4660404   0.3153252</code></pre>
+<p>There are just four model coefficients, so it’s easy to write down the formula for model predictions.</p>
+<p><span class="math display">\[
+\hat y = 2.2847360  + 0.1480342 *  citric.acid + 0.4660404    * sulphates + 0.3153252 * alcohol
+\]</span></p>
+<p>But is it easy to explain prediction for a single observation?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new.wine &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">citric.acid =</span> <span class="fl">0.35</span>,
+                       <span class="dt">sulphates =</span> <span class="fl">0.6</span>,
+                       <span class="dt">alcohol =</span> <span class="fl">12.5</span>)
+<span class="kw">predict</span>(model, <span class="dt">newdata =</span> new.wine)</code></pre></div>
+<pre><code>##        1 
+## 6.557737</code></pre>
+<p>We see, that this wine got higher quality score than the average. But why?</p>
+<p>This is where <code>breakDown</code> package is useful. It takes parts of predictions and visualize them. These parts are being calculated by the <code>predict</code> function with <code>type = &quot;terms&quot;</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(model, <span class="dt">newdata =</span> new.wine, <span class="dt">type =</span> <span class="st">&quot;terms&quot;</span>)</code></pre></div>
+<pre><code>##   citric.acid sulphates   alcohol
+## 1 0.002340197 0.0513358 0.6261516
+## attr(,&quot;constant&quot;)
+## [1] 5.877909</code></pre>
+<p>Now it’s easy to see that impact of the predicted score have the high <code>alcohol</code> level in this particular wine.</p>
+<p>Please note, that these values are <em>NOT</em> calculated as x*beta.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="op">$</span>coefficients <span class="op">*</span><span class="st"> </span><span class="kw">cbind</span>(<span class="dt">intercept =</span> <span class="dv">1</span>, new.wine)</code></pre></div>
+<pre><code>##   intercept citric.acid sulphates  alcohol
+## 1  2.284736  0.05181196 0.2796242 3.941565</code></pre>
+<p>This is because, when we think about effect of an <code>alcohol</code> we would like to compare this particular wine with <em>wine with average alcohol concentration</em> not <em>wine with zero alcohol</em>.</p>
+<p>So, since this particular wine is <span class="math inline">\(1.985733\)</span> units of alcohol stronger than an average wine</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new.wine<span class="op">$</span>alcohol <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(wine<span class="op">$</span>alcohol)</code></pre></div>
+<pre><code>## [1] 1.985733</code></pre>
+<p>thus the final effect of the <code>alcohol</code> on the wine quality will be</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="op">$</span>coefficients[<span class="st">&quot;alcohol&quot;</span>] <span class="op">*</span><span class="st"> </span>(new.wine<span class="op">$</span>alcohol <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(wine<span class="op">$</span>alcohol))</code></pre></div>
+<pre><code>##   alcohol 
+## 0.6261516</code></pre>
+<p>Same with other variables.</p>
+<p>These calculations are easy to do with <code>breakDown</code> package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)
+br &lt;-<span class="st"> </span><span class="kw">broken</span>(model, new.wine, <span class="dt">baseline =</span> <span class="st">&quot;Intercept&quot;</span>)
+br</code></pre></div>
+<pre><code>##                    contribution
+## alcohol = 12.5            0.626
+## sulphates = 0.6           0.051
+## citric.acid = 0.35        0.002
+## final_prognosis           0.680
+## baseline:  5.877909</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(br)</code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 
 </div>
 </div>
