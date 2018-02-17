@@ -61,11 +61,11 @@ For more details consult the following vignette.
 
 ![Cheatsheet](images/DALEX_breakDown.png)
 
-The `breakDown` package [@breakDown] explains components of model prediction for a single observation. Right now it's working for `lm` and `glm` models. Break Down Plots are inspired by waterfall plots created by [`xgboostExplainer` package](https://github.com/AppliedDataSciencePartners/xgboostExplainer). 
+The `breakDown` package [@breakDown] explains components of model prediction for a single observation. Right now it's working for `lm` and `glm` models. Break Down Plots are inspired by waterfall plots as in [`xgboostExplainer` package](https://github.com/AppliedDataSciencePartners/xgboostExplainer). 
 
 Break Down Plots show the contribution of every variable present in the model. 
 
-Let's see an use case  for the `wine` dataset. 
+Let's see a use case for the `wine` dataset. 
 
 The problem that we are going to solve is to create a model that predicts wine quality and then use the model and explain it’s prediction for a single wine.
 
@@ -108,7 +108,7 @@ Please note, that these values are *NOT* calculated as x*beta.
 model$coefficients * cbind(intercept = 1, new.wine)
 ```
 
-This is because, when we think about effect of an `alcohol` we would like to compare this particular wine with *wine with  average alcohol concentration* not *wine with zero alcohol*. 
+This is because, when we think about effect of an `alcohol` we would like to compare this particular wine with *wine with average alcohol concentration* not *wine with zero alcohol*. 
 
 So, since this particular wine is $1.985733$ units of alcohol stronger than an average wine
 ```{r}
@@ -119,7 +119,7 @@ thus the final effect of the `alcohol` on the wine quality will be
 model$coefficients["alcohol"] * (new.wine$alcohol - mean(wine$alcohol))
 ```
 
-Same with other variables.
+Same story is true for other variables.
 
 These calculations are easy to do with `breakDown` package.
 
@@ -134,28 +134,52 @@ plot(br)
 ### Model Comparisons
 
 What if we have two or larger number of models?
+Not a problem for DALEX!
 
+Let's fit a model with 3 variables.
 
 ```{r, fig.height=3}
 library("breakDown")
 library("DALEX")
-wine_lm_model3 <- lm(quality ~ citric.acid +  sulphates + alcohol,
-               data = wine)
-wine_lm_explainer3 <- explain(wine_lm_model3, data = wine)
-
-wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol,
-               data = wine)
-wine_lm_explainer4 <- explain(wine_lm_model4, data = wine)
-
 new.wine <- data.frame(citric.acid = 0.35,
                        sulphates = 0.6,
                        alcohol = 12.5,
                        pH = 3.36,
                        residual.sugar = 4.8)
 
+wine_lm_model3 <- lm(quality ~ citric.acid +  sulphates + alcohol,
+                     data = wine)
+wine_lm_explainer3 <- explain(wine_lm_model3, data = wine, label = "model_3v")
+
 wine_lm_predict3 <- single_prediction(wine_lm_explainer3, observation = new.wine)
-wine_lm_predict4 <- single_prediction(wine_lm_explainer4, observation = new.wine)
-
-plot(wine_lm_predict3, wine_lm_predict4)
-
+plot(wine_lm_predict3)
 ```
+
+Let's fit a second model with 4 variables.
+
+```{r, fig.height=3}
+wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol,
+                     data = wine)
+wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v")
+
+wine_lm_predict4 <- single_prediction(wine_lm_explainer4, observation = new.wine)
+plot(wine_lm_predict4)
+```
+
+It's easy to compare these models. Just plot both together side by side.
+
+```{r, fig.height=5}
+plot(wine_lm_predict3, wine_lm_predict4)
+```
+
+You can do this even for non linear models.
+
+```{r, fig.height=7}
+library("randomForest")
+wine_rf_model4 <- randomForest(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+wine_rf_explainer4 <- explain(wine_rf_model4, data = wine, label = "model_rf")
+
+wine_rf_predict4 <- single_prediction(wine_rf_explainer4, observation = new.wine)
+plot(wine_rf_predict4, wine_lm_predict4, wine_lm_predict3)
+```
+
