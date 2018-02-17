@@ -18,7 +18,10 @@ single_prediction <- function(explainer, observation, ...) {
   stopifnot(class(explainer) == "explainer")
 
   # breakDown
-  res <- broken(explainer$model, new_observation = observation, baseline = "Intercept")
+  res <- broken(explainer$model,
+                new_observation = observation,
+                data = explainer$data,
+                baseline = "Intercept")
   res$label <- rep(explainer$label, length(res$variable))
 
   class(res) <- c("single_prediction_explainer", "data.frame")
