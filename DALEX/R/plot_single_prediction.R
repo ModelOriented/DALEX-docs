@@ -62,25 +62,25 @@ plot.single_prediction_explainer <- function(x, ..., add_contributions = TRUE,
 
   pl <- ggplot(df, aes(x = position + 0.5,
                                 y = pmax(cummulative, prev),
-                                xmin = position, xmax=position + 0.95,
+                                xmin = position, xmax = position + 0.95,
                                 ymin = cummulative, ymax = prev,
                                 fill = sign,
                                 label = sapply(trans_contribution, function(tmp) as.character(rounding_function(tmp, digits))))) +
     geom_errorbarh(data = df[!(df$variable == "final_prognosis"),],
                    aes(xmax = position,
                        xmin = position + 2,
-                       y = cummulative), height=0,
-                   lty="F2") +
+                       y = cummulative), height = 0,
+                   lty = "F2") +
     geom_rect(alpha = 0.9) +
     geom_hline(yintercept = constant) +
     facet_wrap(~label, scales = "free_y", ncol = 1)
 
-  if(add_contributions)
-    pl <- pl + geom_text(nudge_y = 0.1, vjust = 0.5, hjust=0)
+  if (add_contributions)
+    pl <- pl + geom_text(nudge_y = 0.1, vjust = 0.5, hjust = 0)
 
   pl <- pl +
-    scale_y_continuous(expand = c(0.1,0.1), name="") +
-    scale_x_continuous(labels = df$variable, breaks = df$position+0.5, name="") +
+    scale_y_continuous(expand = c(0.1, 0.1), name = "") +
+    scale_x_continuous(labels = df$variable, breaks = df$position + 0.5, name =  "") +
     scale_fill_manual(values = vcolors) +
     coord_flip() +
     theme_mi2() + theme(legend.position = "none", panel.border = element_blank())
