@@ -24,6 +24,6 @@ wine_lm_explainer4
 
 wine_rf_model4 <- randomForest(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
 wine_rf_explainer4 <- explain(wine_rf_model4, data = wine, label = "model_rf")
-wine_rt_explainer4
+wine_rf_explainer4
 
 }
