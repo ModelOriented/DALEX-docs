@@ -4,14 +4,26 @@
 \alias{print.explainer}
 \title{Prints Explainer Summary}
 \usage{
-\method{print}{explainer}(explainer, ...)
+\method{print}{explainer}(x, ...)
 }
 \arguments{
-\item{explainer}{a model exapliner created with the `explain` function}
+\item{x}{a model expaliner created with the `explain` function}
+
+\item{...}{other parameters}
 }
 \description{
 Prints Explainer Summary
 }
 \examples{
+library("randomForest")
+library("breakDown")
+
+wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v")
+wine_lm_explainer4
+
+wine_rf_model4 <- randomForest(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+wine_rf_explainer4 <- explain(wine_rf_model4, data = wine, label = "model_rf")
+wine_rt_explainer4
 
 }

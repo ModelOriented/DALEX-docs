@@ -17,6 +17,14 @@
 #' @importFrom utils head tail
 #'
 #' @examples
+#' library("randomForest")
+#' library("breakDown")
+#'
+#' wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+#' wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v")
+#'
+#' wine_rf_model4 <- randomForest(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+#' wine_rf_explainer4 <- explain(wine_rf_model4, data = wine, label = "model_rf")
 #'
 explain <- function(model, data = NULL, predict.function = yhat, label = tail(class(model), 1)) {
   explainer <- list(model = model, data = data, predict.function = predict.function, class = class(model), label = label)

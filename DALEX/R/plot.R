@@ -11,6 +11,21 @@
 #' @importFrom grDevices dev.off pdf
 #'
 #' @examples
+#' library("randomForest")
+#' library("breakDown")
+#' logit <- function(x) exp(x)/(1+exp(x))
+#'
+#' HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
+#' explainer_glm <- explain(HR_glm_model, data = HR_data)
+#' expl_glm <- single_variable(explainer_glm, "satisfaction_level", "pdp", trans=logit)
+#' plot(expl_glm)
+#'
+#' HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
+#' explainer_rf  <- explain(HR_rf_model, data = HR_data)
+#' expl_rf  <- single_variable(explainer_rf, variable =  "satisfaction_level", type = "pdp")
+#' plot(expl_rf)
+#'
+#' plot(expl_rf, expl_glm)
 #'
 plot.single_variable_explainer <- function(x, ...) {
   df <- x

@@ -31,5 +31,20 @@ a ggplot2 object
 Function 'plot.single_prediction_explainer' plots break down plots for a single prediction.
 }
 \examples{
+library("randomForest")
+library("breakDown")
+
+wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v")
+wine_lm_predict4 <- single_prediction(wine_lm_explainer4, observation = new.wine)
+plot(wine_lm_predict4)
+
+wine_rf_model4 <- randomForest(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+wine_rf_explainer4 <- explain(wine_rf_model4, data = wine, label = "model_rf")
+wine_rf_predict4 <- single_prediction(wine_rf_explainer4, observation = new.wine)
+plot(wine_rf_predict4)
+
+# both models
+plot(wine_rf_predict4, wine_lm_predict4)
 
 }

@@ -27,5 +27,13 @@ Black-box models may have very different structures.
 This function creates a unified representation of a model, which can be further processed by various explainers.
 }
 \examples{
+library("randomForest")
+library("breakDown")
+
+wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v")
+
+wine_rf_model4 <- randomForest(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
+wine_rf_explainer4 <- explain(wine_rf_model4, data = wine, label = "model_rf")
 
 }
