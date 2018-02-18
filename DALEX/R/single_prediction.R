@@ -14,6 +14,11 @@
 #' @examples
 #' library("randomForest")
 #' library("breakDown")
+#' new.wine <- data.frame(citric.acid = 0.35,
+#'      sulphates = 0.6,
+#'      alcohol = 12.5,
+#'      pH = 3.36,
+#'      residual.sugar = 4.8)
 #'
 #' wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
 #' wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v")
