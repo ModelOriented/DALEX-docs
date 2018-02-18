@@ -2,7 +2,7 @@
 #'
 #' Function 'plot.single_prediction_explainer' plots break down plots for a single prediction.
 #'
-#' @param response1 a single prediction exlainer produced with the 'single_prediction' function
+#' @param x a single prediction exlainer produced with the 'single_prediction' function
 #' @param ... other explainers that shall be plotted together
 #' @param add_contributions shall variable contributions to be added on plot?
 #' @param vcolors named vector with colors
@@ -18,11 +18,11 @@
 #'
 #' @examples
 #'
-plot.single_prediction_explainer <- function(response1, ..., add_contributions = TRUE,
+plot.single_prediction_explainer <- function(x, ..., add_contributions = TRUE,
                                              vcolors = c("-1" = "#d8b365", "0" = "#f5f5f5", "1" = "#5ab4ac", "X" = "darkgrey"),
                                              digits = 3, rounding_function = round) {
   df <- NULL
-  dfl <- c(list(response1), list(...))
+  dfl <- c(list(x), list(...))
   for (broken_cumm in dfl) {
     constant <- attr(broken_cumm, "baseline")
     broken_cumm$variable <- as.character(broken_cumm$variable)

@@ -13,7 +13,7 @@
 #' @param type character - type of the response to be calculated.
 #' Currently following options are implemented: 'pdp' for Partial Dependency and 'ale' for Accumulated Local Effects
 #' @param trans function - a transformation/link function that shall be applied to raw model predictions
-#' @param ...
+#' @param ... other parameters
 #'
 #' @return An object of the class 'single_variable_explainer'.
 #' It's a data frame with calculated average response.

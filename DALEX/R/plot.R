@@ -2,17 +2,18 @@
 #'
 #' Function 'plot.single_variable_explainer' plots marginal responses for one or more explainers.
 #'
-#' @param response1 a single variable exlainer produced with the 'single_variable' function
+#' @param x a single variable exlainer produced with the 'single_variable' function
 #' @param ... other explainers that shall be plotted together
 #'
 #' @return a ggplot2 object
 #' @export
 #' @import ggplot2
+#' @importFrom grDevices dev.off pdf
 #'
 #' @examples
 #'
-plot.single_variable_explainer <- function(response1, ...) {
-  df <- response1
+plot.single_variable_explainer <- function(x, ...) {
+  df <- x
   class(df) <- "data.frame"
 
   dfl <- list(...)

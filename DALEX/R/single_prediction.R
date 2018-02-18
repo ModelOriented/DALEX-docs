@@ -3,15 +3,14 @@
 #'
 #'
 #' @param explainer a model to be explained, preprocessed by the 'explain' function
-#' @param observation a
-#' @param ...
+#' @param observation a new observarvation for which predictions need to be explained
+#' @param ... other parameters
 #'
 #' @return An object of the class 'single_prediction_explainer'.
 #' It's a data frame with calculated average response.
 #'
 #' @export
 #' @import breakDown
-#' @import live
 #' @examples
 #'
 single_prediction <- function(explainer, observation, ...) {

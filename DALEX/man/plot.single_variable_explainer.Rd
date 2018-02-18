@@ -4,10 +4,10 @@
 \alias{plot.single_variable_explainer}
 \title{Plots Marginal Responses}
 \usage{
-\method{plot}{single_variable_explainer}(response1, ...)
+\method{plot}{single_variable_explainer}(x, ...)
 }
 \arguments{
-\item{response1}{a single variable exlainer produced with the 'single_variable' function}
+\item{x}{a single variable exlainer produced with the 'single_variable' function}
 
 \item{...}{other explainers that shall be plotted together}
 }

@@ -16,7 +16,7 @@ Currently following options are implemented: 'pdp' for Partial Dependency and 'a
 
 \item{trans}{function - a transformation/link function that shall be applied to raw model predictions}
 
-\item{...}{}
+\item{...}{other parameters}
 }
 \value{
 An object of the class 'single_variable_explainer'.

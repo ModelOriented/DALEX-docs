@@ -13,6 +13,8 @@
 #' It's a list with the model and additional meta-data, like model class, model name etc.
 #'
 #' @export
+#' @importFrom stats predict
+#' @importFrom utils head tail
 #'
 #' @examples
 #'

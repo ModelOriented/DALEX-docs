@@ -9,9 +9,9 @@ single_prediction(explainer, observation, ...)
 \arguments{
 \item{explainer}{a model to be explained, preprocessed by the 'explain' function}
 
-\item{observation}{a}
+\item{observation}{a new observarvation for which predictions need to be explained}
 
-\item{...}{}
+\item{...}{other parameters}
 }
 \value{
 An object of the class 'single_prediction_explainer'.
