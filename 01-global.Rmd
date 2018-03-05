@@ -2,6 +2,75 @@
 
 Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?
 
+## Drop-out plots
+
+Variable drop-outs are calculated via permutations. Simply the loss function is is compared between the full model and the model with single variable being permuted. 
+
+As a additional point for comparison a `_baseline_` is calculated as a loss in model with permuted outcomes. This shall be highest possible loss.
+
+Let's see how it's working for a random forest model.
+
+```{r}
+library("DALEX")
+library("breakDown")
+library("randomForest")
+HR_rf_model <- randomForest(left~., data = HR_data, ntree = 100)
+HR_rf_model
+explainer_rf  <- explain(HR_rf_model, data = HR_data, y = HR_data$left)
+explainer_rf
+vd_rf <- variable_dropout(explainer_rf, type = "raw")
+vd_rf
+```
+
+Now we can plot these losses. Note that in the plot beow you see not only the variable importance, but also you see how the whole model works.
+
+```{r, message=FALSE, warning=FALSE, fig.height=3}
+plot(vd_rf)
+```
+
+And here we have similar example for glm model.
+
+```{r, message=FALSE, warning=FALSE, fig.height=3}
+HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
+explainer_glm <- explain(HR_glm_model, data = HR_data, y = HR_data$left)
+logit <- function(x) exp(x)/(1+exp(x))
+vd_glm <- variable_dropout(explainer_glm, type = "raw",
+                        loss_function = function(observed, predicted) sum((observed - logit(predicted))^2))
+vd_glm
+plot(vd_glm)
+```
+
+And for xgboost model.
+
+```{r, message=FALSE, warning=FALSE, fig.height=3}
+library("xgboost")
+model_martix_train <- model.matrix(left~.-1, breakDown::HR_data)
+data_train <- xgb.DMatrix(model_martix_train, label = breakDown::HR_data$left)
+param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
+              objective = "binary:logistic", eval_metric = "auc")
+HR_xgb_model <- xgb.train(param, data_train, nrounds = 50)
+explainer_xgb <- explain(HR_xgb_model, data = model_martix_train, y = HR_data$left, label = "xgboost")
+vd_xgb <- variable_dropout(explainer_xgb, type = "raw")
+vd_xgb
+plot(vd_xgb)
+```
+
+Of course you can plot all these models in a single plot. Then it is much easier to compare variable importances in different models.
+
+```{r, message=FALSE, warning=FALSE, fig.height=6}
+plot(vd_rf, vd_glm, vd_xgb)
+```
+
+*NOTE:* If you like to have all importances hooked to 0, you can do this as well
+
+```{r, message=FALSE, warning=FALSE, fig.height=6}
+vd_rf <- variable_dropout(explainer_rf, type = "difference")
+vd_glm <- variable_dropout(explainer_glm, type = "difference",
+                        loss_function = function(observed, predicted) sum((observed - logit(predicted))^2))
+vd_xgb <- variable_dropout(explainer_xgb, type = "difference")
+plot(vd_rf, vd_glm, vd_xgb)
+```
+
 ## Forest plots
 
 [Forest plots](https://en.wikipedia.org/wiki/Forest_plot) were initially used in the meta analysis to visualise effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure like these created with `lm` or `glm` functions.
