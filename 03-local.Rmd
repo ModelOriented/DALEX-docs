@@ -1,4 +1,4 @@
-# Local structure
+# Justifications for model predictions
 
 Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:
 
@@ -148,7 +148,8 @@ new.wine <- data.frame(citric.acid = 0.35,
 
 wine_lm_model3 <- lm(quality ~ citric.acid +  sulphates + alcohol,
                      data = wine)
-wine_lm_explainer3 <- explain(wine_lm_model3, data = wine, label = "model_3v")
+wine_lm_explainer3 <- explain(wine_lm_model3, data = wine, label = "model_3v",
+                               predict_function = stats::predict)
 
 wine_lm_predict3 <- single_prediction(wine_lm_explainer3, observation = new.wine)
 plot(wine_lm_predict3)
@@ -159,7 +160,8 @@ Let's fit a second model with 4 variables.
 ```{r, fig.height=3}
 wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol,
                      data = wine)
-wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v")
+wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v",
+                               predict_function = stats::predict)
 
 wine_lm_predict4 <- single_prediction(wine_lm_explainer4, observation = new.wine)
 plot(wine_lm_predict4)

@@ -1,4 +1,4 @@
-# Conditional structure
+# Single variable conditional response
 
 ![Cheatsheet](images/DALEX_single_variable.png)
 
