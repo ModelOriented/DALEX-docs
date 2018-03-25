@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="DALEX: Descriptive mAchine Learning EXplanations" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Do not trust a black-box model. Unless it explains itself." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Przemysław Biecek" />
+
+<meta name="date" content="2018-03-26" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="Do not trust a black-box model. Unless it explains itself.">
+
+<title>DALEX: Descriptive mAchine Learning EXplanations</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="toc.css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a><ul>
+<li><a href="#motivation"><span class="toc-section-number">1.1</span> Motivation</a></li>
+<li><a href="#notation"><span class="toc-section-number">1.2</span> Notation</a></li>
+<li class="has-sub"><a href="#use-case---human-resources-analytics"><span class="toc-section-number">1.3</span> Use case - Human Resources Analytics</a><ul>
+<li><a href="#logistic-regression"><span class="toc-section-number">1.3.1</span> Logistic regression</a></li>
+<li><a href="#random-forest"><span class="toc-section-number">1.3.2</span> Random forest</a></li>
+</ul></li>
+<li class="has-sub"><a href="#use-case---wine-quality"><span class="toc-section-number">1.4</span> Use case - Wine quality</a><ul>
+<li><a href="#linear-regression"><span class="toc-section-number">1.4.1</span> Linear regression</a></li>
+</ul></li>
+<li><a href="#trivia"><span class="toc-section-number">1.5</span> Trivia</a></li>
+</ul></li>
+<li class="has-sub"><a href="#model-understanding"><span class="toc-section-number">2</span> Model understanding</a><ul>
+<li class="has-sub"><a href="#feature-importance"><span class="toc-section-number">2.1</span> Feature importance</a><ul>
+<li><a href="#drop-out-plots"><span class="toc-section-number">2.1.1</span> Drop-out plots</a></li>
+<li><a href="#forest-plots"><span class="toc-section-number">2.1.2</span> Forest plots</a></li>
+</ul></li>
+<li class="has-sub"><a href="#variable-response"><span class="toc-section-number">2.2</span> Variable response</a><ul>
+<li><a href="#pdpchapter"><span class="toc-section-number">2.2.1</span> Partial Dependence Plot</a></li>
+<li><a href="#model-comparisons"><span class="toc-section-number">2.2.2</span> Model Comparisons</a></li>
+<li><a href="#accumulated-local-effects-plot"><span class="toc-section-number">2.2.3</span> Accumulated Local Effects Plot</a></li>
+<li><a href="#individual-conditional-expectation-plot"><span class="toc-section-number">2.2.4</span> Individual Conditional Expectation Plot</a></li>
+<li><a href="#mering-path-plot"><span class="toc-section-number">2.2.5</span> Mering Path Plot</a></li>
+</ul></li>
+</ul></li>
+<li class="has-sub"><a href="#prediction-understanding"><span class="toc-section-number">3</span> Prediction understanding</a><ul>
+<li class="has-sub"><a href="#justifications-for-model-predictions"><span class="toc-section-number">3.1</span> Justifications for model predictions</a><ul>
+<li><a href="#basics"><span class="toc-section-number">3.1.1</span> Basics</a></li>
+</ul></li>
+<li><a href="#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">3.2</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
+<li class="has-sub"><a href="#breakdown"><span class="toc-section-number">3.3</span> breakDown</a><ul>
+<li><a href="#model-comparisons-1"><span class="toc-section-number">3.3.1</span> Model Comparisons</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#reproducibility"><span class="toc-section-number">4</span> Reproducibility</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="header">
+<h1 class="title">DALEX: Descriptive mAchine Learning EXplanations</h1>
+<h4 class="author"><em>Przemysław Biecek</em></h4>
+<h4 class="date"><em>2018-03-26</em></h4>
+</div>
+<section id="introduction" class="level1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
+<p>Machine Learning models are widely used and have various applications in classification or regression tasks. Due to increasing computational power, availability of new data sources and new methods, ML models are more and more complex. Models created with techniques like boosting, bagging of neural networks are true black boxes. It is hard to trace the link between input variables and model outcomes. They are use because of high performance, but lack of interpretability is one of their weakest sides.</p>
+<p>In many applications we need to know, understand or prove how input variables are used in the model and what impact do they have on final model prediction. DALEX is a set of tools that help to understand how complex models are working.</p>
+<section id="motivation" class="level2">
+<h2><span class="header-section-number">1.1</span> Motivation</h2>
+<figure>
+<img src="images/DALEX_scheme.jpg" alt="Scheme" /><figcaption>Scheme</figcaption>
+</figure>
+<p><span class="citation" data-cites="Strumbelj">(Štrumbelj and Kononenko <label for="tufte-mn-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">2011<span class="marginnote">Štrumbelj, Erik, and Igor Kononenko. 2011. “A General Method for Visualizing and Explaining Black-Box Regression Models.” In <em>Proceedings of the 10th International Conference on Adaptive and Natural Computing Algorithms - Volume Part Ii</em>, 21–30. ICANNGA’11. Berlin, Heidelberg: Springer-Verlag. <a href="http://dl.acm.org/citation.cfm?id=1997005.1997009" class="uri">http://dl.acm.org/citation.cfm?id=1997005.1997009</a>.</span>)</span>, <span class="citation" data-cites="nnet_vis">(Tzeng and Ma <label for="tufte-mn-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle">2005<span class="marginnote">Tzeng, F. Y., and K. L. Ma. 2005. “Opening the Black Box - Data Driven Visualization of Neural Networks.” In <em>VIS 05. IEEE Visualization, 2005.</em>, 383–90. <a href="https://doi.org/10.1109/VISUAL.2005.1532820" class="uri">https://doi.org/10.1109/VISUAL.2005.1532820</a>.</span>)</span>, <span class="citation" data-cites="magix">(Puri et al. <label for="tufte-mn-3" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-3" class="margin-toggle">2017<span class="marginnote">Puri, N., P. Gupta, P. Agarwal, S. Verma, and B. Krishnamurthy. 2017. “MAGIX: Model Agnostic Globally Interpretable Explanations.” <em>ArXiv E-Prints</em>, June.</span>)</span>, <span class="citation" data-cites="Zeiler_Fergus_2014">(Zeiler and Fergus <label for="tufte-mn-4" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-4" class="margin-toggle">2014<span class="marginnote">Zeiler, Matthew D., and Rob Fergus. 2014. “Visualizing and Understanding Convolutional Networks.” In <em>Computer Vision – Eccv 2014</em>, edited by David Fleet, Tomas Pajdla, Bernt Schiele, and TinneEditors Tuytelaars, 818–33. Springer International Publishing.</span>)</span></p>
+</section>
+<section id="notation" class="level2">
+<h2><span class="header-section-number">1.2</span> Notation</h2>
+<p>This book describes explainers for different machine learning models. Some of these explainers are created by different research groups with different applications in mind.</p>
+<p>To keep the notation consistent:</p>
+<ul>
+<li><span class="math inline">\(x = (x_1, ..., x_p)\)</span> stands for a vector of <span class="math inline">\(p\)</span> variables/predictors.</li>
+<li><span class="math inline">\(y\)</span> stands for a vector with target variable. In some applications it will be a continuous variable in others it will be a binary variable.</li>
+<li><span class="math inline">\(n\)</span> stands for number of observations.</li>
+<li><span class="math inline">\(f(x, \theta)\)</span> stands for a model. We are considering models that are characterized by a set of parameters <span class="math inline">\(\theta\)</span>. In some applications <span class="math inline">\(\theta\)</span> is a low level space of parameters - nice parametric models, in some applications <span class="math inline">\(\theta\)</span> may have a very complex structure.</li>
+<li><span class="math inline">\(\lambda\)</span> stands for model meta-parameters which are not being directly optimized (like number of trees, max depth, some penalties etc.).</li>
+<li><span class="math inline">\(g(x)\)</span> stands for a function that pre-process variables. In some applications it may be a standardisation or other pre-processing.</li>
+</ul>
+<p><img src="images/model01.jpg" /></p>
+</section>
+<section id="use-case---human-resources-analytics" class="level2">
+<h2><span class="header-section-number">1.3</span> Use case - Human Resources Analytics</h2>
+<p>To ilustrate applications of DALEX to binary classification problems we will use a dataset from Kaggle competition <a href="https://www.kaggle.com/ludobenistant/hr-analytics/data">Human Resources Analytics</a>. This dataset is avaliable in the <strong>breakDown</strong> package <span class="citation" data-cites="breakDown">(P. Biecek <label for="tufte-mn-5" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-5" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">head</span>(HR_data)</a></code></pre></div>
+<p><!--
+<caption>--><span class="marginnote shownote">(#tab:hr_data)HR_data dataset from Kaggle competition Human Resources Analytics</span><!--</caption>--></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">satisfaction_level</th>
+<th style="text-align: right;">last_evaluation</th>
+<th style="text-align: right;">number_project</th>
+<th style="text-align: right;">average_montly_hours</th>
+<th style="text-align: right;">time_spend_company</th>
+<th style="text-align: right;">Work_accident</th>
+<th style="text-align: right;">left</th>
+<th style="text-align: right;">promotion_last_5years</th>
+<th style="text-align: left;">sales</th>
+<th style="text-align: left;">salary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">157</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">sales</td>
+<td style="text-align: left;">low</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">262</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">sales</td>
+<td style="text-align: left;">medium</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">272</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">sales</td>
+<td style="text-align: left;">medium</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">sales</td>
+<td style="text-align: left;">low</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">sales</td>
+<td style="text-align: left;">low</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">153</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">sales</td>
+<td style="text-align: left;">low</td>
+</tr>
+</tbody>
+</table>
+<section id="logistic-regression" class="level3">
+<h3><span class="header-section-number">1.3.1</span> Logistic regression</h3>
+<p>In the following chapters to present explainers for logistic regression models we will use <code>HR_glm_model</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">summary</span>(HR_glm_model)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = left ~ ., family = &quot;binomial&quot;, data = HR_data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.2248  -0.6645  -0.4026  -0.1177   3.0688  
+## 
+## Coefficients:
+##                         Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)           -1.4762862  0.1938373  -7.616 2.61e-14 ***
+## satisfaction_level    -4.1356889  0.0980538 -42.178  &lt; 2e-16 ***
+## last_evaluation        0.7309032  0.1491787   4.900 9.61e-07 ***
+## number_project        -0.3150787  0.0213248 -14.775  &lt; 2e-16 ***
+## average_montly_hours   0.0044603  0.0005161   8.643  &lt; 2e-16 ***
+## time_spend_company     0.2677537  0.0155736  17.193  &lt; 2e-16 ***
+## Work_accident         -1.5298283  0.0895473 -17.084  &lt; 2e-16 ***
+## promotion_last_5years -1.4301364  0.2574958  -5.554 2.79e-08 ***
+## saleshr                0.2323779  0.1313084   1.770  0.07678 .  
+## salesIT               -0.1807179  0.1221276  -1.480  0.13894    
+## salesmanagement       -0.4484236  0.1598254  -2.806  0.00502 ** 
+## salesmarketing        -0.0120882  0.1319304  -0.092  0.92700    
+## salesproduct_mng      -0.1532529  0.1301538  -1.177  0.23901    
+## salesRandD            -0.5823659  0.1448848  -4.020 5.83e-05 ***
+## salessales            -0.0387859  0.1024006  -0.379  0.70486    
+## salessupport           0.0500251  0.1092834   0.458  0.64713    
+## salestechnical         0.0701464  0.1065379   0.658  0.51027    
+## salarylow              1.9440627  0.1286272  15.114  &lt; 2e-16 ***
+## salarymedium           1.4132244  0.1293534  10.925  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 16465  on 14998  degrees of freedom
+## Residual deviance: 12850  on 14980  degrees of freedom
+## AIC: 12888
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<p>Models used in this doccumentation are accessible via <strong>archivist</strong> package. To download the <code>HR_glm_model</code> model use the following instruction.</p>
+<pre><code>archivist::aread(&quot;pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234&quot;)</code></pre>
+</section>
+<section id="random-forest" class="level3">
+<h3><span class="header-section-number">1.3.2</span> Random forest</h3>
+<p>In the following chapters to present explainers for random forest models we will use <code>HR_fr_model</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">1313</span>)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">HR_data<span class="op">$</span>left &lt;-<span class="st"> </span><span class="kw">factor</span>(HR_data<span class="op">$</span>left)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">HR_rf_model</a></code></pre></div>
+<pre><code>## 
+## Call:
+##  randomForest(formula = left ~ ., data = HR_data, ntree = 100) 
+##                Type of random forest: classification
+##                      Number of trees: 100
+## No. of variables tried at each split: 3
+## 
+##         OOB estimate of  error rate: 0.75%
+## Confusion matrix:
+##       0    1 class.error
+## 0 11407   21 0.001837592
+## 1    91 3480 0.025483058</code></pre>
+<p>Models used in this doccumentation are accessible via <strong>archivist</strong> package. To download the <code>HR_rf_model</code> model use the following instruction.</p>
+<pre><code>archivist::aread(&quot;pbiecek/DALEX/arepo/419d550a92fab6a5f28650130991e2cd&quot;)</code></pre>
+</section>
+</section>
+<section id="use-case---wine-quality" class="level2">
+<h2><span class="header-section-number">1.4</span> Use case - Wine quality</h2>
+<p>To ilustrate applications of DALEX to regression problems we will use a Wine quality dataset from Kaggle competition <a href="http://mlr.cs.umass.edu/ml/">UC Irvine Machine Learning Repository</a>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">url &lt;-<span class="st"> &#39;https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv&#39;</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">wine &lt;-<span class="st"> </span><span class="kw">read.table</span>(url, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">head</span>(wine)</a></code></pre></div>
+<p><!--
+<caption>--><span class="marginnote shownote"><span id="tab:wineQuality">Table 1.1: </span>Wine quality dataset from UC Irvine Machine Learning Repository</span><!--</caption>--></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">fixed.acidity</th>
+<th style="text-align: right;">volatile.acidity</th>
+<th style="text-align: right;">citric.acid</th>
+<th style="text-align: right;">residual.sugar</th>
+<th style="text-align: right;">chlorides</th>
+<th style="text-align: right;">free.sulfur.dioxide</th>
+<th style="text-align: right;">total.sulfur.dioxide</th>
+<th style="text-align: right;">density</th>
+<th style="text-align: right;">pH</th>
+<th style="text-align: right;">sulphates</th>
+<th style="text-align: right;">alcohol</th>
+<th style="text-align: right;">quality</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">20.7</td>
+<td style="text-align: right;">0.045</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">1.0010</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: right;">8.8</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6.3</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">1.6</td>
+<td style="text-align: right;">0.049</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">0.9940</td>
+<td style="text-align: right;">3.30</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">9.5</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">6.9</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">0.9951</td>
+<td style="text-align: right;">3.26</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">10.1</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7.2</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">8.5</td>
+<td style="text-align: right;">0.058</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">186</td>
+<td style="text-align: right;">0.9956</td>
+<td style="text-align: right;">3.19</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">9.9</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7.2</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">8.5</td>
+<td style="text-align: right;">0.058</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">186</td>
+<td style="text-align: right;">0.9956</td>
+<td style="text-align: right;">3.19</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">9.9</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">6.9</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">0.9951</td>
+<td style="text-align: right;">3.26</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">10.1</td>
+<td style="text-align: right;">6</td>
+</tr>
+</tbody>
+</table>
+<section id="linear-regression" class="level3">
+<h3><span class="header-section-number">1.4.1</span> Linear regression</h3>
+<p>In the following chapters to present explainers for gaussian regression models we will use <code>wine_lm_model</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">wine_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>fixed.acidity <span class="op">+</span><span class="st"> </span>volatile.acidity <span class="op">+</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>chlorides <span class="op">+</span><span class="st"> </span>free.sulfur.dioxide <span class="op">+</span><span class="st"> </span>total.sulfur.dioxide <span class="op">+</span><span class="st"> </span>density <span class="op">+</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">               <span class="dt">data =</span> wine)</a></code></pre></div>
+<p>Models used in this doccumentation are accessible via <strong>archivist</strong> package. To download the <code>wine_lm_model</code> model use the following instruction.</p>
+<pre><code>archivist::aread(&quot;pbiecek/DALEX/arepo/b99a3d58016e2677221019652cff047f&quot;)</code></pre>
+</section>
+</section>
+<section id="trivia" class="level2">
+<h2><span class="header-section-number">1.5</span> Trivia</h2>
+<p><img src="images/dalex01small.jpg" /></p>
+<p><a href="https://en.wikipedia.org/wiki/Dalek">The Daleks</a> are a fictional extraterrestrial race portrayed in the <a href="https://en.wikipedia.org/wiki/Doctor_Who">Doctor Who</a> BBC series. Rather dim aliens, known to repeat the phrase <em>Explain!</em> very often.</p>
+
+</section>
+</section>
+<section id="model-understanding" class="level1">
+<h1><span class="header-section-number">Chapter 2</span> Model understanding</h1>
+<section id="feature-importance" class="level2">
+<h2><span class="header-section-number">2.1</span> Feature importance</h2>
+<p>Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?</p>
+<section id="drop-out-plots" class="level3">
+<h3><span class="header-section-number">2.1.1</span> Drop-out plots</h3>
+<p>Variable drop-outs are calculated via permutations. Simply the loss function is is compared between the full model and the model with single variable being permuted.</p>
+<p>As a additional point for comparison a <code>_baseline_</code> is calculated as a loss in model with permuted outcomes. This shall be highest possible loss.</p>
+<p>Let’s see how it’s working for a random forest model.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">HR_rf_model</a></code></pre></div>
+<pre><code>## 
+## Call:
+##  randomForest(formula = left ~ ., data = HR_data, ntree = 100) 
+##                Type of random forest: classification
+##                      Number of trees: 100
+## No. of variables tried at each split: 3
+## 
+##         OOB estimate of  error rate: 0.75%
+## Confusion matrix:
+##       0    1 class.error
+## 0 11410   18 0.001575079
+## 1    94 3477 0.026323159</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">explainer_rf  &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_rf_model, <span class="dt">data =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>left)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">explainer_rf</a></code></pre></div>
+<pre><code>## Model label:  randomForest 
+## Model class:  randomForest.formula,randomForest 
+## Data head  :
+##   satisfaction_level last_evaluation number_project average_montly_hours
+## 1               0.38            0.53              2                  157
+## 2               0.80            0.86              5                  262
+##   time_spend_company Work_accident left promotion_last_5years sales salary
+## 1                  3             0    1                     0 sales    low
+## 2                  6             0    1                     0 sales medium</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">vd_rf &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_rf, <span class="dt">type =</span> <span class="st">&quot;raw&quot;</span>)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">vd_rf</a></code></pre></div>
+<pre><code>##       variable dropout_loss        label
+## 1 _full_model_           NA randomForest
+## 2   _baseline_           NA randomForest</code></pre>
+<p>Now we can plot these losses. Note that in the plot beow you see not only the variable importance, but also you see how the whole model works.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">plot</span>(vd_rf)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-10-1.png" width="672"  /></p>
+<p>And here we have similar example for glm model.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">explainer_glm &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_glm_model, <span class="dt">data =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>left)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">logit &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">exp</span>(x)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(x))</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">vd_glm &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_glm, <span class="dt">type =</span> <span class="st">&quot;raw&quot;</span>,</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">                        <span class="dt">loss_function =</span> <span class="cf">function</span>(observed, predicted) <span class="kw">sum</span>((observed <span class="op">-</span><span class="st"> </span><span class="kw">logit</span>(predicted))<span class="op">^</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">vd_glm</a></code></pre></div>
+<pre><code>##       variable dropout_loss label
+## 1 _full_model_           NA    lm
+## 2   _baseline_           NA    lm</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">plot</span>(vd_glm)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-11-1.png" width="672"  /></p>
+<p>And for xgboost model.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;xgboost&quot;</span>)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">model_martix_train &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(left<span class="op">~</span>.<span class="op">-</span><span class="dv">1</span>, breakDown<span class="op">::</span>HR_data)</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">data_train &lt;-<span class="st"> </span><span class="kw">xgb.DMatrix</span>(model_martix_train, <span class="dt">label =</span> breakDown<span class="op">::</span>HR_data<span class="op">$</span>left)</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">max_depth =</span> <span class="dv">2</span>, <span class="dt">eta =</span> <span class="dv">1</span>, <span class="dt">silent =</span> <span class="dv">1</span>, <span class="dt">nthread =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">              <span class="dt">objective =</span> <span class="st">&quot;binary:logistic&quot;</span>, <span class="dt">eval_metric =</span> <span class="st">&quot;auc&quot;</span>)</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">HR_xgb_model &lt;-<span class="st"> </span><span class="kw">xgb.train</span>(param, data_train, <span class="dt">nrounds =</span> <span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">explainer_xgb &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_xgb_model, <span class="dt">data =</span> model_martix_train, <span class="dt">y =</span> HR_data<span class="op">$</span>left, <span class="dt">label =</span> <span class="st">&quot;xgboost&quot;</span>)</a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">vd_xgb &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_xgb, <span class="dt">type =</span> <span class="st">&quot;raw&quot;</span>)</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9">vd_xgb</a></code></pre></div>
+<pre><code>##       variable dropout_loss   label
+## 1 _full_model_           NA xgboost
+## 2   _baseline_           NA xgboost</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">plot</span>(vd_xgb)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-12-1.png" width="672"  /></p>
+<p>Of course you can plot all these models in a single plot. Then it is much easier to compare variable importances in different models.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">plot</span>(vd_rf, vd_glm, vd_xgb)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-13-1.png" width="672"  /></p>
+<p><em>NOTE:</em> If you like to have all importances hooked to 0, you can do this as well</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">vd_rf &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_rf, <span class="dt">type =</span> <span class="st">&quot;difference&quot;</span>)</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">vd_glm &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_glm, <span class="dt">type =</span> <span class="st">&quot;difference&quot;</span>,</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">                        <span class="dt">loss_function =</span> <span class="cf">function</span>(observed, predicted) <span class="kw">sum</span>((observed <span class="op">-</span><span class="st"> </span><span class="kw">logit</span>(predicted))<span class="op">^</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">vd_xgb &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_xgb, <span class="dt">type =</span> <span class="st">&quot;difference&quot;</span>)</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="kw">plot</span>(vd_rf, vd_glm, vd_xgb)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="672"  /></p>
+</section>
+<section id="forest-plots" class="level3">
+<h3><span class="header-section-number">2.1.2</span> Forest plots</h3>
+<p><a href="https://en.wikipedia.org/wiki/Forest_plot">Forest plots</a> were initially used in the meta analysis to visualise effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure like these created with <code>lm</code> or <code>glm</code> functions.</p>
+<p>There are various implementations of forest plots in R. Below we present examples for a glm model.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="co">#HR_glm_model &lt;- archivist::aread(&quot;pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234&quot;)</span></a></code></pre></div>
+<p>In the package <strong>forestmodel</strong> (see <span class="citation" data-cites="forestmodel">(Kennedy <label for="tufte-mn-6" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-6" class="margin-toggle">2017<span class="marginnote">Kennedy, Nick. 2017. <em>Forestmodel: Forest Plots from Regression Models</em>. <a href="https://CRAN.R-project.org/package=forestmodel" class="uri">https://CRAN.R-project.org/package=forestmodel</a>.</span>)</span>) one can use <code>forest_model()</code> function to draw a forest plot. This package is based on the <strong>broom</strong> package (see <span class="citation" data-cites="broom">(Robinson <label for="tufte-mn-7" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-7" class="margin-toggle">2017<span class="marginnote">Robinson, David. 2017. <em>Broom: Convert Statistical Analysis Objects into Tidy Data Frames</em>. <a href="https://CRAN.R-project.org/package=broom" class="uri">https://CRAN.R-project.org/package=broom</a>.</span>)</span>) and this is why it handles a large variety of different regression models. An example for <code>glm</code>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;forestmodel&quot;</span>)</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">forest_model</span>(HR_glm_model)</a></code></pre></div>
+<div class="figure"><span id="fig:forestmodel"></span>
+<p class="caption marginnote shownote">
+Figure 2.1: Forest plot created with forestmodel package
+</p>
+<img src="DALEX_files/figure-html/forestmodel-1.png" alt="Forest plot created with forestmodel package" width="768"  />
+</div>
+<p>In the package <strong>sjPlot</strong> (see <span class="citation" data-cites="sjPlot">(Lüdecke <label for="tufte-mn-8" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-8" class="margin-toggle">2017<span class="marginnote">Lüdecke, Daniel. 2017. <em>SjPlot: Data Visualization for Statistics in Social Science</em>. <a href="https://CRAN.R-project.org/package=sjPlot" class="uri">https://CRAN.R-project.org/package=sjPlot</a>.</span>)</span>) one can use <code>sjp.*()</code> to visualise structure of a <code>*</code> model or a wrapper <code>plot_model()</code>. Here is an example for <code>glm</code> model.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;sjPlot&quot;</span>)</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">plot_model</span>(HR_glm_model, <span class="dt">type =</span> <span class="st">&quot;est&quot;</span>, <span class="dt">sort.est =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="figure"><span id="fig:sjpglm"></span>
+<p class="caption marginnote shownote">
+Figure 2.2: Forest plot created with sjPlot package
+</p>
+<img src="DALEX_files/figure-html/sjpglm-1.png" alt="Forest plot created with sjPlot package" width="768"  />
+</div>
+<p><strong>Note!</strong></p>
+<p>The <strong>forestmodel</strong> package handles factor variables in a better way while the plots from <strong>sjPlot</strong> are easier to read.</p>
+</section>
+</section>
+<section id="variable-response" class="level2">
+<h2><span class="header-section-number">2.2</span> Variable response</h2>
+<figure>
+<img src="images/DALEX_single_variable.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
+</figure>
+<p>The dimension of input <span class="math inline">\(x\)</span> for black box models is usually high (large <span class="math inline">\(p\)</span>). But in many cases small number of variables play important role in the model OR there are some reasons to believe that variables work in an additive fashion/low-level interactions in the model.</p>
+<p>In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like.</p>
+<p>Methods presented below help to understand the conditional structure of a model.</p>
+<section id="pdpchapter" class="level3">
+<h3><span class="header-section-number">2.2.1</span> Partial Dependence Plot</h3>
+<p>Partial Dependence Plots (see <strong>pdp</strong> package <span class="citation" data-cites="pdp">(Greenwell <label for="tufte-mn-9" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-9" class="margin-toggle">2017<span class="marginnote">Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1):421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</span>)</span>) for a black box <span class="math inline">\(f(x; \theta)\)</span> calculates the expected output given a selected variable.</p>
+<p><span class="math display">\[
+p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
+\]</span></p>
+<p>Of course this expectation cannot be calculated directly as we do not know fully the <span class="math inline">\(f()\)</span> neither the distribution of <span class="math inline">\(x_{-i}\)</span>. This value is estimated by</p>
+<p><span class="math display">\[
+\hat p_i(x_i) = \frac{1}{n} \sum_{j=1}^{n} f(x^i_j, x_j^{-i}, \hat \theta) 
+\]</span></p>
+<p>Let’s see an example for the model <code>HR_rf_model</code>. Below we are using <code>DALEX::single_variable</code> function that is calling <code>pdp::partial</code> function to calculate pdp curve for variable <code>satisfaction_level</code>. Then the curve is plotted with generic <code>plot.single_variable_explainer()</code> function.</p>
+<p>Marginal response plots are created in four steps.</p>
+<ol type="1">
+<li>We need to fit model. For example a Random Forest model.</li>
+</ol>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="co"># a79f3c7ec27499fb91e46ee70d423ac8</span></a>
+<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/a79f3c7ec27&quot;)</span></a></code></pre></div>
+<ol start="2" type="1">
+<li>We need to create an explainer. It’s an interface that can be used to explain a black-box model.</li>
+</ol>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">explainer_rf  &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_rf_model, <span class="dt">data =</span> HR_data)</a></code></pre></div>
+<ol start="3" type="1">
+<li>Now we can calculate the marginal response with the PDP method.</li>
+</ol>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">expl_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span>  <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;pdp&quot;</span>)</a></code></pre></div>
+<ol start="4" type="1">
+<li>And we are ready to plot it.</li>
+</ol>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">plot</span>(expl_rf)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-19-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># ad0f1699de646c78a46a3bf23aeea799</span></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/ad0f1699&quot;)</span></a></code></pre></div>
+</section>
+<section id="model-comparisons" class="level3">
+<h3><span class="header-section-number">2.2.2</span> Model Comparisons</h3>
+<p>Marginal response plots are very useful in comparisons of different models. Let’s fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.</p>
+<p>Then we can use PDP plots to compare these models. Random Forest Model was fitted in the previous chapter. Here we are training remaining models.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;xgboost&quot;</span>)</a>
+<a class="sourceLine" id="cb34-4" data-line-number="4">model_martix_train &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(left<span class="op">~</span>.<span class="op">-</span><span class="dv">1</span>, breakDown<span class="op">::</span>HR_data)</a>
+<a class="sourceLine" id="cb34-5" data-line-number="5">data_train &lt;-<span class="st"> </span><span class="kw">xgb.DMatrix</span>(model_martix_train, <span class="dt">label =</span> breakDown<span class="op">::</span>HR_data<span class="op">$</span>left)</a>
+<a class="sourceLine" id="cb34-6" data-line-number="6">param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">max_depth =</span> <span class="dv">2</span>, <span class="dt">eta =</span> <span class="dv">1</span>, <span class="dt">silent =</span> <span class="dv">1</span>, <span class="dt">nthread =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb34-7" data-line-number="7">              <span class="dt">objective =</span> <span class="st">&quot;binary:logistic&quot;</span>, <span class="dt">eval_metric =</span> <span class="st">&quot;auc&quot;</span>)</a>
+<a class="sourceLine" id="cb34-8" data-line-number="8">HR_xgb_model &lt;-<span class="st"> </span><span class="kw">xgb.train</span>(param, data_train, <span class="dt">nrounds =</span> <span class="dv">50</span>)</a></code></pre></div>
+<p>Models are trained. Now we can create explainers and single variable explanations</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">logit &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">exp</span>(x)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(x))</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb35-3" data-line-number="3">explainer_glm &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_glm_model, <span class="dt">data =</span> HR_data)</a>
+<a class="sourceLine" id="cb35-4" data-line-number="4">expl_glm &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_glm, <span class="st">&quot;satisfaction_level&quot;</span>, <span class="st">&quot;pdp&quot;</span>, <span class="dt">trans=</span>logit)</a></code></pre></div>
+<p>In order to compare these models it’s enough to plot all of them into a single chart.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">plot</span>(expl_rf, expl_glm)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-22-1.png" width="672"  /></p>
+</section>
+<section id="accumulated-local-effects-plot" class="level3">
+<h3><span class="header-section-number">2.2.3</span> Accumulated Local Effects Plot</h3>
+<p>As it is presented in the chapter @(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of <span class="math inline">\(x_{-i}\)</span>. In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-10" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-10" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span> for more details).</p>
+<p>Accumulated local effects (ALE) plots (see <strong>ALEPlot</strong> package <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-11" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-11" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span>) solves this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
+<p>Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.</p>
+<p>Estimation of main effects for <code>satisfaction_level</code> is similar to the PDP curves. Here we are using <code>DALEX::single_variable</code> function that is calling <code>ALEPlot::ALEPlot</code> function to calculate ALE curve for variable <code>satisfaction_level</code>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">exel_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;ale&quot;</span>)</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">plot</span>(exel_rf)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-23-1.png" width="672"  /></p>
+<p>It may be useful to compare ALEPlots and PDP plots. Again, it’s simple with the generic DALEX function.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">plot</span>(expl_rf, exel_rf)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-24-1.png" width="672"  /></p>
+</section>
+<section id="individual-conditional-expectation-plot" class="level3">
+<h3><span class="header-section-number">2.2.4</span> Individual Conditional Expectation Plot</h3>
+<p>Individual Conditional Expectations (ICE) may be considered as an extension of the PDP curves (see <strong>ICEbox</strong> package <span class="citation" data-cites="ICEbox">(Goldstein et al. <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2015<span class="marginnote">Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1):44–65. <a href="https://doi.org/10.1080/10618600.2014.907095" class="uri">https://doi.org/10.1080/10618600.2014.907095</a>.</span>)</span>). Instead of plotting expected value over all observations, for ICE we are plotting individual conditional model responses. Average of ICE curves results in PDP curve.</p>
+<p>An ICE curve for observation <span class="math inline">\(k\)</span> over variable <span class="math inline">\(i\)</span> may be defined as</p>
+<p><span class="math display">\[
+ice_k(x_i) = f(x^i, x_k^{-i}; \theta) 
+\]</span></p>
+<p>ICE curves can be plotted with <code>pdp</code> package. Note that curves may be cantered in a given point, this helps in identification of possible interactions.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;pdp&quot;</span>)</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</a>
+<a class="sourceLine" id="cb39-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb39-6" data-line-number="6">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb39-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb39-8" data-line-number="8">part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="st">&quot;satisfaction_level&quot;</span>)</a>
+<a class="sourceLine" id="cb39-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb39-10" data-line-number="10">part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="dt">pred.var =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">ice =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb39-11" data-line-number="11"><span class="kw">plotPartial</span>(part_rf_satisfaction, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data, <span class="dt">alpha =</span> <span class="fl">0.2</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-25-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">autoplot</span>(part_rf_satisfaction, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-25-2.png" width="672"  /></p>
+<p>Or with the <code>ICEbox</code> package.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;ICEbox&quot;</span>)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">part_rf_satisfaction =<span class="st"> </span><span class="kw">ice</span>(<span class="dt">object =</span> HR_rf_model, <span class="dt">X =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>satisfaction_level, </a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">          <span class="dt">predictor =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">frac_to_build =</span> <span class="fl">.1</span>)</a></code></pre></div>
+<pre><code>## ............................................................................................</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">plot</span>(part_rf_satisfaction)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-26-1.png" width="672"  /></p>
+<p>As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the <code>clusterICE</code> function.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">clusterICE</span>(part_rf_satisfaction, <span class="dt">nClusters =</span> <span class="dv">3</span>, <span class="dt">plot_legend =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-27-1.png" width="672"  /></p>
+</section>
+<section id="mering-path-plot" class="level3">
+<h3><span class="header-section-number">2.2.5</span> Mering Path Plot</h3>
+<p>The package <code>ICEbox</code> is not working for factor variables while the <code>pdp</code> package returns plots that are hard to interpret.</p>
+<p>An interesting tool that helps to understand what is happening with factor variables is the <strong>factorMerger</strong> package (see <span class="citation" data-cites="factorMerger">(Sitko and Biecek <label for="tufte-mn-13" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-13" class="margin-toggle">2017<span class="marginnote">Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</span>)</span>).</p>
+<p>Here we have Merging Path Plot for a factor variable <code>sales</code>.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;factorMerger&quot;</span>)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
+<a class="sourceLine" id="cb45-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-28-1.png" width="1152"  /></p>
+<p>Note that you can use the <code>factorMerger</code> package to understand predictions calculated with a black-box model. The random forest model <code>HR_rf_model</code> returns continuous response. But the <code>factorMerger</code> works for such variables as well.</p>
+<p>In the top right panel one may see the distribution of predictions for the selected group.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">HR_data<span class="op">$</span>left_predicted &lt;-<span class="st"> </span><span class="kw">predict</span>(HR_rf_model)</a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb46-3" data-line-number="3">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left_predicted, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
+<a class="sourceLine" id="cb46-4" data-line-number="4">                     <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb46-5" data-line-number="5"><span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>, <span class="dt">responsePanel =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">nodesSpacing =</span> <span class="st">&quot;effects&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-29-1.png" width="1152"  /></p>
+
+</section>
+</section>
+</section>
+<section id="prediction-understanding" class="level1">
+<h1><span class="header-section-number">Chapter 3</span> Prediction understanding</h1>
+<section id="justifications-for-model-predictions" class="level2">
+<h2><span class="header-section-number">3.1</span> Justifications for model predictions</h2>
+<p>Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:</p>
+<ul>
+<li>explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.</li>
+<li>examination of curvature around a specific point (single observation). Can be used to determine the strength of influence onto a final model. Is it an outlier?</li>
+</ul>
+<p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation" data-cites="lime">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-14" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>.</p>
+<section id="basics" class="level3">
+<h3><span class="header-section-number">3.1.1</span> Basics</h3>
+<p>Most ML algorithms do not learn from mistakes. One calculates predictions and there is no room for improvement.</p>
+<p>But! The local predictions can change that! Understanding what causes wrong decisions may lead to model improvements. After all, if our prediction is wrong we shall update the model.</p>
+</section>
+</section>
+<section id="local-interpretable-model-agnostic-visual-explanations" class="level2">
+<h2><span class="header-section-number">3.2</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
+<figure>
+<img src="images/DALEX_live.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
+</figure>
+<p>The <strong>live</strong> package (see <span class="citation" data-cites="live">(Staniak and Biecek <label for="tufte-mn-15" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-15" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemysław Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>.</span>)</span>) may be seen as an extension of the lime method (see <span class="citation" data-cites="lime">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-16" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-16" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>). It is based on <strong>mlr</strong> general framework for training of machine learning models (see more <span class="citation" data-cites="mlr">(Bischl et al. <label for="tufte-mn-17" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-17" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170):1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span>).</p>
+<p>Let’s see an example. We will use the <code>HR_rf_model</code> trained with the <strong>randomForest</strong> package on Human Resources Analytics data.</p>
+<p>Around a selected point we will fit a linear model.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;live&quot;</span>)</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb47-5" data-line-number="5">HR_data<span class="op">$</span>left &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(HR_data<span class="op">$</span>left))</a>
+<a class="sourceLine" id="cb47-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb47-7" data-line-number="7">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data,</a>
+<a class="sourceLine" id="cb47-8" data-line-number="8"><span class="dt">ntree=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb47-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb47-10" data-line-number="10">similar &lt;-<span class="st"> </span><span class="kw">sample_locally</span>(<span class="dt">data =</span> HR_data, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,], <span class="dt">explained_var =</span> <span class="st">&quot;left&quot;</span>, <span class="dt">size =</span> <span class="dv">2000</span>)</a>
+<a class="sourceLine" id="cb47-11" data-line-number="11">similar &lt;-<span class="st"> </span><span class="kw">add_predictions</span>(HR_data, similar, HR_rf_model)</a>
+<a class="sourceLine" id="cb47-12" data-line-number="12">trained &lt;-<span class="st"> </span><span class="kw">fit_explanation</span>( <span class="dt">live_object =</span> similar, <span class="dt">white_box =</span> <span class="st">&quot;regr.lm&quot;</span>, <span class="dt">selection =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p>Fitted model may be plotted with <em>waterfall plot</em> …</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;waterfallplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/live_water-1.png" width="672"  /></p>
+<p>… or <em>forest plot</em> …</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;forestplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/live_forest-1.png" width="672"  /></p>
+<p>For more details consult the following vignette.</p>
+</section>
+<section id="breakdown" class="level2">
+<h2><span class="header-section-number">3.3</span> breakDown</h2>
+<figure>
+<img src="images/DALEX_breakDown.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
+</figure>
+<p>The <code>breakDown</code> package <span class="citation" data-cites="breakDown">(P. Biecek <label for="tufte-mn-18" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-18" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span> explains components of model prediction for a single observation. Right now it’s working for <code>lm</code> and <code>glm</code> models. Break Down Plots are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>.</p>
+<p>Break Down Plots show the contribution of every variable present in the model.</p>
+<p>Let’s see a use case for the <code>wine</code> dataset.</p>
+<p>The problem that we are going to solve is to create a model that predicts wine quality and then use the model and explain it’s prediction for a single wine.</p>
+<p>We start with a linear Gaussian model for <code>quality</code> with three dependent variables <code>citric.acid</code>, <code>sulphates</code>, <code>alcohol</code>.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st">  </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">               <span class="dt">data =</span> wine)</a>
+<a class="sourceLine" id="cb50-3" data-line-number="3">model<span class="op">$</span>coefficients</a></code></pre></div>
+<pre><code>## (Intercept) citric.acid   sulphates     alcohol 
+##   2.2847360   0.1480342   0.4660404   0.3153252</code></pre>
+<p>There are just four model coefficients, so it’s easy to write down the formula for model predictions.</p>
+<p><span class="math display">\[
+\hat y = 2.2847360  + 0.1480342 *  citric.acid + 0.4660404    * sulphates + 0.3153252 * alcohol
+\]</span></p>
+<p>But is it easy to explain prediction for a single observation?</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">new.wine &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">citric.acid =</span> <span class="fl">0.35</span>,</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">                       <span class="dt">sulphates =</span> <span class="fl">0.6</span>,</a>
+<a class="sourceLine" id="cb52-3" data-line-number="3">                       <span class="dt">alcohol =</span> <span class="fl">12.5</span>)</a>
+<a class="sourceLine" id="cb52-4" data-line-number="4"><span class="kw">predict</span>(model, <span class="dt">newdata =</span> new.wine)</a></code></pre></div>
+<pre><code>##        1 
+## 6.557737</code></pre>
+<p>We see, that this wine got higher quality score than the average. But why?</p>
+<p>This is where <code>breakDown</code> package is useful. It takes parts of predictions and visualize them. These parts are being calculated by the <code>predict</code> function with <code>type = &quot;terms&quot;</code>.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">predict</span>(model, <span class="dt">newdata =</span> new.wine, <span class="dt">type =</span> <span class="st">&quot;terms&quot;</span>)</a></code></pre></div>
+<pre><code>##   citric.acid sulphates   alcohol
+## 1 0.002340197 0.0513358 0.6261516
+## attr(,&quot;constant&quot;)
+## [1] 5.877909</code></pre>
+<p>Now it’s easy to see that impact of the predicted score have the high <code>alcohol</code> level in this particular wine.</p>
+<p>Please note, that these values are <em>NOT</em> calculated as x*beta.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">model<span class="op">$</span>coefficients <span class="op">*</span><span class="st"> </span><span class="kw">cbind</span>(<span class="dt">intercept =</span> <span class="dv">1</span>, new.wine)</a></code></pre></div>
+<pre><code>##   intercept citric.acid sulphates  alcohol
+## 1  2.284736  0.05181196 0.2796242 3.941565</code></pre>
+<p>This is because, when we think about effect of an <code>alcohol</code> we would like to compare this particular wine with <em>wine with average alcohol concentration</em> not <em>wine with zero alcohol</em>.</p>
+<p>So, since this particular wine is <span class="math inline">\(1.985733\)</span> units of alcohol stronger than an average wine</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">new.wine<span class="op">$</span>alcohol <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(wine<span class="op">$</span>alcohol)</a></code></pre></div>
+<pre><code>## [1] 1.985733</code></pre>
+<p>thus the final effect of the <code>alcohol</code> on the wine quality will be</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">model<span class="op">$</span>coefficients[<span class="st">&quot;alcohol&quot;</span>] <span class="op">*</span><span class="st"> </span>(new.wine<span class="op">$</span>alcohol <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(wine<span class="op">$</span>alcohol))</a></code></pre></div>
+<pre><code>##   alcohol 
+## 0.6261516</code></pre>
+<p>Same story is true for other variables.</p>
+<p>These calculations are easy to do with <code>breakDown</code> package.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">br &lt;-<span class="st"> </span><span class="kw">broken</span>(model, new.wine, <span class="dt">baseline =</span> <span class="st">&quot;Intercept&quot;</span>)</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3">br</a></code></pre></div>
+<pre><code>##                    contribution
+## alcohol = 12.5            0.626
+## sulphates = 0.6           0.051
+## citric.acid = 0.35        0.002
+## final_prognosis           0.680
+## baseline:  5.877909</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">plot</span>(br)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-37-1.png" width="672"  /></p>
+<section id="model-comparisons-1" class="level3">
+<h3><span class="header-section-number">3.3.1</span> Model Comparisons</h3>
+<p>What if we have two or larger number of models? Not a problem for DALEX!</p>
+<p>Let’s fit a model with 3 variables.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb65-3" data-line-number="3">new.wine &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">citric.acid =</span> <span class="fl">0.35</span>,</a>
+<a class="sourceLine" id="cb65-4" data-line-number="4">                       <span class="dt">sulphates =</span> <span class="fl">0.6</span>,</a>
+<a class="sourceLine" id="cb65-5" data-line-number="5">                       <span class="dt">alcohol =</span> <span class="fl">12.5</span>,</a>
+<a class="sourceLine" id="cb65-6" data-line-number="6">                       <span class="dt">pH =</span> <span class="fl">3.36</span>,</a>
+<a class="sourceLine" id="cb65-7" data-line-number="7">                       <span class="dt">residual.sugar =</span> <span class="fl">4.8</span>)</a>
+<a class="sourceLine" id="cb65-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb65-9" data-line-number="9">wine_lm_model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st">  </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
+<a class="sourceLine" id="cb65-10" data-line-number="10">                     <span class="dt">data =</span> wine)</a>
+<a class="sourceLine" id="cb65-11" data-line-number="11">wine_lm_explainer3 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_lm_model3, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_3v&quot;</span>,</a>
+<a class="sourceLine" id="cb65-12" data-line-number="12">                               <span class="dt">predict_function =</span> stats<span class="op">::</span>predict)</a>
+<a class="sourceLine" id="cb65-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb65-14" data-line-number="14">wine_lm_predict3 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_lm_explainer3, <span class="dt">observation =</span> new.wine)</a>
+<a class="sourceLine" id="cb65-15" data-line-number="15"><span class="kw">plot</span>(wine_lm_predict3)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-38-1.png" width="672"  /></p>
+<p>Let’s fit a second model with 4 variables.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">wine_lm_model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">                     <span class="dt">data =</span> wine)</a>
+<a class="sourceLine" id="cb66-3" data-line-number="3">wine_lm_explainer4 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_lm_model4, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_4v&quot;</span>,</a>
+<a class="sourceLine" id="cb66-4" data-line-number="4">                               <span class="dt">predict_function =</span> stats<span class="op">::</span>predict)</a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb66-6" data-line-number="6">wine_lm_predict4 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_lm_explainer4, <span class="dt">observation =</span> new.wine)</a>
+<a class="sourceLine" id="cb66-7" data-line-number="7"><span class="kw">plot</span>(wine_lm_predict4)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-39-1.png" width="672"  /></p>
+<p>It’s easy to compare these models. Just plot both together side by side.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">plot</span>(wine_lm_predict3, wine_lm_predict4)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-40-1.png" width="672"  /></p>
+<p>You can do this even for non linear models.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">wine_rf_model4 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(quality <span class="op">~</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol, <span class="dt">data =</span> wine)</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">wine_rf_explainer4 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_rf_model4, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_rf&quot;</span>)</a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5">wine_rf_predict4 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_rf_explainer4, <span class="dt">observation =</span> new.wine)</a>
+<a class="sourceLine" id="cb68-6" data-line-number="6"><span class="kw">plot</span>(wine_rf_predict4, wine_lm_predict4, wine_lm_predict3)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-41-1.png" width="672"  /></p>
+
+</section>
+</section>
+</section>
+<section id="reproducibility" class="level1">
+<h1><span class="header-section-number">Chapter 4</span> Reproducibility</h1>
+<p>Packages are changing quite fast, especially these actively developed. Below you will find list of packages that were installed on my computer when I was preparing this documentation.</p>
+<p>It is likely that some of described packages will change names of functions or arguments or structure of results. Use the version listed below to reproduce results form this book.</p>
+<p>Note, that results, models and plots created in are were recorded with the <strong>archivist</strong> package <span class="citation" data-cites="archivist">(P. Biecek and Kosinski <label for="tufte-mn-19" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-19" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11):1–28. <a href="https://doi.org/10.18637/jss.v082.i11" class="uri">https://doi.org/10.18637/jss.v082.i11</a>.</span>)</span>. Use archivist links to retrieve their binary copies directly to your R console.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
+<pre><code>##  setting  value                       
+##  version  R version 3.4.4 (2018-03-15)
+##  system   x86_64, darwin15.6.0        
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  tz       Europe/Warsaw               
+##  date     2018-03-26                  
+## 
+##  package      * version   date      
+##  abind          1.4-5     2016-07-21
+##  agricolae      1.2-8     2017-09-12
+##  ALEPlot        1.0       2017-11-13
+##  AlgDesign      1.1-7.3   2014-10-15
+##  arm            1.9-3     2016-11-27
+##  assertthat     0.2.0     2017-04-11
+##  backports      1.1.2     2017-12-13
+##  base         * 3.4.4     2018-03-15
+##  bayesplot      1.4.0     2017-09-12
+##  BBmisc         1.11      2017-03-10
+##  bindr          0.1       2016-11-13
+##  bindrcpp     * 0.2       2017-06-17
+##  blme           1.0-4     2015-06-14
+##  bookdown       0.5       2017-08-20
+##  boot           1.3-20    2017-08-06
+##  breakDown    * 0.1.5     2018-03-25
+##  broom          0.4.3     2017-11-20
+##  carData        3.0-0     2017-08-28
+##  checkmate      1.8.5     2017-10-24
+##  cli            1.0.0     2017-11-05
+##  cluster        2.0.6     2017-03-10
+##  coda           0.19-1    2016-12-08
+##  codetools      0.2-15    2016-10-05
+##  coin           1.2-2     2017-11-28
+##  colorspace     1.3-2     2016-12-14
+##  combinat       0.0-8     2012-10-29
+##  compiler       3.4.4     2018-03-15
+##  cowplot        0.9.1     2017-11-16
+##  crayon         1.3.4     2017-09-16
+##  DALEX        * 0.2.0     2018-03-25
+##  data.table     1.10.4-3  2017-10-27
+##  datasets     * 3.4.4     2018-03-15
+##  deldir         0.1-14    2017-04-22
+##  devtools       1.13.5    2018-02-18
+##  digest         0.6.15    2018-01-28
+##  dplyr          0.7.4     2017-09-28
+##  DT             0.1       2015-06-09
+##  effects        4.0-0     2017-09-15
+##  evaluate       0.10.1    2017-06-24
+##  expm           0.999-2   2017-03-29
+##  factorMerger * 0.3.6     2018-03-24
+##  forcats        0.3.0     2018-02-19
+##  foreign        0.8-69    2017-06-22
+##  forestmodel  * 0.4.3     2017-04-16
+##  gdata          2.17.0    2015-07-04
+##  ggeffects      0.3.0     2017-11-27
+##  ggplot2      * 2.2.1     2016-12-30
+##  ggpubr         0.1.6     2017-11-14
+##  glmmTMB        0.2.0     2017-12-11
+##  glue           1.2.0     2017-10-29
+##  gmodels        2.16.2    2015-07-22
+##  graphics     * 3.4.4     2018-03-15
+##  grDevices    * 3.4.4     2018-03-15
+##  grid           3.4.4     2018-03-15
+##  gridExtra      2.3       2017-09-09
+##  gtable         0.2.0     2016-02-26
+##  gtools         3.5.0     2015-05-29
+##  haven          1.1.0     2017-07-09
+##  highr          0.6       2016-05-09
+##  htmltools      0.3.6     2017-04-28
+##  htmlwidgets    1.0       2018-01-20
+##  httpuv         1.3.5     2017-07-04
+##  ICEbox       * 1.1.2     2017-07-13
+##  klaR           0.6-12    2014-08-06
+##  knitr          1.20      2018-02-20
+##  labeling       0.3       2014-08-23
+##  lattice        0.20-35   2017-03-25
+##  lazyeval       0.2.0     2016-06-12
+##  LearnBayes     2.15      2014-05-29
+##  live         * 1.3.2     2018-01-25
+##  lme4           1.1-15    2017-12-21
+##  lmtest         0.9-34    2015-06-06
+##  lubridate      1.7.3     2018-02-27
+##  magrittr       1.5       2014-11-22
+##  MASS           7.3-49    2018-02-23
+##  Matrix         1.2-12    2017-11-15
+##  memoise        1.1.0     2017-04-21
+##  merTools       0.3.0     2016-12-12
+##  methods      * 3.4.4     2018-03-15
+##  mime           0.5       2016-07-07
+##  minqa          1.2.4     2014-10-09
+##  mlr          * 2.11      2017-03-15
+##  mnormt         1.5-5     2016-10-15
+##  modelr         0.1.1     2017-07-24
+##  modeltools     0.2-21    2013-09-02
+##  multcomp       1.4-8     2017-11-08
+##  munsell        0.4.3     2016-02-13
+##  mvtnorm        1.0-7     2018-01-25
+##  nlme           3.1-131.1 2018-02-16
+##  nloptr         1.0.4     2014-08-04
+##  nnet           7.3-12    2016-02-02
+##  parallel       3.4.4     2018-03-15
+##  parallelMap    1.3       2015-06-10
+##  ParamHelpers * 1.10      2017-01-05
+##  pdp          * 0.6.0     2017-07-20
+##  pillar         1.1.0     2018-01-14
+##  pkgconfig      2.0.1     2017-03-21
+##  plyr           1.8.4     2016-06-08
+##  prediction     0.2.0     2017-04-19
+##  proxy          0.4-21    2018-01-04
+##  psych          1.7.3.21  2017-03-22
+##  purrr          0.2.4     2017-10-18
+##  pwr            1.2-1     2017-03-25
+##  R6             2.2.2     2017-06-17
+##  randomForest * 4.6-12    2015-10-07
+##  RColorBrewer   1.1-2     2014-12-07
+##  Rcpp           0.12.16   2018-03-13
+##  reshape2       1.4.3     2017-12-11
+##  rlang          0.2.0     2018-02-20
+##  rmarkdown      1.8       2017-11-17
+##  rprojroot      1.2       2017-01-16
+##  rstudioapi     0.7       2017-09-07
+##  sandwich       2.4-0     2017-07-26
+##  scales         0.5.0     2017-08-24
+##  sfsmisc      * 1.1-1     2017-06-08
+##  shiny          1.0.5     2017-08-23
+##  sjlabelled     1.0.5     2017-11-09
+##  sjmisc         2.6.3     2017-11-28
+##  sjPlot       * 2.4.0     2017-10-19
+##  sjstats        0.13.0    2017-11-23
+##  snakecase      0.5.1     2017-09-20
+##  sp             1.2-5     2017-06-29
+##  spData         0.2.6.4   2017-11-12
+##  spdep          0.7-4     2017-11-22
+##  splines        3.4.4     2018-03-15
+##  stats        * 3.4.4     2018-03-15
+##  stats4         3.4.4     2018-03-15
+##  stringdist     0.9.4.7   2018-03-13
+##  stringi        1.1.7     2018-03-12
+##  stringr        1.3.0     2018-02-19
+##  survey         3.30-3    2014-08-15
+##  survival       2.41-3    2017-04-04
+##  TH.data        1.0-8     2017-01-23
+##  tibble         1.4.2     2018-01-22
+##  tidyr          0.8.0     2018-01-29
+##  tidyselect     0.2.4     2018-02-26
+##  TMB            1.7.12    2017-12-11
+##  tools          3.4.4     2018-03-15
+##  tufte          0.2       2016-02-07
+##  utils        * 3.4.4     2018-03-15
+##  withr          2.1.0     2017-11-01
+##  xgboost      * 0.6.4.1   2018-01-23
+##  xtable         1.8-2     2016-02-05
+##  yaImpute       1.0-29    2017-12-10
+##  yaml           2.1.18    2018-03-08
+##  zoo            1.8-0     2017-04-12
+##  source                                
+##  cran (@1.4-5)                         
+##  cran (@1.2-8)                         
+##  CRAN (R 3.4.2)                        
+##  CRAN (R 3.2.0)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.0)                        
+##  cran (@1.1.2)                         
+##  local                                 
+##  CRAN (R 3.4.3)                        
+##  cran (@1.11)                          
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.4.4)                        
+##  local (pbiecek/breakDown@7591b59)     
+##  cran (@0.4.3)                         
+##  CRAN (R 3.4.1)                        
+##  cran (@1.8.5)                         
+##  cran (@1.0.0)                         
+##  CRAN (R 3.4.4)                        
+##  cran (@0.19-1)                        
+##  CRAN (R 3.4.4)                        
+##  cran (@1.2-2)                         
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.1.0)                        
+##  local                                 
+##  cran (@0.9.1)                         
+##  CRAN (R 3.4.1)                        
+##  local (pbiecek/DALEX@NA)              
+##  CRAN (R 3.4.2)                        
+##  local                                 
+##  cran (@0.1-14)                        
+##  CRAN (R 3.4.3)                        
+##  cran (@0.6.15)                        
+##  CRAN (R 3.4.2)                        
+##  CRAN (R 3.2.0)                        
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.4.1)                        
+##  cran (@0.999-2)                       
+##  local (geneticsMiNIng/FactorMerger@NA)
+##  cran (@0.3.0)                         
+##  CRAN (R 3.4.4)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.2.0)                        
+##  CRAN (R 3.4.3)                        
+##  CRAN (R 3.4.0)                        
+##  cran (@0.1.6)                         
+##  CRAN (R 3.4.3)                        
+##  cran (@1.2.0)                         
+##  CRAN (R 3.4.0)                        
+##  local                                 
+##  local                                 
+##  local                                 
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.2.3)                        
+##  CRAN (R 3.2.0)                        
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.0)                        
+##  cran (@1.0)                           
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.2.0)                        
+##  cran (@1.20)                          
+##  CRAN (R 3.2.2)                        
+##  CRAN (R 3.4.4)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.2.0)                        
+##  local (MI2DataLab/live@f38ef48)       
+##  cran (@1.1-15)                        
+##  CRAN (R 3.2.0)                        
+##  cran (@1.7.3)                         
+##  CRAN (R 3.2.2)                        
+##  CRAN (R 3.4.4)                        
+##  CRAN (R 3.4.2)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.0)                        
+##  local                                 
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.1.1)                        
+##  cran (@2.11)                          
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.1.2)                        
+##  cran (@1.4-8)                         
+##  CRAN (R 3.2.3)                        
+##  cran (@1.0-7)                         
+##  CRAN (R 3.4.4)                        
+##  CRAN (R 3.2.2)                        
+##  CRAN (R 3.4.4)                        
+##  local                                 
+##  cran (@1.3)                           
+##  cran (@1.10)                          
+##  CRAN (R 3.4.1)                        
+##  cran (@1.1.0)                         
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.0)                        
+##  cran (@0.4-21)                        
+##  CRAN (R 3.4.0)                        
+##  cran (@0.2.4)                         
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.2.0)                        
+##  CRAN (R 3.2.2)                        
+##  cran (@0.12.16)                       
+##  cran (@1.4.3)                         
+##  CRAN (R 3.4.3)                        
+##  cran (@1.8)                           
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.1)                        
+##  cran (@2.4-0)                         
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.4.0)                        
+##  CRAN (R 3.4.1)                        
+##  CRAN (R 3.4.2)                        
+##  CRAN (R 3.4.3)                        
+##  CRAN (R 3.4.2)                        
+##  CRAN (R 3.4.3)                        
+##  CRAN (R 3.4.2)                        
+##  cran (@1.2-5)                         
+##  cran (@0.2.6.4)                       
+##  cran (@0.7-4)                         
+##  local                                 
+##  local                                 
+##  local                                 
+##  cran (@0.9.4.7)                       
+##  cran (@1.1.7)                         
+##  cran (@1.3.0)                         
+##  CRAN (R 3.1.2)                        
+##  CRAN (R 3.4.4)                        
+##  cran (@1.0-8)                         
+##  cran (@1.4.2)                         
+##  cran (@0.8.0)                         
+##  cran (@0.2.4)                         
+##  CRAN (R 3.4.3)                        
+##  local                                 
+##  CRAN (R 3.4.0)                        
+##  local                                 
+##  cran (@2.1.0)                         
+##  CRAN (R 3.4.3)                        
+##  CRAN (R 3.2.3)                        
+##  CRAN (R 3.4.3)                        
+##  cran (@2.1.18)                        
+##  CRAN (R 3.4.0)</code></pre>
+
+</section>
+<p style="text-align: center;">
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>
