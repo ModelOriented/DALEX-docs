@@ -1,9 +1,0 @@
-# Model performance
-
-## ROC
-
-## Lift curve
-
-## halfnorm plot
-
-

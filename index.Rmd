@@ -1,6 +1,6 @@
 --- 
 title: "DALEX: Descriptive mAchine Learning EXplanations"
-author: "MI2DataLab"
+author: "Przemysław Biecek"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 split_by: section+number

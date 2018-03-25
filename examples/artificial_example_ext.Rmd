@@ -1,0 +1,82 @@
+---
+title: "Artificial example"
+author: "Przemyslaw Biecek"
+output:
+  html_document
+---
+
+# Create a dataset
+
+```{r warning=FALSE, message=FALSE}
+set.seed(13)
+p <- 10
+beta    <- 1
+epsilon <- 1/2
+N <- 1000
+Ntest <- 10000
+
+library(randomForest)
+library(breakDown)
+library(DALEX)
+
+xx <- matrix(runif((N + Ntest)*p), ncol = p)
+
+y <- beta*(abs(xx[,1] - 0.5) < 0.25) +
+  beta*rowSums(xx[,-1]) +
+  epsilon*runif(N + Ntest)
+
+df <- data.frame(y, X1 = xx[,1], xx[,-1])
+dfTest <- df[(1 + N):(N + Ntest),]
+df <- df[1:N,]
+```
+
+# Fit models, create explainers
+
+```{r warning=FALSE, message=FALSE}
+mlm <- lm(y~., df)
+mrf <- randomForest(y~., df)
+
+print(mean((predict(mlm, dfTest) - dfTest$y)^2))
+print(mean((predict(mrf, dfTest) - dfTest$y)^2))
+
+exp_ml <- DALEX::explain(mlm, data = dfTest, y = dfTest$y)
+exp_rf <- DALEX::explain(mrf, data = dfTest, y = dfTest$y)
+```
+
+# Variable importance
+
+```{r warning=FALSE, message=FALSE}
+v1 <- variable_dropout(exp_ml)
+v2 <- variable_dropout(exp_rf)
+plot(v1, v2, max_vars = 20)
+```
+
+# Single variables
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+v1 <- single_variable(exp_ml, "X1")
+v2 <- single_variable(exp_rf, "X1")
+plot(v1, v2) + ggtitle("Variable x1")
+
+v1 <- single_variable(exp_ml, "X2")
+v2 <- single_variable(exp_rf, "X2")
+plot(v1, v2) + ggtitle("Variable x2")
+
+v1 <- single_variable(exp_ml, "X3")
+v2 <- single_variable(exp_rf, "X3")
+plot(v1, v2) + ggtitle("Variable x3")
+
+v1 <- single_variable(exp_ml, "X4")
+v2 <- single_variable(exp_rf, "X4")
+plot(v1, v2) + ggtitle("Variable x4")
+```
+
+# Raw relations
+
+```{r}
+ggplot(df, aes(X1, y)) + geom_point() + geom_smooth(se=FALSE)
+ggplot(df, aes(X2, y)) + geom_point() + geom_smooth(se=FALSE)
+ggplot(df, aes(X3, y)) + geom_point() + geom_smooth(se=FALSE)
+ggplot(df, aes(X4, y)) + geom_point() + geom_smooth(se=FALSE)
+```
