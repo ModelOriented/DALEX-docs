@@ -13,6 +13,8 @@ bookdown::gitbook:
 bookdown::tufte_html_book:
   toc: yes
   css: toc.css
+  config:
+    split_by: section+number
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex

@@ -126,25 +126,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#trivia"><span class="toc-section-number">1.5</span> Trivia</a></li>
 </ul></li>
 <li class="has-sub"><a href="#model-understanding"><span class="toc-section-number">2</span> Model understanding</a><ul>
-<li class="has-sub"><a href="#feature-importance"><span class="toc-section-number">2.1</span> Feature importance</a><ul>
-<li><a href="#drop-out-plots"><span class="toc-section-number">2.1.1</span> Drop-out plots</a></li>
-<li><a href="#forest-plots"><span class="toc-section-number">2.1.2</span> Forest plots</a></li>
+<li><a href="#model-performance"><span class="toc-section-number">2.1</span> Model performance</a></li>
+<li class="has-sub"><a href="#feature-importance"><span class="toc-section-number">2.2</span> Feature importance</a><ul>
+<li><a href="#drop-out-plots"><span class="toc-section-number">2.2.1</span> Drop-out plots</a></li>
+<li><a href="#forest-plots"><span class="toc-section-number">2.2.2</span> Forest plots</a></li>
 </ul></li>
-<li class="has-sub"><a href="#variable-response"><span class="toc-section-number">2.2</span> Variable response</a><ul>
-<li><a href="#pdpchapter"><span class="toc-section-number">2.2.1</span> Partial Dependence Plot</a></li>
-<li><a href="#model-comparisons"><span class="toc-section-number">2.2.2</span> Model Comparisons</a></li>
-<li><a href="#accumulated-local-effects-plot"><span class="toc-section-number">2.2.3</span> Accumulated Local Effects Plot</a></li>
-<li><a href="#individual-conditional-expectation-plot"><span class="toc-section-number">2.2.4</span> Individual Conditional Expectation Plot</a></li>
-<li><a href="#mering-path-plot"><span class="toc-section-number">2.2.5</span> Mering Path Plot</a></li>
+<li class="has-sub"><a href="#variable-response"><span class="toc-section-number">2.3</span> Variable response</a><ul>
+<li><a href="#pdpchapter"><span class="toc-section-number">2.3.1</span> Partial Dependence Plot</a></li>
+<li><a href="#model-comparisons"><span class="toc-section-number">2.3.2</span> Model Comparisons</a></li>
+<li><a href="#accumulated-local-effects-plot"><span class="toc-section-number">2.3.3</span> Accumulated Local Effects Plot</a></li>
+<li><a href="#individual-conditional-expectation-plot"><span class="toc-section-number">2.3.4</span> Individual Conditional Expectation Plot</a></li>
+<li><a href="#mering-path-plot"><span class="toc-section-number">2.3.5</span> Mering Path Plot</a></li>
 </ul></li>
 </ul></li>
 <li class="has-sub"><a href="#prediction-understanding"><span class="toc-section-number">3</span> Prediction understanding</a><ul>
-<li class="has-sub"><a href="#justifications-for-model-predictions"><span class="toc-section-number">3.1</span> Justifications for model predictions</a><ul>
-<li><a href="#basics"><span class="toc-section-number">3.1.1</span> Basics</a></li>
+<li><a href="#outlier-detection"><span class="toc-section-number">3.1</span> Outlier detection</a></li>
+<li class="has-sub"><a href="#prediction-breakdown"><span class="toc-section-number">3.2</span> Prediction breakdown</a><ul>
+<li><a href="#basics"><span class="toc-section-number">3.2.1</span> Basics</a></li>
 </ul></li>
-<li><a href="#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">3.2</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
-<li class="has-sub"><a href="#breakdown"><span class="toc-section-number">3.3</span> breakDown</a><ul>
-<li><a href="#model-comparisons-1"><span class="toc-section-number">3.3.1</span> Model Comparisons</a></li>
+<li><a href="#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">3.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
+<li class="has-sub"><a href="#breakdown"><span class="toc-section-number">3.4</span> breakDown</a><ul>
+<li><a href="#model-comparisons-1"><span class="toc-section-number">3.4.1</span> Model Comparisons</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#reproducibility"><span class="toc-section-number">4</span> Reproducibility</a></li>
@@ -482,11 +484,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="model-understanding" class="level1">
 <h1><span class="header-section-number">Chapter 2</span> Model understanding</h1>
+<section id="model-performance" class="level2">
+<h2><span class="header-section-number">2.1</span> Model performance</h2>
+</section>
 <section id="feature-importance" class="level2">
-<h2><span class="header-section-number">2.1</span> Feature importance</h2>
+<h2><span class="header-section-number">2.2</span> Feature importance</h2>
 <p>Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?</p>
 <section id="drop-out-plots" class="level3">
-<h3><span class="header-section-number">2.1.1</span> Drop-out plots</h3>
+<h3><span class="header-section-number">2.2.1</span> Drop-out plots</h3>
 <p>Variable drop-outs are calculated via permutations. Simply the loss function is is compared between the full model and the model with single variable being permuted.</p>
 <p>As a additional point for comparison a <code>_baseline_</code> is calculated as a loss in model with permuted outcomes. This shall be highest possible loss.</p>
 <p>Let’s see how it’s working for a random forest model.</p>
@@ -565,7 +570,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="672"  /></p>
 </section>
 <section id="forest-plots" class="level3">
-<h3><span class="header-section-number">2.1.2</span> Forest plots</h3>
+<h3><span class="header-section-number">2.2.2</span> Forest plots</h3>
 <p><a href="https://en.wikipedia.org/wiki/Forest_plot">Forest plots</a> were initially used in the meta analysis to visualise effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure like these created with <code>lm</code> or <code>glm</code> functions.</p>
 <p>There are various implementations of forest plots in R. Below we present examples for a glm model.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
@@ -596,7 +601,7 @@ Figure 2.2: Forest plot created with sjPlot package
 </section>
 </section>
 <section id="variable-response" class="level2">
-<h2><span class="header-section-number">2.2</span> Variable response</h2>
+<h2><span class="header-section-number">2.3</span> Variable response</h2>
 <figure>
 <img src="images/DALEX_single_variable.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
 </figure>
@@ -604,7 +609,7 @@ Figure 2.2: Forest plot created with sjPlot package
 <p>In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like.</p>
 <p>Methods presented below help to understand the conditional structure of a model.</p>
 <section id="pdpchapter" class="level3">
-<h3><span class="header-section-number">2.2.1</span> Partial Dependence Plot</h3>
+<h3><span class="header-section-number">2.3.1</span> Partial Dependence Plot</h3>
 <p>Partial Dependence Plots (see <strong>pdp</strong> package <span class="citation" data-cites="pdp">(Greenwell <label for="tufte-mn-9" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-9" class="margin-toggle">2017<span class="marginnote">Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1):421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</span>)</span>) for a black box <span class="math inline">\(f(x; \theta)\)</span> calculates the expected output given a selected variable.</p>
 <p><span class="math display">\[
 p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
@@ -642,7 +647,7 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/ad0f1699&quot;)</span></a></code></pre></div>
 </section>
 <section id="model-comparisons" class="level3">
-<h3><span class="header-section-number">2.2.2</span> Model Comparisons</h3>
+<h3><span class="header-section-number">2.3.2</span> Model Comparisons</h3>
 <p>Marginal response plots are very useful in comparisons of different models. Let’s fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.</p>
 <p>Then we can use PDP plots to compare these models. Random Forest Model was fitted in the previous chapter. Here we are training remaining models.</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
@@ -663,7 +668,7 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <p><img src="DALEX_files/figure-html/unnamed-chunk-22-1.png" width="672"  /></p>
 </section>
 <section id="accumulated-local-effects-plot" class="level3">
-<h3><span class="header-section-number">2.2.3</span> Accumulated Local Effects Plot</h3>
+<h3><span class="header-section-number">2.3.3</span> Accumulated Local Effects Plot</h3>
 <p>As it is presented in the chapter @(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of <span class="math inline">\(x_{-i}\)</span>. In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-10" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-10" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span> for more details).</p>
 <p>Accumulated local effects (ALE) plots (see <strong>ALEPlot</strong> package <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-11" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-11" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span>) solves this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
 <p>Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.</p>
@@ -677,7 +682,7 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <p><img src="DALEX_files/figure-html/unnamed-chunk-24-1.png" width="672"  /></p>
 </section>
 <section id="individual-conditional-expectation-plot" class="level3">
-<h3><span class="header-section-number">2.2.4</span> Individual Conditional Expectation Plot</h3>
+<h3><span class="header-section-number">2.3.4</span> Individual Conditional Expectation Plot</h3>
 <p>Individual Conditional Expectations (ICE) may be considered as an extension of the PDP curves (see <strong>ICEbox</strong> package <span class="citation" data-cites="ICEbox">(Goldstein et al. <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2015<span class="marginnote">Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1):44–65. <a href="https://doi.org/10.1080/10618600.2014.907095" class="uri">https://doi.org/10.1080/10618600.2014.907095</a>.</span>)</span>). Instead of plotting expected value over all observations, for ICE we are plotting individual conditional model responses. Average of ICE curves results in PDP curve.</p>
 <p>An ICE curve for observation <span class="math inline">\(k\)</span> over variable <span class="math inline">\(i\)</span> may be defined as</p>
 <p><span class="math display">\[
@@ -710,7 +715,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <p><img src="DALEX_files/figure-html/unnamed-chunk-27-1.png" width="672"  /></p>
 </section>
 <section id="mering-path-plot" class="level3">
-<h3><span class="header-section-number">2.2.5</span> Mering Path Plot</h3>
+<h3><span class="header-section-number">2.3.5</span> Mering Path Plot</h3>
 <p>The package <code>ICEbox</code> is not working for factor variables while the <code>pdp</code> package returns plots that are hard to interpret.</p>
 <p>An interesting tool that helps to understand what is happening with factor variables is the <strong>factorMerger</strong> package (see <span class="citation" data-cites="factorMerger">(Sitko and Biecek <label for="tufte-mn-13" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-13" class="margin-toggle">2017<span class="marginnote">Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</span>)</span>).</p>
 <p>Here we have Merging Path Plot for a factor variable <code>sales</code>.</p>
@@ -733,8 +738,11 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 </section>
 <section id="prediction-understanding" class="level1">
 <h1><span class="header-section-number">Chapter 3</span> Prediction understanding</h1>
-<section id="justifications-for-model-predictions" class="level2">
-<h2><span class="header-section-number">3.1</span> Justifications for model predictions</h2>
+<section id="outlier-detection" class="level2">
+<h2><span class="header-section-number">3.1</span> Outlier detection</h2>
+</section>
+<section id="prediction-breakdown" class="level2">
+<h2><span class="header-section-number">3.2</span> Prediction breakdown</h2>
 <p>Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:</p>
 <ul>
 <li>explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.</li>
@@ -742,13 +750,13 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 </ul>
 <p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation" data-cites="lime">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-14" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>.</p>
 <section id="basics" class="level3">
-<h3><span class="header-section-number">3.1.1</span> Basics</h3>
+<h3><span class="header-section-number">3.2.1</span> Basics</h3>
 <p>Most ML algorithms do not learn from mistakes. One calculates predictions and there is no room for improvement.</p>
 <p>But! The local predictions can change that! Understanding what causes wrong decisions may lead to model improvements. After all, if our prediction is wrong we shall update the model.</p>
 </section>
 </section>
 <section id="local-interpretable-model-agnostic-visual-explanations" class="level2">
-<h2><span class="header-section-number">3.2</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
+<h2><span class="header-section-number">3.3</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
 <figure>
 <img src="images/DALEX_live.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
 </figure>
@@ -776,7 +784,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <p>For more details consult the following vignette.</p>
 </section>
 <section id="breakdown" class="level2">
-<h2><span class="header-section-number">3.3</span> breakDown</h2>
+<h2><span class="header-section-number">3.4</span> breakDown</h2>
 <figure>
 <img src="images/DALEX_breakDown.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
 </figure>
@@ -835,7 +843,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">plot</span>(br)</a></code></pre></div>
 <p><img src="DALEX_files/figure-html/unnamed-chunk-37-1.png" width="672"  /></p>
 <section id="model-comparisons-1" class="level3">
-<h3><span class="header-section-number">3.3.1</span> Model Comparisons</h3>
+<h3><span class="header-section-number">3.4.1</span> Model Comparisons</h3>
 <p>What if we have two or larger number of models? Not a problem for DALEX!</p>
 <p>Let’s fit a model with 3 variables.</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>

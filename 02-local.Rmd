@@ -1,6 +1,8 @@
 # Prediction understanding
 
-## Justifications for model predictions
+## Outlier detection
+
+## Prediction breakdown
 
 Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:
 

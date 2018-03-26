@@ -1,5 +1,7 @@
 # Model understanding
 
+## Model performance
+
 ## Feature importance
 
 Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?
