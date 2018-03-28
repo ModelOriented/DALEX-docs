@@ -1,0 +1,104 @@
+# DALEX architecture {#architecture}
+
+
+
+[@Strumbelj], [@nnet_vis], [@magix], [@Zeiler_Fergus_2014]
+
+## Notation
+
+This book describes explainers for different machine learning models. Some of these explainers are created by different research groups with different applications in mind.
+
+To keep the notation consistent:
+
+- $x = (x_1, ..., x_p)$ stands for a vector of $p$ variables/predictors. 
+- $y$ stands for a vector with target variable. In some applications it will be a continuous variable in others it will be a binary variable.
+- $n$ stands for number of observations.
+- $f(x, \theta)$ stands for a model. We are considering models that are characterized by a set of parameters $\theta$. In some applications $\theta$ is a low level space of parameters - nice parametric models, in some applications $\theta$ may have a very complex structure.
+- $\lambda$ stands for model meta-parameters which are not being directly optimized (like number of trees, max depth, some penalties etc.).
+- $g(x)$ stands for a function that pre-process variables. In some applications it may be a standardisation or other pre-processing. 
+
+
+![](images/model01.jpg)
+
+
+## Use case - Human Resources Analytics
+
+To ilustrate applications of DALEX to binary classification problems we will use a dataset from Kaggle competition [Human Resources Analytics]( https://www.kaggle.com/ludobenistant/hr-analytics/data). This dataset is avaliable in the **breakDown** package [@breakDown].
+
+```{r eval=FALSE}
+library("breakDown")
+head(HR_data)
+```
+
+```{r hr_data, echo=FALSE}
+library("breakDown")
+knitr::kable(
+  head(HR_data),
+  caption = 'HR_data dataset from Kaggle competition Human Resources Analytics'
+  )
+```
+
+### Logistic regression
+
+In the following chapters to present explainers for logistic regression models we will use `HR_glm_model`.
+
+```{r}
+HR_glm_model <- glm(left~., data = HR_data, family = "binomial")
+summary(HR_glm_model)
+```
+
+Models used in this doccumentation are accessible via **archivist** package. To download the `HR_glm_model` model use the following instruction. 
+```
+archivist::aread("pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234")
+```
+
+### Random forest
+
+In the following chapters to present explainers for random forest models we will use `HR_fr_model`.
+
+```{r}
+library("randomForest")
+set.seed(1313)
+HR_data$left <- factor(HR_data$left)
+HR_rf_model <- randomForest(left~., data = HR_data, ntree = 100)
+HR_rf_model
+```
+
+Models used in this doccumentation are accessible via **archivist** package. To download the `HR_rf_model` model use the following instruction. 
+```
+archivist::aread("pbiecek/DALEX/arepo/419d550a92fab6a5f28650130991e2cd")
+```
+
+
+## Use case - Wine quality
+
+To ilustrate applications of DALEX to regression problems we will use a Wine quality dataset from Kaggle competition [UC Irvine Machine Learning Repository](http://mlr.cs.umass.edu/ml/). 
+
+```{r eval=FALSE}
+url <- 'https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv'
+wine <- read.table(url, header = TRUE, sep = ";")
+head(wine)
+```
+
+```{r wineQuality, echo=FALSE}
+url <- 'https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv'
+wine <- read.table(url, header = TRUE, sep = ";")
+knitr::kable(
+  head(wine),
+  caption = 'Wine quality dataset from UC Irvine Machine Learning Repository'
+  )
+```
+
+### Linear regression
+
+In the following chapters to present explainers for gaussian regression models we will use `wine_lm_model`.
+
+```{r}
+wine_lm_model <- lm(quality ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + chlorides + free.sulfur.dioxide + total.sulfur.dioxide + density + pH + sulphates + alcohol,
+               data = wine)
+```
+
+Models used in this doccumentation are accessible via **archivist** package. To download the `wine_lm_model` model use the following instruction. 
+```
+archivist::aread("pbiecek/DALEX/arepo/b99a3d58016e2677221019652cff047f")
+```

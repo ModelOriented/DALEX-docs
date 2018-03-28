@@ -1,0 +1,313 @@
+# Model understanding  {#modelUnderstanding}
+
+
+
+Machine Learning models are widely used and have various applications in classification or regression tasks. Due to increasing computational power, availability of new data sources and new methods, ML models are more and more complex. Models created with techniques like boosting, bagging of neural networks are true black boxes. It is hard to trace the link between input variables and model outcomes. They are use because of high performance, but lack of interpretability is one of their weakest sides.
+
+In many applications we need to know, understand or prove how input variables are used in the model and what impact do they have on final model prediction.
+DALEX is a set of tools that help to understand how complex models are working.
+
+
+## Model performance
+
+## Feature importance
+
+Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?
+
+### Drop-out plots
+
+Variable drop-outs are calculated via permutations. Simply the loss function is is compared between the full model and the model with single variable being permuted. 
+
+As a additional point for comparison a `_baseline_` is calculated as a loss in model with permuted outcomes. This shall be highest possible loss.
+
+Let's see how it's working for a random forest model.
+
+```{r}
+library("DALEX")
+library("breakDown")
+library("randomForest")
+HR_rf_model <- randomForest(left~., data = HR_data, ntree = 100)
+HR_rf_model
+explainer_rf  <- explain(HR_rf_model, data = HR_data, y = HR_data$left)
+explainer_rf
+vd_rf <- variable_dropout(explainer_rf, type = "raw")
+vd_rf
+```
+
+Now we can plot these losses. Note that in the plot beow you see not only the variable importance, but also you see how the whole model works.
+
+```{r, message=FALSE, warning=FALSE, fig.height=3}
+plot(vd_rf)
+```
+
+And here we have similar example for glm model.
+
+```{r, message=FALSE, warning=FALSE, fig.height=3}
+HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
+explainer_glm <- explain(HR_glm_model, data = HR_data, y = HR_data$left)
+logit <- function(x) exp(x)/(1+exp(x))
+vd_glm <- variable_dropout(explainer_glm, type = "raw",
+                        loss_function = function(observed, predicted) sum((observed - logit(predicted))^2))
+vd_glm
+plot(vd_glm)
+```
+
+And for xgboost model.
+
+```{r, message=FALSE, warning=FALSE, fig.height=3}
+library("xgboost")
+model_martix_train <- model.matrix(left~.-1, breakDown::HR_data)
+data_train <- xgb.DMatrix(model_martix_train, label = breakDown::HR_data$left)
+param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
+              objective = "binary:logistic", eval_metric = "auc")
+HR_xgb_model <- xgb.train(param, data_train, nrounds = 50)
+explainer_xgb <- explain(HR_xgb_model, data = model_martix_train, y = HR_data$left, label = "xgboost")
+vd_xgb <- variable_dropout(explainer_xgb, type = "raw")
+vd_xgb
+plot(vd_xgb)
+```
+
+Of course you can plot all these models in a single plot. Then it is much easier to compare variable importances in different models.
+
+```{r, message=FALSE, warning=FALSE, fig.height=6}
+plot(vd_rf, vd_glm, vd_xgb)
+```
+
+*NOTE:* If you like to have all importances hooked to 0, you can do this as well
+
+```{r, message=FALSE, warning=FALSE, fig.height=6}
+vd_rf <- variable_dropout(explainer_rf, type = "difference")
+vd_glm <- variable_dropout(explainer_glm, type = "difference",
+                        loss_function = function(observed, predicted) sum((observed - logit(predicted))^2))
+vd_xgb <- variable_dropout(explainer_xgb, type = "difference")
+plot(vd_rf, vd_glm, vd_xgb)
+```
+
+### Forest plots
+
+[Forest plots](https://en.wikipedia.org/wiki/Forest_plot) were initially used in the meta analysis to visualise effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure like these created with `lm` or `glm` functions.
+
+There are various implementations of forest plots in R. Below we present examples for a glm model.
+
+```{r}
+library("breakDown")
+HR_glm_model <- glm(left~., data = HR_data, family = "binomial")
+
+
+#HR_glm_model <- archivist::aread("pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234")
+```
+
+In the package **forestmodel** (see [@forestmodel]) one can use `forest_model()` function to draw a forest plot. This package is based on the **broom** package (see [@broom]) and this is why it handles a large variety of different regression models. An example for `glm`.
+
+```{r forestmodel, fig.width=10, fig.width=8, fig.cap='Forest plot created with forestmodel package'}
+library("forestmodel")
+forest_model(HR_glm_model)
+```
+
+In the package **sjPlot** (see [@sjPlot]) one can use `sjp.*()` to visualise structure of a `*` model or a wrapper `plot_model()`. Here is an example for `glm` model.
+
+```{r sjpglm, fig.width=10, fig.width=8, fig.cap='Forest plot created with sjPlot package'}
+library("sjPlot")
+plot_model(HR_glm_model, type = "est", sort.est = TRUE)
+```
+
+**Note!** 
+
+The **forestmodel** package handles factor variables in a better way while the plots from **sjPlot** are easier to read.
+
+
+## Variable response
+
+![Cheatsheet](images/DALEX_single_variable.png)
+
+The dimension of input $x$ for black box models is usually high (large $p$). But in many cases small number of variables play important role in the model OR there are some reasons to believe that variables work in an additive fashion/low-level interactions in the model.
+
+In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like. 
+
+Methods presented below help to understand the conditional structure of a model.
+
+### Partial Dependence Plot {#pdpchapter}
+
+Partial Dependence Plots (see **pdp** package [@pdp]) for a black box $f(x; \theta)$ calculates the expected output given a selected variable.
+
+$$
+p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
+$$
+
+Of course this expectation cannot be calculated directly as we do not know fully the $f()$ neither the distribution of $x_{-i}$. This value is estimated by 
+
+$$
+\hat p_i(x_i) = \frac{1}{n} \sum_{j=1}^{n} f(x^i_j, x_j^{-i}, \hat \theta) 
+$$
+
+
+Let's see an example for the model `HR_rf_model`. Below we are using `DALEX::single_variable` function that is calling   `pdp::partial` function to calculate pdp curve for variable `satisfaction_level`. Then the curve is plotted with generic `plot.single_variable_explainer()` function.
+
+Marginal response plots are created in four steps.
+
+1. We need to fit model. For example a Random Forest model.
+
+```{r, message=FALSE, warning=FALSE}
+library("randomForest")
+library("breakDown")
+
+HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
+# a79f3c7ec27499fb91e46ee70d423ac8
+# archivist::aread("pbiecek/DALEX/arepo/a79f3c7ec27")
+```
+
+2. We need to create an explainer. It's an interface that can be used to explain a black-box model.
+
+```{r, message=FALSE, warning=FALSE}
+library("DALEX")
+explainer_rf  <- explain(HR_rf_model, data = HR_data)
+```
+
+3. Now we can calculate the marginal response with the PDP method.
+
+```{r, message=FALSE, warning=FALSE}
+expl_rf  <- single_variable(explainer_rf, variable =  "satisfaction_level", type = "pdp")
+```
+
+4. And we are ready to plot it.
+
+```{r, message=FALSE, warning=FALSE}
+plot(expl_rf)
+# ad0f1699de646c78a46a3bf23aeea799
+# archivist::aread("pbiecek/DALEX/arepo/ad0f1699")
+```
+
+
+### Model Comparisons
+
+Marginal response plots are very useful in comparisons of different models. Let's fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.
+
+Then we can use PDP plots to compare these models. Random Forest Model was fitted in the previous chapter. Here we are training remaining models.
+
+```{r, message=FALSE, warning=FALSE}
+HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
+
+library("xgboost")
+model_martix_train <- model.matrix(left~.-1, breakDown::HR_data)
+data_train <- xgb.DMatrix(model_martix_train, label = breakDown::HR_data$left)
+param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
+              objective = "binary:logistic", eval_metric = "auc")
+HR_xgb_model <- xgb.train(param, data_train, nrounds = 50)
+```
+
+Models are trained. Now we can create explainers and single variable explanations
+
+```{r}
+logit <- function(x) exp(x)/(1+exp(x))
+
+explainer_glm <- explain(HR_glm_model, data = HR_data)
+expl_glm <- single_variable(explainer_glm, "satisfaction_level", "pdp", trans=logit)
+```
+
+In order to compare these models it's enough to plot all of them into a single chart.
+
+```{r}
+plot(expl_rf, expl_glm)
+```
+
+### Accumulated Local Effects Plot
+
+As it is presented in the chapter \@(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of $x_{-i}$. 
+In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see [@ALEPlot] for more details).
+
+Accumulated local effects (ALE) plots (see **ALEPlot** package [@ALEPlot]) solves this problem by using conditional distribution $x_{-i}|x_i = x_i^*$. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).
+
+Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.
+
+Estimation of main effects for `satisfaction_level` is similar to the PDP curves. Here we are using `DALEX::single_variable` function that is calling   `ALEPlot::ALEPlot` function to calculate ALE curve for variable `satisfaction_level`. 
+
+```{r, message=FALSE, warning=FALSE}
+exel_rf  <- single_variable(explainer_rf, variable = "satisfaction_level", type = "ale")
+
+plot(exel_rf)
+```
+
+It may be useful to compare ALEPlots and PDP plots.
+Again, it's simple with the generic DALEX function.
+
+```{r, message=FALSE, warning=FALSE}
+plot(expl_rf, exel_rf)
+```
+
+### Individual Conditional Expectation Plot
+
+Individual Conditional Expectations (ICE) may be considered as an extension of the PDP curves (see **ICEbox** package [@ICEbox]).
+Instead of plotting expected value over all observations, for ICE we are plotting individual conditional model responses. Average of ICE curves results in PDP curve.
+
+An ICE curve for observation $k$ over variable $i$ may be defined as
+
+$$
+ice_k(x_i) = f(x^i, x_k^{-i}; \theta) 
+$$
+
+ICE curves can be plotted with `pdp` package. Note that curves may be cantered in a given point, this helps in identification of possible interactions.
+
+```{r, message=FALSE, warning=FALSE}
+library("pdp")
+library("randomForest")
+library("breakDown")
+library("ggplot2")
+
+HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
+
+part_rf_satisfaction <- partial(HR_rf_model, "satisfaction_level")
+
+part_rf_satisfaction <- partial(HR_rf_model, pred.var = "satisfaction_level", ice = TRUE)
+plotPartial(part_rf_satisfaction, rug = TRUE, train = HR_data, alpha = 0.2)
+autoplot(part_rf_satisfaction, center = TRUE, alpha = 0.2, rug = TRUE, train = HR_data)
+```
+
+Or with the `ICEbox` package.
+
+```{r, message=FALSE, warning=FALSE}
+library("ICEbox")
+part_rf_satisfaction = ice(object = HR_rf_model, X = HR_data, y = HR_data$satisfaction_level, 
+          predictor = "satisfaction_level", frac_to_build = .1)
+plot(part_rf_satisfaction)
+```
+
+As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the `clusterICE` function.
+
+```{r, message=FALSE, warning=FALSE}
+clusterICE(part_rf_satisfaction, nClusters = 3, plot_legend = TRUE, center = TRUE)
+```
+
+
+
+### Mering Path Plot
+
+The package `ICEbox` is not working for factor variables while the `pdp` package returns plots that are hard to interpret.
+
+An interesting tool that helps to understand what is happening with factor variables is the **factorMerger** package (see [@factorMerger]).
+
+Here we have Merging Path Plot for a factor variable `sales`.
+
+```{r, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+library("factorMerger")
+path <- mergeFactors(HR_data$left, HR_data$sales, method = "fast-adaptive", 
+                     family = "binomial", abbreviate = FALSE)
+plot(path, panel = "response") + theme_mi2()
+```
+
+Note that you can use the `factorMerger` package to understand predictions calculated with a black-box model. The random forest model `HR_rf_model` returns continuous response. But the `factorMerger` works for such variables as well.
+
+In the top right panel one may see the distribution of predictions for the selected group.
+
+```{r, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+
+HR_data$left_predicted <- predict(HR_rf_model)
+
+path <- mergeFactors(HR_data$left_predicted, HR_data$sales, method = "fast-adaptive", 
+                     abbreviate = FALSE)
+plot(path, panel = "response", responsePanel = "boxplot", nodesSpacing = "effects") + theme_mi2()
+```
+
+
+
+
+

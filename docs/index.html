@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-03-26" />
+<meta name="date" content="2018-03-28" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -113,43 +113,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="TOC">
 <ul>
-<li class="has-sub"><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a><ul>
-<li><a href="#motivation"><span class="toc-section-number">1.1</span> Motivation</a></li>
-<li><a href="#notation"><span class="toc-section-number">1.2</span> Notation</a></li>
-<li class="has-sub"><a href="#use-case---human-resources-analytics"><span class="toc-section-number">1.3</span> Use case - Human Resources Analytics</a><ul>
-<li><a href="#logistic-regression"><span class="toc-section-number">1.3.1</span> Logistic regression</a></li>
-<li><a href="#random-forest"><span class="toc-section-number">1.3.2</span> Random forest</a></li>
-</ul></li>
-<li class="has-sub"><a href="#use-case---wine-quality"><span class="toc-section-number">1.4</span> Use case - Wine quality</a><ul>
-<li><a href="#linear-regression"><span class="toc-section-number">1.4.1</span> Linear regression</a></li>
-</ul></li>
+<li class="has-sub"><a href="#motivation"><span class="toc-section-number">1</span> Motivation</a><ul>
+<li><a href="#why-dalex"><span class="toc-section-number">1.1</span> Why DALEX?</a></li>
+<li><a href="#to-validate"><span class="toc-section-number">1.2</span> To validate</a></li>
+<li><a href="#to-understand"><span class="toc-section-number">1.3</span> To understand</a></li>
+<li><a href="#to-improve"><span class="toc-section-number">1.4</span> To improve</a></li>
 <li><a href="#trivia"><span class="toc-section-number">1.5</span> Trivia</a></li>
 </ul></li>
-<li class="has-sub"><a href="#model-understanding"><span class="toc-section-number">2</span> Model understanding</a><ul>
-<li><a href="#model-performance"><span class="toc-section-number">2.1</span> Model performance</a></li>
-<li class="has-sub"><a href="#feature-importance"><span class="toc-section-number">2.2</span> Feature importance</a><ul>
-<li><a href="#drop-out-plots"><span class="toc-section-number">2.2.1</span> Drop-out plots</a></li>
-<li><a href="#forest-plots"><span class="toc-section-number">2.2.2</span> Forest plots</a></li>
+<li class="has-sub"><a href="#architecture"><span class="toc-section-number">2</span> DALEX architecture</a><ul>
+<li><a href="#notation"><span class="toc-section-number">2.1</span> Notation</a></li>
+<li class="has-sub"><a href="#use-case---human-resources-analytics"><span class="toc-section-number">2.2</span> Use case - Human Resources Analytics</a><ul>
+<li><a href="#logistic-regression"><span class="toc-section-number">2.2.1</span> Logistic regression</a></li>
+<li><a href="#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
 </ul></li>
-<li class="has-sub"><a href="#variable-response"><span class="toc-section-number">2.3</span> Variable response</a><ul>
-<li><a href="#pdpchapter"><span class="toc-section-number">2.3.1</span> Partial Dependence Plot</a></li>
-<li><a href="#model-comparisons"><span class="toc-section-number">2.3.2</span> Model Comparisons</a></li>
-<li><a href="#accumulated-local-effects-plot"><span class="toc-section-number">2.3.3</span> Accumulated Local Effects Plot</a></li>
-<li><a href="#individual-conditional-expectation-plot"><span class="toc-section-number">2.3.4</span> Individual Conditional Expectation Plot</a></li>
-<li><a href="#mering-path-plot"><span class="toc-section-number">2.3.5</span> Mering Path Plot</a></li>
+<li class="has-sub"><a href="#use-case---wine-quality"><span class="toc-section-number">2.3</span> Use case - Wine quality</a><ul>
+<li><a href="#linear-regression"><span class="toc-section-number">2.3.1</span> Linear regression</a></li>
 </ul></li>
 </ul></li>
-<li class="has-sub"><a href="#prediction-understanding"><span class="toc-section-number">3</span> Prediction understanding</a><ul>
-<li><a href="#outlier-detection"><span class="toc-section-number">3.1</span> Outlier detection</a></li>
-<li class="has-sub"><a href="#prediction-breakdown"><span class="toc-section-number">3.2</span> Prediction breakdown</a><ul>
-<li><a href="#basics"><span class="toc-section-number">3.2.1</span> Basics</a></li>
+<li class="has-sub"><a href="#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
+<li><a href="#model-performance"><span class="toc-section-number">3.1</span> Model performance</a></li>
+<li class="has-sub"><a href="#feature-importance"><span class="toc-section-number">3.2</span> Feature importance</a><ul>
+<li><a href="#drop-out-plots"><span class="toc-section-number">3.2.1</span> Drop-out plots</a></li>
+<li><a href="#forest-plots"><span class="toc-section-number">3.2.2</span> Forest plots</a></li>
 </ul></li>
-<li><a href="#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">3.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
-<li class="has-sub"><a href="#breakdown"><span class="toc-section-number">3.4</span> breakDown</a><ul>
-<li><a href="#model-comparisons-1"><span class="toc-section-number">3.4.1</span> Model Comparisons</a></li>
+<li class="has-sub"><a href="#variable-response"><span class="toc-section-number">3.3</span> Variable response</a><ul>
+<li><a href="#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
+<li><a href="#model-comparisons"><span class="toc-section-number">3.3.2</span> Model Comparisons</a></li>
+<li><a href="#accumulated-local-effects-plot"><span class="toc-section-number">3.3.3</span> Accumulated Local Effects Plot</a></li>
+<li><a href="#individual-conditional-expectation-plot"><span class="toc-section-number">3.3.4</span> Individual Conditional Expectation Plot</a></li>
+<li><a href="#mering-path-plot"><span class="toc-section-number">3.3.5</span> Mering Path Plot</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#reproducibility"><span class="toc-section-number">4</span> Reproducibility</a></li>
+<li class="has-sub"><a href="#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
+<li><a href="#outlier-detection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
+<li class="has-sub"><a href="#prediction-breakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a><ul>
+<li><a href="#basics"><span class="toc-section-number">4.2.1</span> Basics</a></li>
+</ul></li>
+<li><a href="#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
+<li class="has-sub"><a href="#breakdown"><span class="toc-section-number">4.4</span> breakDown</a><ul>
+<li><a href="#model-comparisons-1"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#reproducibility"><span class="toc-section-number">5</span> Reproducibility</a></li>
 </ul>
 </div>
 </div>
@@ -159,21 +164,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">DALEX: Descriptive mAchine Learning EXplanations</h1>
 <h4 class="author"><em>Przemysław Biecek</em></h4>
-<h4 class="date"><em>2018-03-26</em></h4>
+<h4 class="date"><em>2018-03-28</em></h4>
 </div>
-<section id="introduction" class="level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<p>Machine Learning models are widely used and have various applications in classification or regression tasks. Due to increasing computational power, availability of new data sources and new methods, ML models are more and more complex. Models created with techniques like boosting, bagging of neural networks are true black boxes. It is hard to trace the link between input variables and model outcomes. They are use because of high performance, but lack of interpretability is one of their weakest sides.</p>
-<p>In many applications we need to know, understand or prove how input variables are used in the model and what impact do they have on final model prediction. DALEX is a set of tools that help to understand how complex models are working.</p>
-<section id="motivation" class="level2">
-<h2><span class="header-section-number">1.1</span> Motivation</h2>
-<figure>
-<img src="images/DALEX_scheme.jpg" alt="Scheme" /><figcaption>Scheme</figcaption>
-</figure>
-<p><span class="citation" data-cites="Strumbelj">(Štrumbelj and Kononenko <label for="tufte-mn-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">2011<span class="marginnote">Štrumbelj, Erik, and Igor Kononenko. 2011. “A General Method for Visualizing and Explaining Black-Box Regression Models.” In <em>Proceedings of the 10th International Conference on Adaptive and Natural Computing Algorithms - Volume Part Ii</em>, 21–30. ICANNGA’11. Berlin, Heidelberg: Springer-Verlag. <a href="http://dl.acm.org/citation.cfm?id=1997005.1997009" class="uri">http://dl.acm.org/citation.cfm?id=1997005.1997009</a>.</span>)</span>, <span class="citation" data-cites="nnet_vis">(Tzeng and Ma <label for="tufte-mn-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle">2005<span class="marginnote">Tzeng, F. Y., and K. L. Ma. 2005. “Opening the Black Box - Data Driven Visualization of Neural Networks.” In <em>VIS 05. IEEE Visualization, 2005.</em>, 383–90. <a href="https://doi.org/10.1109/VISUAL.2005.1532820" class="uri">https://doi.org/10.1109/VISUAL.2005.1532820</a>.</span>)</span>, <span class="citation" data-cites="magix">(Puri et al. <label for="tufte-mn-3" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-3" class="margin-toggle">2017<span class="marginnote">Puri, N., P. Gupta, P. Agarwal, S. Verma, and B. Krishnamurthy. 2017. “MAGIX: Model Agnostic Globally Interpretable Explanations.” <em>ArXiv E-Prints</em>, June.</span>)</span>, <span class="citation" data-cites="Zeiler_Fergus_2014">(Zeiler and Fergus <label for="tufte-mn-4" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-4" class="margin-toggle">2014<span class="marginnote">Zeiler, Matthew D., and Rob Fergus. 2014. “Visualizing and Understanding Convolutional Networks.” In <em>Computer Vision – Eccv 2014</em>, edited by David Fleet, Tomas Pajdla, Bernt Schiele, and TinneEditors Tuytelaars, 818–33. Springer International Publishing.</span>)</span></p>
+<section id="motivation" class="level1">
+<h1><span class="header-section-number">Chapter 1</span> Motivation</h1>
+<p><em>Machine Learning</em> is a vague name, there is some <em>learning</em> and some <em>machines</em>, but what the heck is going on?</p>
+<p>Actually I like the vagueness, because the interpretation of the name evolves over time as the discipline does.</p>
+<ul>
+<li>Few years ago I would extend this name as <em>machines are learning from human</em>. The supervised learning was were popular, humans were involved in data labelling and machines were tuned to predict these labels.</li>
+<li>Now we face very nice examples of <em>machines that are learning from other machines</em>. Self playing in nnets like AlphaGo Zero learns from themself in blazing speed. Still humans are involved in designing of the environment but labelling turns out to be very expensive so we are looking for ways to learn from partial labels, fuzzy labels, or no labels at all.</li>
+<li>I imagine that in close future <em>humans will learn from machines</em>. Well trained black-boxes may train us how to be a better in playing go, how to better in reading PET images, or how to be better in writing of books.</li>
+</ul>
+<p>To make this future possible we need tools that extract useful information from black-box models. DALEX is <em>the tool</em> for this.</p>
+<section id="why-dalex" class="level2">
+<h2><span class="header-section-number">1.1</span> Why DALEX?</h2>
+<p>Key features of the DALEX</p>
+<ul>
+<li>set of various techniques for exploration of black-box models. Some of these techniques are more useful for understanding of predictions, some are more useful in understanding of structure.</li>
+<li>consistent grammar across various techniques. DALEX is a wrapper over very good tools. Unfortunately these tolls share different logic fo model exploration. DALEX is a smooth wrapper for these tools.</li>
+<li>focus on the models comparison. One can learn a lot from single black-box model, but actually we can learn much more by contrasting models with different structures, like linear models vs. ensembles of trees. All explainers in DALEX by default support model comparisons on various levels.</li>
+<li>visual explanations based on <code>ggplot2</code> package. Elegant, customizable, consistent plots that reveal useful features by glance.</li>
+</ul>
+<p>In this book we will focus on three primary usecases for DALEX explainers.</p>
 </section>
+<section id="to-validate" class="level2">
+<h2><span class="header-section-number">1.2</span> To validate</h2>
+<p>-&gt; jakośc modelu -&gt; identyfikacja outlierów</p>
+</section>
+<section id="to-understand" class="level2">
+<h2><span class="header-section-number">1.3</span> To understand</h2>
+<p>-&gt; ważność zmiennych -&gt; breakDown</p>
+</section>
+<section id="to-improve" class="level2">
+<h2><span class="header-section-number">1.4</span> To improve</h2>
+<p>-&gt; pdp plots i inżynieria cech -&gt; breakDown dla outlierów</p>
+<ul>
+<li></li>
+</ul>
+<p>Chapter @(#architecture) presents the architecture of the DALEX package. Chapter @(#modelUnderstanding) presents explainers that explore overall model performance, variable importance of feature effects. Chapter @(#predictionUnderstanding) presents explainers that explore feature attribution for single predictions of validation of the reliability of a model prediction.</p>
+</section>
+<section id="trivia" class="level2">
+<h2><span class="header-section-number">1.5</span> Trivia</h2>
+<p><img src="images/dalex01small.jpg" /></p>
+<p><a href="https://en.wikipedia.org/wiki/Dalek">The Daleks</a> are a fictional extraterrestrial race portrayed in the <a href="https://en.wikipedia.org/wiki/Doctor_Who">Doctor Who</a> BBC series. Rather dim aliens, known to repeat the phrase <em>Explain!</em> very often.</p>
+
+</section>
+</section>
+<section id="architecture" class="level1">
+<h1><span class="header-section-number">Chapter 2</span> DALEX architecture</h1>
+<p><span class="citation" data-cites="Strumbelj">(Štrumbelj and Kononenko <label for="tufte-mn-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">2011<span class="marginnote">Štrumbelj, Erik, and Igor Kononenko. 2011. “A General Method for Visualizing and Explaining Black-Box Regression Models.” In <em>Proceedings of the 10th International Conference on Adaptive and Natural Computing Algorithms - Volume Part Ii</em>, 21–30. ICANNGA’11. Berlin, Heidelberg: Springer-Verlag. <a href="http://dl.acm.org/citation.cfm?id=1997005.1997009" class="uri">http://dl.acm.org/citation.cfm?id=1997005.1997009</a>.</span>)</span>, <span class="citation" data-cites="nnet_vis">(Tzeng and Ma <label for="tufte-mn-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle">2005<span class="marginnote">Tzeng, F. Y., and K. L. Ma. 2005. “Opening the Black Box - Data Driven Visualization of Neural Networks.” In <em>VIS 05. IEEE Visualization, 2005.</em>, 383–90. <a href="https://doi.org/10.1109/VISUAL.2005.1532820" class="uri">https://doi.org/10.1109/VISUAL.2005.1532820</a>.</span>)</span>, <span class="citation" data-cites="magix">(Puri et al. <label for="tufte-mn-3" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-3" class="margin-toggle">2017<span class="marginnote">Puri, N., P. Gupta, P. Agarwal, S. Verma, and B. Krishnamurthy. 2017. “MAGIX: Model Agnostic Globally Interpretable Explanations.” <em>ArXiv E-Prints</em>, June.</span>)</span>, <span class="citation" data-cites="Zeiler_Fergus_2014">(Zeiler and Fergus <label for="tufte-mn-4" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-4" class="margin-toggle">2014<span class="marginnote">Zeiler, Matthew D., and Rob Fergus. 2014. “Visualizing and Understanding Convolutional Networks.” In <em>Computer Vision – Eccv 2014</em>, edited by David Fleet, Tomas Pajdla, Bernt Schiele, and TinneEditors Tuytelaars, 818–33. Springer International Publishing.</span>)</span></p>
 <section id="notation" class="level2">
-<h2><span class="header-section-number">1.2</span> Notation</h2>
+<h2><span class="header-section-number">2.1</span> Notation</h2>
 <p>This book describes explainers for different machine learning models. Some of these explainers are created by different research groups with different applications in mind.</p>
 <p>To keep the notation consistent:</p>
 <ul>
@@ -187,7 +228,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="images/model01.jpg" /></p>
 </section>
 <section id="use-case---human-resources-analytics" class="level2">
-<h2><span class="header-section-number">1.3</span> Use case - Human Resources Analytics</h2>
+<h2><span class="header-section-number">2.2</span> Use case - Human Resources Analytics</h2>
 <p>To ilustrate applications of DALEX to binary classification problems we will use a dataset from Kaggle competition <a href="https://www.kaggle.com/ludobenistant/hr-analytics/data">Human Resources Analytics</a>. This dataset is avaliable in the <strong>breakDown</strong> package <span class="citation" data-cites="breakDown">(P. Biecek <label for="tufte-mn-5" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-5" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">head</span>(HR_data)</a></code></pre></div>
@@ -284,7 +325,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <section id="logistic-regression" class="level3">
-<h3><span class="header-section-number">1.3.1</span> Logistic regression</h3>
+<h3><span class="header-section-number">2.2.1</span> Logistic regression</h3>
 <p>In the following chapters to present explainers for logistic regression models we will use <code>HR_glm_model</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">summary</span>(HR_glm_model)</a></code></pre></div>
@@ -331,7 +372,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>archivist::aread(&quot;pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234&quot;)</code></pre>
 </section>
 <section id="random-forest" class="level3">
-<h3><span class="header-section-number">1.3.2</span> Random forest</h3>
+<h3><span class="header-section-number">2.2.2</span> Random forest</h3>
 <p>In the following chapters to present explainers for random forest models we will use <code>HR_fr_model</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">1313</span>)</a>
@@ -355,13 +396,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 </section>
 <section id="use-case---wine-quality" class="level2">
-<h2><span class="header-section-number">1.4</span> Use case - Wine quality</h2>
+<h2><span class="header-section-number">2.3</span> Use case - Wine quality</h2>
 <p>To ilustrate applications of DALEX to regression problems we will use a Wine quality dataset from Kaggle competition <a href="http://mlr.cs.umass.edu/ml/">UC Irvine Machine Learning Repository</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">url &lt;-<span class="st"> &#39;https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv&#39;</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">wine &lt;-<span class="st"> </span><span class="kw">read.table</span>(url, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>)</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">head</span>(wine)</a></code></pre></div>
 <p><!--
-<caption>--><span class="marginnote shownote"><span id="tab:wineQuality">Table 1.1: </span>Wine quality dataset from UC Irvine Machine Learning Repository</span><!--</caption>--></p>
+<caption>--><span class="marginnote shownote"><span id="tab:wineQuality">Table 2.1: </span>Wine quality dataset from UC Irvine Machine Learning Repository</span><!--</caption>--></p>
 <table>
 <thead>
 <tr class="header">
@@ -467,31 +508,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <section id="linear-regression" class="level3">
-<h3><span class="header-section-number">1.4.1</span> Linear regression</h3>
+<h3><span class="header-section-number">2.3.1</span> Linear regression</h3>
 <p>In the following chapters to present explainers for gaussian regression models we will use <code>wine_lm_model</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">wine_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>fixed.acidity <span class="op">+</span><span class="st"> </span>volatile.acidity <span class="op">+</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>chlorides <span class="op">+</span><span class="st"> </span>free.sulfur.dioxide <span class="op">+</span><span class="st"> </span>total.sulfur.dioxide <span class="op">+</span><span class="st"> </span>density <span class="op">+</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">               <span class="dt">data =</span> wine)</a></code></pre></div>
 <p>Models used in this doccumentation are accessible via <strong>archivist</strong> package. To download the <code>wine_lm_model</code> model use the following instruction.</p>
 <pre><code>archivist::aread(&quot;pbiecek/DALEX/arepo/b99a3d58016e2677221019652cff047f&quot;)</code></pre>
-</section>
-</section>
-<section id="trivia" class="level2">
-<h2><span class="header-section-number">1.5</span> Trivia</h2>
-<p><img src="images/dalex01small.jpg" /></p>
-<p><a href="https://en.wikipedia.org/wiki/Dalek">The Daleks</a> are a fictional extraterrestrial race portrayed in the <a href="https://en.wikipedia.org/wiki/Doctor_Who">Doctor Who</a> BBC series. Rather dim aliens, known to repeat the phrase <em>Explain!</em> very often.</p>
 
 </section>
 </section>
-<section id="model-understanding" class="level1">
-<h1><span class="header-section-number">Chapter 2</span> Model understanding</h1>
+</section>
+<section id="modelUnderstanding" class="level1">
+<h1><span class="header-section-number">Chapter 3</span> Model understanding</h1>
+<p>Machine Learning models are widely used and have various applications in classification or regression tasks. Due to increasing computational power, availability of new data sources and new methods, ML models are more and more complex. Models created with techniques like boosting, bagging of neural networks are true black boxes. It is hard to trace the link between input variables and model outcomes. They are use because of high performance, but lack of interpretability is one of their weakest sides.</p>
+<p>In many applications we need to know, understand or prove how input variables are used in the model and what impact do they have on final model prediction. DALEX is a set of tools that help to understand how complex models are working.</p>
 <section id="model-performance" class="level2">
-<h2><span class="header-section-number">2.1</span> Model performance</h2>
+<h2><span class="header-section-number">3.1</span> Model performance</h2>
 </section>
 <section id="feature-importance" class="level2">
-<h2><span class="header-section-number">2.2</span> Feature importance</h2>
+<h2><span class="header-section-number">3.2</span> Feature importance</h2>
 <p>Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?</p>
 <section id="drop-out-plots" class="level3">
-<h3><span class="header-section-number">2.2.1</span> Drop-out plots</h3>
+<h3><span class="header-section-number">3.2.1</span> Drop-out plots</h3>
 <p>Variable drop-outs are calculated via permutations. Simply the loss function is is compared between the full model and the model with single variable being permuted.</p>
 <p>As a additional point for comparison a <code>_baseline_</code> is calculated as a loss in model with permuted outcomes. This shall be highest possible loss.</p>
 <p>Let’s see how it’s working for a random forest model.</p>
@@ -530,7 +568,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 2   _baseline_           NA randomForest</code></pre>
 <p>Now we can plot these losses. Note that in the plot beow you see not only the variable importance, but also you see how the whole model works.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">plot</span>(vd_rf)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-10-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-11-1.png" width="672"  /></p>
 <p>And here we have similar example for glm model.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">explainer_glm &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_glm_model, <span class="dt">data =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>left)</a>
@@ -542,7 +580,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 1 _full_model_           NA    lm
 ## 2   _baseline_           NA    lm</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">plot</span>(vd_glm)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-11-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-12-1.png" width="672"  /></p>
 <p>And for xgboost model.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;xgboost&quot;</span>)</a>
 <a class="sourceLine" id="cb21-2" data-line-number="2">model_martix_train &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(left<span class="op">~</span>.<span class="op">-</span><span class="dv">1</span>, breakDown<span class="op">::</span>HR_data)</a>
@@ -557,20 +595,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 1 _full_model_           NA xgboost
 ## 2   _baseline_           NA xgboost</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">plot</span>(vd_xgb)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-12-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-13-1.png" width="672"  /></p>
 <p>Of course you can plot all these models in a single plot. Then it is much easier to compare variable importances in different models.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">plot</span>(vd_rf, vd_glm, vd_xgb)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-13-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="672"  /></p>
 <p><em>NOTE:</em> If you like to have all importances hooked to 0, you can do this as well</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">vd_rf &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_rf, <span class="dt">type =</span> <span class="st">&quot;difference&quot;</span>)</a>
 <a class="sourceLine" id="cb25-2" data-line-number="2">vd_glm &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_glm, <span class="dt">type =</span> <span class="st">&quot;difference&quot;</span>,</a>
 <a class="sourceLine" id="cb25-3" data-line-number="3">                        <span class="dt">loss_function =</span> <span class="cf">function</span>(observed, predicted) <span class="kw">sum</span>((observed <span class="op">-</span><span class="st"> </span><span class="kw">logit</span>(predicted))<span class="op">^</span><span class="dv">2</span>))</a>
 <a class="sourceLine" id="cb25-4" data-line-number="4">vd_xgb &lt;-<span class="st"> </span><span class="kw">variable_dropout</span>(explainer_xgb, <span class="dt">type =</span> <span class="st">&quot;difference&quot;</span>)</a>
 <a class="sourceLine" id="cb25-5" data-line-number="5"><span class="kw">plot</span>(vd_rf, vd_glm, vd_xgb)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-14-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-15-1.png" width="672"  /></p>
 </section>
 <section id="forest-plots" class="level3">
-<h3><span class="header-section-number">2.2.2</span> Forest plots</h3>
+<h3><span class="header-section-number">3.2.2</span> Forest plots</h3>
 <p><a href="https://en.wikipedia.org/wiki/Forest_plot">Forest plots</a> were initially used in the meta analysis to visualise effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure like these created with <code>lm</code> or <code>glm</code> functions.</p>
 <p>There are various implementations of forest plots in R. Below we present examples for a glm model.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
@@ -583,7 +621,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">forest_model</span>(HR_glm_model)</a></code></pre></div>
 <div class="figure"><span id="fig:forestmodel"></span>
 <p class="caption marginnote shownote">
-Figure 2.1: Forest plot created with forestmodel package
+Figure 3.1: Forest plot created with forestmodel package
 </p>
 <img src="DALEX_files/figure-html/forestmodel-1.png" alt="Forest plot created with forestmodel package" width="768"  />
 </div>
@@ -592,7 +630,7 @@ Figure 2.1: Forest plot created with forestmodel package
 <a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">plot_model</span>(HR_glm_model, <span class="dt">type =</span> <span class="st">&quot;est&quot;</span>, <span class="dt">sort.est =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <div class="figure"><span id="fig:sjpglm"></span>
 <p class="caption marginnote shownote">
-Figure 2.2: Forest plot created with sjPlot package
+Figure 3.2: Forest plot created with sjPlot package
 </p>
 <img src="DALEX_files/figure-html/sjpglm-1.png" alt="Forest plot created with sjPlot package" width="768"  />
 </div>
@@ -601,7 +639,7 @@ Figure 2.2: Forest plot created with sjPlot package
 </section>
 </section>
 <section id="variable-response" class="level2">
-<h2><span class="header-section-number">2.3</span> Variable response</h2>
+<h2><span class="header-section-number">3.3</span> Variable response</h2>
 <figure>
 <img src="images/DALEX_single_variable.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
 </figure>
@@ -609,7 +647,7 @@ Figure 2.2: Forest plot created with sjPlot package
 <p>In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like.</p>
 <p>Methods presented below help to understand the conditional structure of a model.</p>
 <section id="pdpchapter" class="level3">
-<h3><span class="header-section-number">2.3.1</span> Partial Dependence Plot</h3>
+<h3><span class="header-section-number">3.3.1</span> Partial Dependence Plot</h3>
 <p>Partial Dependence Plots (see <strong>pdp</strong> package <span class="citation" data-cites="pdp">(Greenwell <label for="tufte-mn-9" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-9" class="margin-toggle">2017<span class="marginnote">Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1):421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</span>)</span>) for a black box <span class="math inline">\(f(x; \theta)\)</span> calculates the expected output given a selected variable.</p>
 <p><span class="math display">\[
 p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
@@ -642,12 +680,12 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <li>And we are ready to plot it.</li>
 </ol>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">plot</span>(expl_rf)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-19-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-20-1.png" width="672"  /></p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># ad0f1699de646c78a46a3bf23aeea799</span></a>
 <a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/ad0f1699&quot;)</span></a></code></pre></div>
 </section>
 <section id="model-comparisons" class="level3">
-<h3><span class="header-section-number">2.3.2</span> Model Comparisons</h3>
+<h3><span class="header-section-number">3.3.2</span> Model Comparisons</h3>
 <p>Marginal response plots are very useful in comparisons of different models. Let’s fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.</p>
 <p>Then we can use PDP plots to compare these models. Random Forest Model was fitted in the previous chapter. Here we are training remaining models.</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
@@ -665,10 +703,10 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <a class="sourceLine" id="cb35-4" data-line-number="4">expl_glm &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_glm, <span class="st">&quot;satisfaction_level&quot;</span>, <span class="st">&quot;pdp&quot;</span>, <span class="dt">trans=</span>logit)</a></code></pre></div>
 <p>In order to compare these models it’s enough to plot all of them into a single chart.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">plot</span>(expl_rf, expl_glm)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-22-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-23-1.png" width="672"  /></p>
 </section>
 <section id="accumulated-local-effects-plot" class="level3">
-<h3><span class="header-section-number">2.3.3</span> Accumulated Local Effects Plot</h3>
+<h3><span class="header-section-number">3.3.3</span> Accumulated Local Effects Plot</h3>
 <p>As it is presented in the chapter @(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of <span class="math inline">\(x_{-i}\)</span>. In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-10" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-10" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span> for more details).</p>
 <p>Accumulated local effects (ALE) plots (see <strong>ALEPlot</strong> package <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-11" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-11" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span>) solves this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
 <p>Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.</p>
@@ -676,13 +714,13 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">exel_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;ale&quot;</span>)</a>
 <a class="sourceLine" id="cb37-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">plot</span>(exel_rf)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-23-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-24-1.png" width="672"  /></p>
 <p>It may be useful to compare ALEPlots and PDP plots. Again, it’s simple with the generic DALEX function.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">plot</span>(expl_rf, exel_rf)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-24-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-25-1.png" width="672"  /></p>
 </section>
 <section id="individual-conditional-expectation-plot" class="level3">
-<h3><span class="header-section-number">2.3.4</span> Individual Conditional Expectation Plot</h3>
+<h3><span class="header-section-number">3.3.4</span> Individual Conditional Expectation Plot</h3>
 <p>Individual Conditional Expectations (ICE) may be considered as an extension of the PDP curves (see <strong>ICEbox</strong> package <span class="citation" data-cites="ICEbox">(Goldstein et al. <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2015<span class="marginnote">Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1):44–65. <a href="https://doi.org/10.1080/10618600.2014.907095" class="uri">https://doi.org/10.1080/10618600.2014.907095</a>.</span>)</span>). Instead of plotting expected value over all observations, for ICE we are plotting individual conditional model responses. Average of ICE curves results in PDP curve.</p>
 <p>An ICE curve for observation <span class="math inline">\(k\)</span> over variable <span class="math inline">\(i\)</span> may be defined as</p>
 <p><span class="math display">\[
@@ -700,22 +738,22 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <a class="sourceLine" id="cb39-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb39-10" data-line-number="10">part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="dt">pred.var =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">ice =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb39-11" data-line-number="11"><span class="kw">plotPartial</span>(part_rf_satisfaction, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data, <span class="dt">alpha =</span> <span class="fl">0.2</span>)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-25-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-26-1.png" width="672"  /></p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">autoplot</span>(part_rf_satisfaction, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-25-2.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-26-2.png" width="672"  /></p>
 <p>Or with the <code>ICEbox</code> package.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;ICEbox&quot;</span>)</a>
 <a class="sourceLine" id="cb41-2" data-line-number="2">part_rf_satisfaction =<span class="st"> </span><span class="kw">ice</span>(<span class="dt">object =</span> HR_rf_model, <span class="dt">X =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>satisfaction_level, </a>
 <a class="sourceLine" id="cb41-3" data-line-number="3">          <span class="dt">predictor =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">frac_to_build =</span> <span class="fl">.1</span>)</a></code></pre></div>
 <pre><code>## ............................................................................................</code></pre>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">plot</span>(part_rf_satisfaction)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-26-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-27-1.png" width="672"  /></p>
 <p>As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the <code>clusterICE</code> function.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">clusterICE</span>(part_rf_satisfaction, <span class="dt">nClusters =</span> <span class="dv">3</span>, <span class="dt">plot_legend =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-27-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-28-1.png" width="672"  /></p>
 </section>
 <section id="mering-path-plot" class="level3">
-<h3><span class="header-section-number">2.3.5</span> Mering Path Plot</h3>
+<h3><span class="header-section-number">3.3.5</span> Mering Path Plot</h3>
 <p>The package <code>ICEbox</code> is not working for factor variables while the <code>pdp</code> package returns plots that are hard to interpret.</p>
 <p>An interesting tool that helps to understand what is happening with factor variables is the <strong>factorMerger</strong> package (see <span class="citation" data-cites="factorMerger">(Sitko and Biecek <label for="tufte-mn-13" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-13" class="margin-toggle">2017<span class="marginnote">Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</span>)</span>).</p>
 <p>Here we have Merging Path Plot for a factor variable <code>sales</code>.</p>
@@ -723,7 +761,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <a class="sourceLine" id="cb45-2" data-line-number="2">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
 <a class="sourceLine" id="cb45-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb45-4" data-line-number="4"><span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-28-1.png" width="1152"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-29-1.png" width="1152"  /></p>
 <p>Note that you can use the <code>factorMerger</code> package to understand predictions calculated with a black-box model. The random forest model <code>HR_rf_model</code> returns continuous response. But the <code>factorMerger</code> works for such variables as well.</p>
 <p>In the top right panel one may see the distribution of predictions for the selected group.</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">HR_data<span class="op">$</span>left_predicted &lt;-<span class="st"> </span><span class="kw">predict</span>(HR_rf_model)</a>
@@ -731,18 +769,18 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <a class="sourceLine" id="cb46-3" data-line-number="3">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left_predicted, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
 <a class="sourceLine" id="cb46-4" data-line-number="4">                     <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb46-5" data-line-number="5"><span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>, <span class="dt">responsePanel =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">nodesSpacing =</span> <span class="st">&quot;effects&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-29-1.png" width="1152"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-30-1.png" width="1152"  /></p>
 
 </section>
 </section>
 </section>
-<section id="prediction-understanding" class="level1">
-<h1><span class="header-section-number">Chapter 3</span> Prediction understanding</h1>
+<section id="predictionUnderstanding" class="level1">
+<h1><span class="header-section-number">Chapter 4</span> Prediction understanding</h1>
 <section id="outlier-detection" class="level2">
-<h2><span class="header-section-number">3.1</span> Outlier detection</h2>
+<h2><span class="header-section-number">4.1</span> Outlier detection</h2>
 </section>
 <section id="prediction-breakdown" class="level2">
-<h2><span class="header-section-number">3.2</span> Prediction breakdown</h2>
+<h2><span class="header-section-number">4.2</span> Prediction breakdown</h2>
 <p>Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:</p>
 <ul>
 <li>explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.</li>
@@ -750,13 +788,13 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 </ul>
 <p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation" data-cites="lime">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-14" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>.</p>
 <section id="basics" class="level3">
-<h3><span class="header-section-number">3.2.1</span> Basics</h3>
+<h3><span class="header-section-number">4.2.1</span> Basics</h3>
 <p>Most ML algorithms do not learn from mistakes. One calculates predictions and there is no room for improvement.</p>
 <p>But! The local predictions can change that! Understanding what causes wrong decisions may lead to model improvements. After all, if our prediction is wrong we shall update the model.</p>
 </section>
 </section>
 <section id="local-interpretable-model-agnostic-visual-explanations" class="level2">
-<h2><span class="header-section-number">3.3</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
+<h2><span class="header-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</h2>
 <figure>
 <img src="images/DALEX_live.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
 </figure>
@@ -784,7 +822,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <p>For more details consult the following vignette.</p>
 </section>
 <section id="breakdown" class="level2">
-<h2><span class="header-section-number">3.4</span> breakDown</h2>
+<h2><span class="header-section-number">4.4</span> breakDown</h2>
 <figure>
 <img src="images/DALEX_breakDown.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
 </figure>
@@ -841,9 +879,9 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 ## final_prognosis           0.680
 ## baseline:  5.877909</code></pre>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">plot</span>(br)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-37-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-38-1.png" width="672"  /></p>
 <section id="model-comparisons-1" class="level3">
-<h3><span class="header-section-number">3.4.1</span> Model Comparisons</h3>
+<h3><span class="header-section-number">4.4.1</span> Model Comparisons</h3>
 <p>What if we have two or larger number of models? Not a problem for DALEX!</p>
 <p>Let’s fit a model with 3 variables.</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
@@ -861,7 +899,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <a class="sourceLine" id="cb65-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb65-14" data-line-number="14">wine_lm_predict3 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_lm_explainer3, <span class="dt">observation =</span> new.wine)</a>
 <a class="sourceLine" id="cb65-15" data-line-number="15"><span class="kw">plot</span>(wine_lm_predict3)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-38-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-39-1.png" width="672"  /></p>
 <p>Let’s fit a second model with 4 variables.</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">wine_lm_model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
 <a class="sourceLine" id="cb66-2" data-line-number="2">                     <span class="dt">data =</span> wine)</a>
@@ -870,10 +908,10 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <a class="sourceLine" id="cb66-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb66-6" data-line-number="6">wine_lm_predict4 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_lm_explainer4, <span class="dt">observation =</span> new.wine)</a>
 <a class="sourceLine" id="cb66-7" data-line-number="7"><span class="kw">plot</span>(wine_lm_predict4)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-39-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-40-1.png" width="672"  /></p>
 <p>It’s easy to compare these models. Just plot both together side by side.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">plot</span>(wine_lm_predict3, wine_lm_predict4)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-40-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-41-1.png" width="672"  /></p>
 <p>You can do this even for non linear models.</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
 <a class="sourceLine" id="cb68-2" data-line-number="2">wine_rf_model4 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(quality <span class="op">~</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol, <span class="dt">data =</span> wine)</a>
@@ -881,13 +919,13 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <a class="sourceLine" id="cb68-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb68-5" data-line-number="5">wine_rf_predict4 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_rf_explainer4, <span class="dt">observation =</span> new.wine)</a>
 <a class="sourceLine" id="cb68-6" data-line-number="6"><span class="kw">plot</span>(wine_rf_predict4, wine_lm_predict4, wine_lm_predict3)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-41-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-42-1.png" width="672"  /></p>
 
 </section>
 </section>
 </section>
 <section id="reproducibility" class="level1">
-<h1><span class="header-section-number">Chapter 4</span> Reproducibility</h1>
+<h1><span class="header-section-number">Chapter 5</span> Reproducibility</h1>
 <p>Packages are changing quite fast, especially these actively developed. Below you will find list of packages that were installed on my computer when I was preparing this documentation.</p>
 <p>It is likely that some of described packages will change names of functions or arguments or structure of results. Use the version listed below to reproduce results form this book.</p>
 <p>Note, that results, models and plots created in are were recorded with the <strong>archivist</strong> package <span class="citation" data-cites="archivist">(P. Biecek and Kosinski <label for="tufte-mn-19" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-19" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11):1–28. <a href="https://doi.org/10.18637/jss.v082.i11" class="uri">https://doi.org/10.18637/jss.v082.i11</a>.</span>)</span>. Use archivist links to retrieve their binary copies directly to your R console.</p>
@@ -899,7 +937,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       Europe/Warsaw               
-##  date     2018-03-26                  
+##  date     2018-03-28                  
 ## 
 ##  package      * version   date      
 ##  abind          1.4-5     2016-07-21
@@ -931,7 +969,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 ##  compiler       3.4.4     2018-03-15
 ##  cowplot        0.9.1     2017-11-16
 ##  crayon         1.3.4     2017-09-16
-##  DALEX        * 0.2.0     2018-03-25
+##  DALEX        * 0.2.0     2018-03-26
 ##  data.table     1.10.4-3  2017-10-27
 ##  datasets     * 3.4.4     2018-03-15
 ##  deldir         0.1-14    2017-04-22
@@ -1023,7 +1061,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 ##  sjPlot       * 2.4.0     2017-10-19
 ##  sjstats        0.13.0    2017-11-23
 ##  snakecase      0.5.1     2017-09-20
-##  sp             1.2-5     2017-06-29
+##  sp             1.2-7     2018-01-19
 ##  spData         0.2.6.4   2017-11-12
 ##  spdep          0.7-4     2017-11-22
 ##  splines        3.4.4     2018-03-15
@@ -1170,7 +1208,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 ##  CRAN (R 3.4.2)                        
 ##  CRAN (R 3.4.3)                        
 ##  CRAN (R 3.4.2)                        
-##  cran (@1.2-5)                         
+##  cran (@1.2-7)                         
 ##  cran (@0.2.6.4)                       
 ##  cran (@0.7-4)                         
 ##  local                                 
