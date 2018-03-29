@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-03-28" />
+<meta name="date" content="2018-03-29" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -114,11 +114,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="TOC">
 <ul>
 <li class="has-sub"><a href="#motivation"><span class="toc-section-number">1</span> Motivation</a><ul>
-<li><a href="#why-dalex"><span class="toc-section-number">1.1</span> Why DALEX?</a></li>
-<li><a href="#to-validate"><span class="toc-section-number">1.2</span> To validate</a></li>
-<li><a href="#to-understand"><span class="toc-section-number">1.3</span> To understand</a></li>
-<li><a href="#to-improve"><span class="toc-section-number">1.4</span> To improve</a></li>
-<li><a href="#trivia"><span class="toc-section-number">1.5</span> Trivia</a></li>
+<li class="has-sub"><a href="#why-dalex"><span class="toc-section-number">1.1</span> Why DALEX?</a><ul>
+<li><a href="#to-validate"><span class="toc-section-number">1.1.1</span> To validate</a></li>
+<li><a href="#to-understand"><span class="toc-section-number">1.1.2</span> To understand</a></li>
+<li><a href="#to-improve"><span class="toc-section-number">1.1.3</span> To improve</a></li>
+</ul></li>
+<li><a href="#trivia"><span class="toc-section-number">1.2</span> Trivia</a></li>
 </ul></li>
 <li class="has-sub"><a href="#architecture"><span class="toc-section-number">2</span> DALEX architecture</a><ul>
 <li><a href="#notation"><span class="toc-section-number">2.1</span> Notation</a></li>
@@ -131,12 +132,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="has-sub"><a href="#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
-<li><a href="#model-performance"><span class="toc-section-number">3.1</span> Model performance</a></li>
-<li class="has-sub"><a href="#feature-importance"><span class="toc-section-number">3.2</span> Feature importance</a><ul>
+<li><a href="#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
+<li class="has-sub"><a href="#featureImportance"><span class="toc-section-number">3.2</span> Feature importance</a><ul>
 <li><a href="#drop-out-plots"><span class="toc-section-number">3.2.1</span> Drop-out plots</a></li>
 <li><a href="#forest-plots"><span class="toc-section-number">3.2.2</span> Forest plots</a></li>
 </ul></li>
-<li class="has-sub"><a href="#variable-response"><span class="toc-section-number">3.3</span> Variable response</a><ul>
+<li class="has-sub"><a href="#variableResponse"><span class="toc-section-number">3.3</span> Variable response</a><ul>
 <li><a href="#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
 <li><a href="#model-comparisons"><span class="toc-section-number">3.3.2</span> Model Comparisons</a></li>
 <li><a href="#accumulated-local-effects-plot"><span class="toc-section-number">3.3.3</span> Accumulated Local Effects Plot</a></li>
@@ -146,7 +147,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
 <li><a href="#outlier-detection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
-<li class="has-sub"><a href="#prediction-breakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a><ul>
+<li class="has-sub"><a href="#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a><ul>
 <li><a href="#basics"><span class="toc-section-number">4.2.1</span> Basics</a></li>
 </ul></li>
 <li><a href="#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
@@ -164,55 +165,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">DALEX: Descriptive mAchine Learning EXplanations</h1>
 <h4 class="author"><em>Przemysław Biecek</em></h4>
-<h4 class="date"><em>2018-03-28</em></h4>
+<h4 class="date"><em>2018-03-29</em></h4>
 </div>
 <section id="motivation" class="level1">
 <h1><span class="header-section-number">Chapter 1</span> Motivation</h1>
 <p><em>Machine Learning</em> is a vague name, there is some <em>learning</em> and some <em>machines</em>, but what the heck is going on?</p>
 <p>Actually I like the vagueness, because the interpretation of the name evolves over time as the discipline does.</p>
 <ul>
-<li>Few years ago I would extend this name as <em>machines are learning from human</em>. The supervised learning was were popular, humans were involved in data labelling and machines were tuned to predict these labels.</li>
-<li>Now we face very nice examples of <em>machines that are learning from other machines</em>. Self playing in nnets like AlphaGo Zero learns from themself in blazing speed. Still humans are involved in designing of the environment but labelling turns out to be very expensive so we are looking for ways to learn from partial labels, fuzzy labels, or no labels at all.</li>
-<li>I imagine that in close future <em>humans will learn from machines</em>. Well trained black-boxes may train us how to be a better in playing go, how to better in reading PET images, or how to be better in writing of books.</li>
+<li>Few years ago I would extend this name as <em>machines are learning from human</em>. In the supervised learning problems, human creates a labeled dataset and machines are tuned to predict labels from data.</li>
+<li>Recently we have more and more examples of <em>machines that are learning from other machines</em>. Self playing neural net like AlphaGo Zero <span class="citation" data-cites="AlphaGoZero">(Silver et al. <label for="tufte-mn-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">2017<span class="marginnote">Silver, David, Julian Schrittwieser, Karen Simonyan, Ioannis Antonoglou, Aja Huang, Arthur Guez, Thomas Hubert, et al. 2017. “Mastering the Game of Go Without Human Knowledge.” <em>Nature</em> 550 (7676):354–59. <a href="https://doi.org/10.1038/nature24270" class="uri">https://doi.org/10.1038/nature24270</a>.</span>)</span> learns from themself in a blazing speed. Still humans are involved in designing of the learning environment but the labelling turns out to be very expensive or not feasible and we are looking for other ways to learn from partial labels, fuzzy labels, or no labels at all.</li>
+<li>I could imagine that in close future <em>humans will learn from machines</em>. Well trained black-boxes may tech us how to be a better in playing go, how to be better in reading PET images, or how to be better in writing of books.</li>
 </ul>
-<p>To make this future possible we need tools that extract useful information from black-box models. DALEX is <em>the tool</em> for this.</p>
+<p>To make this future possible we need tools that extract useful information from black-box models. And as the human supervision over the learning is smaller over time, the black-box understanding is more important. DALEX is <em>the tool</em> for this.</p>
 <section id="why-dalex" class="level2">
 <h2><span class="header-section-number">1.1</span> Why DALEX?</h2>
-<p>Key features of the DALEX</p>
+<p>There is a number of R packages that may be used for knowledge extraction from machine learning models. Like <code>pdp</code> <span class="citation" data-cites="pdp">(Greenwell <label for="tufte-mn-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle">2017<span class="marginnote">Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1):421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</span>)</span>, <code>ALEPlot</code> <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-3" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-3" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span>, <code>randomForestExplainer</code> <span class="citation" data-cites="randomForestExplainer">(Paluszynska and Biecek <label for="tufte-mn-4" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-4" class="margin-toggle">2017<span class="marginnote">Paluszynska, Aleksandra, and Przemyslaw Biecek. 2017. <em>RandomForestExplainer: A Set of Tools to Understand What Is Happening Inside a Random Forest</em>. <a href="https://github.com/MI2DataLab/randomForestExplainer" class="uri">https://github.com/MI2DataLab/randomForestExplainer</a>.</span>)</span>, <code>xgboostExplainer</code> <span class="citation" data-cites="xgboostExplainer">(Foster <label for="tufte-mn-5" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-5" class="margin-toggle">2017<span class="marginnote">Foster, David. 2017. <em>XgboostExplainer: An R Package That Makes Xgboost Models Fully Interpretable</em>. <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer/" class="uri">https://github.com/AppliedDataSciencePartners/xgboostExplainer/</a>.</span>)</span>, <code>live</code> <span class="citation" data-cites="live">(Staniak and Biecek <label for="tufte-mn-6" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-6" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemyslaw Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>. <a href="https://github.com/MI2DataLab/live" class="uri">https://github.com/MI2DataLab/live</a>.</span>)</span> and others.</p>
+<p>So why do we need yet another R package for this? There are some unique features of the DALEX package.</p>
 <ul>
-<li>set of various techniques for exploration of black-box models. Some of these techniques are more useful for understanding of predictions, some are more useful in understanding of structure.</li>
-<li>consistent grammar across various techniques. DALEX is a wrapper over very good tools. Unfortunately these tolls share different logic fo model exploration. DALEX is a smooth wrapper for these tools.</li>
-<li>focus on the models comparison. One can learn a lot from single black-box model, but actually we can learn much more by contrasting models with different structures, like linear models vs. ensembles of trees. All explainers in DALEX by default support model comparisons on various levels.</li>
-<li>visual explanations based on <code>ggplot2</code> package. Elegant, customizable, consistent plots that reveal useful features by glance.</li>
+<li>Scope. DALEX is a wrapper over large number of very good tools / model explainers. It offers a wide range of state of the art techniques for model exploration. Some of these techniques are more useful for understanding of model predictions, some are more useful in understanding of structure.</li>
+<li>Consistency. DALEX offers a consistent grammar across various techniques for model explanation. It’s a wrapper that smooths differences across different dependent packages.</li>
+<li>Model agnostic. DALEX explainers are model agnostic, we can use them for linear models, tree ensembles of other structures. So we are not limited to any particular family of black-box models.</li>
+<li>Model comparisons. One can learn a lot from single black-box model, but actually we can learn much more by contrasting models with different structures, like linear models vs. ensembles of trees. All explainers in DALEX by default support model comparisons on various levels.</li>
+<li>Visual consistency. Each DALEX explainer can be plotted with the generic <code>plot()</code> function. These visual explanations are based on <code>ggplot2</code> <span class="citation" data-cites="ggplot2">(Wickham <label for="tufte-mn-7" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-7" class="margin-toggle">2009<span class="marginnote">Wickham, Hadley. 2009. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>.</span>)</span> package, which results in elegant, customizable, consistent graphs.</li>
 </ul>
-<p>In this book we will focus on three primary usecases for DALEX explainers.</p>
+<p>Chapter <a href="#architecture"><strong>??</strong></a> presents the overall architecture of the DALEX package. Chapter <a href="#modelUnderstanding"><strong>??</strong></a> presents explainers that explore global model performance, variable importance of feature effects. Chapter <a href="#predictionUnderstanding"><strong>??</strong></a> presents explainers that explore feature attribution for single predictions of validation of the reliability of a model prediction.</p>
+<p>In this document we will focus on three primary use-cases for DALEX explainers.</p>
+<section id="to-validate" class="level3">
+<h3><span class="header-section-number">1.1.1</span> To validate</h3>
+<p>Explainers presented in the section <a href="#modelPerformance"><strong>??</strong></a> helps to understand model performance and compare different models on the same scale. The model comparison is richer that a one based on a single number and helps to understand model performance along the full range of model predictions.</p>
+<p>Explainers presented in the section <a href="#outlierDetection"><strong>??</strong></a> helps to identify outliers or observations with particularly unusual value.</p>
+<p>Explainers presented in the section <a href="#predictionBreakdown"><strong>??</strong></a> helps to understand which features influence heavily model predictions.</p>
 </section>
-<section id="to-validate" class="level2">
-<h2><span class="header-section-number">1.2</span> To validate</h2>
-<p>-&gt; jakośc modelu -&gt; identyfikacja outlierów</p>
+<section id="to-understand" class="level3">
+<h3><span class="header-section-number">1.1.2</span> To understand</h3>
+<p>Explainers presented in the section <a href="#featureImportance"><strong>??</strong></a> helps to understand which variables are the most important in the model. Explainers presented in the section <a href="#predictionBreakdown"><strong>??</strong></a> helps to understand which features influence single model predictions. They are useful to understand the key ingredients of the model.</p>
+<p>Explainers presented in the section <a href="#variableResponse"><strong>??</strong></a> helps to understand how features affect model prediction.</p>
 </section>
-<section id="to-understand" class="level2">
-<h2><span class="header-section-number">1.3</span> To understand</h2>
-<p>-&gt; ważność zmiennych -&gt; breakDown</p>
+<section id="to-improve" class="level3">
+<h3><span class="header-section-number">1.1.3</span> To improve</h3>
+<p>Explainers presented in the section <a href="#variableResponse"><strong>??</strong></a> helps to perform feature engineering based on feature marginal responses.</p>
+<p>Explainers presented in the section <a href="#predictionBreakdown"><strong>??</strong></a> helps to understand which variables affect incorrect model decisions. This is useful to identify and correct biases in the training data.</p>
 </section>
-<section id="to-improve" class="level2">
-<h2><span class="header-section-number">1.4</span> To improve</h2>
-<p>-&gt; pdp plots i inżynieria cech -&gt; breakDown dla outlierów</p>
-<ul>
-<li></li>
-</ul>
-<p>Chapter @(#architecture) presents the architecture of the DALEX package. Chapter @(#modelUnderstanding) presents explainers that explore overall model performance, variable importance of feature effects. Chapter @(#predictionUnderstanding) presents explainers that explore feature attribution for single predictions of validation of the reliability of a model prediction.</p>
 </section>
 <section id="trivia" class="level2">
-<h2><span class="header-section-number">1.5</span> Trivia</h2>
-<p><img src="images/dalex01small.jpg" /></p>
+<h2><span class="header-section-number">1.2</span> Trivia</h2>
+<p><span class="marginnote"> <img src="images/dalex01small.jpg" /> </span></p>
 <p><a href="https://en.wikipedia.org/wiki/Dalek">The Daleks</a> are a fictional extraterrestrial race portrayed in the <a href="https://en.wikipedia.org/wiki/Doctor_Who">Doctor Who</a> BBC series. Rather dim aliens, known to repeat the phrase <em>Explain!</em> very often.</p>
 
 </section>
 </section>
 <section id="architecture" class="level1">
 <h1><span class="header-section-number">Chapter 2</span> DALEX architecture</h1>
-<p><span class="citation" data-cites="Strumbelj">(Štrumbelj and Kononenko <label for="tufte-mn-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle">2011<span class="marginnote">Štrumbelj, Erik, and Igor Kononenko. 2011. “A General Method for Visualizing and Explaining Black-Box Regression Models.” In <em>Proceedings of the 10th International Conference on Adaptive and Natural Computing Algorithms - Volume Part Ii</em>, 21–30. ICANNGA’11. Berlin, Heidelberg: Springer-Verlag. <a href="http://dl.acm.org/citation.cfm?id=1997005.1997009" class="uri">http://dl.acm.org/citation.cfm?id=1997005.1997009</a>.</span>)</span>, <span class="citation" data-cites="nnet_vis">(Tzeng and Ma <label for="tufte-mn-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle">2005<span class="marginnote">Tzeng, F. Y., and K. L. Ma. 2005. “Opening the Black Box - Data Driven Visualization of Neural Networks.” In <em>VIS 05. IEEE Visualization, 2005.</em>, 383–90. <a href="https://doi.org/10.1109/VISUAL.2005.1532820" class="uri">https://doi.org/10.1109/VISUAL.2005.1532820</a>.</span>)</span>, <span class="citation" data-cites="magix">(Puri et al. <label for="tufte-mn-3" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-3" class="margin-toggle">2017<span class="marginnote">Puri, N., P. Gupta, P. Agarwal, S. Verma, and B. Krishnamurthy. 2017. “MAGIX: Model Agnostic Globally Interpretable Explanations.” <em>ArXiv E-Prints</em>, June.</span>)</span>, <span class="citation" data-cites="Zeiler_Fergus_2014">(Zeiler and Fergus <label for="tufte-mn-4" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-4" class="margin-toggle">2014<span class="marginnote">Zeiler, Matthew D., and Rob Fergus. 2014. “Visualizing and Understanding Convolutional Networks.” In <em>Computer Vision – Eccv 2014</em>, edited by David Fleet, Tomas Pajdla, Bernt Schiele, and TinneEditors Tuytelaars, 818–33. Springer International Publishing.</span>)</span></p>
+<p><span class="citation" data-cites="Strumbelj">(Štrumbelj and Kononenko <label for="tufte-mn-8" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-8" class="margin-toggle">2011<span class="marginnote">Štrumbelj, Erik, and Igor Kononenko. 2011. “A General Method for Visualizing and Explaining Black-Box Regression Models.” In <em>Proceedings of the 10th International Conference on Adaptive and Natural Computing Algorithms - Volume Part Ii</em>, 21–30. ICANNGA’11. Berlin, Heidelberg: Springer-Verlag. <a href="http://dl.acm.org/citation.cfm?id=1997005.1997009" class="uri">http://dl.acm.org/citation.cfm?id=1997005.1997009</a>.</span>)</span>, <span class="citation" data-cites="nnet_vis">(Tzeng and Ma <label for="tufte-mn-9" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-9" class="margin-toggle">2005<span class="marginnote">Tzeng, F. Y., and K. L. Ma. 2005. “Opening the Black Box - Data Driven Visualization of Neural Networks.” In <em>VIS 05. IEEE Visualization, 2005.</em>, 383–90. <a href="https://doi.org/10.1109/VISUAL.2005.1532820" class="uri">https://doi.org/10.1109/VISUAL.2005.1532820</a>.</span>)</span>, <span class="citation" data-cites="magix">(Puri et al. <label for="tufte-mn-10" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-10" class="margin-toggle">2017<span class="marginnote">Puri, N., P. Gupta, P. Agarwal, S. Verma, and B. Krishnamurthy. 2017. “MAGIX: Model Agnostic Globally Interpretable Explanations.” <em>ArXiv E-Prints</em>, June.</span>)</span>, <span class="citation" data-cites="Zeiler_Fergus_2014">(Zeiler and Fergus <label for="tufte-mn-11" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-11" class="margin-toggle">2014<span class="marginnote">Zeiler, Matthew D., and Rob Fergus. 2014. “Visualizing and Understanding Convolutional Networks.” In <em>Computer Vision – Eccv 2014</em>, edited by David Fleet, Tomas Pajdla, Bernt Schiele, and TinneEditors Tuytelaars, 818–33. Springer International Publishing.</span>)</span></p>
 <section id="notation" class="level2">
 <h2><span class="header-section-number">2.1</span> Notation</h2>
 <p>This book describes explainers for different machine learning models. Some of these explainers are created by different research groups with different applications in mind.</p>
@@ -229,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="use-case---human-resources-analytics" class="level2">
 <h2><span class="header-section-number">2.2</span> Use case - Human Resources Analytics</h2>
-<p>To ilustrate applications of DALEX to binary classification problems we will use a dataset from Kaggle competition <a href="https://www.kaggle.com/ludobenistant/hr-analytics/data">Human Resources Analytics</a>. This dataset is avaliable in the <strong>breakDown</strong> package <span class="citation" data-cites="breakDown">(P. Biecek <label for="tufte-mn-5" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-5" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span>.</p>
+<p>To ilustrate applications of DALEX to binary classification problems we will use a dataset from Kaggle competition <a href="https://www.kaggle.com/ludobenistant/hr-analytics/data">Human Resources Analytics</a>. This dataset is avaliable in the <strong>breakDown</strong> package <span class="citation" data-cites="breakDown">(Biecek <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">head</span>(HR_data)</a></code></pre></div>
 <p><!--
@@ -522,10 +526,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> Model understanding</h1>
 <p>Machine Learning models are widely used and have various applications in classification or regression tasks. Due to increasing computational power, availability of new data sources and new methods, ML models are more and more complex. Models created with techniques like boosting, bagging of neural networks are true black boxes. It is hard to trace the link between input variables and model outcomes. They are use because of high performance, but lack of interpretability is one of their weakest sides.</p>
 <p>In many applications we need to know, understand or prove how input variables are used in the model and what impact do they have on final model prediction. DALEX is a set of tools that help to understand how complex models are working.</p>
-<section id="model-performance" class="level2">
+<section id="modelPerformance" class="level2">
 <h2><span class="header-section-number">3.1</span> Model performance</h2>
 </section>
-<section id="feature-importance" class="level2">
+<section id="featureImportance" class="level2">
 <h2><span class="header-section-number">3.2</span> Feature importance</h2>
 <p>Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?</p>
 <section id="drop-out-plots" class="level3">
@@ -616,7 +620,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb26-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb26-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb26-5" data-line-number="5"><span class="co">#HR_glm_model &lt;- archivist::aread(&quot;pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234&quot;)</span></a></code></pre></div>
-<p>In the package <strong>forestmodel</strong> (see <span class="citation" data-cites="forestmodel">(Kennedy <label for="tufte-mn-6" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-6" class="margin-toggle">2017<span class="marginnote">Kennedy, Nick. 2017. <em>Forestmodel: Forest Plots from Regression Models</em>. <a href="https://CRAN.R-project.org/package=forestmodel" class="uri">https://CRAN.R-project.org/package=forestmodel</a>.</span>)</span>) one can use <code>forest_model()</code> function to draw a forest plot. This package is based on the <strong>broom</strong> package (see <span class="citation" data-cites="broom">(Robinson <label for="tufte-mn-7" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-7" class="margin-toggle">2017<span class="marginnote">Robinson, David. 2017. <em>Broom: Convert Statistical Analysis Objects into Tidy Data Frames</em>. <a href="https://CRAN.R-project.org/package=broom" class="uri">https://CRAN.R-project.org/package=broom</a>.</span>)</span>) and this is why it handles a large variety of different regression models. An example for <code>glm</code>.</p>
+<p>In the package <strong>forestmodel</strong> (see <span class="citation" data-cites="forestmodel">(Kennedy <label for="tufte-mn-13" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-13" class="margin-toggle">2017<span class="marginnote">Kennedy, Nick. 2017. <em>Forestmodel: Forest Plots from Regression Models</em>. <a href="https://CRAN.R-project.org/package=forestmodel" class="uri">https://CRAN.R-project.org/package=forestmodel</a>.</span>)</span>) one can use <code>forest_model()</code> function to draw a forest plot. This package is based on the <strong>broom</strong> package (see <span class="citation" data-cites="broom">(Robinson <label for="tufte-mn-14" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2017<span class="marginnote">Robinson, David. 2017. <em>Broom: Convert Statistical Analysis Objects into Tidy Data Frames</em>. <a href="https://CRAN.R-project.org/package=broom" class="uri">https://CRAN.R-project.org/package=broom</a>.</span>)</span>) and this is why it handles a large variety of different regression models. An example for <code>glm</code>.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;forestmodel&quot;</span>)</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">forest_model</span>(HR_glm_model)</a></code></pre></div>
 <div class="figure"><span id="fig:forestmodel"></span>
@@ -625,7 +629,7 @@ Figure 3.1: Forest plot created with forestmodel package
 </p>
 <img src="DALEX_files/figure-html/forestmodel-1.png" alt="Forest plot created with forestmodel package" width="768"  />
 </div>
-<p>In the package <strong>sjPlot</strong> (see <span class="citation" data-cites="sjPlot">(Lüdecke <label for="tufte-mn-8" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-8" class="margin-toggle">2017<span class="marginnote">Lüdecke, Daniel. 2017. <em>SjPlot: Data Visualization for Statistics in Social Science</em>. <a href="https://CRAN.R-project.org/package=sjPlot" class="uri">https://CRAN.R-project.org/package=sjPlot</a>.</span>)</span>) one can use <code>sjp.*()</code> to visualise structure of a <code>*</code> model or a wrapper <code>plot_model()</code>. Here is an example for <code>glm</code> model.</p>
+<p>In the package <strong>sjPlot</strong> (see <span class="citation" data-cites="sjPlot">(Lüdecke <label for="tufte-mn-15" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-15" class="margin-toggle">2017<span class="marginnote">Lüdecke, Daniel. 2017. <em>SjPlot: Data Visualization for Statistics in Social Science</em>. <a href="https://CRAN.R-project.org/package=sjPlot" class="uri">https://CRAN.R-project.org/package=sjPlot</a>.</span>)</span>) one can use <code>sjp.*()</code> to visualise structure of a <code>*</code> model or a wrapper <code>plot_model()</code>. Here is an example for <code>glm</code> model.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;sjPlot&quot;</span>)</a>
 <a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">plot_model</span>(HR_glm_model, <span class="dt">type =</span> <span class="st">&quot;est&quot;</span>, <span class="dt">sort.est =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <div class="figure"><span id="fig:sjpglm"></span>
@@ -638,7 +642,7 @@ Figure 3.2: Forest plot created with sjPlot package
 <p>The <strong>forestmodel</strong> package handles factor variables in a better way while the plots from <strong>sjPlot</strong> are easier to read.</p>
 </section>
 </section>
-<section id="variable-response" class="level2">
+<section id="variableResponse" class="level2">
 <h2><span class="header-section-number">3.3</span> Variable response</h2>
 <figure>
 <img src="images/DALEX_single_variable.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
@@ -648,7 +652,7 @@ Figure 3.2: Forest plot created with sjPlot package
 <p>Methods presented below help to understand the conditional structure of a model.</p>
 <section id="pdpchapter" class="level3">
 <h3><span class="header-section-number">3.3.1</span> Partial Dependence Plot</h3>
-<p>Partial Dependence Plots (see <strong>pdp</strong> package <span class="citation" data-cites="pdp">(Greenwell <label for="tufte-mn-9" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-9" class="margin-toggle">2017<span class="marginnote">Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1):421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</span>)</span>) for a black box <span class="math inline">\(f(x; \theta)\)</span> calculates the expected output given a selected variable.</p>
+<p>Partial Dependence Plots (see <strong>pdp</strong> package <span class="citation" data-cites="pdp">(Greenwell <label for="tufte-mn-16" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-16" class="margin-toggle">2017<span class="marginnote">Greenwell, Brandon M. 2017. “Pdp: An R Package for Constructing Partial Dependence Plots.” <em>The R Journal</em> 9 (1):421–36. <a href="https://journal.r-project.org/archive/2017/RJ-2017-016/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-016/index.html</a>.</span>)</span>) for a black box <span class="math inline">\(f(x; \theta)\)</span> calculates the expected output given a selected variable.</p>
 <p><span class="math display">\[
 p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 \]</span></p>
@@ -707,8 +711,8 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 </section>
 <section id="accumulated-local-effects-plot" class="level3">
 <h3><span class="header-section-number">3.3.3</span> Accumulated Local Effects Plot</h3>
-<p>As it is presented in the chapter @(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of <span class="math inline">\(x_{-i}\)</span>. In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-10" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-10" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span> for more details).</p>
-<p>Accumulated local effects (ALE) plots (see <strong>ALEPlot</strong> package <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-11" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-11" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span>) solves this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
+<p>As it is presented in the chapter @(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of <span class="math inline">\(x_{-i}\)</span>. In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-17" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-17" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span> for more details).</p>
+<p>Accumulated local effects (ALE) plots (see <strong>ALEPlot</strong> package <span class="citation" data-cites="ALEPlot">(Apley <label for="tufte-mn-18" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-18" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span>) solves this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
 <p>Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.</p>
 <p>Estimation of main effects for <code>satisfaction_level</code> is similar to the PDP curves. Here we are using <code>DALEX::single_variable</code> function that is calling <code>ALEPlot::ALEPlot</code> function to calculate ALE curve for variable <code>satisfaction_level</code>.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">exel_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;ale&quot;</span>)</a>
@@ -721,7 +725,7 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 </section>
 <section id="individual-conditional-expectation-plot" class="level3">
 <h3><span class="header-section-number">3.3.4</span> Individual Conditional Expectation Plot</h3>
-<p>Individual Conditional Expectations (ICE) may be considered as an extension of the PDP curves (see <strong>ICEbox</strong> package <span class="citation" data-cites="ICEbox">(Goldstein et al. <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2015<span class="marginnote">Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1):44–65. <a href="https://doi.org/10.1080/10618600.2014.907095" class="uri">https://doi.org/10.1080/10618600.2014.907095</a>.</span>)</span>). Instead of plotting expected value over all observations, for ICE we are plotting individual conditional model responses. Average of ICE curves results in PDP curve.</p>
+<p>Individual Conditional Expectations (ICE) may be considered as an extension of the PDP curves (see <strong>ICEbox</strong> package <span class="citation" data-cites="ICEbox">(Goldstein et al. <label for="tufte-mn-19" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-19" class="margin-toggle">2015<span class="marginnote">Goldstein, Alex, Adam Kapelner, Justin Bleich, and Emil Pitkin. 2015. “Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation.” <em>Journal of Computational and Graphical Statistics</em> 24 (1):44–65. <a href="https://doi.org/10.1080/10618600.2014.907095" class="uri">https://doi.org/10.1080/10618600.2014.907095</a>.</span>)</span>). Instead of plotting expected value over all observations, for ICE we are plotting individual conditional model responses. Average of ICE curves results in PDP curve.</p>
 <p>An ICE curve for observation <span class="math inline">\(k\)</span> over variable <span class="math inline">\(i\)</span> may be defined as</p>
 <p><span class="math display">\[
 ice_k(x_i) = f(x^i, x_k^{-i}; \theta) 
@@ -755,7 +759,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <section id="mering-path-plot" class="level3">
 <h3><span class="header-section-number">3.3.5</span> Mering Path Plot</h3>
 <p>The package <code>ICEbox</code> is not working for factor variables while the <code>pdp</code> package returns plots that are hard to interpret.</p>
-<p>An interesting tool that helps to understand what is happening with factor variables is the <strong>factorMerger</strong> package (see <span class="citation" data-cites="factorMerger">(Sitko and Biecek <label for="tufte-mn-13" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-13" class="margin-toggle">2017<span class="marginnote">Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</span>)</span>).</p>
+<p>An interesting tool that helps to understand what is happening with factor variables is the <strong>factorMerger</strong> package (see <span class="citation" data-cites="factorMerger">(Sitko and Biecek <label for="tufte-mn-20" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-20" class="margin-toggle">2017<span class="marginnote">Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</span>)</span>).</p>
 <p>Here we have Merging Path Plot for a factor variable <code>sales</code>.</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;factorMerger&quot;</span>)</a>
 <a class="sourceLine" id="cb45-2" data-line-number="2">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
@@ -779,14 +783,14 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <section id="outlier-detection" class="level2">
 <h2><span class="header-section-number">4.1</span> Outlier detection</h2>
 </section>
-<section id="prediction-breakdown" class="level2">
+<section id="predictionBreakdown" class="level2">
 <h2><span class="header-section-number">4.2</span> Prediction breakdown</h2>
 <p>Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:</p>
 <ul>
 <li>explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.</li>
 <li>examination of curvature around a specific point (single observation). Can be used to determine the strength of influence onto a final model. Is it an outlier?</li>
 </ul>
-<p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation" data-cites="lime">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-14" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>.</p>
+<p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation" data-cites="lime">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-21" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-21" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>.</p>
 <section id="basics" class="level3">
 <h3><span class="header-section-number">4.2.1</span> Basics</h3>
 <p>Most ML algorithms do not learn from mistakes. One calculates predictions and there is no room for improvement.</p>
@@ -798,7 +802,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <figure>
 <img src="images/DALEX_live.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
 </figure>
-<p>The <strong>live</strong> package (see <span class="citation" data-cites="live">(Staniak and Biecek <label for="tufte-mn-15" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-15" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemysław Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>.</span>)</span>) may be seen as an extension of the lime method (see <span class="citation" data-cites="lime">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-16" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-16" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>). It is based on <strong>mlr</strong> general framework for training of machine learning models (see more <span class="citation" data-cites="mlr">(Bischl et al. <label for="tufte-mn-17" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-17" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170):1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span>).</p>
+<p>The <strong>live</strong> package (see <span class="citation" data-cites="live">(Staniak and Biecek <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemyslaw Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>. <a href="https://github.com/MI2DataLab/live" class="uri">https://github.com/MI2DataLab/live</a>.</span>)</span>) may be seen as an extension of the lime method (see <span class="citation" data-cites="lime">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-23" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-23" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>). It is based on <strong>mlr</strong> general framework for training of machine learning models (see more <span class="citation" data-cites="mlr">(Bischl et al. <label for="tufte-mn-24" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170):1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span>).</p>
 <p>Let’s see an example. We will use the <code>HR_rf_model</code> trained with the <strong>randomForest</strong> package on Human Resources Analytics data.</p>
 <p>Around a selected point we will fit a linear model.</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;live&quot;</span>)</a>
@@ -826,7 +830,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <figure>
 <img src="images/DALEX_breakDown.png" alt="Cheatsheet" /><figcaption>Cheatsheet</figcaption>
 </figure>
-<p>The <code>breakDown</code> package <span class="citation" data-cites="breakDown">(P. Biecek <label for="tufte-mn-18" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-18" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span> explains components of model prediction for a single observation. Right now it’s working for <code>lm</code> and <code>glm</code> models. Break Down Plots are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>.</p>
+<p>The <code>breakDown</code> package <span class="citation" data-cites="breakDown">(Biecek <label for="tufte-mn-25" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-25" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span> explains components of model prediction for a single observation. Right now it’s working for <code>lm</code> and <code>glm</code> models. Break Down Plots are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>.</p>
 <p>Break Down Plots show the contribution of every variable present in the model.</p>
 <p>Let’s see a use case for the <code>wine</code> dataset.</p>
 <p>The problem that we are going to solve is to create a model that predicts wine quality and then use the model and explain it’s prediction for a single wine.</p>
@@ -928,7 +932,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 <h1><span class="header-section-number">Chapter 5</span> Reproducibility</h1>
 <p>Packages are changing quite fast, especially these actively developed. Below you will find list of packages that were installed on my computer when I was preparing this documentation.</p>
 <p>It is likely that some of described packages will change names of functions or arguments or structure of results. Use the version listed below to reproduce results form this book.</p>
-<p>Note, that results, models and plots created in are were recorded with the <strong>archivist</strong> package <span class="citation" data-cites="archivist">(P. Biecek and Kosinski <label for="tufte-mn-19" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-19" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11):1–28. <a href="https://doi.org/10.18637/jss.v082.i11" class="uri">https://doi.org/10.18637/jss.v082.i11</a>.</span>)</span>. Use archivist links to retrieve their binary copies directly to your R console.</p>
+<p>Note, that results, models and plots created in are were recorded with the <strong>archivist</strong> package <span class="citation" data-cites="archivist">(Biecek and Kosinski <label for="tufte-mn-26" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-26" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11):1–28. <a href="https://doi.org/10.18637/jss.v082.i11" class="uri">https://doi.org/10.18637/jss.v082.i11</a>.</span>)</span>. Use archivist links to retrieve their binary copies directly to your R console.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
 <pre><code>##  setting  value                       
 ##  version  R version 3.4.4 (2018-03-15)
@@ -937,7 +941,7 @@ ice_k(x_i) = f(x^i, x_k^{-i}; \theta)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       Europe/Warsaw               
-##  date     2018-03-28                  
+##  date     2018-03-29                  
 ## 
 ##  package      * version   date      
 ##  abind          1.4-5     2016-07-21

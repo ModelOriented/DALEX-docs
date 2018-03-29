@@ -2,7 +2,7 @@
 
 ## Outlier detection
 
-## Prediction breakdown
+## Prediction breakdown {#predictionBreakdown}
 
 Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:
 

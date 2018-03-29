@@ -20,53 +20,68 @@ description: "Do not trust a black-box model. Unless it explains itself."
 
 Actually I like the vagueness, because the interpretation of the name evolves over time as the discipline does.
 
-* Few years ago I would extend this name as *machines are learning from human*. The supervised learning was were popular, humans were involved in data labelling and machines were tuned to predict these labels.
-* Now we face very nice examples of *machines that are learning from other machines*. Self playing in nnets like AlphaGo Zero learns from themself in blazing speed. Still humans are involved in designing of the environment but labelling turns out to be very expensive so we are looking for ways to learn from partial labels, fuzzy labels, or no labels at all.
-* I imagine that in close future *humans will learn from machines*. Well trained black-boxes may train us how to be a better in playing go, how to better in reading PET images, or how to be better in writing of books.
+* Few years ago I would extend this name as *machines are learning from human*. In the supervised learning problems, human creates a labeled dataset and machines are tuned to predict labels from data.
+* Recently we have more and more examples of *machines that are learning from other machines*. Self playing neural net like AlphaGo Zero [@AlphaGoZero] learns from themself in a blazing speed. Still humans are involved in designing of the learning environment but the labelling turns out to be very expensive or not feasible and we are looking for other ways to learn from partial labels, fuzzy labels, or no labels at all.
+* I could imagine that in close future *humans will learn from machines*. Well trained black-boxes may tech us how to be a better in playing go, how to be better in reading PET images, or how to be better in writing of books.
 
 To make this future possible we need tools that extract useful information from black-box models. And as the human supervision over the learning is smaller over time, the black-box understanding is more important. 
 DALEX is *the tool* for this.
 
 ## Why DALEX?
 
-Key features of the DALEX
 
-* set of various techniques for exploration of black-box models. Some of these techniques are more useful for understanding of predictions, some are more useful in understanding of structure. 
-* consistent grammar across various techniques. DALEX is a wrapper over very good tools. Unfortunately these tolls share different logic fo model exploration. DALEX is a smooth wrapper for these tools.
-* focus on the models comparison. One can learn a lot from single black-box model, but actually we can learn much more by contrasting models with different structures, like linear models vs. ensembles of trees. All explainers in DALEX by default support model comparisons on various levels.
-* visual explanations based on `ggplot2` package. Elegant, customizable, consistent plots that reveal useful features by glance.
+There is a number of R packages that may be used for knowledge extraction from machine learning models. Like `pdp` [@pdp], `ALEPlot` [@ALEPlot], `randomForestExplainer` [@randomForestExplainer], `xgboostExplainer` [@xgboostExplainer], `live` [@live] and others.
 
-In this book we will focus on three primary usecases for DALEX explainers.
+So why do we need yet another R package for this?
+There are some unique features of the DALEX package.
 
-## To validate
+* Scope. DALEX is a wrapper over large number of very good tools / model explainers. It offers a wide range of state of the art techniques for model exploration. Some of these techniques are more useful for understanding of model predictions, some are more useful in understanding of structure. 
+* Consistency. DALEX offers a consistent grammar across various techniques for model explanation. It's a wrapper that smooths differences across different dependent packages.
+* Model agnostic. DALEX explainers are model agnostic, we can use them for linear models, tree ensembles of other structures. So we are not limited to any particular family of black-box models.
+* Model comparisons. One can learn a lot from single black-box model, but actually we can learn much more by contrasting models with different structures, like linear models vs. ensembles of trees. All explainers in DALEX by default support model comparisons on various levels.
+* Visual consistency. Each DALEX explainer can be plotted with the generic `plot()` function. These visual explanations are based on `ggplot2` [@ggplot2] package, which results in elegant, customizable, consistent graphs.  
 
- -> jakośc modelu
- -> identyfikacja outlierów
 
-## To understand
 
- -> ważność zmiennych
- -> breakDown
+Chapter \@ref(architecture) presents the overall architecture of the DALEX package. 
+Chapter \@ref(modelUnderstanding) presents explainers that explore global model performance, variable importance of feature effects.
+Chapter \@ref(predictionUnderstanding) presents explainers that explore feature attribution for single predictions of validation of the reliability of a model prediction. 
 
-## To improve
 
- -> pdp plots i inżynieria cech
- -> breakDown dla outlierów
+In this document we will focus on three primary use-cases for DALEX explainers.
 
--
+### To validate
 
-Chapter \@(#architecture) presents the architecture of the DALEX package. 
-Chapter \@(#modelUnderstanding) presents explainers that explore overall model performance, variable importance of feature effects.
-Chapter \@(#predictionUnderstanding) presents explainers that explore feature attribution for single predictions of validation of the reliability of a model prediction. 
+Explainers presented in the section \@ref(modelPerformance) helps to understand model performance and compare different models on the same scale. The model comparison is richer that a one based on a single number and helps to understand model performance along the full range of model predictions.
+
+Explainers presented in the section \@ref(outlierDetection) helps to identify outliers or observations with particularly unusual value.
+
+Explainers presented in the section \@ref(predictionBreakdown) helps to understand which features influence heavily model predictions. 
+
+
+### To understand
+
+Explainers presented in the section \@ref(featureImportance) helps to understand which variables are the most important in the model. Explainers presented in the section \@ref(predictionBreakdown) helps to understand which features influence single model predictions.  They are useful to understand the key ingredients of the model. 
+
+Explainers presented in the section \@ref(variableResponse) helps to understand how features affect model prediction.
+
+### To improve
+
+Explainers presented in the section \@ref(variableResponse) helps to perform feature engineering based on feature marginal responses.
+
+Explainers presented in the section \@ref(predictionBreakdown) helps to understand which variables affect incorrect model decisions. This is useful to identify and correct biases in the training data.
 
 
 ## Trivia
 
+<span class="marginnote"> 
 ![](images/dalex01small.jpg)
+</span>
+
 
 [The Daleks](https://en.wikipedia.org/wiki/Dalek) are a fictional extraterrestrial race portrayed in the [Doctor Who](https://en.wikipedia.org/wiki/Doctor_Who) BBC series. Rather dim aliens, known to repeat the phrase *Explain!* very often.
 
-```{r include=FALSE}
+```{r bibliography, include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'

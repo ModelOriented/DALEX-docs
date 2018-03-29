@@ -8,9 +8,9 @@ In many applications we need to know, understand or prove how input variables ar
 DALEX is a set of tools that help to understand how complex models are working.
 
 
-## Model performance
+## Model performance {#modelPerformance}
 
-## Feature importance
+## Feature importance {#featureImportance}
 
 Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?
 
@@ -116,7 +116,7 @@ plot_model(HR_glm_model, type = "est", sort.est = TRUE)
 The **forestmodel** package handles factor variables in a better way while the plots from **sjPlot** are easier to read.
 
 
-## Variable response
+## Variable response {#variableResponse}
 
 ![Cheatsheet](images/DALEX_single_variable.png)
 
