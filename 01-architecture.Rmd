@@ -1,8 +1,26 @@
-# DALEX architecture {#architecture}
+# Architecture of DALEX {#architecture}
+
+In order to easily explore the structure of a black-box model we need to have an easy to use tool with unified interface.
+
+This is why DALEX architecture is simple and consistent. Actually there are only tree rules that should be remembered and one is ready to use this tool.
+
+* First step is to use the `explain()` function to enrich a black-box model with additional metadata required by explainers. Different explainers require different additional inputs. Find the list of required elements in Section \@ref(explainFunction).
+* Second step is to use an explainer function that calculates required explanations. Explainers are listed in Chapter \@ref(modelUnderstanding) and \@ref(predictionUnderstanding).
+* Third step is to use generic `print()` or `plot()` function to see the explainer. Both functions work for one or model models.
+
+
+These three steps are presented in the Figure 2.1.
+
+<p><span class="marginnote">Figure 2.1. The overview of DALEX architecture. <br/><br/>
+*A)* Any predictive model with defined input $x$ and output $y_{raw} \in \mathcal R$ may be used. <br/><br/>
+*B)* Models are first enriched in additional metadata, like a function that calculates predictions, test data, and other components. The `explain()` function creates an object of the class `explainer`, that can bu used in further processing.<br/><br/> 
+*C)* Based on the `explainer` various summaries may be calculated. <br/>
+Each explainer calculates a numerical summaries that can be plotted with generic `plot()` function.
+</span>
+<img src="images/architecture.png"/></p>
 
 
 
-[@Strumbelj], [@nnet_vis], [@magix], [@Zeiler_Fergus_2014]
 
 ## Notation
 
@@ -19,6 +37,18 @@ To keep the notation consistent:
 
 
 ![](images/model01.jpg)
+
+## How to use the `explain()` function {#explainFunction}
+
+
+
+* `model`	 object - a model to be explained
+* `data`	data.frame or matrix - data that was used for fitting. If not provided then will be extracted from the model
+* `y`	 numeric vector with outputs / scores. Currently used only by variable_dropout() explainer.
+* `predict_function`	 function that takes two arguments: model and new data and returns numeric vector with predictions
+* `link`	function - a transformation/link function that shall be applied to raw model predictions
+* `label`	 character - the name of the model. By default it's extracted from the 'class' attribute of the model
+
 
 
 ## Use case - Human Resources Analytics
