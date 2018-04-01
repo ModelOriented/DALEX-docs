@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-03-30" />
+<meta name="date" content="2018-04-02" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -123,15 +123,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="1-2-trivia.html#trivia"><span class="toc-section-number">1.2</span> Trivia</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
-<li><a href="2-1-notation.html#notation"><span class="toc-section-number">2.1</span> Notation</a></li>
-<li><a href="2-2-explainFunction.html#explainFunction"><span class="toc-section-number">2.2</span> How to use the <code>explain()</code> function</a></li>
-<li class="has-sub"><a href="2-3-use-case-human-resources-analytics.html#use-case---human-resources-analytics"><span class="toc-section-number">2.3</span> Use case - Human Resources Analytics</a><ul>
-<li><a href="2-3-use-case-human-resources-analytics.html#logistic-regression"><span class="toc-section-number">2.3.1</span> Logistic regression</a></li>
-<li><a href="2-3-use-case-human-resources-analytics.html#random-forest"><span class="toc-section-number">2.3.2</span> Random forest</a></li>
+<li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
+<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-4-use-case-wine-quality.html#use-case---wine-quality"><span class="toc-section-number">2.4</span> Use case - Wine quality</a><ul>
-<li><a href="2-4-use-case-wine-quality.html#linear-regression"><span class="toc-section-number">2.4.1</span> Linear regression</a></li>
-</ul></li>
+<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -173,23 +170,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemyslaw Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>. <a href="https://github.com/MI2DataLab/live" class="uri">https://github.com/MI2DataLab/live</a>.</span>)</span>) may be seen as an extension of the lime method (see <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-23" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-23" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>). It is based on <strong>mlr</strong> general framework for training of machine learning models (see more <span class="citation">(Bischl et al. <label for="tufte-mn-24" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170):1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span>).</p>
 <p>Let’s see an example. We will use the <code>HR_rf_model</code> trained with the <strong>randomForest</strong> package on Human Resources Analytics data.</p>
 <p>Around a selected point we will fit a linear model.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;live&quot;</span>)</a>
-<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
-<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
-<a class="sourceLine" id="cb47-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb47-5" data-line-number="5">HR_data<span class="op">$</span>left &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(HR_data<span class="op">$</span>left))</a>
-<a class="sourceLine" id="cb47-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb47-7" data-line-number="7">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data,</a>
-<a class="sourceLine" id="cb47-8" data-line-number="8"><span class="dt">ntree=</span><span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb47-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb47-10" data-line-number="10">similar &lt;-<span class="st"> </span><span class="kw">sample_locally</span>(<span class="dt">data =</span> HR_data, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,], <span class="dt">explained_var =</span> <span class="st">&quot;left&quot;</span>, <span class="dt">size =</span> <span class="dv">2000</span>)</a>
-<a class="sourceLine" id="cb47-11" data-line-number="11">similar &lt;-<span class="st"> </span><span class="kw">add_predictions</span>(HR_data, similar, HR_rf_model)</a>
-<a class="sourceLine" id="cb47-12" data-line-number="12">trained &lt;-<span class="st"> </span><span class="kw">fit_explanation</span>( <span class="dt">live_object =</span> similar, <span class="dt">white_box =</span> <span class="st">&quot;regr.lm&quot;</span>, <span class="dt">selection =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;live&quot;</span>)</a>
+<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb48-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb48-5" data-line-number="5">HR_data<span class="op">$</span>left &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(HR_data<span class="op">$</span>left))</a>
+<a class="sourceLine" id="cb48-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb48-7" data-line-number="7">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> HR_data,</a>
+<a class="sourceLine" id="cb48-8" data-line-number="8"><span class="dt">ntree=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb48-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb48-10" data-line-number="10">similar &lt;-<span class="st"> </span><span class="kw">sample_locally</span>(<span class="dt">data =</span> HR_data, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,], <span class="dt">explained_var =</span> <span class="st">&quot;left&quot;</span>, <span class="dt">size =</span> <span class="dv">2000</span>)</a>
+<a class="sourceLine" id="cb48-11" data-line-number="11">similar &lt;-<span class="st"> </span><span class="kw">add_predictions</span>(HR_data, similar, HR_rf_model)</a>
+<a class="sourceLine" id="cb48-12" data-line-number="12">trained &lt;-<span class="st"> </span><span class="kw">fit_explanation</span>( <span class="dt">live_object =</span> similar, <span class="dt">white_box =</span> <span class="st">&quot;regr.lm&quot;</span>, <span class="dt">selection =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p>Fitted model may be plotted with <em>waterfall plot</em> …</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;waterfallplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;waterfallplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</a></code></pre></div>
 <p><img src="DALEX_files/figure-html/live_water-1.png" width="672"  /></p>
 <p>… or <em>forest plot</em> …</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;forestplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">plot_explanation</span>(trained, <span class="st">&quot;forestplot&quot;</span>, <span class="dt">explained_instance =</span> HR_data[<span class="dv">1</span>,])</a></code></pre></div>
 <p><img src="DALEX_files/figure-html/live_forest-1.png" width="672"  /></p>
 <p>For more details consult the following vignette.</p>
 </div>

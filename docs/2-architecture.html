@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-03-30" />
+<meta name="date" content="2018-04-02" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -123,15 +123,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="1-2-trivia.html#trivia"><span class="toc-section-number">1.2</span> Trivia</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
-<li><a href="2-1-notation.html#notation"><span class="toc-section-number">2.1</span> Notation</a></li>
-<li><a href="2-2-explainFunction.html#explainFunction"><span class="toc-section-number">2.2</span> How to use the <code>explain()</code> function</a></li>
-<li class="has-sub"><a href="2-3-use-case-human-resources-analytics.html#use-case---human-resources-analytics"><span class="toc-section-number">2.3</span> Use case - Human Resources Analytics</a><ul>
-<li><a href="2-3-use-case-human-resources-analytics.html#logistic-regression"><span class="toc-section-number">2.3.1</span> Logistic regression</a></li>
-<li><a href="2-3-use-case-human-resources-analytics.html#random-forest"><span class="toc-section-number">2.3.2</span> Random forest</a></li>
+<li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
+<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-4-use-case-wine-quality.html#use-case---wine-quality"><span class="toc-section-number">2.4</span> Use case - Wine quality</a><ul>
-<li><a href="2-4-use-case-wine-quality.html#linear-regression"><span class="toc-section-number">2.4.1</span> Linear regression</a></li>
-</ul></li>
+<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -166,22 +163,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="architecture" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Architecture of DALEX</h1>
-<p>In order to easily explore the structure of a black-box model we need to have an easy to use tool with unified interface.</p>
-<p>This is why DALEX architecture is simple and consistent. Actually there are only tree rules that should be remembered and one is ready to use this tool.</p>
+<p>DALEX architecture is simple and consistent. Actually there are only tree rules that should be remembered and one is ready to use this tool.</p>
 <ul>
-<li>First step is to use the <code>explain()</code> function to enrich a black-box model with additional metadata required by explainers. Different explainers require different additional inputs. Find the list of required elements in the <a href="2-2-explainFunction.html#explainFunction">2.2</a> section.</li>
-<li>Second step is to use an explainer function that calculates required explanations. Explainers are listed in chapter <a href="3-modelUnderstanding.html#modelUnderstanding">3</a> and <a href="4-predictionUnderstanding.html#predictionUnderstanding"><strong>??</strong></a>.</li>
+<li>First step is to use the <code>explain()</code> function to enrich a black-box model with additional metadata required by explainers. Different explainers require different additional inputs. Find the list of required elements in Section <a href="2-1-explainFunction.html#explainFunction">2.1</a>.</li>
+<li>Second step is to use an explainer function that calculates required descriptions. Variouse explainers are introduced in Chapter <a href="3-modelUnderstanding.html#modelUnderstanding">3</a> and <a href="4-predictionUnderstanding.html#predictionUnderstanding"><strong>??</strong></a>.</li>
 <li>Third step is to use generic <code>print()</code> or <code>plot()</code> function to see the explainer. Both functions work for one or model models.</li>
 </ul>
-<p>These three steps are presented in the Figure below.</p>
+<p>These three steps are presented in the Figure 2.1.</p>
 <p>
-<span class="marginnote">Overview of DALEX architecture. <br/> <em>A)</em> Any predictive model with defined input <span class="math inline">\(x\)</span> and output <span class="math inline">\(y_{raw} \in \mathcal R\)</span> may be used. <br/> <em>B)</em> Models are first enriched in additional metadata, like a function that calculates predictions, test data, and other components. The <code>explain()</code> function creates an object of the class <code>explainer</code>, that can bu used in further processing.<br/> <em>C)</em> Based on the <code>explainer</code> various summaries may be calculated. <br/> Each explainer calculates a numerical summaries that can be plotted with generic <code>plot()</code> function. </span> <img src="images/architecture.png"/>
+<span class="marginnote">Figure 2.1. The overview of DALEX architecture. <br/><br/> <em>A)</em> Any predictive model with defined input <span class="math inline">\(x\)</span> and output <span class="math inline">\(y_{raw} \in \mathcal R\)</span> may be used. <br/><br/> <em>B)</em> Models are first enriched in additional metadata, like a function that calculates predictions, test data, and other components. The <code>explain()</code> function creates an object of the class <code>explainer</code>, that can bu used in further processing.<br/><br/> <em>C)</em> Based on the <code>explainer</code> various summaries may be calculated. <br/> Each explainer calculates a numerical summaries that can be plotted with generic <code>plot()</code> function. </span> <img src="images/architecture.png"/>
 </p> 
 </div>
 <p style="text-align: center;">
 <a href="1-2-trivia.html"><button class="btn btn-default">Previous</button></a>
 <a href="https://github.com/pbiecek/DALEX/edit/master/01-architecture.Rmd"><button class="btn btn-default">Edit</button></a>
-<a href="2-1-notation.html"><button class="btn btn-default">Next</button></a>
+<a href="2-1-explainFunction.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

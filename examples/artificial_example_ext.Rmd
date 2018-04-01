@@ -8,7 +8,93 @@ output:
 # Create a dataset
 
 ```{r warning=FALSE, message=FALSE}
+N <- 10000
+Ntest <- 1000
+
+set.seed(12)
+
+districts <- c(Srodmiescie = 1000,
+  Mokotow = 200,
+  Ochota = 200,
+  Zoliborz = 200,
+  Wola = -400,
+  Bemowo = -400,
+  Ursus = -400,
+  Ursynow = -400,
+  Bielany = -400,
+  Praga = -400)
+district <- districts[sample(seq_along(districts), N, T)]
+
+floor <- (1:10)[sample(10, N ,T)]
+
+surface <- runif(N, min = 20, max = 150)
+
+no.rooms <- round(surface/30) + (0:1)[sample(2, N, T)]
+
+construction.year <- runif(N, min = 1920, max = 2010)
+
+# m2.price ~ construction.year + surface + no.rooms + district + floor
+
+m2.price <- 5000 +
+  600 * (abs(construction.year - 1965) > 30) +
+  -10 * surface +
+  -100 * floor +
+  -50 * no.rooms + 
+  1.5 * district
+
+apartmets <- data.frame(m2.price = round(m2.price),
+                        construction.year = round(construction.year),
+                        surface = round(surface),
+                        floor = floor,
+                        no.rooms = no.rooms,
+                        district = factor(names(district)))
+
+df <- apartmets[1:Ntest,]
+dfTest <- apartmets[-(1:Ntest),]
+
+apartments <- df
+apartmentsTest <- dfTest
+
+mlm <- lm(m2.price ~ ., df)
+mrf <- randomForest(m2.price ~ ., df)
+mlm2 <- lm(m2.price ~ I(construction.year < 1940 | construction.year > 1990) +
+             surface + floor + no.rooms + district, df)
+
+
+library(DALEX)
+exp_ml <- DALEX::explain(mlm, data = dfTest[,2:6], y = dfTest$m2.price)
+exp_ml2 <- DALEX::explain(mlm2, data = dfTest[,2:6], y = dfTest$m2.price, label = "better lm")
+exp_rf <- DALEX::explain(mrf, data = dfTest[,2:6], y = dfTest$m2.price)
+
+print(sqrt(mean((predict(mlm, dfTest) - dfTest$m2.price)^2)))
+print(sqrt(mean((predict(mrf, dfTest) - dfTest$m2.price)^2)))
+print(sqrt(mean((predict(mlm2, dfTest) - dfTest$m2.price)^2)))
+
+loss_function = function(observed, predicted)
+  sqrt(mean((observed - predicted)^2))
+
+v1 <- variable_dropout(exp_ml, loss_function=loss_function, n_sample = N)
+v2 <- variable_dropout(exp_rf, loss_function=loss_function, n_sample = N)
+plot(v1, v2, max_vars = 20)
+
+v3 <- variable_dropout(exp_ml2, loss_function=loss_function, n_sample = N)
+plot(v1, v2, v3, max_vars = 20)
+
+
+v1 <- single_variable(exp_ml, "district")
+v2 <- single_variable(exp_rf, "district")
+plot(v1, v2) 
+
+v1 <- single_variable(exp_ml, "construction.year")
+v2 <- single_variable(exp_rf, "construction.year")
+plot(v1, v2) 
+
+
+
+
+
 set.seed(13)
+
 p <- 10
 beta    <- 1
 epsilon <- 1/2

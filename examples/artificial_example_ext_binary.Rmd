@@ -1,0 +1,99 @@
+---
+title: "Artificial example - binary"
+author: "Przemyslaw Biecek"
+output:
+  html_document
+---
+
+# Create a dataset
+
+```{r warning=FALSE, message=FALSE}
+set.seed(13)
+pp <- 3
+beta    <- 5
+N <- 10000
+Ntest <- 10000
+
+library(randomForest)
+library(breakDown)
+library(DALEX)
+
+xx <- matrix(runif((N + Ntest)*pp), ncol = pp)
+
+Xb <- beta*(abs(xx[,1] - 0.5) < 0.25) +
+  beta*rowSums(xx[,-1])
+p <- exp(Xb - mean(Xb))/ (1 + exp(Xb - mean(Xb)))
+
+y <- factor(rbinom(N+Ntest, size = 1, p))
+
+df <- data.frame(y, X1 = xx[,1], xx[,-1])
+dfTest <- df[(1 + N):(N + Ntest),]
+df <- df[1:N,]
+```
+
+# Fit models, create explainers
+
+```{r warning=FALSE, message=FALSE}
+mlm <- glm(y~., df, family = "binomial")
+mrf <- randomForest(y~., df)
+
+print(sqrt(mean((predict(mlm, dfTest, type = "response") - as.numeric(as.character(dfTest$y)))^2)))
+print(sqrt(mean((predict(mrf, dfTest, type = "prob")[,2] - as.numeric(as.character(dfTest$y)))^2)))
+
+exp_ml <- DALEX::explain(mlm, data = dfTest, y = dfTest$y,
+                         predict_function = function(m,x) {
+                           predict(m, x, type = "response")
+                         })
+exp_rf <- DALEX::explain(mrf, data = dfTest, y = dfTest$y,
+                         predict_function = function(m,x) {
+                           predict(m, x, type = "prob")[,2]
+                         })
+```
+
+# Variable importance
+
+```{r warning=FALSE, message=FALSE}
+dloss_function = function(obs, pred) {
+    sqrt(mean((pred - as.numeric(as.character(obs)))^2))
+}                              
+cross_entropy_loss <- function(obs, pred) {
+  obs <- as.numeric(as.character(obs))
+  mean(- obs * log(pred) - (1 - obs) * log(1 - pred), na.rm = TRUE)
+}                              
+                              
+v1 <- variable_dropout(exp_ml, 
+                       loss_function = cross_entropy_loss, n_sample)
+v2 <- variable_dropout(exp_rf, 
+                       loss_function = cross_entropy_loss, n_sample)
+plot(v1, v2, max_vars = 20)
+```
+
+# Single variables
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+v1 <- single_variable(exp_ml, "X1")
+v2 <- single_variable(exp_rf, "X1")
+plot(v1, v2) + ggtitle("Variable x1")
+
+v1 <- single_variable(exp_ml, "X2")
+v2 <- single_variable(exp_rf, "X2")
+plot(v1, v2) + ggtitle("Variable x2")
+
+v1 <- single_variable(exp_ml, "X3")
+v2 <- single_variable(exp_rf, "X3")
+plot(v1, v2) + ggtitle("Variable x3")
+
+v1 <- single_variable(exp_ml, "X4")
+v2 <- single_variable(exp_rf, "X4")
+plot(v1, v2) + ggtitle("Variable x4")
+```
+
+# Raw relations
+
+```{r}
+ggplot(df, aes(X1, y)) + geom_point() + geom_smooth(se=FALSE)
+ggplot(df, aes(X2, y)) + geom_point() + geom_smooth(se=FALSE)
+ggplot(df, aes(X3, y)) + geom_point() + geom_smooth(se=FALSE)
+ggplot(df, aes(X4, y)) + geom_point() + geom_smooth(se=FALSE)
+```

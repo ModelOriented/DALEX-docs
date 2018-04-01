@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-03-30" />
+<meta name="date" content="2018-04-02" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -123,15 +123,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="1-2-trivia.html#trivia"><span class="toc-section-number">1.2</span> Trivia</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
-<li><a href="2-1-notation.html#notation"><span class="toc-section-number">2.1</span> Notation</a></li>
-<li><a href="2-2-explainFunction.html#explainFunction"><span class="toc-section-number">2.2</span> How to use the <code>explain()</code> function</a></li>
-<li class="has-sub"><a href="2-3-use-case-human-resources-analytics.html#use-case---human-resources-analytics"><span class="toc-section-number">2.3</span> Use case - Human Resources Analytics</a><ul>
-<li><a href="2-3-use-case-human-resources-analytics.html#logistic-regression"><span class="toc-section-number">2.3.1</span> Logistic regression</a></li>
-<li><a href="2-3-use-case-human-resources-analytics.html#random-forest"><span class="toc-section-number">2.3.2</span> Random forest</a></li>
+<li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
+<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-4-use-case-wine-quality.html#use-case---wine-quality"><span class="toc-section-number">2.4</span> Use case - Wine quality</a><ul>
-<li><a href="2-4-use-case-wine-quality.html#linear-regression"><span class="toc-section-number">2.4.1</span> Linear regression</a></li>
-</ul></li>
+<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -164,133 +161,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="use-case---wine-quality" class="section level2">
-<h2><span class="header-section-number">2.4</span> Use case - Wine quality</h2>
-<p>To ilustrate applications of DALEX to regression problems we will use a Wine quality dataset from Kaggle competition <a href="http://mlr.cs.umass.edu/ml/">UC Irvine Machine Learning Repository</a>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">url &lt;-<span class="st"> &#39;https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv&#39;</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">wine &lt;-<span class="st"> </span><span class="kw">read.table</span>(url, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">head</span>(wine)</a></code></pre></div>
-<p><!--
-<caption>--><span class="marginnote shownote"><span id="tab:wineQuality">Table 2.1: </span>Wine quality dataset from UC Irvine Machine Learning Repository</span><!--</caption>--></p>
-<table>
-<thead>
-<tr class="header">
-<th align="right">fixed.acidity</th>
-<th align="right">volatile.acidity</th>
-<th align="right">citric.acid</th>
-<th align="right">residual.sugar</th>
-<th align="right">chlorides</th>
-<th align="right">free.sulfur.dioxide</th>
-<th align="right">total.sulfur.dioxide</th>
-<th align="right">density</th>
-<th align="right">pH</th>
-<th align="right">sulphates</th>
-<th align="right">alcohol</th>
-<th align="right">quality</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">7.0</td>
-<td align="right">0.27</td>
-<td align="right">0.36</td>
-<td align="right">20.7</td>
-<td align="right">0.045</td>
-<td align="right">45</td>
-<td align="right">170</td>
-<td align="right">1.0010</td>
-<td align="right">3.00</td>
-<td align="right">0.45</td>
-<td align="right">8.8</td>
-<td align="right">6</td>
-</tr>
-<tr class="even">
-<td align="right">6.3</td>
-<td align="right">0.30</td>
-<td align="right">0.34</td>
-<td align="right">1.6</td>
-<td align="right">0.049</td>
-<td align="right">14</td>
-<td align="right">132</td>
-<td align="right">0.9940</td>
-<td align="right">3.30</td>
-<td align="right">0.49</td>
-<td align="right">9.5</td>
-<td align="right">6</td>
-</tr>
-<tr class="odd">
-<td align="right">8.1</td>
-<td align="right">0.28</td>
-<td align="right">0.40</td>
-<td align="right">6.9</td>
-<td align="right">0.050</td>
-<td align="right">30</td>
-<td align="right">97</td>
-<td align="right">0.9951</td>
-<td align="right">3.26</td>
-<td align="right">0.44</td>
-<td align="right">10.1</td>
-<td align="right">6</td>
-</tr>
-<tr class="even">
-<td align="right">7.2</td>
-<td align="right">0.23</td>
-<td align="right">0.32</td>
-<td align="right">8.5</td>
-<td align="right">0.058</td>
-<td align="right">47</td>
-<td align="right">186</td>
-<td align="right">0.9956</td>
-<td align="right">3.19</td>
-<td align="right">0.40</td>
-<td align="right">9.9</td>
-<td align="right">6</td>
-</tr>
-<tr class="odd">
-<td align="right">7.2</td>
-<td align="right">0.23</td>
-<td align="right">0.32</td>
-<td align="right">8.5</td>
-<td align="right">0.058</td>
-<td align="right">47</td>
-<td align="right">186</td>
-<td align="right">0.9956</td>
-<td align="right">3.19</td>
-<td align="right">0.40</td>
-<td align="right">9.9</td>
-<td align="right">6</td>
-</tr>
-<tr class="even">
-<td align="right">8.1</td>
-<td align="right">0.28</td>
-<td align="right">0.40</td>
-<td align="right">6.9</td>
-<td align="right">0.050</td>
-<td align="right">30</td>
-<td align="right">97</td>
-<td align="right">0.9951</td>
-<td align="right">3.26</td>
-<td align="right">0.44</td>
-<td align="right">10.1</td>
-<td align="right">6</td>
-</tr>
-</tbody>
-</table>
-<div id="linear-regression" class="section level3">
-<h3><span class="header-section-number">2.4.1</span> Linear regression</h3>
-<p>In the following chapters to present explainers for gaussian regression models we will use <code>wine_lm_model</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">wine_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>fixed.acidity <span class="op">+</span><span class="st"> </span>volatile.acidity <span class="op">+</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>chlorides <span class="op">+</span><span class="st"> </span>free.sulfur.dioxide <span class="op">+</span><span class="st"> </span>total.sulfur.dioxide <span class="op">+</span><span class="st"> </span>density <span class="op">+</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">               <span class="dt">data =</span> wine)</a></code></pre></div>
-<p>Models used in this doccumentation are accessible via <strong>archivist</strong> package. To download the <code>wine_lm_model</code> model use the following instruction.</p>
-<pre><code>archivist::aread(&quot;pbiecek/DALEX/arepo/b99a3d58016e2677221019652cff047f&quot;)</code></pre>
-
+<div id="explainFunction" class="section level2">
+<h2><span class="header-section-number">2.1</span> The <code>explain()</code> function</h2>
+<p>DALEX is designed to work with various black-box models like tree ensemble, linear models, neural networks etc. Unfortunately R packages are very inconsistent when it comes to predictive modeling. Different tools use different interfaces to train, validate and apply models. There are two large frameworks for machine learning, namely <code>mlr</code> <span class="citation">(Bischl et al. <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170):1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span> and <code>caret</code> <span class="citation">(<span class="citeproc-not-found" data-reference-id="caret"><strong>???</strong></span>)</span>. But in addition to them dozens of R packages may be used for modeling.</p>
+<p>This is why in the first step of working with DALEX is to wrap-up the black-box model of interest with a meta-data that allow for unified approach to models.</p>
+<p>Here arguments required by the <code>explain()</code> function. Some of these parameters are required only by selected explainers.</p>
+<ul>
+<li><code>model</code> - an R object, a model to be explained. <em>Required by</em>: all explainers.</li>
+<li><code>data</code> - <code>data.frame</code> or <code>matrix</code>, set that will be used for model validation. Shall have the same structure as the dataset used for training. <em>Required by</em>: model performance, variable importance. <em>Default</em>: if possible, then it will be extracted from the <code>model</code> object.</li>
+<li><code>y</code> - numeric vector with true labels paired with observations in <code>data</code>. <em>Required by</em>: variable importance. <em>Default</em>: no default.</li>
+<li><code>predict_function</code> - a function that takes two arguments: model and data and returns numeric vector with predictions. Predictions shall be calculated in the same scale as the <code>y</code> values. <em>Required by</em>: all explainers. <em>Default</em>: the generic <code>predict()</code> function.</li>
+<li><code>link_function</code> - a transformation/link function that is be applied to model predictions. <em>Required by</em>: variable effect. <em>Default</em>: the identity <code>I()</code> function.</li>
+<li><code>label</code> - character, the name of the model that will be used in plots. <em>Required by</em>: plots. <em>Default</em>: extracted from the <code>class</code> attribute of the <code>model</code>.</li>
+</ul>
+<p>To better understand how this function may be used next two sections introduce a use case for regression and binary classification.</p>
 </div>
-</div>
-<!-- </div> -->
 <p style="text-align: center;">
-<a href="2-3-use-case-human-resources-analytics.html"><button class="btn btn-default">Previous</button></a>
+<a href="2-architecture.html"><button class="btn btn-default">Previous</button></a>
 <a href="https://github.com/pbiecek/DALEX/edit/master/01-architecture.Rmd"><button class="btn btn-default">Edit</button></a>
-<a href="3-modelUnderstanding.html"><button class="btn btn-default">Next</button></a>
+<a href="2-2-use-case-regression-apartment-prices-in-warsaw.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

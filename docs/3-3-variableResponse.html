@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-03-30" />
+<meta name="date" content="2018-04-02" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -123,15 +123,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="1-2-trivia.html#trivia"><span class="toc-section-number">1.2</span> Trivia</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
-<li><a href="2-1-notation.html#notation"><span class="toc-section-number">2.1</span> Notation</a></li>
-<li><a href="2-2-explainFunction.html#explainFunction"><span class="toc-section-number">2.2</span> How to use the <code>explain()</code> function</a></li>
-<li class="has-sub"><a href="2-3-use-case-human-resources-analytics.html#use-case---human-resources-analytics"><span class="toc-section-number">2.3</span> Use case - Human Resources Analytics</a><ul>
-<li><a href="2-3-use-case-human-resources-analytics.html#logistic-regression"><span class="toc-section-number">2.3.1</span> Logistic regression</a></li>
-<li><a href="2-3-use-case-human-resources-analytics.html#random-forest"><span class="toc-section-number">2.3.2</span> Random forest</a></li>
+<li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
+<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-4-use-case-wine-quality.html#use-case---wine-quality"><span class="toc-section-number">2.4</span> Use case - Wine quality</a><ul>
-<li><a href="2-4-use-case-wine-quality.html#linear-regression"><span class="toc-section-number">2.4.1</span> Linear regression</a></li>
-</ul></li>
+<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -188,49 +185,49 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <ol style="list-style-type: decimal">
 <li>We need to fit model. For example a Random Forest model.</li>
 </ol>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
-<a class="sourceLine" id="cb29-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="co"># a79f3c7ec27499fb91e46ee70d423ac8</span></a>
-<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/a79f3c7ec27&quot;)</span></a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb30-5" data-line-number="5"><span class="co"># a79f3c7ec27499fb91e46ee70d423ac8</span></a>
+<a class="sourceLine" id="cb30-6" data-line-number="6"><span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/a79f3c7ec27&quot;)</span></a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>We need to create an explainer. It’s an interface that can be used to explain a black-box model.</li>
 </ol>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">explainer_rf  &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_rf_model, <span class="dt">data =</span> HR_data)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">explainer_rf  &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_rf_model, <span class="dt">data =</span> HR_data)</a></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Now we can calculate the marginal response with the PDP method.</li>
 </ol>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">expl_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span>  <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;pdp&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">expl_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span>  <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;pdp&quot;</span>)</a></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>And we are ready to plot it.</li>
 </ol>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">plot</span>(expl_rf)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-19-1.png" width="672"  /></p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># ad0f1699de646c78a46a3bf23aeea799</span></a>
-<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/ad0f1699&quot;)</span></a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">plot</span>(expl_rf)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-21-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co"># ad0f1699de646c78a46a3bf23aeea799</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="co"># archivist::aread(&quot;pbiecek/DALEX/arepo/ad0f1699&quot;)</span></a></code></pre></div>
 </div>
 <div id="model-comparisons" class="section level3">
 <h3><span class="header-section-number">3.3.2</span> Model Comparisons</h3>
 <p>Marginal response plots are very useful in comparisons of different models. Let’s fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.</p>
 <p>Then we can use PDP plots to compare these models. Random Forest Model was fitted in the previous chapter. Here we are training remaining models.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;xgboost&quot;</span>)</a>
-<a class="sourceLine" id="cb34-4" data-line-number="4">model_martix_train &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(left<span class="op">~</span>.<span class="op">-</span><span class="dv">1</span>, breakDown<span class="op">::</span>HR_data)</a>
-<a class="sourceLine" id="cb34-5" data-line-number="5">data_train &lt;-<span class="st"> </span><span class="kw">xgb.DMatrix</span>(model_martix_train, <span class="dt">label =</span> breakDown<span class="op">::</span>HR_data<span class="op">$</span>left)</a>
-<a class="sourceLine" id="cb34-6" data-line-number="6">param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">max_depth =</span> <span class="dv">2</span>, <span class="dt">eta =</span> <span class="dv">1</span>, <span class="dt">silent =</span> <span class="dv">1</span>, <span class="dt">nthread =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb34-7" data-line-number="7">              <span class="dt">objective =</span> <span class="st">&quot;binary:logistic&quot;</span>, <span class="dt">eval_metric =</span> <span class="st">&quot;auc&quot;</span>)</a>
-<a class="sourceLine" id="cb34-8" data-line-number="8">HR_xgb_model &lt;-<span class="st"> </span><span class="kw">xgb.train</span>(param, data_train, <span class="dt">nrounds =</span> <span class="dv">50</span>)</a></code></pre></div>
-<p>Models are trained. Now we can create explainers and single variable explanations</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">logit &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">exp</span>(x)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(x))</a>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">HR_glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
 <a class="sourceLine" id="cb35-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb35-3" data-line-number="3">explainer_glm &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_glm_model, <span class="dt">data =</span> HR_data)</a>
-<a class="sourceLine" id="cb35-4" data-line-number="4">expl_glm &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_glm, <span class="st">&quot;satisfaction_level&quot;</span>, <span class="st">&quot;pdp&quot;</span>, <span class="dt">trans=</span>logit)</a></code></pre></div>
+<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;xgboost&quot;</span>)</a>
+<a class="sourceLine" id="cb35-4" data-line-number="4">model_martix_train &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(left<span class="op">~</span>.<span class="op">-</span><span class="dv">1</span>, breakDown<span class="op">::</span>HR_data)</a>
+<a class="sourceLine" id="cb35-5" data-line-number="5">data_train &lt;-<span class="st"> </span><span class="kw">xgb.DMatrix</span>(model_martix_train, <span class="dt">label =</span> breakDown<span class="op">::</span>HR_data<span class="op">$</span>left)</a>
+<a class="sourceLine" id="cb35-6" data-line-number="6">param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">max_depth =</span> <span class="dv">2</span>, <span class="dt">eta =</span> <span class="dv">1</span>, <span class="dt">silent =</span> <span class="dv">1</span>, <span class="dt">nthread =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb35-7" data-line-number="7">              <span class="dt">objective =</span> <span class="st">&quot;binary:logistic&quot;</span>, <span class="dt">eval_metric =</span> <span class="st">&quot;auc&quot;</span>)</a>
+<a class="sourceLine" id="cb35-8" data-line-number="8">HR_xgb_model &lt;-<span class="st"> </span><span class="kw">xgb.train</span>(param, data_train, <span class="dt">nrounds =</span> <span class="dv">50</span>)</a></code></pre></div>
+<p>Models are trained. Now we can create explainers and single variable explanations</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">logit &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">exp</span>(x)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(x))</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb36-3" data-line-number="3">explainer_glm &lt;-<span class="st"> </span><span class="kw">explain</span>(HR_glm_model, <span class="dt">data =</span> HR_data)</a>
+<a class="sourceLine" id="cb36-4" data-line-number="4">expl_glm &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_glm, <span class="st">&quot;satisfaction_level&quot;</span>, <span class="st">&quot;pdp&quot;</span>, <span class="dt">trans=</span>logit)</a></code></pre></div>
 <p>In order to compare these models it’s enough to plot all of them into a single chart.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">plot</span>(expl_rf, expl_glm)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-22-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">plot</span>(expl_rf, expl_glm)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-24-1.png" width="672"  /></p>
 </div>
 <div id="accumulated-local-effects-plot" class="section level3">
 <h3><span class="header-section-number">3.3.3</span> Accumulated Local Effects Plot</h3>
@@ -238,13 +235,13 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 <p>Accumulated local effects (ALE) plots (see <strong>ALEPlot</strong> package <span class="citation">(Apley <label for="tufte-mn-18" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-18" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span>) solves this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
 <p>Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.</p>
 <p>Estimation of main effects for <code>satisfaction_level</code> is similar to the PDP curves. Here we are using <code>DALEX::single_variable</code> function that is calling <code>ALEPlot::ALEPlot</code> function to calculate ALE curve for variable <code>satisfaction_level</code>.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">exel_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;ale&quot;</span>)</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">plot</span>(exel_rf)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-23-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">exel_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;ale&quot;</span>)</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw">plot</span>(exel_rf)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-25-1.png" width="672"  /></p>
 <p>It may be useful to compare ALEPlots and PDP plots. Again, it’s simple with the generic DALEX function.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">plot</span>(expl_rf, exel_rf)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-24-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">plot</span>(expl_rf, exel_rf)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-26-1.png" width="672"  /></p>
 </div>
 <div id="individual-conditional-expectation-plot" class="section level3">
 <h3><span class="header-section-number">3.3.4</span> Individual Conditional Expectation Plot</h3>
@@ -254,49 +251,49 @@ p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ]
 ice_k(x_i) = f(x^i, x_k^{-i}; \theta) 
 \]</span></p>
 <p>ICE curves can be plotted with <code>pdp</code> package. Note that curves may be cantered in a given point, this helps in identification of possible interactions.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;pdp&quot;</span>)</a>
-<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
-<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
-<a class="sourceLine" id="cb39-4" data-line-number="4"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</a>
-<a class="sourceLine" id="cb39-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb39-6" data-line-number="6">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb39-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb39-8" data-line-number="8">part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="st">&quot;satisfaction_level&quot;</span>)</a>
-<a class="sourceLine" id="cb39-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb39-10" data-line-number="10">part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="dt">pred.var =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">ice =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb39-11" data-line-number="11"><span class="kw">plotPartial</span>(part_rf_satisfaction, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data, <span class="dt">alpha =</span> <span class="fl">0.2</span>)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-25-1.png" width="672"  /></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">autoplot</span>(part_rf_satisfaction, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-25-2.png" width="672"  /></p>
-<p>Or with the <code>ICEbox</code> package.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;ICEbox&quot;</span>)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2">part_rf_satisfaction =<span class="st"> </span><span class="kw">ice</span>(<span class="dt">object =</span> HR_rf_model, <span class="dt">X =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>satisfaction_level, </a>
-<a class="sourceLine" id="cb41-3" data-line-number="3">          <span class="dt">predictor =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">frac_to_build =</span> <span class="fl">.1</span>)</a></code></pre></div>
-<pre><code>## ............................................................................................</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">plot</span>(part_rf_satisfaction)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-26-1.png" width="672"  /></p>
-<p>As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the <code>clusterICE</code> function.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">clusterICE</span>(part_rf_satisfaction, <span class="dt">nClusters =</span> <span class="dv">3</span>, <span class="dt">plot_legend =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;pdp&quot;</span>)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</a>
+<a class="sourceLine" id="cb40-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb40-6" data-line-number="6">HR_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(left<span class="op">~</span>., <span class="dt">data =</span> breakDown<span class="op">::</span>HR_data, <span class="dt">ntree =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb40-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb40-8" data-line-number="8">part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="st">&quot;satisfaction_level&quot;</span>)</a>
+<a class="sourceLine" id="cb40-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb40-10" data-line-number="10">part_rf_satisfaction &lt;-<span class="st"> </span><span class="kw">partial</span>(HR_rf_model, <span class="dt">pred.var =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">ice =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb40-11" data-line-number="11"><span class="kw">plotPartial</span>(part_rf_satisfaction, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data, <span class="dt">alpha =</span> <span class="fl">0.2</span>)</a></code></pre></div>
 <p><img src="DALEX_files/figure-html/unnamed-chunk-27-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">autoplot</span>(part_rf_satisfaction, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>, <span class="dt">train =</span> HR_data)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-27-2.png" width="672"  /></p>
+<p>Or with the <code>ICEbox</code> package.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;ICEbox&quot;</span>)</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2">part_rf_satisfaction =<span class="st"> </span><span class="kw">ice</span>(<span class="dt">object =</span> HR_rf_model, <span class="dt">X =</span> HR_data, <span class="dt">y =</span> HR_data<span class="op">$</span>satisfaction_level, </a>
+<a class="sourceLine" id="cb42-3" data-line-number="3">          <span class="dt">predictor =</span> <span class="st">&quot;satisfaction_level&quot;</span>, <span class="dt">frac_to_build =</span> <span class="fl">.1</span>)</a></code></pre></div>
+<pre><code>## ............................................................................................</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">plot</span>(part_rf_satisfaction)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-28-1.png" width="672"  /></p>
+<p>As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the <code>clusterICE</code> function.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">clusterICE</span>(part_rf_satisfaction, <span class="dt">nClusters =</span> <span class="dv">3</span>, <span class="dt">plot_legend =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-29-1.png" width="672"  /></p>
 </div>
 <div id="mering-path-plot" class="section level3">
 <h3><span class="header-section-number">3.3.5</span> Mering Path Plot</h3>
 <p>The package <code>ICEbox</code> is not working for factor variables while the <code>pdp</code> package returns plots that are hard to interpret.</p>
 <p>An interesting tool that helps to understand what is happening with factor variables is the <strong>factorMerger</strong> package (see <span class="citation">(Sitko and Biecek <label for="tufte-mn-20" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-20" class="margin-toggle">2017<span class="marginnote">Sitko, Agnieszka, and Przemyslaw Biecek. 2017. <em>FactorMerger: Hierarchical Algorithm for Post-Hoc Testing</em>. <a href="https://github.com/MI2DataLab/factorMerger" class="uri">https://github.com/MI2DataLab/factorMerger</a>.</span>)</span>).</p>
 <p>Here we have Merging Path Plot for a factor variable <code>sales</code>.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;factorMerger&quot;</span>)</a>
-<a class="sourceLine" id="cb45-2" data-line-number="2">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
-<a class="sourceLine" id="cb45-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-28-1.png" width="1152"  /></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;factorMerger&quot;</span>)</a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
+<a class="sourceLine" id="cb46-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-30-1.png" width="1152"  /></p>
 <p>Note that you can use the <code>factorMerger</code> package to understand predictions calculated with a black-box model. The random forest model <code>HR_rf_model</code> returns continuous response. But the <code>factorMerger</code> works for such variables as well.</p>
 <p>In the top right panel one may see the distribution of predictions for the selected group.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">HR_data<span class="op">$</span>left_predicted &lt;-<span class="st"> </span><span class="kw">predict</span>(HR_rf_model)</a>
-<a class="sourceLine" id="cb46-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb46-3" data-line-number="3">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left_predicted, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
-<a class="sourceLine" id="cb46-4" data-line-number="4">                     <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb46-5" data-line-number="5"><span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>, <span class="dt">responsePanel =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">nodesSpacing =</span> <span class="st">&quot;effects&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-29-1.png" width="1152"  /></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">HR_data<span class="op">$</span>left_predicted &lt;-<span class="st"> </span><span class="kw">predict</span>(HR_rf_model)</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">path &lt;-<span class="st"> </span><span class="kw">mergeFactors</span>(HR_data<span class="op">$</span>left_predicted, HR_data<span class="op">$</span>sales, <span class="dt">method =</span> <span class="st">&quot;fast-adaptive&quot;</span>, </a>
+<a class="sourceLine" id="cb47-4" data-line-number="4">                     <span class="dt">abbreviate =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb47-5" data-line-number="5"><span class="kw">plot</span>(path, <span class="dt">panel =</span> <span class="st">&quot;response&quot;</span>, <span class="dt">responsePanel =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">nodesSpacing =</span> <span class="st">&quot;effects&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_mi2</span>()</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-31-1.png" width="1152"  /></p>
 
 </div>
 </div>

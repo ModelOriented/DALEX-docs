@@ -1,11 +1,9 @@
 # Architecture of DALEX {#architecture}
 
-In order to easily explore the structure of a black-box model we need to have an easy to use tool with unified interface.
-
-This is why DALEX architecture is simple and consistent. Actually there are only tree rules that should be remembered and one is ready to use this tool.
+DALEX architecture is simple and consistent. Actually there are only tree rules that should be remembered and one is ready to use this tool.
 
 * First step is to use the `explain()` function to enrich a black-box model with additional metadata required by explainers. Different explainers require different additional inputs. Find the list of required elements in Section \@ref(explainFunction).
-* Second step is to use an explainer function that calculates required explanations. Explainers are listed in Chapter \@ref(modelUnderstanding) and \@ref(predictionUnderstanding).
+* Second step is to use an explainer function that calculates required descriptions. Variouse explainers are introduced in Chapter \@ref(modelUnderstanding) and \@ref(predictionUnderstanding).
 * Third step is to use generic `print()` or `plot()` function to see the explainer. Both functions work for one or model models.
 
 
@@ -22,113 +20,94 @@ Each explainer calculates a numerical summaries that can be plotted with generic
 
 
 
-## Notation
-
-This book describes explainers for different machine learning models. Some of these explainers are created by different research groups with different applications in mind.
-
-To keep the notation consistent:
-
-- $x = (x_1, ..., x_p)$ stands for a vector of $p$ variables/predictors. 
-- $y$ stands for a vector with target variable. In some applications it will be a continuous variable in others it will be a binary variable.
-- $n$ stands for number of observations.
-- $f(x, \theta)$ stands for a model. We are considering models that are characterized by a set of parameters $\theta$. In some applications $\theta$ is a low level space of parameters - nice parametric models, in some applications $\theta$ may have a very complex structure.
-- $\lambda$ stands for model meta-parameters which are not being directly optimized (like number of trees, max depth, some penalties etc.).
-- $g(x)$ stands for a function that pre-process variables. In some applications it may be a standardisation or other pre-processing. 
+## The `explain()` function {#explainFunction}
 
 
-![](images/model01.jpg)
+DALEX is designed to work with various black-box models like tree ensemble, linear models, neural networks etc. Unfortunately R packages are very inconsistent when it comes to predictive modeling. Different tools use different interfaces to train, validate and apply models. There are two large frameworks for machine learning, namely `mlr` [@mlr] and `caret` [@caret]. But in addition to them dozens of R packages may be used for modeling. 
 
-## How to use the `explain()` function {#explainFunction}
+This is why in the first step of working with DALEX is to wrap-up the black-box model of interest with a meta-data that allow for unified approach to models.
 
+Here arguments required by the `explain()` function. Some of these parameters are required only by selected explainers.
 
+* `model` - an R object, a model to be explained. *Required by*: all explainers.
+* `data` - `data.frame` or `matrix`, set that will be used for model validation. Shall have the same structure as the dataset used for training. *Required by*: model performance, variable importance. *Default*: if possible, then it will be extracted from the `model` object.
+* `y`	- numeric vector with true labels paired with observations in `data`. *Required by*: variable importance.  *Default*: no default.
+* `predict_function` - a function that takes two arguments: model and data and returns numeric vector with predictions. Predictions shall be calculated in the same scale as the `y` values. *Required by*:  all explainers. *Default*: the generic `predict()` function.
+* `link_function`	- a transformation/link function that is be applied to  model predictions. *Required by*: variable effect. *Default*: the identity `I()` function.
+* `label`	- character, the name of the model that will be used in plots. *Required by*: plots. *Default*: extracted from the `class` attribute of the `model`.
 
-* `model`	 object - a model to be explained
-* `data`	data.frame or matrix - data that was used for fitting. If not provided then will be extracted from the model
-* `y`	 numeric vector with outputs / scores. Currently used only by variable_dropout() explainer.
-* `predict_function`	 function that takes two arguments: model and new data and returns numeric vector with predictions
-* `link`	function - a transformation/link function that shall be applied to raw model predictions
-* `label`	 character - the name of the model. By default it's extracted from the 'class' attribute of the model
+To better understand how this function may be used next two sections introduce a use case for regression and binary classification.
 
 
 
-## Use case - Human Resources Analytics
+## Use case: Regression. Apartment prices in Warsaw
 
-To ilustrate applications of DALEX to binary classification problems we will use a dataset from Kaggle competition [Human Resources Analytics]( https://www.kaggle.com/ludobenistant/hr-analytics/data). This dataset is avaliable in the **breakDown** package [@breakDown].
+To illustrate applications of DALEX to regression problems we will use an artificial dataset `apartments` available in the `DALEX` package. The goal here is to predict the price per square meter of an apartments based on selected features like construction.year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one.
 
 ```{r eval=FALSE}
-library("breakDown")
-head(HR_data)
+library("DALEX")
+head(apartments)
 ```
 
 ```{r hr_data, echo=FALSE}
-library("breakDown")
+library("DALEX")
 knitr::kable(
-  head(HR_data),
-  caption = 'HR_data dataset from Kaggle competition Human Resources Analytics'
-  )
-```
-
-### Logistic regression
-
-In the following chapters to present explainers for logistic regression models we will use `HR_glm_model`.
-
-```{r}
-HR_glm_model <- glm(left~., data = HR_data, family = "binomial")
-summary(HR_glm_model)
-```
-
-Models used in this doccumentation are accessible via **archivist** package. To download the `HR_glm_model` model use the following instruction. 
-```
-archivist::aread("pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234")
-```
-
-### Random forest
-
-In the following chapters to present explainers for random forest models we will use `HR_fr_model`.
-
-```{r}
-library("randomForest")
-set.seed(1313)
-HR_data$left <- factor(HR_data$left)
-HR_rf_model <- randomForest(left~., data = HR_data, ntree = 100)
-HR_rf_model
-```
-
-Models used in this doccumentation are accessible via **archivist** package. To download the `HR_rf_model` model use the following instruction. 
-```
-archivist::aread("pbiecek/DALEX/arepo/419d550a92fab6a5f28650130991e2cd")
-```
-
-
-## Use case - Wine quality
-
-To ilustrate applications of DALEX to regression problems we will use a Wine quality dataset from Kaggle competition [UC Irvine Machine Learning Repository](http://mlr.cs.umass.edu/ml/). 
-
-```{r eval=FALSE}
-url <- 'https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv'
-wine <- read.table(url, header = TRUE, sep = ";")
-head(wine)
-```
-
-```{r wineQuality, echo=FALSE}
-url <- 'https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv'
-wine <- read.table(url, header = TRUE, sep = ";")
-knitr::kable(
-  head(wine),
-  caption = 'Wine quality dataset from UC Irvine Machine Learning Repository'
+  head(apartments),
+  caption = 'Artificial dataset about apartments in Warsaw'
   )
 ```
 
 ### Linear regression
 
-In the following chapters to present explainers for gaussian regression models we will use `wine_lm_model`.
+First model will be based on linear regression. This will be a simple model without any feature engineering.
 
 ```{r}
-wine_lm_model <- lm(quality ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + chlorides + free.sulfur.dioxide + total.sulfur.dioxide + density + pH + sulphates + alcohol,
-               data = wine)
+apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor + 
+                      no.rooms + district, data = apartments)
+summary(apartments_lm_model)
 ```
 
-Models used in this doccumentation are accessible via **archivist** package. To download the `wine_lm_model` model use the following instruction. 
+We have also another dataset that can be used for validation of the model. Here is the mean square error calculated on the new dataset.
+
+```{r}
+predicted_mi2_lm <- predict(apartments_lm_model, apartmentsTest)
+sqrt(mean((predicted_mi2_lm - apartmentsTest$m2.price)^2))
 ```
-archivist::aread("pbiecek/DALEX/arepo/b99a3d58016e2677221019652cff047f")
+
+To create an explainer for regression model it is enough to use `explain()` function with the `model`, `data` and `y` parameters. In next chapter we will show how to use such explainer.
+
+```{r}
+explainer_lm <- explain(apartments_lm_model, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
 ```
+
+
+### Random forest
+
+Second model will be based on random forest. It's a very elastic out-of-the-box model. Let's see how it will deal with categorical variables.
+
+```{r}
+library("randomForest")
+set.seed(1313)
+
+apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor + 
+                      no.rooms + district, data = apartments)
+summary(apartments_rf_model)
+```
+
+Here is the mean square error calculated on a `apartmentsTest` dataset.
+
+```{r}
+predicted_mi2_rf <- predict(apartments_rf_model, apartmentsTest)
+sqrt(mean((predicted_mi2_rf - apartmentsTest$m2.price)^2))
+```
+
+Also for random forest model we are creating an explainer. In next chapter we will show how to use such explainer.
+
+```{r}
+explainer_rf <- explain(apartments_rf_model, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
+
+
+## Use case: Classification. TBD

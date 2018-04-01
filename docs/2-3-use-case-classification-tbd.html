@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-03-30" />
+<meta name="date" content="2018-04-02" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -123,14 +123,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="1-2-trivia.html#trivia"><span class="toc-section-number">1.2</span> Trivia</a></li>
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
-<li><a href="2-1-notation.html#notation"><span class="toc-section-number">2.1</span> Notation</a></li>
-<li class="has-sub"><a href="2-2-use-case-human-resources-analytics.html#use-case---human-resources-analytics"><span class="toc-section-number">2.2</span> Use case - Human Resources Analytics</a><ul>
-<li><a href="2-2-use-case-human-resources-analytics.html#logistic-regression"><span class="toc-section-number">2.2.1</span> Logistic regression</a></li>
-<li><a href="2-2-use-case-human-resources-analytics.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
+<li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
+<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
 </ul></li>
-<li class="has-sub"><a href="2-3-use-case-wine-quality.html#use-case---wine-quality"><span class="toc-section-number">2.3</span> Use case - Wine quality</a><ul>
-<li><a href="2-3-use-case-wine-quality.html#linear-regression"><span class="toc-section-number">2.3.1</span> Linear regression</a></li>
-</ul></li>
+<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -163,131 +161,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="use-case---wine-quality" class="section level2">
-<h2><span class="header-section-number">2.3</span> Use case - Wine quality</h2>
-<p>To ilustrate applications of DALEX to regression problems we will use a Wine quality dataset from Kaggle competition <a href="http://mlr.cs.umass.edu/ml/">UC Irvine Machine Learning Repository</a>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">url &lt;-<span class="st"> &#39;https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv&#39;</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">wine &lt;-<span class="st"> </span><span class="kw">read.table</span>(url, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;;&quot;</span>)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">head</span>(wine)</a></code></pre></div>
-<p><!--
-<caption>--><span class="marginnote shownote"><span id="tab:wineQuality">Table 2.1: </span>Wine quality dataset from UC Irvine Machine Learning Repository</span><!--</caption>--></p>
-<table>
-<thead>
-<tr class="header">
-<th align="right">fixed.acidity</th>
-<th align="right">volatile.acidity</th>
-<th align="right">citric.acid</th>
-<th align="right">residual.sugar</th>
-<th align="right">chlorides</th>
-<th align="right">free.sulfur.dioxide</th>
-<th align="right">total.sulfur.dioxide</th>
-<th align="right">density</th>
-<th align="right">pH</th>
-<th align="right">sulphates</th>
-<th align="right">alcohol</th>
-<th align="right">quality</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">7.0</td>
-<td align="right">0.27</td>
-<td align="right">0.36</td>
-<td align="right">20.7</td>
-<td align="right">0.045</td>
-<td align="right">45</td>
-<td align="right">170</td>
-<td align="right">1.0010</td>
-<td align="right">3.00</td>
-<td align="right">0.45</td>
-<td align="right">8.8</td>
-<td align="right">6</td>
-</tr>
-<tr class="even">
-<td align="right">6.3</td>
-<td align="right">0.30</td>
-<td align="right">0.34</td>
-<td align="right">1.6</td>
-<td align="right">0.049</td>
-<td align="right">14</td>
-<td align="right">132</td>
-<td align="right">0.9940</td>
-<td align="right">3.30</td>
-<td align="right">0.49</td>
-<td align="right">9.5</td>
-<td align="right">6</td>
-</tr>
-<tr class="odd">
-<td align="right">8.1</td>
-<td align="right">0.28</td>
-<td align="right">0.40</td>
-<td align="right">6.9</td>
-<td align="right">0.050</td>
-<td align="right">30</td>
-<td align="right">97</td>
-<td align="right">0.9951</td>
-<td align="right">3.26</td>
-<td align="right">0.44</td>
-<td align="right">10.1</td>
-<td align="right">6</td>
-</tr>
-<tr class="even">
-<td align="right">7.2</td>
-<td align="right">0.23</td>
-<td align="right">0.32</td>
-<td align="right">8.5</td>
-<td align="right">0.058</td>
-<td align="right">47</td>
-<td align="right">186</td>
-<td align="right">0.9956</td>
-<td align="right">3.19</td>
-<td align="right">0.40</td>
-<td align="right">9.9</td>
-<td align="right">6</td>
-</tr>
-<tr class="odd">
-<td align="right">7.2</td>
-<td align="right">0.23</td>
-<td align="right">0.32</td>
-<td align="right">8.5</td>
-<td align="right">0.058</td>
-<td align="right">47</td>
-<td align="right">186</td>
-<td align="right">0.9956</td>
-<td align="right">3.19</td>
-<td align="right">0.40</td>
-<td align="right">9.9</td>
-<td align="right">6</td>
-</tr>
-<tr class="even">
-<td align="right">8.1</td>
-<td align="right">0.28</td>
-<td align="right">0.40</td>
-<td align="right">6.9</td>
-<td align="right">0.050</td>
-<td align="right">30</td>
-<td align="right">97</td>
-<td align="right">0.9951</td>
-<td align="right">3.26</td>
-<td align="right">0.44</td>
-<td align="right">10.1</td>
-<td align="right">6</td>
-</tr>
-</tbody>
-</table>
-<div id="linear-regression" class="section level3">
-<h3><span class="header-section-number">2.3.1</span> Linear regression</h3>
-<p>In the following chapters to present explainers for gaussian regression models we will use <code>wine_lm_model</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">wine_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>fixed.acidity <span class="op">+</span><span class="st"> </span>volatile.acidity <span class="op">+</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>chlorides <span class="op">+</span><span class="st"> </span>free.sulfur.dioxide <span class="op">+</span><span class="st"> </span>total.sulfur.dioxide <span class="op">+</span><span class="st"> </span>density <span class="op">+</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">               <span class="dt">data =</span> wine)</a></code></pre></div>
-<p>Models used in this doccumentation are accessible via <strong>archivist</strong> package. To download the <code>wine_lm_model</code> model use the following instruction.</p>
-<pre><code>archivist::aread(&quot;pbiecek/DALEX/arepo/b99a3d58016e2677221019652cff047f&quot;)</code></pre>
+<div id="use-case-classification.-tbd" class="section level2">
+<h2><span class="header-section-number">2.3</span> Use case: Classification. TBD</h2>
 
-</div>
 </div>
 <!-- </div> -->
 <p style="text-align: center;">
-<a href="2-2-use-case-human-resources-analytics.html"><button class="btn btn-default">Previous</button></a>
+<a href="2-2-use-case-regression-apartment-prices-in-warsaw.html"><button class="btn btn-default">Previous</button></a>
 <a href="https://github.com/pbiecek/DALEX/edit/master/01-architecture.Rmd"><button class="btn btn-default">Edit</button></a>
 <a href="3-modelUnderstanding.html"><button class="btn btn-default">Next</button></a>
 </p>

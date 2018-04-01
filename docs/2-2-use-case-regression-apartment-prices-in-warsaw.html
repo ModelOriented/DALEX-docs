@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="DALEX: Descriptive mAchine Learning EXplanations" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Do not trust a black-box model. Unless it explains itself." />
+<meta name="github-repo" content="rstudio/bookdown-demo" />
+
+<meta name="author" content="Przemysław Biecek" />
+
+<meta name="date" content="2018-04-02" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="Do not trust a black-box model. Unless it explains itself.">
+
+<title>DALEX: Descriptive mAchine Learning EXplanations</title>
+
+<link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#introduction"><span class="toc-section-number">1</span> Introduction</a><ul>
+<li class="has-sub"><a href="1-1-motivation.html#motivation"><span class="toc-section-number">1.1</span> Motivation</a><ul>
+<li><a href="1-1-motivation.html#why-dalex"><span class="toc-section-number">1.1.1</span> Why DALEX?</a></li>
+<li><a href="1-1-motivation.html#to-validate"><span class="toc-section-number">1.1.2</span> To validate</a></li>
+<li><a href="1-1-motivation.html#to-understand"><span class="toc-section-number">1.1.3</span> To understand</a></li>
+<li><a href="1-1-motivation.html#to-improve"><span class="toc-section-number">1.1.4</span> To improve</a></li>
+</ul></li>
+<li><a href="1-2-trivia.html#trivia"><span class="toc-section-number">1.2</span> Trivia</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
+<li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
+<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
+<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
+</ul></li>
+<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
+<li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
+<li class="has-sub"><a href="3-2-featureImportance.html#featureImportance"><span class="toc-section-number">3.2</span> Feature importance</a><ul>
+<li><a href="3-2-featureImportance.html#drop-out-plots"><span class="toc-section-number">3.2.1</span> Drop-out plots</a></li>
+<li><a href="3-2-featureImportance.html#forest-plots"><span class="toc-section-number">3.2.2</span> Forest plots</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-3-variableResponse.html#variableResponse"><span class="toc-section-number">3.3</span> Variable response</a><ul>
+<li><a href="3-3-variableResponse.html#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
+<li><a href="3-3-variableResponse.html#model-comparisons"><span class="toc-section-number">3.3.2</span> Model Comparisons</a></li>
+<li><a href="3-3-variableResponse.html#accumulated-local-effects-plot"><span class="toc-section-number">3.3.3</span> Accumulated Local Effects Plot</a></li>
+<li><a href="3-3-variableResponse.html#individual-conditional-expectation-plot"><span class="toc-section-number">3.3.4</span> Individual Conditional Expectation Plot</a></li>
+<li><a href="3-3-variableResponse.html#mering-path-plot"><span class="toc-section-number">3.3.5</span> Mering Path Plot</a></li>
+</ul></li>
+</ul></li>
+<li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
+<li><a href="4-1-outlier-detection.html#outlier-detection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
+<li class="has-sub"><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a><ul>
+<li><a href="4-2-predictionBreakdown.html#basics"><span class="toc-section-number">4.2.1</span> Basics</a></li>
+</ul></li>
+<li><a href="4-3-local-interpretable-model-agnostic-visual-explanations.html#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
+<li class="has-sub"><a href="4-4-breakdown.html#breakdown"><span class="toc-section-number">4.4</span> breakDown</a><ul>
+<li><a href="4-4-breakdown.html#model-comparisons-1"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
+</ul></li>
+</ul></li>
+<li><a href="5-reproducibility.html#reproducibility"><span class="toc-section-number">5</span> Reproducibility</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="use-case-regression.-apartment-prices-in-warsaw" class="section level2">
+<h2><span class="header-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</h2>
+<p>To illustrate applications of DALEX to regression problems we will use an artificial dataset <code>apartments</code> available in the <code>DALEX</code> package. The goal here is to predict the price per square meter of an apartments based on selected features like construction.year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">head</span>(apartments)</a></code></pre></div>
+<p><!--
+<caption>--><span class="marginnote shownote">(#tab:hr_data)Artificial dataset about apartments in Warsaw</span><!--</caption>--></p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">m2.price</th>
+<th align="right">construction.year</th>
+<th align="right">surface</th>
+<th align="right">floor</th>
+<th align="right">no.rooms</th>
+<th align="left">district</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5897</td>
+<td align="right">1953</td>
+<td align="right">25</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="left">Srodmiescie</td>
+</tr>
+<tr class="even">
+<td align="right">1818</td>
+<td align="right">1992</td>
+<td align="right">143</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="left">Bielany</td>
+</tr>
+<tr class="odd">
+<td align="right">3643</td>
+<td align="right">1937</td>
+<td align="right">56</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="left">Praga</td>
+</tr>
+<tr class="even">
+<td align="right">3517</td>
+<td align="right">1995</td>
+<td align="right">93</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="left">Ochota</td>
+</tr>
+<tr class="odd">
+<td align="right">3013</td>
+<td align="right">1992</td>
+<td align="right">144</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="left">Mokotow</td>
+</tr>
+<tr class="even">
+<td align="right">5795</td>
+<td align="right">1926</td>
+<td align="right">61</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="left">Srodmiescie</td>
+</tr>
+</tbody>
+</table>
+<div id="linear-regression" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Linear regression</h3>
+<p>First model will be based on linear regression. This will be a simple model without any feature engineering.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">apartments_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">summary</span>(apartments_lm_model)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = m2.price ~ construction.year + surface + floor + 
+##     no.rooms + district, data = apartments)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -247.5 -202.8 -172.8  381.4  469.0 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         5020.1391   682.8721   7.352 4.11e-13 ***
+## construction.year     -0.2290     0.3483  -0.657   0.5110    
+## surface              -10.2378     0.5778 -17.720  &lt; 2e-16 ***
+## floor                -99.4820     3.0874 -32.222  &lt; 2e-16 ***
+## no.rooms             -37.7299    15.8440  -2.381   0.0174 *  
+## districtBielany       17.2144    40.4502   0.426   0.6705    
+## districtMokotow      918.3802    39.4386  23.286  &lt; 2e-16 ***
+## districtOchota       926.2540    40.5279  22.855  &lt; 2e-16 ***
+## districtPraga        -37.1047    40.8930  -0.907   0.3644    
+## districtSrodmiescie 2080.6110    40.0149  51.996  &lt; 2e-16 ***
+## districtUrsus         29.9419    39.7249   0.754   0.4512    
+## districtUrsynow      -18.8651    39.7565  -0.475   0.6352    
+## districtWola         -16.8912    39.6283  -0.426   0.6700    
+## districtZoliborz     889.9735    40.4099  22.024  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 281.3 on 986 degrees of freedom
+## Multiple R-squared:  0.905,  Adjusted R-squared:  0.9037 
+## F-statistic: 722.5 on 13 and 986 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>We have also another dataset that can be used for validation of the model. Here is the mean square error calculated on the new dataset.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">predicted_mi2_lm &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_lm_model, apartmentsTest)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_lm <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## [1] 283.0865</code></pre>
+<p>To create an explainer for regression model it is enough to use <code>explain()</code> function with the <code>model</code>, <code>data</code> and <code>y</code> parameters. In next chapter we will show how to use such explainer.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">expainer_lm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_lm_model, </a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
+</div>
+<div id="random-forest" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Random forest</h3>
+<p>Second model will be based on random forest. It’s a very elastic out-of-the-box model. Let’s see how it will deal with categorical variables.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">1313</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">apartments_rf_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">summary</span>(apartments_rf_model)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = m2.price ~ construction.year + surface + floor + 
+##     no.rooms + district, data = apartments)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -247.5 -202.8 -172.8  381.4  469.0 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         5020.1391   682.8721   7.352 4.11e-13 ***
+## construction.year     -0.2290     0.3483  -0.657   0.5110    
+## surface              -10.2378     0.5778 -17.720  &lt; 2e-16 ***
+## floor                -99.4820     3.0874 -32.222  &lt; 2e-16 ***
+## no.rooms             -37.7299    15.8440  -2.381   0.0174 *  
+## districtBielany       17.2144    40.4502   0.426   0.6705    
+## districtMokotow      918.3802    39.4386  23.286  &lt; 2e-16 ***
+## districtOchota       926.2540    40.5279  22.855  &lt; 2e-16 ***
+## districtPraga        -37.1047    40.8930  -0.907   0.3644    
+## districtSrodmiescie 2080.6110    40.0149  51.996  &lt; 2e-16 ***
+## districtUrsus         29.9419    39.7249   0.754   0.4512    
+## districtUrsynow      -18.8651    39.7565  -0.475   0.6352    
+## districtWola         -16.8912    39.6283  -0.426   0.6700    
+## districtZoliborz     889.9735    40.4099  22.024  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 281.3 on 986 degrees of freedom
+## Multiple R-squared:  0.905,  Adjusted R-squared:  0.9037 
+## F-statistic: 722.5 on 13 and 986 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Here is the mean square error calculated on a <code>apartmentsTest</code> dataset.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">predicted_mi2_rf &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_rf_model, apartmentsTest)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_rf <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## [1] 283.0865</code></pre>
+<p>Also for random forest model we are creating an explainer. In next chapter we will show how to use such explainer.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">expainer_rf &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_rf_model, </a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
+</div>
+</div>
+<p style="text-align: center;">
+<a href="2-1-explainFunction.html"><button class="btn btn-default">Previous</button></a>
+<a href="https://github.com/pbiecek/DALEX/edit/master/01-architecture.Rmd"><button class="btn btn-default">Edit</button></a>
+<a href="2-3-use-case-classification-tbd.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+
+</body>
+</html>
