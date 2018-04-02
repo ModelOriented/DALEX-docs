@@ -144,7 +144,7 @@ It is also straightforward to assess variable importance for linear models and g
 
 There are various implementations of forest plots in R. In the package **forestmodel** (see [@forestmodel]) one can use `forest_model()` function to draw a forest plot. This package is based on the **broom** package (see [@broom]) and this is why it handles a large variety of different regression models. 
 
-```{r forestmodel, warning=FALSE, message=FALSE, fig.width=10, fig.width=5, fig.cap='Forest plot created with forestmodel package'}
+```{r forestmodel, warning=FALSE, message=FALSE, fig.width=10, fig.height=5, fig.cap='Forest plot created with forestmodel package'}
 library("forestmodel")
 forest_model(apartments_lm_model)
 ```
@@ -164,13 +164,12 @@ The **forestmodel** package handles factor variables in a better way while the p
 
 ## Variable response {#variableResponse}
 
-![Cheatsheet](images/DALEX_single_variable.png)
+Explainers presented in this section are designed to better understand the relation between a variable and model output.
 
-The dimension of input $x$ for black box models is usually high (large $p$). But in many cases small number of variables play important role in the model OR there are some reasons to believe that variables work in an additive fashion/low-level interactions in the model.
+Subsection \@ref(pdpchapter) presents Partial Dependence Plots (PDP), one of the most popular methods for exploration of a relation between a continuous variable and model outcome. 
+Subsection \@ref(accumulatedLocalEffects) presents Accumulated Local Effects Plots (ALEP), an extension of PDP, more suited for highly correlated variables.
 
-In such cases one may be interesting in verification how the conditional response for a selected interesting variable/variables looks like. 
-
-Methods presented below help to understand the conditional structure of a model.
+Subsection \@ref(mergingPathPlot) presents Merging Path Plots, a method for exploration of a relation between a categorical variable and model outcome.
 
 ### Partial Dependence Plot {#pdpchapter}
 
@@ -187,173 +186,61 @@ $$
 $$
 
 
-Let's see an example for the model `HR_rf_model`. Below we are using `DALEX::single_variable` function that is calling   `pdp::partial` function to calculate pdp curve for variable `satisfaction_level`. Then the curve is plotted with generic `plot.single_variable_explainer()` function.
+Let's see an example for the model `apartments_rf_model`. Below we are using `variable_response()` from `DALEX`, which is calling   `pdp::partial` function to calculate PDP response.
 
-Marginal response plots are created in four steps.
+Section \@ref(featureImportance) shows variable importance plots for different models. The variable `construction.year` is interesting as it is important for the random forest model `apartments_rf_model` but not for the linear model `apartments_lm_model`. Let's see the relation between the variable and model output. 
 
-1. We need to fit model. For example a Random Forest model.
-
-```{r, message=FALSE, warning=FALSE}
-library("randomForest")
-library("breakDown")
-
-HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
-# a79f3c7ec27499fb91e46ee70d423ac8
-# archivist::aread("pbiecek/DALEX/arepo/a79f3c7ec27")
+```{r pdpRandomForest, message=FALSE, warning=FALSE, fig.cap="Relation between output from `apartments_rf_model` and variable `construction.year`"}
+sv_rf  <- single_variable(explainer_rf, variable =  "construction.year", type = "pdp")
+plot(sv_rf)
 ```
 
-2. We need to create an explainer. It's an interface that can be used to explain a black-box model.
+We can use PDP plots to compare two or more models. Here we are plotting PDP for the linear model against the random forest model.
 
-```{r, message=FALSE, warning=FALSE}
-library("DALEX")
-explainer_rf  <- explain(HR_rf_model, data = HR_data)
+```{r pdpRandomForestLM, message=FALSE, warning=FALSE, fig.cap="Relation between output from models `apartments_rf_model` and `apartments_lm_model` against the variable `construction.year`"}
+sv_lm  <- single_variable(explainer_lm, variable =  "construction.year", type = "pdp")
+
+plot(sv_rf, sv_lm)
 ```
 
-3. Now we can calculate the marginal response with the PDP method.
-
-```{r, message=FALSE, warning=FALSE}
-expl_rf  <- single_variable(explainer_rf, variable =  "satisfaction_level", type = "pdp")
-```
-
-4. And we are ready to plot it.
-
-```{r, message=FALSE, warning=FALSE}
-plot(expl_rf)
-# ad0f1699de646c78a46a3bf23aeea799
-# archivist::aread("pbiecek/DALEX/arepo/ad0f1699")
-```
+It looks like the random forest captures non-linear relation that cannot be captured by linear models.
 
 
-### Model Comparisons
+### Accumulated Local Effects Plot {#accumulatedLocalEffects}
 
-Marginal response plots are very useful in comparisons of different models. Let's fit Generalized Linear Model, Random Forest Model and XGBoost Model to the same data.
-
-Then we can use PDP plots to compare these models. Random Forest Model was fitted in the previous chapter. Here we are training remaining models.
-
-```{r, message=FALSE, warning=FALSE}
-HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
-
-library("xgboost")
-model_martix_train <- model.matrix(left~.-1, breakDown::HR_data)
-data_train <- xgb.DMatrix(model_martix_train, label = breakDown::HR_data$left)
-param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
-              objective = "binary:logistic", eval_metric = "auc")
-HR_xgb_model <- xgb.train(param, data_train, nrounds = 50)
-```
-
-Models are trained. Now we can create explainers and single variable explanations
-
-```{r}
-logit <- function(x) exp(x)/(1+exp(x))
-
-explainer_glm <- explain(HR_glm_model, data = HR_data)
-expl_glm <- single_variable(explainer_glm, "satisfaction_level", "pdp", trans=logit)
-```
-
-In order to compare these models it's enough to plot all of them into a single chart.
-
-```{r}
-plot(expl_rf, expl_glm)
-```
-
-### Accumulated Local Effects Plot
-
-As it is presented in the chapter \@(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of $x_{-i}$. 
-In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. Especially in area far from the training set (see [@ALEPlot] for more details).
+As it is presented in section \@ref(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of $x_{-i}$. 
+In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. 
 
 Accumulated local effects (ALE) plots (see **ALEPlot** package [@ALEPlot]) solves this problem by using conditional distribution $x_{-i}|x_i = x_i^*$. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).
 
-Let see an example for ALE plots. We can used the model and explainer created in steps 1-2 in the PDP chapter above.
+Estimation of main effects for `construction.year` is similar to the PDP curves. Here we are using `DALEX::single_variable` function that is calling   `ALEPlot::ALEPlot` function to calculate ALE curve for variable `construction.year`. 
 
-Estimation of main effects for `satisfaction_level` is similar to the PDP curves. Here we are using `DALEX::single_variable` function that is calling   `ALEPlot::ALEPlot` function to calculate ALE curve for variable `satisfaction_level`. 
+```{r alePlotsRF, message=FALSE, warning=FALSE, fig.cap="Relation between output from models `apartments_rf_model` and `apartments_lm_model` against the variable `construction.year` calculated with Accumulated local effects."}
+sva_rf  <- single_variable(explainer_rf, variable = "construction.year", type = "ale")
+sva_lm  <- single_variable(explainer_lm, variable = "construction.year", type = "ale")
 
-```{r, message=FALSE, warning=FALSE}
-exel_rf  <- single_variable(explainer_rf, variable = "satisfaction_level", type = "ale")
-
-plot(exel_rf)
+plot(sva_rf, sva_lm)
 ```
 
-It may be useful to compare ALEPlots and PDP plots.
-Again, it's simple with the generic DALEX function.
-
-```{r, message=FALSE, warning=FALSE}
-plot(expl_rf, exel_rf)
-```
-
-### Individual Conditional Expectation Plot
-
-Individual Conditional Expectations (ICE) may be considered as an extension of the PDP curves (see **ICEbox** package [@ICEbox]).
-Instead of plotting expected value over all observations, for ICE we are plotting individual conditional model responses. Average of ICE curves results in PDP curve.
-
-An ICE curve for observation $k$ over variable $i$ may be defined as
-
-$$
-ice_k(x_i) = f(x^i, x_k^{-i}; \theta) 
-$$
-
-ICE curves can be plotted with `pdp` package. Note that curves may be cantered in a given point, this helps in identification of possible interactions.
-
-```{r, message=FALSE, warning=FALSE}
-library("pdp")
-library("randomForest")
-library("breakDown")
-library("ggplot2")
-
-HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
-
-part_rf_satisfaction <- partial(HR_rf_model, "satisfaction_level")
-
-part_rf_satisfaction <- partial(HR_rf_model, pred.var = "satisfaction_level", ice = TRUE)
-plotPartial(part_rf_satisfaction, rug = TRUE, train = HR_data, alpha = 0.2)
-autoplot(part_rf_satisfaction, center = TRUE, alpha = 0.2, rug = TRUE, train = HR_data)
-```
-
-Or with the `ICEbox` package.
-
-```{r, message=FALSE, warning=FALSE}
-library("ICEbox")
-part_rf_satisfaction = ice(object = HR_rf_model, X = HR_data, y = HR_data$satisfaction_level, 
-          predictor = "satisfaction_level", frac_to_build = .1)
-plot(part_rf_satisfaction)
-```
-
-As ICE curves are useful tool for identification of interactions, these individual curves may be clustered with the `clusterICE` function.
-
-```{r, message=FALSE, warning=FALSE}
-clusterICE(part_rf_satisfaction, nClusters = 3, plot_legend = TRUE, center = TRUE)
-```
+Results for PDP and ALEP are very similar except that effects for ALEP are centered around 0.
 
 
-
-### Mering Path Plot
+### Mering Path Plot {#mergingPathPlot}
 
 The package `ICEbox` is not working for factor variables while the `pdp` package returns plots that are hard to interpret.
 
 An interesting tool that helps to understand what is happening with factor variables is the **factorMerger** package (see [@factorMerger]).
 
-Here we have Merging Path Plot for a factor variable `sales`.
+Here we have Merging Path Plot for a factor variable `district`.
 
-```{r, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
-library("factorMerger")
-path <- mergeFactors(HR_data$left, HR_data$sales, method = "fast-adaptive", 
-                     family = "binomial", abbreviate = FALSE)
-plot(path, panel = "response") + theme_mi2()
+```{r mergingPathPlots, message=FALSE, warning=FALSE, fig.width=12, fig.height=8, fig.cap="Merging Path Plot for `district` variable"}
+svd_rf  <- single_variable(explainer_rf, variable = "district", type = "factor")
+svd_lm  <- single_variable(explainer_lm, variable = "district", type = "factor")
+
+plot(svd_rf, svd_lm)
 ```
 
-Note that you can use the `factorMerger` package to understand predictions calculated with a black-box model. The random forest model `HR_rf_model` returns continuous response. But the `factorMerger` works for such variables as well.
+It looks like these then districts behave like tree groups, the city center (Srodmiescie), districts well communicated with city center (Ochota, Mokotow, Zoliborz) and other districts.
 
-In the top right panel one may see the distribution of predictions for the selected group.
-
-```{r, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
-
-HR_data$left_predicted <- predict(HR_rf_model)
-
-path <- mergeFactors(HR_data$left_predicted, HR_data$sales, method = "fast-adaptive", 
-                     abbreviate = FALSE)
-plot(path, panel = "response", responsePanel = "boxplot", nodesSpacing = "effects") + theme_mi2()
-```
-
-
-
-
+Factor variables are handled very differently by random forest and linear model. But despite of these differences both models result in very similar plots.
 

@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-02" />
+<meta name="date" content="2018-04-03" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -138,10 +138,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="3-3-variableResponse.html#variableResponse"><span class="toc-section-number">3.3</span> Variable response</a><ul>
 <li><a href="3-3-variableResponse.html#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
-<li><a href="3-3-variableResponse.html#model-comparisons"><span class="toc-section-number">3.3.2</span> Model Comparisons</a></li>
-<li><a href="3-3-variableResponse.html#accumulated-local-effects-plot"><span class="toc-section-number">3.3.3</span> Accumulated Local Effects Plot</a></li>
-<li><a href="3-3-variableResponse.html#individual-conditional-expectation-plot"><span class="toc-section-number">3.3.4</span> Individual Conditional Expectation Plot</a></li>
-<li><a href="3-3-variableResponse.html#mering-path-plot"><span class="toc-section-number">3.3.5</span> Mering Path Plot</a></li>
+<li><a href="3-3-variableResponse.html#accumulatedLocalEffects"><span class="toc-section-number">3.3.2</span> Accumulated Local Effects Plot</a></li>
+<li><a href="3-3-variableResponse.html#mergingPathPlot"><span class="toc-section-number">3.3.3</span> Mering Path Plot</a></li>
 </ul></li>
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
@@ -151,7 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li><a href="4-3-local-interpretable-model-agnostic-visual-explanations.html#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
 <li class="has-sub"><a href="4-4-breakdown.html#breakdown"><span class="toc-section-number">4.4</span> breakDown</a><ul>
-<li><a href="4-4-breakdown.html#model-comparisons-1"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
+<li><a href="4-4-breakdown.html#model-comparisons"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
 </ul></li>
 </ul></li>
 <li><a href="5-reproducibility.html#reproducibility"><span class="toc-section-number">5</span> Reproducibility</a></li>
@@ -165,8 +163,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 5</span> Reproducibility</h1>
 <p>Packages are changing quite fast, especially these actively developed. Below you will find list of packages that were installed on my computer when I was preparing this documentation.</p>
 <p>It is likely that some of described packages will change names of functions or arguments or structure of results. Use the version listed below to reproduce results form this book.</p>
-<p>Note, that results, models and plots created in are were recorded with the <strong>archivist</strong> package <span class="citation">(Biecek and Kosinski <label for="tufte-mn-29" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-29" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11):1–28. <a href="https://doi.org/10.18637/jss.v082.i11" class="uri">https://doi.org/10.18637/jss.v082.i11</a>.</span>)</span>. Use archivist links to retrieve their binary copies directly to your R console.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
+<p>Note, that results, models and plots created in are were recorded with the <strong>archivist</strong> package <span class="citation">(Biecek and Kosinski <label for="tufte-mn-27" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-27" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw, and Marcin Kosinski. 2017. “archivist: An R Package for Managing, Recording and Restoring Data Analysis Results.” <em>Journal of Statistical Software</em> 82 (11):1–28. <a href="https://doi.org/10.18637/jss.v082.i11" class="uri">https://doi.org/10.18637/jss.v082.i11</a>.</span>)</span>. Use archivist links to retrieve their binary copies directly to your R console.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
 <pre><code>##  setting  value                       
 ##  version  R version 3.4.4 (2018-03-15)
 ##  system   x86_64, darwin15.6.0        
@@ -174,7 +172,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       Europe/Warsaw               
-##  date     2018-04-02                  
+##  date     2018-04-03                  
 ## 
 ##  package      * version   date      
 ##  abind          1.4-5     2016-07-21
@@ -217,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  effects        4.0-0     2017-09-15
 ##  evaluate       0.10.1    2017-06-24
 ##  expm           0.999-2   2017-03-29
-##  factorMerger * 0.3.6     2018-03-24
+##  factorMerger   0.3.6     2018-03-24
 ##  forcats        0.3.0     2018-02-19
 ##  foreign        0.8-69    2017-06-22
 ##  forestmodel  * 0.4.3     2017-04-16
@@ -239,7 +237,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  htmltools      0.3.6     2017-04-28
 ##  htmlwidgets    1.0       2018-01-20
 ##  httpuv         1.3.5     2017-07-04
-##  ICEbox       * 1.1.2     2017-07-13
 ##  klaR           0.6-12    2014-08-06
 ##  knitr          1.20      2018-02-20
 ##  labeling       0.3       2014-08-23
@@ -271,7 +268,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  parallel       3.4.4     2018-03-15
 ##  parallelMap    1.3       2015-06-10
 ##  ParamHelpers * 1.10      2017-01-05
-##  pdp          * 0.6.0     2017-07-20
+##  pdp            0.6.0     2017-07-20
 ##  pillar         1.1.0     2018-01-14
 ##  pkgconfig      2.0.1     2017-03-21
 ##  plyr           1.8.4     2016-06-08
@@ -291,7 +288,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  rstudioapi     0.7       2017-09-07
 ##  sandwich       2.4-0     2017-07-26
 ##  scales         0.5.0     2017-08-24
-##  sfsmisc      * 1.1-1     2017-06-08
 ##  shiny          1.0.5     2017-08-23
 ##  sjlabelled     1.0.5     2017-11-09
 ##  sjmisc         2.6.3     2017-11-28
@@ -318,7 +314,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  tufte          0.2       2016-02-07
 ##  utils        * 3.4.4     2018-03-15
 ##  withr          2.1.0     2017-11-01
-##  xgboost      * 0.6.4.1   2018-01-23
 ##  xtable         1.8-2     2016-02-05
 ##  yaImpute       1.0-29    2017-12-10
 ##  yaml           2.1.18    2018-03-08
@@ -386,7 +381,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  CRAN (R 3.4.0)                        
 ##  cran (@1.0)                           
 ##  CRAN (R 3.4.1)                        
-##  CRAN (R 3.4.1)                        
 ##  CRAN (R 3.2.0)                        
 ##  cran (@1.20)                          
 ##  CRAN (R 3.2.2)                        
@@ -438,7 +432,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  CRAN (R 3.4.1)                        
 ##  cran (@2.4-0)                         
 ##  CRAN (R 3.4.1)                        
-##  CRAN (R 3.4.0)                        
 ##  CRAN (R 3.4.1)                        
 ##  CRAN (R 3.4.2)                        
 ##  CRAN (R 3.4.3)                        
@@ -465,7 +458,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  CRAN (R 3.4.0)                        
 ##  local                                 
 ##  cran (@2.1.0)                         
-##  CRAN (R 3.4.3)                        
 ##  CRAN (R 3.2.3)                        
 ##  CRAN (R 3.4.3)                        
 ##  cran (@2.1.18)                        

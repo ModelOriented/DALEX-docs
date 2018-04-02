@@ -31,6 +31,16 @@ Let's see an example. We will use the `HR_rf_model` trained with the **randomFor
 
 Around a selected point we will fit a linear model.
 
+```{r, eval=FALSE}
+new_apartment <- apartmentsTest[161,]
+
+new_apartment_lm <- single_prediction(explainer_lm, observation = new_apartment)
+new_apartment_rf <- single_prediction(explainer_rf, observation = new_apartment)
+plot(new_apartment_lm, new_apartment_rf)
+
+```
+
+
 ```{r live_train}
 library("live")
 library("randomForest")

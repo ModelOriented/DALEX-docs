@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-02" />
+<meta name="date" content="2018-04-03" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -138,10 +138,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="3-3-variableResponse.html#variableResponse"><span class="toc-section-number">3.3</span> Variable response</a><ul>
 <li><a href="3-3-variableResponse.html#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
-<li><a href="3-3-variableResponse.html#model-comparisons"><span class="toc-section-number">3.3.2</span> Model Comparisons</a></li>
-<li><a href="3-3-variableResponse.html#accumulated-local-effects-plot"><span class="toc-section-number">3.3.3</span> Accumulated Local Effects Plot</a></li>
-<li><a href="3-3-variableResponse.html#individual-conditional-expectation-plot"><span class="toc-section-number">3.3.4</span> Individual Conditional Expectation Plot</a></li>
-<li><a href="3-3-variableResponse.html#mering-path-plot"><span class="toc-section-number">3.3.5</span> Mering Path Plot</a></li>
+<li><a href="3-3-variableResponse.html#accumulatedLocalEffects"><span class="toc-section-number">3.3.2</span> Accumulated Local Effects Plot</a></li>
+<li><a href="3-3-variableResponse.html#mergingPathPlot"><span class="toc-section-number">3.3.3</span> Mering Path Plot</a></li>
 </ul></li>
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
@@ -151,7 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li><a href="4-3-local-interpretable-model-agnostic-visual-explanations.html#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
 <li class="has-sub"><a href="4-4-breakdown.html#breakdown"><span class="toc-section-number">4.4</span> breakDown</a><ul>
-<li><a href="4-4-breakdown.html#model-comparisons-1"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
+<li><a href="4-4-breakdown.html#model-comparisons"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
 </ul></li>
 </ul></li>
 <li><a href="5-reproducibility.html#reproducibility"><span class="toc-section-number">5</span> Reproducibility</a></li>
@@ -168,7 +166,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.</li>
 <li>examination of curvature around a specific point (single observation). Can be used to determine the strength of influence onto a final model. Is it an outlier?</li>
 </ul>
-<p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-24" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>.</p>
+<p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>.</p>
 <div id="basics" class="section level3">
 <h3><span class="header-section-number">4.2.1</span> Basics</h3>
 <p>Most ML algorithms do not learn from mistakes. One calculates predictions and there is no room for improvement.</p>

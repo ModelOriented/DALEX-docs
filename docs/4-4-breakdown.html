@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-02" />
+<meta name="date" content="2018-04-03" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -138,10 +138,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="3-3-variableResponse.html#variableResponse"><span class="toc-section-number">3.3</span> Variable response</a><ul>
 <li><a href="3-3-variableResponse.html#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
-<li><a href="3-3-variableResponse.html#model-comparisons"><span class="toc-section-number">3.3.2</span> Model Comparisons</a></li>
-<li><a href="3-3-variableResponse.html#accumulated-local-effects-plot"><span class="toc-section-number">3.3.3</span> Accumulated Local Effects Plot</a></li>
-<li><a href="3-3-variableResponse.html#individual-conditional-expectation-plot"><span class="toc-section-number">3.3.4</span> Individual Conditional Expectation Plot</a></li>
-<li><a href="3-3-variableResponse.html#mering-path-plot"><span class="toc-section-number">3.3.5</span> Mering Path Plot</a></li>
+<li><a href="3-3-variableResponse.html#accumulatedLocalEffects"><span class="toc-section-number">3.3.2</span> Accumulated Local Effects Plot</a></li>
+<li><a href="3-3-variableResponse.html#mergingPathPlot"><span class="toc-section-number">3.3.3</span> Mering Path Plot</a></li>
 </ul></li>
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
@@ -151,7 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li><a href="4-3-local-interpretable-model-agnostic-visual-explanations.html#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
 <li class="has-sub"><a href="4-4-breakdown.html#breakdown"><span class="toc-section-number">4.4</span> breakDown</a><ul>
-<li><a href="4-4-breakdown.html#model-comparisons-1"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
+<li><a href="4-4-breakdown.html#model-comparisons"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
 </ul></li>
 </ul></li>
 <li><a href="5-reproducibility.html#reproducibility"><span class="toc-section-number">5</span> Reproducibility</a></li>
@@ -167,14 +165,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="images/DALEX_breakDown.png" alt="Cheatsheet" />
 <p class="caption">Cheatsheet</p>
 </div>
-<p>The <code>breakDown</code> package <span class="citation">(Biecek <label for="tufte-mn-28" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-28" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span> explains components of model prediction for a single observation. Right now it’s working for <code>lm</code> and <code>glm</code> models. Break Down Plots are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>.</p>
+<p>The <code>breakDown</code> package <span class="citation">(Biecek <label for="tufte-mn-26" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-26" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span> explains components of model prediction for a single observation. Right now it’s working for <code>lm</code> and <code>glm</code> models. Break Down Plots are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>.</p>
 <p>Break Down Plots show the contribution of every variable present in the model.</p>
 <p>Let’s see a use case for the <code>wine</code> dataset.</p>
 <p>The problem that we are going to solve is to create a model that predicts wine quality and then use the model and explain it’s prediction for a single wine.</p>
 <p>We start with a linear Gaussian model for <code>quality</code> with three dependent variables <code>citric.acid</code>, <code>sulphates</code>, <code>alcohol</code>.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st">  </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
-<a class="sourceLine" id="cb54-2" data-line-number="2">               <span class="dt">data =</span> wine)</a>
-<a class="sourceLine" id="cb54-3" data-line-number="3">model<span class="op">$</span>coefficients</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st">  </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">               <span class="dt">data =</span> wine)</a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">model<span class="op">$</span>coefficients</a></code></pre></div>
 <pre><code>## (Intercept) citric.acid   sulphates     alcohol 
 ##   2.2847360   0.1480342   0.4660404   0.3153252</code></pre>
 <p>There are just four model coefficients, so it’s easy to write down the formula for model predictions.</p>
@@ -182,85 +180,85 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \hat y = 2.2847360  + 0.1480342 *  citric.acid + 0.4660404    * sulphates + 0.3153252 * alcohol
 \]</span></p>
 <p>But is it easy to explain prediction for a single observation?</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">new.wine &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">citric.acid =</span> <span class="fl">0.35</span>,</a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">                       <span class="dt">sulphates =</span> <span class="fl">0.6</span>,</a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">                       <span class="dt">alcohol =</span> <span class="fl">12.5</span>)</a>
-<a class="sourceLine" id="cb56-4" data-line-number="4"><span class="kw">predict</span>(model, <span class="dt">newdata =</span> new.wine)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">new.wine &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">citric.acid =</span> <span class="fl">0.35</span>,</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">                       <span class="dt">sulphates =</span> <span class="fl">0.6</span>,</a>
+<a class="sourceLine" id="cb43-3" data-line-number="3">                       <span class="dt">alcohol =</span> <span class="fl">12.5</span>)</a>
+<a class="sourceLine" id="cb43-4" data-line-number="4"><span class="kw">predict</span>(model, <span class="dt">newdata =</span> new.wine)</a></code></pre></div>
 <pre><code>##        1 
 ## 6.557737</code></pre>
 <p>We see, that this wine got higher quality score than the average. But why?</p>
 <p>This is where <code>breakDown</code> package is useful. It takes parts of predictions and visualize them. These parts are being calculated by the <code>predict</code> function with <code>type = &quot;terms&quot;</code>.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">predict</span>(model, <span class="dt">newdata =</span> new.wine, <span class="dt">type =</span> <span class="st">&quot;terms&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">predict</span>(model, <span class="dt">newdata =</span> new.wine, <span class="dt">type =</span> <span class="st">&quot;terms&quot;</span>)</a></code></pre></div>
 <pre><code>##   citric.acid sulphates   alcohol
 ## 1 0.002340197 0.0513358 0.6261516
 ## attr(,&quot;constant&quot;)
 ## [1] 5.877909</code></pre>
 <p>Now it’s easy to see that impact of the predicted score have the high <code>alcohol</code> level in this particular wine.</p>
 <p>Please note, that these values are <em>NOT</em> calculated as x*beta.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">model<span class="op">$</span>coefficients <span class="op">*</span><span class="st"> </span><span class="kw">cbind</span>(<span class="dt">intercept =</span> <span class="dv">1</span>, new.wine)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">model<span class="op">$</span>coefficients <span class="op">*</span><span class="st"> </span><span class="kw">cbind</span>(<span class="dt">intercept =</span> <span class="dv">1</span>, new.wine)</a></code></pre></div>
 <pre><code>##   intercept citric.acid sulphates  alcohol
 ## 1  2.284736  0.05181196 0.2796242 3.941565</code></pre>
 <p>This is because, when we think about effect of an <code>alcohol</code> we would like to compare this particular wine with <em>wine with average alcohol concentration</em> not <em>wine with zero alcohol</em>.</p>
 <p>So, since this particular wine is <span class="math inline">\(1.985733\)</span> units of alcohol stronger than an average wine</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">new.wine<span class="op">$</span>alcohol <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(wine<span class="op">$</span>alcohol)</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">new.wine<span class="op">$</span>alcohol <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(wine<span class="op">$</span>alcohol)</a></code></pre></div>
 <pre><code>## [1] 1.985733</code></pre>
 <p>thus the final effect of the <code>alcohol</code> on the wine quality will be</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">model<span class="op">$</span>coefficients[<span class="st">&quot;alcohol&quot;</span>] <span class="op">*</span><span class="st"> </span>(new.wine<span class="op">$</span>alcohol <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(wine<span class="op">$</span>alcohol))</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">model<span class="op">$</span>coefficients[<span class="st">&quot;alcohol&quot;</span>] <span class="op">*</span><span class="st"> </span>(new.wine<span class="op">$</span>alcohol <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(wine<span class="op">$</span>alcohol))</a></code></pre></div>
 <pre><code>##   alcohol 
 ## 0.6261516</code></pre>
 <p>Same story is true for other variables.</p>
 <p>These calculations are easy to do with <code>breakDown</code> package.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2">br &lt;-<span class="st"> </span><span class="kw">broken</span>(model, new.wine, <span class="dt">baseline =</span> <span class="st">&quot;Intercept&quot;</span>)</a>
-<a class="sourceLine" id="cb66-3" data-line-number="3">br</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">br &lt;-<span class="st"> </span><span class="kw">broken</span>(model, new.wine, <span class="dt">baseline =</span> <span class="st">&quot;Intercept&quot;</span>)</a>
+<a class="sourceLine" id="cb53-3" data-line-number="3">br</a></code></pre></div>
 <pre><code>##                    contribution
 ## alcohol = 12.5            0.626
 ## sulphates = 0.6           0.051
 ## citric.acid = 0.35        0.002
 ## final_prognosis           0.680
 ## baseline:  5.877909</code></pre>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">plot</span>(br)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-38-1.png" width="672"  /></p>
-<div id="model-comparisons-1" class="section level3">
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">plot</span>(br)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-25-1.png" width="672"  /></p>
+<div id="model-comparisons" class="section level3">
 <h3><span class="header-section-number">4.4.1</span> Model Comparisons</h3>
 <p>What if we have two or larger number of models? Not a problem for DALEX!</p>
 <p>Let’s fit a model with 3 variables.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
-<a class="sourceLine" id="cb69-3" data-line-number="3">new.wine &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">citric.acid =</span> <span class="fl">0.35</span>,</a>
-<a class="sourceLine" id="cb69-4" data-line-number="4">                       <span class="dt">sulphates =</span> <span class="fl">0.6</span>,</a>
-<a class="sourceLine" id="cb69-5" data-line-number="5">                       <span class="dt">alcohol =</span> <span class="fl">12.5</span>,</a>
-<a class="sourceLine" id="cb69-6" data-line-number="6">                       <span class="dt">pH =</span> <span class="fl">3.36</span>,</a>
-<a class="sourceLine" id="cb69-7" data-line-number="7">                       <span class="dt">residual.sugar =</span> <span class="fl">4.8</span>)</a>
-<a class="sourceLine" id="cb69-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb69-9" data-line-number="9">wine_lm_model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st">  </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
-<a class="sourceLine" id="cb69-10" data-line-number="10">                     <span class="dt">data =</span> wine)</a>
-<a class="sourceLine" id="cb69-11" data-line-number="11">wine_lm_explainer3 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_lm_model3, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_3v&quot;</span>,</a>
-<a class="sourceLine" id="cb69-12" data-line-number="12">                               <span class="dt">predict_function =</span> stats<span class="op">::</span>predict)</a>
-<a class="sourceLine" id="cb69-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb69-14" data-line-number="14">wine_lm_predict3 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_lm_explainer3, <span class="dt">observation =</span> new.wine)</a>
-<a class="sourceLine" id="cb69-15" data-line-number="15"><span class="kw">plot</span>(wine_lm_predict3)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-39-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;breakDown&quot;</span>)</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">new.wine &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">citric.acid =</span> <span class="fl">0.35</span>,</a>
+<a class="sourceLine" id="cb56-4" data-line-number="4">                       <span class="dt">sulphates =</span> <span class="fl">0.6</span>,</a>
+<a class="sourceLine" id="cb56-5" data-line-number="5">                       <span class="dt">alcohol =</span> <span class="fl">12.5</span>,</a>
+<a class="sourceLine" id="cb56-6" data-line-number="6">                       <span class="dt">pH =</span> <span class="fl">3.36</span>,</a>
+<a class="sourceLine" id="cb56-7" data-line-number="7">                       <span class="dt">residual.sugar =</span> <span class="fl">4.8</span>)</a>
+<a class="sourceLine" id="cb56-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb56-9" data-line-number="9">wine_lm_model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>citric.acid <span class="op">+</span><span class="st">  </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
+<a class="sourceLine" id="cb56-10" data-line-number="10">                     <span class="dt">data =</span> wine)</a>
+<a class="sourceLine" id="cb56-11" data-line-number="11">wine_lm_explainer3 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_lm_model3, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_3v&quot;</span>,</a>
+<a class="sourceLine" id="cb56-12" data-line-number="12">                               <span class="dt">predict_function =</span> stats<span class="op">::</span>predict)</a>
+<a class="sourceLine" id="cb56-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb56-14" data-line-number="14">wine_lm_predict3 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_lm_explainer3, <span class="dt">observation =</span> new.wine)</a>
+<a class="sourceLine" id="cb56-15" data-line-number="15"><span class="kw">plot</span>(wine_lm_predict3)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-26-1.png" width="672"  /></p>
 <p>Let’s fit a second model with 4 variables.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">wine_lm_model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
-<a class="sourceLine" id="cb70-2" data-line-number="2">                     <span class="dt">data =</span> wine)</a>
-<a class="sourceLine" id="cb70-3" data-line-number="3">wine_lm_explainer4 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_lm_model4, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_4v&quot;</span>,</a>
-<a class="sourceLine" id="cb70-4" data-line-number="4">                               <span class="dt">predict_function =</span> stats<span class="op">::</span>predict)</a>
-<a class="sourceLine" id="cb70-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb70-6" data-line-number="6">wine_lm_predict4 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_lm_explainer4, <span class="dt">observation =</span> new.wine)</a>
-<a class="sourceLine" id="cb70-7" data-line-number="7"><span class="kw">plot</span>(wine_lm_predict4)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-40-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">wine_lm_model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(quality <span class="op">~</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol,</a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">                     <span class="dt">data =</span> wine)</a>
+<a class="sourceLine" id="cb57-3" data-line-number="3">wine_lm_explainer4 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_lm_model4, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_4v&quot;</span>,</a>
+<a class="sourceLine" id="cb57-4" data-line-number="4">                               <span class="dt">predict_function =</span> stats<span class="op">::</span>predict)</a>
+<a class="sourceLine" id="cb57-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb57-6" data-line-number="6">wine_lm_predict4 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_lm_explainer4, <span class="dt">observation =</span> new.wine)</a>
+<a class="sourceLine" id="cb57-7" data-line-number="7"><span class="kw">plot</span>(wine_lm_predict4)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-27-1.png" width="672"  /></p>
 <p>It’s easy to compare these models. Just plot both together side by side.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw">plot</span>(wine_lm_predict3, wine_lm_predict4)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-41-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">plot</span>(wine_lm_predict3, wine_lm_predict4)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-28-1.png" width="672"  /></p>
 <p>You can do this even for non linear models.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
-<a class="sourceLine" id="cb72-2" data-line-number="2">wine_rf_model4 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(quality <span class="op">~</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol, <span class="dt">data =</span> wine)</a>
-<a class="sourceLine" id="cb72-3" data-line-number="3">wine_rf_explainer4 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_rf_model4, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_rf&quot;</span>)</a>
-<a class="sourceLine" id="cb72-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb72-5" data-line-number="5">wine_rf_predict4 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_rf_explainer4, <span class="dt">observation =</span> new.wine)</a>
-<a class="sourceLine" id="cb72-6" data-line-number="6"><span class="kw">plot</span>(wine_rf_predict4, wine_lm_predict4, wine_lm_predict3)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-42-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb59-2" data-line-number="2">wine_rf_model4 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(quality <span class="op">~</span><span class="st"> </span>pH <span class="op">+</span><span class="st"> </span>residual.sugar <span class="op">+</span><span class="st"> </span>sulphates <span class="op">+</span><span class="st"> </span>alcohol, <span class="dt">data =</span> wine)</a>
+<a class="sourceLine" id="cb59-3" data-line-number="3">wine_rf_explainer4 &lt;-<span class="st"> </span><span class="kw">explain</span>(wine_rf_model4, <span class="dt">data =</span> wine, <span class="dt">label =</span> <span class="st">&quot;model_rf&quot;</span>)</a>
+<a class="sourceLine" id="cb59-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb59-5" data-line-number="5">wine_rf_predict4 &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(wine_rf_explainer4, <span class="dt">observation =</span> new.wine)</a>
+<a class="sourceLine" id="cb59-6" data-line-number="6"><span class="kw">plot</span>(wine_rf_predict4, wine_lm_predict4, wine_lm_predict3)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-29-1.png" width="672"  /></p>
 
 </div>
 </div>
