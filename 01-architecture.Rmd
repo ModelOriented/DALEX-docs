@@ -1,13 +1,13 @@
 # Architecture of DALEX {#architecture}
 
-DALEX architecture is simple and consistent. Actually there are only tree rules that should be remembered and one is ready to use this tool.
+DALEX architecture is simple and consistent. Actually there are only tree rules that should be remembered to use this tool.
 
 * First step is to use the `explain()` function to enrich a black-box model with additional metadata required by explainers. Different explainers require different additional inputs. Find the list of required elements in Section \@ref(explainFunction).
 * Second step is to use an explainer function that calculates required descriptions. Variouse explainers are introduced in Chapter \@ref(modelUnderstanding) and \@ref(predictionUnderstanding).
 * Third step is to use generic `print()` or `plot()` function to see the explainer. Both functions work for one or model models.
 
 
-These three steps are presented in the Figure 2.1.
+These three steps are presented in Figure 2.1.
 
 <p><span class="marginnote">Figure 2.1. The overview of DALEX architecture. <br/><br/>
 *A)* Any predictive model with defined input $x$ and output $y_{raw} \in \mathcal R$ may be used. <br/><br/>
@@ -36,9 +36,12 @@ Here arguments required by the `explain()` function. Some of these parameters ar
 * `link_function`	- a transformation/link function that is be applied to  model predictions. *Required by*: variable effect. *Default*: the identity `I()` function.
 * `label`	- character, the name of the model that will be used in plots. *Required by*: plots. *Default*: extracted from the `class` attribute of the `model`.
 
-To better understand how this function may be used next two sections introduce a use case for regression and binary classification.
+<p><span class="marginnote">Figure 2.2. The `explain()` function embeds the `model` and validation `data` and `y` in a container. Model is accesses via universal intreface supplied by `predict_function()` and `link_function()`. The `label` field stores an unique name of the model.
+</span>
+<img src="images/explain_scheme.png"/></p>
 
 
+Next two sections introduce use cases for regression and binary classification. They will help to understand how to use the `explain()` function.
 
 ## Use case: Regression. Apartment prices in Warsaw
 
@@ -53,7 +56,7 @@ head(apartments)
 library("DALEX")
 knitr::kable(
   head(apartments),
-  caption = 'Artificial dataset about apartments in Warsaw'
+  caption = 'Artificial dataset about apartments in Warsaw. The goal in this study is to predict the average prise per square meter.'
   )
 ```
 
@@ -63,7 +66,7 @@ First model will be based on linear regression. This will be a simple model with
 
 ```{r}
 apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor + 
-                      no.rooms + district, data = apartments)
+                         no.rooms + district, data = apartments)
 summary(apartments_lm_model)
 ```
 
@@ -78,7 +81,7 @@ To create an explainer for regression model it is enough to use `explain()` func
 
 ```{r}
 explainer_lm <- explain(apartments_lm_model, 
-                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+                          data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
 ```
 
 
@@ -92,7 +95,7 @@ set.seed(1313)
 
 apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor + 
                       no.rooms + district, data = apartments)
-summary(apartments_rf_model)
+apartments_rf_model
 ```
 
 Here is the mean square error calculated on a `apartmentsTest` dataset.

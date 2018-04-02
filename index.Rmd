@@ -22,6 +22,15 @@ In many applications we need to know, understand or prove how input variables ar
 
 DALEX is a set of tools that help to understand how complex models are working.
 
+<p><span class="marginnote">Figure 1.1. Workflow of a typical machine learning modeling. <br/>
+A) Modeling is a process in which domain knowledge and data are turned into models. <br/>
+B) Models are used to generate predictions. <br/>
+C) Understanding of model structure may increase our knowledge and in consequence leads to better model. It is hard for black-box models, but DALEX helps here.<br/>
+D) Understanding of drivers behind particular model predictions may help to correct wrong decisions and in consequence leads to better model.It is hard for black-box models, but DALEX helps here.
+</span>
+<img src="images/mp_understanding.png"/></p>
+
+
 ## Motivation
 
 *Machine Learning* is a vague name, there is some *learning* and some *machines*, but what the heck is going on? 

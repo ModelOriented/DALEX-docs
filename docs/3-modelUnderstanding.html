@@ -133,8 +133,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
 <li class="has-sub"><a href="3-2-featureImportance.html#featureImportance"><span class="toc-section-number">3.2</span> Feature importance</a><ul>
-<li><a href="3-2-featureImportance.html#drop-out-plots"><span class="toc-section-number">3.2.1</span> Drop-out plots</a></li>
-<li><a href="3-2-featureImportance.html#forest-plots"><span class="toc-section-number">3.2.2</span> Forest plots</a></li>
+<li><a href="3-2-featureImportance.html#modelAgnostic"><span class="toc-section-number">3.2.1</span> Model agnostic</a></li>
+<li><a href="3-2-featureImportance.html#modelSpecific"><span class="toc-section-number">3.2.2</span> Model specific</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-3-variableResponse.html#variableResponse"><span class="toc-section-number">3.3</span> Variable response</a><ul>
 <li><a href="3-3-variableResponse.html#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
@@ -163,8 +163,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="modelUnderstanding" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Model understanding</h1>
-<p>Machine Learning models are widely used and have various applications in classification or regression tasks. Due to increasing computational power, availability of new data sources and new methods, ML models are more and more complex. Models created with techniques like boosting, bagging of neural networks are true black boxes. It is hard to trace the link between input variables and model outcomes. They are use because of high performance, but lack of interpretability is one of their weakest sides.</p>
-<p>In many applications we need to know, understand or prove how input variables are used in the model and what impact do they have on final model prediction. DALEX is a set of tools that help to understand how complex models are working.</p> 
+<p>In this chapter we will introduce three groups of explainers that can be used to boost our understanding of a black-box models.</p>
+<ul>
+<li>Section <a href="3-1-modelPerformance.html#modelPerformance">3.1</a> presents explainers for model performance. Single number may be misleading when we need to compare complex models. Here you will find plots that give more information about model performance in a consistent form.</li>
+<li>Section <a href="3-2-featureImportance.html#featureImportance">3.2</a> presents explainers for variable importance. Knowing which variables are important allow to validate the model and increase our understanding of the domain.</li>
+<li>Section <a href="3-3-variableResponse.html#variableResponse">3.3</a> presents explainers for variable effect. Here you will find plots that summaries the relation between model response and particular variable.</li>
+</ul>
+<p>All explainers are illustrated based on two models fitted to the <code>apartments</code> data.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">apartments_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">1313</span>)</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">apartments_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a></code></pre></div>
+<p>First we need to prepare wrappers for these models. They will be available in <code>explainer_lm</code> and <code>explainer_rf</code> objects.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">explainer_lm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_lm_model, </a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">explainer_rf &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_rf_model, </a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div> 
 </div>
 <p style="text-align: center;">
 <a href="2-3-use-case-classification-tbd.html"><button class="btn btn-default">Previous</button></a>

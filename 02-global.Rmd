@@ -1,130 +1,160 @@
 # Model understanding  {#modelUnderstanding}
 
-Machine Learning models are widely used and have various applications in classification or regression tasks. Due to increasing computational power, availability of new data sources and new methods, ML models are more and more complex. Models created with techniques like boosting, bagging of neural networks are true black boxes. It is hard to trace the link between input variables and model outcomes. They are use because of high performance, but lack of interpretability is one of their weakest sides.
+In this chapter we will introduce three groups of explainers that can be used to boost our understanding of a black-box models.
 
-In many applications we need to know, understand or prove how input variables are used in the model and what impact do they have on final model prediction.
-DALEX is a set of tools that help to understand how complex models are working.
+* Section \@ref(modelPerformance) presents explainers for model performance. Single number may be misleading when we need to compare complex models. Here you will find plots that give more information about model performance in a consistent form.
+* Section \@ref(featureImportance) presents explainers for variable importance. Knowing which variables are important allow to validate the model and increase our understanding of the domain.
+* Section \@ref(variableResponse) presents explainers for variable effect. Here you will find plots that summaries the relation between model response and particular variable.
 
+All explainers are illustrated based on two models fitted to the `apartments` data.
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor + 
+                      no.rooms + district, data = apartments)
+library("randomForest")
+set.seed(1313)
+apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor + 
+                      no.rooms + district, data = apartments)
+```
+
+First we need to prepare wrappers for these models. They will be available in `explainer_lm` and `explainer_rf` objects.
+
+```{r, warning=FALSE, message=FALSE}
+explainer_lm <- explain(apartments_lm_model, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+explainer_rf <- explain(apartments_rf_model, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
 
 ## Model performance {#modelPerformance}
 
+As you may remember from previous chapter [root mean square](https://en.wikipedia.org/wiki/Root_mean_square) of residuals is similar for both considered models. Does it mean that these models are equally good?
 
+```{r, warning=FALSE, message=FALSE}
+predicted_mi2_lm <- predict(apartments_lm_model, apartmentsTest)
+sqrt(mean((predicted_mi2_lm - apartmentsTest$m2.price)^2))
 
-```{r, eval=FALSE}
-library("DALEX")
-library("randomForest")
+predicted_mi2_rf <- predict(apartments_rf_model, apartmentsTest)
+sqrt(mean((predicted_mi2_rf - apartmentsTest$m2.price)^2))
+```
 
+The function `model_performance()` calculates predictions for validation `data` and differences between model predictions and supplied labels `y`.
+
+The generic `print()` function returns quantiles for these differences.
+
+```{r}
 mp_lm <- model_performance(explainer_lm)
 mp_rf <- model_performance(explainer_rf)
 mp_lm
 mp_rf
-sqrt(mean(mp_rf$diff^2))
-sqrt(mean(mp_lm$diff^2))
-plot(mp_lm, mp_rf)
-
 ```
 
+The generic `plot()` function shows reversed empirical cumulative distribution function for absolute values from quintiles. This function presents fraction of residuals larger than `x`. The figure below shows that majority of residuals for random forest is smaller than residuals in linear model. But the small fraction of very large residuals affects the root mean square.
+
+```{r global_explain_ecdf, fig.cap="Comparison of residuals for linear model and random forest"}
+plot(mp_lm, mp_rf)
+```
+
+Use the `geom = "boxplot"` parameter for the generic `plot()` function to get alternative comparison of residuals. The red dot here stands for the root mean square.
+
+```{r global_explain_boxplot, fig.height=2.5, fig.cap="Comparison of residuals for linear model and random forest"}
+plot(mp_lm, mp_rf, geom = "boxplot")
+```
 
 
 ## Feature importance {#featureImportance}
 
-Explainers presented in this chapter are designed to better understand the global structure of a black box. Which variables are the most important? How do they influence the final result of a model?
+Explainers presented in this section are designed to better understand which variables are the most important? 
 
-### Drop-out plots
+Some models, like linear regression or random forest have build-in *model specific* methods to calculate are visualize variable importance. They will be presented in Section \@ref(modelSpecific).
 
-Variable drop-outs are calculated via permutations. Simply the loss function is is compared between the full model and the model with single variable being permuted. 
+Section \@ref(modelAgnostic) presents a model agnostic approach based on permutations. The advantage of this approach is that different models can be compare within a single setup.
 
-As a additional point for comparison a `_baseline_` is calculated as a loss in model with permuted outcomes. This shall be highest possible loss.
 
-Let's see how it's working for a random forest model.
+### Model agnostic {#modelAgnostic}
+
+Model agnostic variable importance is calculated via permutations. Simply the loss function is compared between the full model and the model with single variable being permuted. The concept along with some extensions is described in [@variableImportancePermutations].
+
+In DALEX this method is implemented in the `variable_importance()` function. Loss function is calculated for a model
+
+* based on validation `data`, this is an estimate of model performance (will be denoted as `_full_model_`),
+* based on a data with resampled labels `y`, this is kind of *worst case* loss when model are compares against random labels (will be denoted as `_baseline_`)
+* based on a data with single variable being resampled, this will tell us how much model looses when selected variable is blinded.
+
+
+Let's see how this function is working for a random forest model. 
 
 ```{r}
-library("DALEX")
-library("breakDown")
-library("randomForest")
-HR_rf_model <- randomForest(left~., data = HR_data, ntree = 100)
-HR_rf_model
-explainer_rf  <- explain(HR_rf_model, data = HR_data, y = HR_data$left)
-explainer_rf
-vd_rf <- variable_dropout(explainer_rf, type = "raw")
-vd_rf
+vi_rf <- variable_importance(explainer_rf, loss_function = loss_root_mean_square)
+vi_rf
 ```
 
-Now we can plot these losses. Note that in the plot beow you see not only the variable importance, but also you see how the whole model works.
+<p><span class="marginnote">Here the `loss_root_mean_square()` function is defined as square root from averaged squared differences between labels and model predictions.
+</span>
+Same method may be applied to linear model. Since we are using same loss function and same method for variable permutations then losses calculated with both methods can be directly compared.</p>
 
-```{r, message=FALSE, warning=FALSE, fig.height=3}
-plot(vd_rf)
+
+```{r}
+vi_lm <- variable_importance(explainer_lm, loss_function = loss_root_mean_square)
+vi_lm
 ```
 
-And here we have similar example for glm model.
+It is much easier to compare both models when these values are plotted.
+The generic `plot()` function may handle both models. 
 
-```{r, message=FALSE, warning=FALSE, fig.height=3}
-HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
-explainer_glm <- explain(HR_glm_model, data = HR_data, y = HR_data$left)
-logit <- function(x) exp(x)/(1+exp(x))
-vd_glm <- variable_dropout(explainer_glm, type = "raw",
-                        loss_function = function(observed, predicted) sum((observed - logit(predicted))^2))
-vd_glm
-plot(vd_glm)
+```{r modelImportanceRaw, message=FALSE, warning=FALSE, fig.height=3.5, fig.cap="Model agnostic variable importance plot. Right edges correspond to loss function after permutation of a single variable. Left edges correspond to loss of a full model"}
+plot(vi_lm, vi_rf)
 ```
 
-And for xgboost model.
+What we can read out of this plot?
 
-```{r, message=FALSE, warning=FALSE, fig.height=3}
-library("xgboost")
-model_martix_train <- model.matrix(left~.-1, breakDown::HR_data)
-data_train <- xgb.DMatrix(model_martix_train, label = breakDown::HR_data$left)
-param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
-              objective = "binary:logistic", eval_metric = "auc")
-HR_xgb_model <- xgb.train(param, data_train, nrounds = 50)
-explainer_xgb <- explain(HR_xgb_model, data = model_martix_train, y = HR_data$left, label = "xgboost")
-vd_xgb <- variable_dropout(explainer_xgb, type = "raw")
-vd_xgb
-plot(vd_xgb)
+* left edges of intervals start in `_full_model_` losses, and as we see the performances are similar for both models
+* length of the interval correspond to variable importance. In both models the most important variables are `district` and `surface`
+* in the random forest model the `construction_year` variable has some importance while for linear model its importance is almost zero
+* the variable `no.rooms` (which is correlated with `surface`) has some importance in the random forest model but not in the linear model.
+
+We may be interested in variables that behave differently between models (like `construction_year`) or variables that are important (like `district` or `surface`). In the next section we will introduce explainers for further investigations.
+
+
+*NOTE:* If you like to have all intervals hooked to 0, you can do this as well. Just add `type = "difference"` parameter to `variable_importance()`.
+
+```{r modelImportanceDifference, message=FALSE, warning=FALSE, fig.height=3.5, fig.cap="Model agnostic variable importance plot. Right edges correspond to difference between loss after permutation of a single variable and loss of a full model"}
+vi_lm <- variable_importance(explainer_lm, loss_function = loss_root_mean_square, type = "difference")
+vi_rf <- variable_importance(explainer_rf, loss_function = loss_root_mean_square, type = "difference")
+plot(vi_lm, vi_rf)
 ```
 
-Of course you can plot all these models in a single plot. Then it is much easier to compare variable importances in different models.
 
-```{r, message=FALSE, warning=FALSE, fig.height=6}
-plot(vd_rf, vd_glm, vd_xgb)
+### Model specific {#modelSpecific}
+
+Some models have build-in tools for calculation of variable importance.
+Random forest is using two different measures, one based on out-of-bag data and second based on gains in nodes. Read more about this approach in [@randomForest]. 
+
+Below we show an example of dot plot that summarizes default importance measure for random forest. The `varImpPlot()` function is available in the `randomForest` package.
+
+
+```{r modelImportanceRF, message=FALSE, warning=FALSE, fig.height=3.5, fig.cap="Built-in variable importance plot for random forest"}
+varImpPlot(apartments_rf_model)
 ```
 
-*NOTE:* If you like to have all importances hooked to 0, you can do this as well
-
-```{r, message=FALSE, warning=FALSE, fig.height=6}
-vd_rf <- variable_dropout(explainer_rf, type = "difference")
-vd_glm <- variable_dropout(explainer_glm, type = "difference",
-                        loss_function = function(observed, predicted) sum((observed - logit(predicted))^2))
-vd_xgb <- variable_dropout(explainer_xgb, type = "difference")
-plot(vd_rf, vd_glm, vd_xgb)
-```
-
-### Forest plots
+It is also straightforward to assess variable importance for linear models and generalized models. It is simple since model coefficients have direct interpretation.
 
 [Forest plots](https://en.wikipedia.org/wiki/Forest_plot) were initially used in the meta analysis to visualise effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure like these created with `lm` or `glm` functions.
 
-There are various implementations of forest plots in R. Below we present examples for a glm model.
+There are various implementations of forest plots in R. In the package **forestmodel** (see [@forestmodel]) one can use `forest_model()` function to draw a forest plot. This package is based on the **broom** package (see [@broom]) and this is why it handles a large variety of different regression models. 
 
-```{r}
-library("breakDown")
-HR_glm_model <- glm(left~., data = HR_data, family = "binomial")
-
-
-#HR_glm_model <- archivist::aread("pbiecek/DALEX/arepo/8fe19a108faf3ddfcabc3de3a0693234")
-```
-
-In the package **forestmodel** (see [@forestmodel]) one can use `forest_model()` function to draw a forest plot. This package is based on the **broom** package (see [@broom]) and this is why it handles a large variety of different regression models. An example for `glm`.
-
-```{r forestmodel, fig.width=10, fig.width=8, fig.cap='Forest plot created with forestmodel package'}
+```{r forestmodel, warning=FALSE, message=FALSE, fig.width=10, fig.width=5, fig.cap='Forest plot created with forestmodel package'}
 library("forestmodel")
-forest_model(HR_glm_model)
+forest_model(apartments_lm_model)
 ```
 
-In the package **sjPlot** (see [@sjPlot]) one can use `sjp.*()` to visualise structure of a `*` model or a wrapper `plot_model()`. Here is an example for `glm` model.
+In the package **sjPlot** (see [@sjPlot]) one can find `sjp.*()` function to visualise coefficients of a `*` model (like `sjp.glm()` for `glm` models) or a wrapper `plot_model()`. 
 
-```{r sjpglm, fig.width=10, fig.width=8, fig.cap='Forest plot created with sjPlot package'}
+
+```{r sjpglm, message=FALSE, warning=FALSE, fig.width=10, fig.width=8, fig.cap='Model coefficients plotted  with sjPlot package'}
 library("sjPlot")
-plot_model(HR_glm_model, type = "est", sort.est = TRUE)
+plot_model(apartments_lm_model, type = "est", sort.est = TRUE)
 ```
 
 **Note!** 

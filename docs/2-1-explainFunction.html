@@ -133,8 +133,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
 <li class="has-sub"><a href="3-2-featureImportance.html#featureImportance"><span class="toc-section-number">3.2</span> Feature importance</a><ul>
-<li><a href="3-2-featureImportance.html#drop-out-plots"><span class="toc-section-number">3.2.1</span> Drop-out plots</a></li>
-<li><a href="3-2-featureImportance.html#forest-plots"><span class="toc-section-number">3.2.2</span> Forest plots</a></li>
+<li><a href="3-2-featureImportance.html#modelAgnostic"><span class="toc-section-number">3.2.1</span> Model agnostic</a></li>
+<li><a href="3-2-featureImportance.html#modelSpecific"><span class="toc-section-number">3.2.2</span> Model specific</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-3-variableResponse.html#variableResponse"><span class="toc-section-number">3.3</span> Variable response</a><ul>
 <li><a href="3-3-variableResponse.html#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
@@ -163,7 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="explainFunction" class="section level2">
 <h2><span class="header-section-number">2.1</span> The <code>explain()</code> function</h2>
-<p>DALEX is designed to work with various black-box models like tree ensemble, linear models, neural networks etc. Unfortunately R packages are very inconsistent when it comes to predictive modeling. Different tools use different interfaces to train, validate and apply models. There are two large frameworks for machine learning, namely <code>mlr</code> <span class="citation">(Bischl et al. <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170):1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span> and <code>caret</code> <span class="citation">(<span class="citeproc-not-found" data-reference-id="caret"><strong>???</strong></span>)</span>. But in addition to them dozens of R packages may be used for modeling.</p>
+<p>DALEX is designed to work with various black-box models like tree ensemble, linear models, neural networks etc. Unfortunately R packages are very inconsistent when it comes to predictive modeling. Different tools use different interfaces to train, validate and apply models. There are two large frameworks for machine learning, namely <code>mlr</code> <span class="citation">(Bischl et al. <label for="tufte-mn-12" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-12" class="margin-toggle">2016<span class="marginnote">Bischl, Bernd, Michel Lang, Lars Kotthoff, Julia Schiffner, Jakob Richter, Erich Studerus, Giuseppe Casalicchio, and Zachary M. Jones. 2016. “mlr: Machine Learning in R.” <em>Journal of Machine Learning Research</em> 17 (170):1–5. <a href="http://jmlr.org/papers/v17/15-066.html" class="uri">http://jmlr.org/papers/v17/15-066.html</a>.</span>)</span> and <code>caret</code> <span class="citation">(Jed Wing et al. <label for="tufte-mn-13" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-13" class="margin-toggle">2016<span class="marginnote">Jed Wing, Max Kuhn. Contributions from, Steve Weston, Andre Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer, et al. 2016. <em>Caret: Classification and Regression Training</em>. <a href="https://CRAN.R-project.org/package=caret" class="uri">https://CRAN.R-project.org/package=caret</a>.</span>)</span>. But in addition to them dozens of R packages may be used for modeling.</p>
 <p>This is why in the first step of working with DALEX is to wrap-up the black-box model of interest with a meta-data that allow for unified approach to models.</p>
 <p>Here arguments required by the <code>explain()</code> function. Some of these parameters are required only by selected explainers.</p>
 <ul>
@@ -174,7 +174,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>link_function</code> - a transformation/link function that is be applied to model predictions. <em>Required by</em>: variable effect. <em>Default</em>: the identity <code>I()</code> function.</li>
 <li><code>label</code> - character, the name of the model that will be used in plots. <em>Required by</em>: plots. <em>Default</em>: extracted from the <code>class</code> attribute of the <code>model</code>.</li>
 </ul>
-<p>To better understand how this function may be used next two sections introduce a use case for regression and binary classification.</p>
+<p>
+<span class="marginnote">Figure 2.2. The <code>explain()</code> function embeds the <code>model</code> and validation <code>data</code> and <code>y</code> in a container. Model is accesses via universal intreface supplied by <code>predict_function()</code> and <code>link_function()</code>. The <code>label</code> field stores an unique name of the model. </span> <img src="images/explain_scheme.png"/>
+</p>
+<p>Next two sections introduce use cases for regression and binary classification. They will help to understand how to use the <code>explain()</code> function.</p>
 </div>
 <p style="text-align: center;">
 <a href="2-architecture.html"><button class="btn btn-default">Previous</button></a>

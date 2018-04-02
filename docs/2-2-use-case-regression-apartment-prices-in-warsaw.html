@@ -133,8 +133,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
 <li class="has-sub"><a href="3-2-featureImportance.html#featureImportance"><span class="toc-section-number">3.2</span> Feature importance</a><ul>
-<li><a href="3-2-featureImportance.html#drop-out-plots"><span class="toc-section-number">3.2.1</span> Drop-out plots</a></li>
-<li><a href="3-2-featureImportance.html#forest-plots"><span class="toc-section-number">3.2.2</span> Forest plots</a></li>
+<li><a href="3-2-featureImportance.html#modelAgnostic"><span class="toc-section-number">3.2.1</span> Model agnostic</a></li>
+<li><a href="3-2-featureImportance.html#modelSpecific"><span class="toc-section-number">3.2.2</span> Model specific</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-3-variableResponse.html#variableResponse"><span class="toc-section-number">3.3</span> Variable response</a><ul>
 <li><a href="3-3-variableResponse.html#pdpchapter"><span class="toc-section-number">3.3.1</span> Partial Dependence Plot</a></li>
@@ -167,7 +167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">head</span>(apartments)</a></code></pre></div>
 <p><!--
-<caption>--><span class="marginnote shownote">(#tab:hr_data)Artificial dataset about apartments in Warsaw</span><!--</caption>--></p>
+<caption>--><span class="marginnote shownote">(#tab:hr_data)Artificial dataset about apartments in Warsaw. The goal in this study is to predict the average prise per square meter.</span><!--</caption>--></p>
 <table>
 <thead>
 <tr class="header">
@@ -234,7 +234,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">2.2.1</span> Linear regression</h3>
 <p>First model will be based on linear regression. This will be a simple model without any feature engineering.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">apartments_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">                         </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">summary</span>(apartments_lm_model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -272,8 +272,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_lm <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## [1] 283.0865</code></pre>
 <p>To create an explainer for regression model it is enough to use <code>explain()</code> function with the <code>model</code>, <code>data</code> and <code>y</code> parameters. In next chapter we will show how to use such explainer.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">expainer_lm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_lm_model, </a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">explainer_lm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_lm_model, </a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">                          <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
 </div>
 <div id="random-forest" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Random forest</h3>
@@ -281,46 +281,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">1313</span>)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">apartments_rf_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">apartments_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">summary</span>(apartments_rf_model)</a></code></pre></div>
+<a class="sourceLine" id="cb7-6" data-line-number="6">apartments_rf_model</a></code></pre></div>
 <pre><code>## 
 ## Call:
-## lm(formula = m2.price ~ construction.year + surface + floor + 
-##     no.rooms + district, data = apartments)
+##  randomForest(formula = m2.price ~ construction.year + surface +      floor + no.rooms + district, data = apartments) 
+##                Type of random forest: regression
+##                      Number of trees: 500
+## No. of variables tried at each split: 1
 ## 
-## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -247.5 -202.8 -172.8  381.4  469.0 
-## 
-## Coefficients:
-##                      Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)         5020.1391   682.8721   7.352 4.11e-13 ***
-## construction.year     -0.2290     0.3483  -0.657   0.5110    
-## surface              -10.2378     0.5778 -17.720  &lt; 2e-16 ***
-## floor                -99.4820     3.0874 -32.222  &lt; 2e-16 ***
-## no.rooms             -37.7299    15.8440  -2.381   0.0174 *  
-## districtBielany       17.2144    40.4502   0.426   0.6705    
-## districtMokotow      918.3802    39.4386  23.286  &lt; 2e-16 ***
-## districtOchota       926.2540    40.5279  22.855  &lt; 2e-16 ***
-## districtPraga        -37.1047    40.8930  -0.907   0.3644    
-## districtSrodmiescie 2080.6110    40.0149  51.996  &lt; 2e-16 ***
-## districtUrsus         29.9419    39.7249   0.754   0.4512    
-## districtUrsynow      -18.8651    39.7565  -0.475   0.6352    
-## districtWola         -16.8912    39.6283  -0.426   0.6700    
-## districtZoliborz     889.9735    40.4099  22.024  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 281.3 on 986 degrees of freedom
-## Multiple R-squared:  0.905,  Adjusted R-squared:  0.9037 
-## F-statistic: 722.5 on 13 and 986 DF,  p-value: &lt; 2.2e-16</code></pre>
+##           Mean of squared residuals: 79398.46
+##                     % Var explained: 90.33</code></pre>
 <p>Here is the mean square error calculated on a <code>apartmentsTest</code> dataset.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">predicted_mi2_rf &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_rf_model, apartmentsTest)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_rf <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
-<pre><code>## [1] 283.0865</code></pre>
+<pre><code>## [1] 279.5858</code></pre>
 <p>Also for random forest model we are creating an explainer. In next chapter we will show how to use such explainer.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">expainer_rf &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_rf_model, </a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">explainer_rf &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_rf_model, </a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
 </div>
 </div>
