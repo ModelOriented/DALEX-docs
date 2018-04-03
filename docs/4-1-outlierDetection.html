@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-03" />
+<meta name="date" content="2018-04-04" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -171,6 +171,37 @@ Figure 4.1: Diagnostic plot for the random forest model. Clearly the more expens
 </p>
 <img src="DALEX_files/figure-html/outliersML-1.png" alt="Diagnostic plot for the random forest model. Clearly the more expensive is the apartment the more underestimated is model prediction" width="672"  />
 </div>
+<p>Lets see which variables stand behind the prediction for observation with largest residual.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">which.min</span>(mp_rf<span class="op">$</span>diff)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">## 1161</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">new_apartment &lt;-<span class="st"> </span>apartmentsTest[<span class="kw">which.min</span>(mp_rf<span class="op">$</span>diff), ]</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">new_apartment</a></code></pre></div>
+<p><!--
+<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-21">Table 4.1: </span>Selected observation with the largest residual in the random forest model</span><!--</caption>--></p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">m2.price</th>
+<th align="right">construction.year</th>
+<th align="right">surface</th>
+<th align="right">floor</th>
+<th align="right">no.rooms</th>
+<th align="left">district</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1161</td>
+<td align="right">6679</td>
+<td align="right">2005</td>
+<td align="right">22</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="left">Srodmiescie</td>
+</tr>
+</tbody>
+</table>
 </div>
 <p style="text-align: center;">
 <a href="4-predictionUnderstanding.html"><button class="btn btn-default">Previous</button></a>

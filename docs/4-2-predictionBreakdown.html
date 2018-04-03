@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-03" />
+<meta name="date" content="2018-04-04" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -159,37 +159,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Lots of interesting arguments and examples are presented in the <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span> article. This approach for explanations of model predictions is implemented in the <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <label for="tufte-mn-23" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-23" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemyslaw Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>. <a href="https://github.com/MI2DataLab/live" class="uri">https://github.com/MI2DataLab/live</a>.</span>)</span>) which may be seen as an extension of the LIME method.</p>
 <p>In this section we present other method for explanations of model predictions implemented in the <code>breakDown</code> package <span class="citation">(Biecek <label for="tufte-mn-24" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span>. The function <code>single_prediction()</code> from <code>DALEX</code> is a wrapper around this package.</p>
 <p>Model prediction is visualized wirh Break Down Plots, which are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>. Break Down Plots show the contribution of every variable present in the model.</p>
-<p>Lets see which variables stand behind the prediction for observation with largest residual.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">which.min</span>(mp_rf<span class="op">$</span>diff)</a>
-<a class="sourceLine" id="cb40-2" data-line-number="2">## 1161</a>
-<a class="sourceLine" id="cb40-3" data-line-number="3">new_apartment &lt;-<span class="st"> </span>apartmentsTest[<span class="kw">which.min</span>(mp_rf<span class="op">$</span>diff), ]</a>
-<a class="sourceLine" id="cb40-4" data-line-number="4">new_apartment</a></code></pre></div>
-<p><!--
-<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-21">Table 4.1: </span>Selected observation with the largest residual in the random forest model</span><!--</caption>--></p>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th align="right">m2.price</th>
-<th align="right">construction.year</th>
-<th align="right">surface</th>
-<th align="right">floor</th>
-<th align="right">no.rooms</th>
-<th align="left">district</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1161</td>
-<td align="right">6679</td>
-<td align="right">2005</td>
-<td align="right">22</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="left">Srodmiescie</td>
-</tr>
-</tbody>
-</table>
 <p>Function <code>single_prediction()</code> generates variable attributions for selected prediction. The generic <code>plot()</code> function shows the break down plots.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">new_apartment_rf &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(explainer_rf, <span class="dt">observation =</span> new_apartment)</a>
 <a class="sourceLine" id="cb41-2" data-line-number="2">breakDown<span class="op">:::</span><span class="kw">print.broken</span>(new_apartment_rf)</a></code></pre></div>
@@ -218,7 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </p>
 <img src="DALEX_files/figure-html/single_prediction_break2-1.png" alt="Break down plots that compare the linear model and the random forest model" width="672"  />
 </div>
-<p>Prediction for linear model is much closer to the real price of square meter.</p>
+<p>Prediction for linear model is much closer to the real price of square meter for this apartment.</p>
 
 </div>
 <!-- </div> -->
