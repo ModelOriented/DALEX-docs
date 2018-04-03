@@ -143,16 +143,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
-<li><a href="4-1-outlier-detection.html#outlier-detection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
-<li class="has-sub"><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a><ul>
-<li><a href="4-2-predictionBreakdown.html#basics"><span class="toc-section-number">4.2.1</span> Basics</a></li>
+<li><a href="4-1-outlierDetection.html#outlierDetection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
+<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a></li>
 </ul></li>
-<li><a href="4-3-local-interpretable-model-agnostic-visual-explanations.html#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
-<li class="has-sub"><a href="4-4-breakdown.html#breakdown"><span class="toc-section-number">4.4</span> breakDown</a><ul>
-<li><a href="4-4-breakdown.html#model-comparisons"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
-</ul></li>
-</ul></li>
-<li><a href="5-reproducibility.html#reproducibility"><span class="toc-section-number">5</span> Reproducibility</a></li>
+<li><a href="5-epilogue.html#epilogue"><span class="toc-section-number">5</span> Epilogue</a></li>
 </ul>
 </div>
 </div>
@@ -161,22 +155,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="predictionBreakdown" class="section level2">
 <h2><span class="header-section-number">4.2</span> Prediction breakdown</h2>
-<p>Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:</p>
-<ul>
-<li>explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.</li>
-<li>examination of curvature around a specific point (single observation). Can be used to determine the strength of influence onto a final model. Is it an outlier?</li>
-</ul>
-<p>There are more interesting applications. Find out some of them in the <em>Why Should I Trust You?</em> article <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span>.</p>
-<div id="basics" class="section level3">
-<h3><span class="header-section-number">4.2.1</span> Basics</h3>
-<p>Most ML algorithms do not learn from mistakes. One calculates predictions and there is no room for improvement.</p>
-<p>But! The local predictions can change that! Understanding what causes wrong decisions may lead to model improvements. After all, if our prediction is wrong we shall update the model.</p>
+<p>Do your ML algorithm learn from mistakes? Understanding what causes wrong decisions may lead to model improvements.</p>
+<p>Lots of interesting arguments and examples are presented in the <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span> article. This approach for explanations of model predictions is implemented in the <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <label for="tufte-mn-23" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-23" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemyslaw Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>. <a href="https://github.com/MI2DataLab/live" class="uri">https://github.com/MI2DataLab/live</a>.</span>)</span>) which may be seen as an extension of the LIME method.</p>
+<p>In this section we present other method for explanations of model predictions implemented in the <code>breakDown</code> package <span class="citation">(Biecek <label for="tufte-mn-24" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span>. The function <code>single_prediction()</code> from <code>DALEX</code> is a wrapper around this package.</p>
+<p>Model prediction is visualized wirh Break Down Plots, which are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>. Break Down Plots show the contribution of every variable present in the model.</p>
+<p>Lets see which variables stand behind the prediction for observation with largest residual.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">which.min</span>(mp_rf<span class="op">$</span>diff)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">## 1161</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">new_apartment &lt;-<span class="st"> </span>apartmentsTest[<span class="kw">which.min</span>(mp_rf<span class="op">$</span>diff), ]</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">new_apartment</a></code></pre></div>
+<p><!--
+<caption>--><span class="marginnote shownote"><span id="tab:unnamed-chunk-21">Table 4.1: </span>Selected observation with the largest residual in the random forest model</span><!--</caption>--></p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">m2.price</th>
+<th align="right">construction.year</th>
+<th align="right">surface</th>
+<th align="right">floor</th>
+<th align="right">no.rooms</th>
+<th align="left">district</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1161</td>
+<td align="right">6679</td>
+<td align="right">2005</td>
+<td align="right">22</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="left">Srodmiescie</td>
+</tr>
+</tbody>
+</table>
+<p>Function <code>single_prediction()</code> generates variable attributions for selected prediction. The generic <code>plot()</code> function shows the break down plots.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">new_apartment_rf &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(explainer_rf, <span class="dt">observation =</span> new_apartment)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">breakDown<span class="op">:::</span><span class="kw">print.broken</span>(new_apartment_rf)</a></code></pre></div>
+<pre><code>##                            contribution
+## (Intercept)                       0.000
+## + district = Srodmiescie       1070.374
+## + surface = 22                  347.015
+## + floor = 1                     253.855
+## + no.rooms = 2                  221.732
+## + construction.year = 2005      -11.349
+## final_prognosis                1881.627
+## baseline:  3505.213</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">plot</span>(new_apartment_rf)</a></code></pre></div>
+<div class="figure">
+<p class="caption marginnote shownote">
+(#fig:single_prediction_break)Break down plot for prediction from the random forest model
+</p>
+<img src="DALEX_files/figure-html/single_prediction_break-1.png" alt="Break down plot for prediction from the random forest model" width="672"  />
 </div>
+<p>Both the plot and the table confirm that all variables (<code>district</code>, <code>surface</code>, <code>floor</code>, <code>no.rooms</code>) have positive effects as then should have. Still these effects are too small and the final prediction is <code>3505  + 1881</code> much smaller than the observed value. Let’s see how the linear model behave for this observation.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">new_apartment_lm &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(explainer_lm, <span class="dt">observation =</span> new_apartment)</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw">plot</span>(new_apartment_lm, new_apartment_rf)</a></code></pre></div>
+<div class="figure">
+<p class="caption marginnote shownote">
+(#fig:single_prediction_break2)Break down plots that compare the linear model and the random forest model
+</p>
+<img src="DALEX_files/figure-html/single_prediction_break2-1.png" alt="Break down plots that compare the linear model and the random forest model" width="672"  />
 </div>
+<p>Prediction for linear model is much closer to the real price of square meter.</p>
+
+</div>
+<!-- </div> -->
 <p style="text-align: center;">
-<a href="4-1-outlier-detection.html"><button class="btn btn-default">Previous</button></a>
+<a href="4-1-outlierDetection.html"><button class="btn btn-default">Previous</button></a>
 <a href="https://github.com/pbiecek/DALEX/edit/master/03-local.Rmd"><button class="btn btn-default">Edit</button></a>
-<a href="4-3-local-interpretable-model-agnostic-visual-explanations.html"><button class="btn btn-default">Next</button></a>
+<a href="5-epilogue.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

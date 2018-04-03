@@ -143,16 +143,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
-<li><a href="4-1-outlier-detection.html#outlier-detection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
-<li class="has-sub"><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a><ul>
-<li><a href="4-2-predictionBreakdown.html#basics"><span class="toc-section-number">4.2.1</span> Basics</a></li>
+<li><a href="4-1-outlierDetection.html#outlierDetection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
+<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a></li>
 </ul></li>
-<li><a href="4-3-local-interpretable-model-agnostic-visual-explanations.html#local-interpretable-model-agnostic-visual-explanations"><span class="toc-section-number">4.3</span> Local Interpretable (Model-agnostic) Visual Explanations</a></li>
-<li class="has-sub"><a href="4-4-breakdown.html#breakdown"><span class="toc-section-number">4.4</span> breakDown</a><ul>
-<li><a href="4-4-breakdown.html#model-comparisons"><span class="toc-section-number">4.4.1</span> Model Comparisons</a></li>
-</ul></li>
-</ul></li>
-<li><a href="5-reproducibility.html#reproducibility"><span class="toc-section-number">5</span> Reproducibility</a></li>
+<li><a href="5-epilogue.html#epilogue"><span class="toc-section-number">5</span> Epilogue</a></li>
 </ul>
 </div>
 </div>
@@ -182,13 +176,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Model comparisons. One can learn a lot from single black-box model, but actually we can learn much more by contrasting models with different structures, like linear models vs. ensembles of trees. All explainers in DALEX by default support model comparisons on various levels.</li>
 <li>Visual consistency. Each DALEX explainer can be plotted with the generic <code>plot()</code> function. These visual explanations are based on <code>ggplot2</code> <span class="citation">(Wickham <label for="tufte-mn-11" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-11" class="margin-toggle">2009<span class="marginnote">Wickham, Hadley. 2009. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="http://ggplot2.org" class="uri">http://ggplot2.org</a>.</span>)</span> package, which results in elegant, customizable, consistent graphs.</li>
 </ul>
-<p>Chapter <a href="2-architecture.html#architecture">2</a> presents the overall architecture of the DALEX package. Chapter <a href="3-modelUnderstanding.html#modelUnderstanding">3</a> presents explainers that explore global model performance, variable importance of feature effects. Chapter <a href="4-predictionUnderstanding.html#predictionUnderstanding"><strong>??</strong></a> presents explainers that explore feature attribution for single predictions of validation of the reliability of a model prediction.</p>
+<p>Chapter <a href="2-architecture.html#architecture">2</a> presents the overall architecture of the DALEX package. Chapter <a href="3-modelUnderstanding.html#modelUnderstanding">3</a> presents explainers that explore global model performance, variable importance of feature effects. Chapter <a href="4-predictionUnderstanding.html#predictionUnderstanding">4</a> presents explainers that explore feature attribution for single predictions of validation of the reliability of a model prediction.</p>
 <p>In this document we will focus on three primary use-cases for DALEX explainers.</p>
 </div>
 <div id="to-validate" class="section level3">
 <h3><span class="header-section-number">1.1.2</span> To validate</h3>
 <p>Explainers presented in the section <a href="3-1-modelPerformance.html#modelPerformance">3.1</a> helps to understand model performance and compare different models on the same scale. The model comparison is richer that a one based on a single number and helps to understand model performance along the full range of model predictions.</p>
-<p>Explainers presented in the section <a href="#outlierDetection"><strong>??</strong></a> helps to identify outliers or observations with particularly unusual value.</p>
+<p>Explainers presented in the section <a href="4-1-outlierDetection.html#outlierDetection">4.1</a> helps to identify outliers or observations with particularly unusual value.</p>
 <p>Explainers presented in the section <a href="4-2-predictionBreakdown.html#predictionBreakdown">4.2</a> helps to understand which features influence heavily model predictions.</p>
 </div>
 <div id="to-understand" class="section level3">
