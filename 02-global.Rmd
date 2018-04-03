@@ -1,6 +1,6 @@
 # Model understanding  {#modelUnderstanding}
 
-In this chapter we will introduce three groups of explainers that can be used to boost our understanding of a black-box models.
+In this chapter we will introduce three groups of explainers that can be used to boost our understanding of black-box models.
 
 * Section \@ref(modelPerformance) presents explainers for model performance. Single number may be misleading when we need to compare complex models. Here you will find plots that give more information about model performance in a consistent form.
 * Section \@ref(featureImportance) presents explainers for variable importance. Knowing which variables are important allow to validate the model and increase our understanding of the domain.
@@ -39,9 +39,9 @@ predicted_mi2_rf <- predict(apartments_rf_model, apartmentsTest)
 sqrt(mean((predicted_mi2_rf - apartmentsTest$m2.price)^2))
 ```
 
-The function `model_performance()` calculates predictions for validation `data` and differences between model predictions and supplied labels `y`.
+Function `model_performance()` calculates predictions for validation `data` and differences between model predictions and supplied labels `y`.
 
-The generic `print()` function returns quantiles for these differences.
+Generic function `print()` returns quantiles for these differences.
 
 ```{r}
 mp_lm <- model_performance(explainer_lm)

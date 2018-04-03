@@ -1,200 +1,96 @@
 # Prediction understanding {#predictionUnderstanding}
 
-## Outlier detection
+In this chapter we will introduce two groups of explainers that can be used to boost our understanding of model predictions.
+
+* Section \@ref(outlierDetection) presents explainers that helps to identify outliers. 
+* Section \@ref(predictionBreakdown) presents explainers for model predictions. Each prediction can be attribute to particular variables.   Knowing which variables are important and if the prediction is accurate allow to validate the model.
+
+Explainers presented here are illustrated based on two models fitted to the `apartments` data.
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor + 
+                      no.rooms + district, data = apartments)
+library("randomForest")
+set.seed(1313)
+apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor + 
+                      no.rooms + district, data = apartments)
+```
+
+First we need to prepare wrappers for these models. They will be available in `explainer_lm` and `explainer_rf` objects.
+
+```{r, warning=FALSE, message=FALSE}
+explainer_lm <- explain(apartments_lm_model, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+explainer_rf <- explain(apartments_rf_model, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
+
+## Outlier detection {#outlierDetection}
+
+Function `model_performance()` may be used to identify outliers.
+This function was already introduced in section \@ref(modelPerformance) but here we will present it's other uses. 
+
+As you may remember, residuals for random forest were smaller in general, except for small fraction of observations with very high residuals. 
+
+Let's use the `model_performance()` function to extract residuals and plot them against observed true values.
+
+```{r outliersML, message=FALSE, warning=FALSE, fig.cap="Diagnostic plot for the random forest model. Clearly the more expensive is the apartment the more underestimated is model prediction"}
+mp_rf <- model_performance(explainer_rf)
+
+library("ggplot2")
+ggplot(mp_rf, aes(observed, diff)) +
+  geom_point() + 
+  xlab("Observed") + ylab("Predicted - Observed") + 
+  ggtitle("Diagnostic plot for the random forest model") + theme_mi2()
+```
+
+Lets see which variables stand behind the prediction for observation with largest residual.
+
+```{r, eval=FALSE}
+which.min(mp_rf$diff)
+## 1161
+new_apartment <- apartmentsTest[which.min(mp_rf$diff), ]
+new_apartment
+```
+
+```{r, echo=FALSE}
+new_apartment <- apartmentsTest[which.min(mp_rf$diff), ]
+knitr::kable(
+  head(new_apartment),
+  caption = 'Selected observation with the largest residual in the random forest model'
+  )
+```
 
 ## Prediction breakdown {#predictionBreakdown}
 
-Explainers presented in this chapter are designed to better understand the local structure of a black box in a single point. Example applications:
+Do your ML algorithm learn from mistakes? 
+Understanding what causes wrong decisions may lead to model improvements.
 
-* explanations for predictions. Can be used to validate if a specific prediction is not accidental, is it based on variables important in the domain.
-* examination of curvature around a specific point (single observation). Can be used to determine the strength of influence onto a final model. Is it an outlier?
+Lots of interesting arguments and examples are presented in the [@lime] article. This approach for explanations of model predictions is implemented in the **live** package (see [@live]) which may be seen as an extension of the LIME method.
 
-There are more interesting applications. Find out some of them in the *Why Should I Trust You?* article [@lime].
+In this section we present other method for explanations of model predictions implemented in the `breakDown` package [@breakDown].
+The function `single_prediction()` from `DALEX` is a wrapper around this package. 
 
-
-### Basics
-
-Most ML algorithms do not learn from mistakes. 
-One calculates predictions and there is no room for improvement.
-
-But! The local predictions can change that! Understanding what causes wrong decisions may lead to model improvements.
-After all, if our prediction is wrong we shall update the model.
-
-
-## Local Interpretable (Model-agnostic) Visual Explanations 
-
-![Cheatsheet](images/DALEX_live.png)
-
-The **live** package (see [@live]) may be seen as an extension of the lime method (see [@lime]). It is based on **mlr** general framework for training of machine learning models (see more [@mlr]).
-
-Let's see an example. We will use the `HR_rf_model` trained with the **randomForest** package on Human Resources Analytics data.
-
-Around a selected point we will fit a linear model.
-
-```{r, eval=FALSE}
-new_apartment <- apartmentsTest[161,]
-
-new_apartment_lm <- single_prediction(explainer_lm, observation = new_apartment)
-new_apartment_rf <- single_prediction(explainer_rf, observation = new_apartment)
-plot(new_apartment_lm, new_apartment_rf)
-
-```
-
-
-```{r live_train}
-library("live")
-library("randomForest")
-library("breakDown")
-
-HR_data$left <- as.numeric(as.character(HR_data$left))
-
-HR_rf_model <- randomForest(left~., data = HR_data,
-ntree=100)
-
-similar <- sample_locally(data = HR_data, explained_instance = HR_data[1,], explained_var = "left", size = 2000)
-similar <- add_predictions(HR_data, similar, HR_rf_model)
-trained <- fit_explanation( live_object = similar, white_box = "regr.lm", selection = FALSE)
-```
-
-Fitted model may be plotted with *waterfall plot* ...
-
-```{r live_water}
-plot_explanation(trained, "waterfallplot", explained_instance = HR_data[1,])
-```
-
-... or *forest plot* ...
-
-```{r live_forest}
-plot_explanation(trained, "forestplot", explained_instance = HR_data[1,])
-```
-
-For more details consult the following vignette.
-
-
-## breakDown
-
-![Cheatsheet](images/DALEX_breakDown.png)
-
-The `breakDown` package [@breakDown] explains components of model prediction for a single observation. Right now it's working for `lm` and `glm` models. Break Down Plots are inspired by waterfall plots as in [`xgboostExplainer` package](https://github.com/AppliedDataSciencePartners/xgboostExplainer). 
-
+Model prediction is visualized wirh Break Down Plots, which are inspired by waterfall plots as in [`xgboostExplainer` package](https://github.com/AppliedDataSciencePartners/xgboostExplainer). 
 Break Down Plots show the contribution of every variable present in the model. 
 
-Let's see a use case for the `wine` dataset. 
+Function `single_prediction()` generates variable attributions for selected prediction. 
+The generic `plot()` function shows the break down plots.
 
-The problem that we are going to solve is to create a model that predicts wine quality and then use the model and explain it’s prediction for a single wine.
-
-We start with a linear Gaussian model for `quality` with three dependent variables `citric.acid`, `sulphates`, `alcohol`.
-
-```{r}
-model <- lm(quality ~ citric.acid +  sulphates + alcohol,
-               data = wine)
-model$coefficients
+```{r single_prediction_break, fig.height=2.5, fig.cap="Break down plot for prediction from the random forest model"}
+new_apartment_rf <- single_prediction(explainer_rf, observation = new_apartment)
+breakDown:::print.broken(new_apartment_rf)
+plot(new_apartment_rf)
 ```
 
-There are just four model coefficients, so it's easy to write down the formula for model predictions. 
+Both the plot and the table confirm that all variables (`district`, `surface`, `floor`, `no.rooms`) have positive effects as then should have. Still these effects are too small and the final prediction is `3505  + 1881` much smaller than the observed value.
+Let's see how the linear model behave for this observation.
 
-$$
-\hat y = 2.2847360  + 0.1480342 *  citric.acid + 0.4660404    * sulphates + 0.3153252 * alcohol
-$$
-
-But is it easy to explain prediction for a single observation?
-
-```{r}
-new.wine <- data.frame(citric.acid = 0.35,
-                       sulphates = 0.6,
-                       alcohol = 12.5)
-predict(model, newdata = new.wine)
+```{r single_prediction_break2, fig.height=3.5, fig.cap="Break down plots that compare the linear model and the random forest model"}
+new_apartment_lm <- single_prediction(explainer_lm, observation = new_apartment)
+plot(new_apartment_lm, new_apartment_rf)
 ```
 
-We see, that this wine got higher quality score than the average. But why?
-
-This is where `breakDown` package is useful. It takes parts of predictions and visualize them. These parts are being calculated by the `predict` function with `type = "terms"`.
-
-```{r}
-predict(model, newdata = new.wine, type = "terms")
-```
-
-Now it's easy to see that impact of the predicted score have  the high `alcohol` level in this particular wine.
-
-Please note, that these values are *NOT* calculated as x*beta.
-
-```{r}
-model$coefficients * cbind(intercept = 1, new.wine)
-```
-
-This is because, when we think about effect of an `alcohol` we would like to compare this particular wine with *wine with average alcohol concentration* not *wine with zero alcohol*. 
-
-So, since this particular wine is $1.985733$ units of alcohol stronger than an average wine
-```{r}
-new.wine$alcohol - mean(wine$alcohol)
-```
-thus the final effect of the `alcohol` on the wine quality will be
-```{r}
-model$coefficients["alcohol"] * (new.wine$alcohol - mean(wine$alcohol))
-```
-
-Same story is true for other variables.
-
-These calculations are easy to do with `breakDown` package.
-
-```{r, fig.height=3}
-library("breakDown")
-br <- broken(model, new.wine, baseline = "Intercept")
-br
-plot(br)
-```
-
-### Model Comparisons
-
-What if we have two or larger number of models?
-Not a problem for DALEX!
-
-Let's fit a model with 3 variables.
-
-```{r, fig.height=3}
-library("breakDown")
-library("DALEX")
-new.wine <- data.frame(citric.acid = 0.35,
-                       sulphates = 0.6,
-                       alcohol = 12.5,
-                       pH = 3.36,
-                       residual.sugar = 4.8)
-
-wine_lm_model3 <- lm(quality ~ citric.acid +  sulphates + alcohol,
-                     data = wine)
-wine_lm_explainer3 <- explain(wine_lm_model3, data = wine, label = "model_3v",
-                               predict_function = stats::predict)
-
-wine_lm_predict3 <- single_prediction(wine_lm_explainer3, observation = new.wine)
-plot(wine_lm_predict3)
-```
-
-Let's fit a second model with 4 variables.
-
-```{r, fig.height=3}
-wine_lm_model4 <- lm(quality ~ pH + residual.sugar + sulphates + alcohol,
-                     data = wine)
-wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v",
-                               predict_function = stats::predict)
-
-wine_lm_predict4 <- single_prediction(wine_lm_explainer4, observation = new.wine)
-plot(wine_lm_predict4)
-```
-
-It's easy to compare these models. Just plot both together side by side.
-
-```{r, fig.height=5}
-plot(wine_lm_predict3, wine_lm_predict4)
-```
-
-You can do this even for non linear models.
-
-```{r, fig.height=7}
-library("randomForest")
-wine_rf_model4 <- randomForest(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
-wine_rf_explainer4 <- explain(wine_rf_model4, data = wine, label = "model_rf")
-
-wine_rf_predict4 <- single_prediction(wine_rf_explainer4, observation = new.wine)
-plot(wine_rf_predict4, wine_lm_predict4, wine_lm_predict3)
-```
+Prediction for linear model is much closer to the real price of square meter for this apartment.
 

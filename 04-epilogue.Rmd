@@ -1,0 +1,29 @@
+# Epilogue
+
+In section \@ref(outlierDetection) we showed that the random forest model under predicts expensive apartments - it is not a model that we would like to employ.
+
+In section \@ref(modelPerformance) we showed that in general the random forest model has smaller errors than the linear model
+
+In section \@ref(featureImportance) we showed that `construction_year` is  important for the random forest model. 
+
+In section \@ref(variableResponse) we showed that the relation between `construction_year` and price of square meter is non linear. 
+
+In this section we show how to improve a linear model by feature engineering based on findings presented above. We create a new feature based on the `construction_year`.
+
+```{r final_model, message=FALSE, warning=FALSE, fig.height=2, fig.cap="Distribution of residuals for the new improved linear model"}
+library("DALEX")
+
+apartments_lm_model_improved <- lm(m2.price ~ I(construction.year < 1935 | construction.year > 1995) + surface + floor + 
+                         no.rooms + district, data = apartments)
+
+explainer_lm_improved <- explain(apartments_lm_model_improved, 
+                          data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+
+mp_lm_improved <- model_performance(explainer_lm_improved)
+plot(mp_lm_improved, geom = "boxplot")
+```
+
+Results presented above show that the model is much better than the two that we have considered in the chapter \@ref(modelUnderstanding).
+
+In this use case we showed that explainers implemented in DALEX help to better understand the model and this knowledge may be used to improve the final model.
+
