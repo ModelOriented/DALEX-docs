@@ -171,26 +171,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">vi_rf &lt;-<span class="st"> </span><span class="kw">variable_importance</span>(explainer_rf, <span class="dt">loss_function =</span> loss_root_mean_square)</a>
 <a class="sourceLine" id="cb24-2" data-line-number="2">vi_rf</a></code></pre></div>
 <pre><code>##            variable dropout_loss        label
-## 1      _full_model_     276.5710 randomForest
-## 2          no.rooms     392.7976 randomForest
-## 3 construction.year     396.4986 randomForest
-## 4             floor     447.9885 randomForest
-## 5           surface     468.9430 randomForest
-## 6          district     825.4795 randomForest
-## 7        _baseline_    1105.0129 randomForest</code></pre>
+## 1      _full_model_     276.0107 randomForest
+## 2          no.rooms     384.1662 randomForest
+## 3 construction.year     393.6847 randomForest
+## 4             floor     446.0324 randomForest
+## 5           surface     463.1788 randomForest
+## 6          district     848.6363 randomForest
+## 7        _baseline_    1097.4217 randomForest</code></pre>
 <p>
 <span class="marginnote">Here the <code>loss_root_mean_square()</code> function is defined as square root from averaged squared differences between labels and model predictions. </span> Same method may be applied to linear model. Since we are using same loss function and same method for variable permutations then losses calculated with both methods can be directly compared.
 </p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">vi_lm &lt;-<span class="st"> </span><span class="kw">variable_importance</span>(explainer_lm, <span class="dt">loss_function =</span> loss_root_mean_square)</a>
 <a class="sourceLine" id="cb26-2" data-line-number="2">vi_lm</a></code></pre></div>
 <pre><code>##            variable dropout_loss label
-## 1      _full_model_     287.9370    lm
-## 2 construction.year     287.9141    lm
-## 3          no.rooms     303.5316    lm
-## 4             floor     495.2068    lm
-## 5           surface     650.4580    lm
-## 6          district    1045.1731    lm
-## 7        _baseline_    1298.8958    lm</code></pre>
+## 1      _full_model_     276.6243    lm
+## 2 construction.year     276.5978    lm
+## 3          no.rooms     284.5154    lm
+## 4             floor     498.7674    lm
+## 5           surface     636.1856    lm
+## 6          district     995.1654    lm
+## 7        _baseline_    1249.2592    lm</code></pre>
 <p>It is much easier to compare both models when these values are plotted. The generic <code>plot()</code> function may handle both models.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">plot</span>(vi_lm, vi_rf)</a></code></pre></div>
 <div class="figure"><span id="fig:modelImportanceRaw"></span>
