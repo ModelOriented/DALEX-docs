@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-04" />
+<meta name="date" content="2018-04-05" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -124,11 +124,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
 <li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
-<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
-<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
-<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
+<li class="has-sub"><a href="2-2-useCaseApartmetns.html#useCaseApartmetns"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-useCaseApartmetns.html#model-1-linear-regression"><span class="toc-section-number">2.2.1</span> Model 1: Linear regression</a></li>
+<li><a href="2-2-useCaseApartmetns.html#model-2-random-forest"><span class="toc-section-number">2.2.2</span> Model 2: Random forest</a></li>
 </ul></li>
-<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -144,7 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
 <li><a href="4-1-outlierDetection.html#outlierDetection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
-<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a></li>
+<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakDown</a></li>
 </ul></li>
 <li><a href="5-epilogue.html#epilogue"><span class="toc-section-number">5</span> Epilogue</a></li>
 </ul>
@@ -155,39 +154,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="modelPerformance" class="section level2">
 <h2><span class="header-section-number">3.1</span> Model performance</h2>
-<p>As you may remember from previous chapter <a href="https://en.wikipedia.org/wiki/Root_mean_square">root mean square</a> of residuals is similar for both considered models. Does it mean that these models are equally good?</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">predicted_mi2_lm &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_lm_model, apartmentsTest)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_lm <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
+<p>As you may remember from the previous chapter the <a href="https://en.wikipedia.org/wiki/Root_mean_square">root mean square</a> of residuals is identical for both considered models. Does it mean that these models are equally good?</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">predicted_mi2_lm &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_lm_model, apartmentsTest)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_lm <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## [1] 283.0865</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">predicted_mi2_rf &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_rf_model, apartmentsTest)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_rf <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">predicted_mi2_rf &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_rf_model, apartmentsTest)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_rf <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## [1] 283.0955</code></pre>
-<p>Function <code>model_performance()</code> calculates predictions for validation <code>data</code> and differences between model predictions and supplied labels <code>y</code>.</p>
-<p>Generic function <code>print()</code> returns quantiles for these differences.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">mp_lm &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_lm)</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">mp_rf &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_rf)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">mp_lm</a></code></pre></div>
+<p>Function <code>model_performance()</code> calculates predictions and residuals for validation dataset <code>apartmentsTest</code>.</p>
+<p>Generic function <code>print()</code> returns quantiles for residuals.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">mp_lm &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_lm)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">mp_rf &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_rf)</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">mp_lm</a></code></pre></div>
 <pre><code>##        0%       10%       20%       30%       40%       50%       60% 
 ## -472.3560 -423.9131 -398.2811 -370.8841  161.2473  174.0677  184.1412 
 ##       70%       80%       90%      100% 
 ##  195.8834  209.2460  221.4659  257.2555</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">mp_rf</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">mp_rf</a></code></pre></div>
 <pre><code>##           0%          10%          20%          30%          40% 
 ## -1343.299880  -391.155676  -198.800775   -86.140891    -8.352081 
 ##          50%          60%          70%          80%          90% 
 ##    56.382885   107.951447   157.411208   217.126002   290.952310 
 ##         100% 
 ##   772.729494</code></pre>
-<p>The generic <code>plot()</code> function shows reversed empirical cumulative distribution function for absolute values from quintiles. This function presents fraction of residuals larger than <code>x</code>. The figure below shows that majority of residuals for random forest is smaller than residuals in linear model. But the small fraction of very large residuals affects the root mean square.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">plot</span>(mp_lm, mp_rf)</a></code></pre></div>
+<p>The generic <code>plot()</code> function shows reversed empirical cumulative distribution function for absolute values from residuals. This function presents fraction of residuals larger than <code>x</code>. The figure below shows that majority of residuals for random forest are smaller than residuals for the linear model. But the small fraction of very large residuals affects the root mean square.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">plot</span>(mp_lm, mp_rf)</a></code></pre></div>
 <div class="figure">
 <p class="caption marginnote shownote">
 (#fig:global_explain_ecdf)Comparison of residuals for linear model and random forest
 </p>
 <img src="DALEX_files/figure-html/global_explain_ecdf-1.png" alt="Comparison of residuals for linear model and random forest" width="672"  />
 </div>
-<p>Use the <code>geom = &quot;boxplot&quot;</code> parameter for the generic <code>plot()</code> function to get alternative comparison of residuals. The red dot here stands for the root mean square.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">plot</span>(mp_lm, mp_rf, <span class="dt">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</a></code></pre></div>
+<p>Use the <code>geom = &quot;boxplot&quot;</code> parameter for the generic <code>plot()</code> function to get an alternative comparison of residuals. The red dot stands for root mean square.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">plot</span>(mp_lm, mp_rf, <span class="dt">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</a></code></pre></div>
 <div class="figure">
 <p class="caption marginnote shownote">
 (#fig:global_explain_boxplot)Comparison of residuals for linear model and random forest

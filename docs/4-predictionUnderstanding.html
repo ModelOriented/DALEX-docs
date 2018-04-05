@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-04" />
+<meta name="date" content="2018-04-05" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -124,11 +124,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
 <li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
-<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
-<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
-<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
+<li class="has-sub"><a href="2-2-useCaseApartmetns.html#useCaseApartmetns"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-useCaseApartmetns.html#model-1-linear-regression"><span class="toc-section-number">2.2.1</span> Model 1: Linear regression</a></li>
+<li><a href="2-2-useCaseApartmetns.html#model-2-random-forest"><span class="toc-section-number">2.2.2</span> Model 2: Random forest</a></li>
 </ul></li>
-<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -144,7 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
 <li><a href="4-1-outlierDetection.html#outlierDetection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
-<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a></li>
+<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakDown</a></li>
 </ul></li>
 <li><a href="5-epilogue.html#epilogue"><span class="toc-section-number">5</span> Epilogue</a></li>
 </ul>
@@ -155,24 +154,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="predictionUnderstanding" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> Prediction understanding</h1>
-<p>In this chapter we will introduce two groups of explainers that can be used to boost our understanding of model predictions.</p>
+<p>In this chapter we introduce two groups of explainers that can be used to boost our understanding of model predictions.</p>
 <ul>
 <li>Section <a href="4-1-outlierDetection.html#outlierDetection">4.1</a> presents explainers that helps to identify outliers.</li>
-<li>Section <a href="4-2-predictionBreakdown.html#predictionBreakdown">4.2</a> presents explainers for model predictions. Each prediction can be attribute to particular variables. Knowing which variables are important and if the prediction is accurate allow to validate the model.</li>
+<li>Section <a href="4-2-predictionBreakdown.html#predictionBreakdown">4.2</a> presents explainers for model predictions. Each prediction can be split into parts attributed to particular variables. Knowing which variables are important and if the prediction is accurate one can validate the model.</li>
 </ul>
 <p>Explainers presented here are illustrated based on two models fitted to the <code>apartments</code> data.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2">apartments_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
-<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
-<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">59</span>)</a>
-<a class="sourceLine" id="cb37-6" data-line-number="6">apartments_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb37-7" data-line-number="7"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a></code></pre></div>
-<p>First we need to prepare wrappers for these models. They will be available in <code>explainer_lm</code> and <code>explainer_rf</code> objects.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">explainer_lm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_lm_model, </a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">explainer_rf &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_rf_model, </a>
-<a class="sourceLine" id="cb38-4" data-line-number="4">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div> 
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">apartments_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb38-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">59</span>)</a>
+<a class="sourceLine" id="cb38-6" data-line-number="6">apartments_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb38-7" data-line-number="7"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a></code></pre></div>
+<p>First we need to prepare wrappers for these models. They are in <code>explainer_lm</code> and <code>explainer_rf</code> objects.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">explainer_lm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_lm_model, </a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">explainer_rf &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_rf_model, </a>
+<a class="sourceLine" id="cb39-4" data-line-number="4">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div> 
 </div>
 <p style="text-align: center;">
 <a href="3-3-variableResponse.html"><button class="btn btn-default">Previous</button></a>
