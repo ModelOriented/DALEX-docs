@@ -1,14 +1,14 @@
 # Epilogue
 
-In section \@ref(outlierDetection) we showed that the random forest model under predicts expensive apartments - it is not a model that we would like to employ.
+Lets summarize what has happened in previous sections
 
-In section \@ref(modelPerformance) we showed that in general the random forest model has smaller errors than the linear model
+* Section \@ref(useCaseApartmetns) shows two models with equal performance for `apartments` dataset.
+* Section \@ref(modelPerformance) shows that in general the random forest model has smaller residuals than the linear model but there is a small fraction of very large residuals.
+* Section \@ref(outlierDetection) shows that the random forest model under-predicts expensive apartments. It is not a model that we would like to employ.
+* Section \@ref(featureImportance) shows that `construction_year` is  important for the random forest model. 
+* Section \@ref(variableResponse) shows that the relation between `construction_year` and price of square meter is non linear. 
 
-In section \@ref(featureImportance) we showed that `construction_year` is  important for the random forest model. 
-
-In section \@ref(variableResponse) we showed that the relation between `construction_year` and price of square meter is non linear. 
-
-In this section we show how to improve a linear model by feature engineering based on findings presented above. We create a new feature based on the `construction_year`.
+In this section we show how to improve the basic linear model by feature engineering of `construction_year`. Findings from the random forest models will help to create a new feature for the linear model.
 
 ```{r final_model, message=FALSE, warning=FALSE, fig.height=2, fig.cap="Distribution of residuals for the new improved linear model"}
 library("DALEX")
@@ -23,7 +23,7 @@ mp_lm_improved <- model_performance(explainer_lm_improved)
 plot(mp_lm_improved, geom = "boxplot")
 ```
 
-Results presented above show that the model is much better than the two that we have considered in the chapter \@ref(modelUnderstanding).
+Results presented above show that the `apartments_lm_model_improved` model is much better than the two that we have considered in the chapter \@ref(modelUnderstanding).
 
-In this use case we showed that explainers implemented in DALEX help to better understand the model and this knowledge may be used to improve the final model.
+In this use-case we showed that explainers implemented in DALEX help to better understand the model and this knowledge may be used to create a better final model.
 

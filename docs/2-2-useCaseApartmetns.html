@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-04" />
+<meta name="date" content="2018-04-05" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -124,11 +124,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
 <li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
-<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
-<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
-<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
+<li class="has-sub"><a href="2-2-useCaseApartmetns.html#useCaseApartmetns"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-useCaseApartmetns.html#model-1-linear-regression"><span class="toc-section-number">2.2.1</span> Model 1: Linear regression</a></li>
+<li><a href="2-2-useCaseApartmetns.html#model-2-random-forest"><span class="toc-section-number">2.2.2</span> Model 2: Random forest</a></li>
 </ul></li>
-<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -144,7 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
 <li><a href="4-1-outlierDetection.html#outlierDetection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
-<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a></li>
+<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakDown</a></li>
 </ul></li>
 <li><a href="5-epilogue.html#epilogue"><span class="toc-section-number">5</span> Epilogue</a></li>
 </ul>
@@ -153,13 +152,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="use-case-regression.-apartment-prices-in-warsaw" class="section level2">
+<div id="useCaseApartmetns" class="section level2">
 <h2><span class="header-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</h2>
-<p>To illustrate applications of DALEX to regression problems we will use an artificial dataset <code>apartments</code> available in the <code>DALEX</code> package. The goal here is to predict the price per square meter of an apartments based on selected features like construction.year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">head</span>(apartments)</a></code></pre></div>
+<p>To illustrate applications of DALEX to regression problems we will use an artificial dataset <code>apartments</code> available in the <code>DALEX</code> package. The goal here is to predict the price per square meter of an apartments based on selected features like construction.year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one. Prices are in Euro.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">head</span>(apartments)</a></code></pre></div>
 <p><!--
-<caption>--><span class="marginnote shownote">(#tab:hr_data)Artificial dataset about apartments in Warsaw. The goal in this study is to predict the average prise per square meter.</span><!--</caption>--></p>
+<caption>--><span class="marginnote shownote">(#tab:hr_data)Artificial dataset about apartment prices in Warsaw. The goal here is to predict the price per square meter for a new apartment.</span><!--</caption>--></p>
 <table>
 <thead>
 <tr class="header">
@@ -222,12 +221,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div id="linear-regression" class="section level3">
-<h3><span class="header-section-number">2.2.1</span> Linear regression</h3>
-<p>First model will be based on linear regression. This will be a simple model without any feature engineering.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">apartments_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">                         </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">summary</span>(apartments_lm_model)</a></code></pre></div>
+<div id="model-1-linear-regression" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Model 1: Linear regression</h3>
+<p>First model is based on a linear regression. This will be a simple model without any feature engineering.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">apartments_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">                         </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">summary</span>(apartments_lm_model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = m2.price ~ construction.year + surface + floor + 
@@ -259,23 +258,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Residual standard error: 281.3 on 986 degrees of freedom
 ## Multiple R-squared:  0.905,  Adjusted R-squared:  0.9037 
 ## F-statistic: 722.5 on 13 and 986 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>We have also another dataset that can be used for validation of the model. Here is the mean square error calculated on the new dataset.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">predicted_mi2_lm &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_lm_model, apartmentsTest)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_lm <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
+<p>We have also another <code>apartmentsTest</code> dataset that can be used for validation of the model. Here is the mean square error calculated on validation data.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">predicted_mi2_lm &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_lm_model, apartmentsTest)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_lm <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## [1] 283.0865</code></pre>
-<p>To create an explainer for regression model it is enough to use <code>explain()</code> function with the <code>model</code>, <code>data</code> and <code>y</code> parameters. In next chapter we will show how to use such explainer.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">explainer_lm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_lm_model, </a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">                          <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
+<p>To create an explainer for the regression model it is enough to use <code>explain()</code> function with the <code>model</code>, <code>data</code> and <code>y</code> parameters. In the next chapter we show how to use this explainer.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">explainer_lm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_lm_model, </a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">                          <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
 </div>
-<div id="random-forest" class="section level3">
-<h3><span class="header-section-number">2.2.2</span> Random forest</h3>
-<p>Second model will be based on random forest. It’s a very elastic out-of-the-box model. Let’s see how it will deal with categorical variables.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">1313</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">apartments_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">apartments_rf_model</a></code></pre></div>
+<div id="model-2-random-forest" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Model 2: Random forest</h3>
+<p>Second model is based on random forest. It’s a very elastic out-of-the-box model.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">59</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">apartments_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">apartments_rf_model</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ##  randomForest(formula = m2.price ~ construction.year + surface +      floor + no.rooms + district, data = apartments) 
@@ -283,21 +282,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 1
 ## 
-##           Mean of squared residuals: 79398.46
-##                     % Var explained: 90.33</code></pre>
-<p>Here is the mean square error calculated on a <code>apartmentsTest</code> dataset.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">predicted_mi2_rf &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_rf_model, apartmentsTest)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_rf <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
-<pre><code>## [1] 279.5858</code></pre>
-<p>Also for random forest model we are creating an explainer. In next chapter we will show how to use such explainer.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">explainer_rf &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_rf_model, </a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
+##           Mean of squared residuals: 82551.59
+##                     % Var explained: 89.95</code></pre>
+<p>Here is the mean square error calculated for <code>apartmentsTest</code> dataset.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">predicted_mi2_rf &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_rf_model, apartmentsTest)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_rf <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## [1] 283.0955</code></pre>
+<p>Also for random forest model we are creating an explainer. In the next chapter we show how to use this explainer.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">explainer_rf &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_rf_model, </a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">                       <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a></code></pre></div>
+<p><strong>These two models have identical performance!</strong> Which one should be used?</p>
+
 </div>
 </div>
+<!-- </div> -->
 <p style="text-align: center;">
 <a href="2-1-explainFunction.html"><button class="btn btn-default">Previous</button></a>
 <a href="https://github.com/pbiecek/DALEX/edit/master/01-architecture.Rmd"><button class="btn btn-default">Edit</button></a>
-<a href="2-3-use-case-classification-tbd.html"><button class="btn btn-default">Next</button></a>
+<a href="3-modelUnderstanding.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

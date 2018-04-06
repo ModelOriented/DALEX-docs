@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-04" />
+<meta name="date" content="2018-04-05" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -124,11 +124,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="2-architecture.html#architecture"><span class="toc-section-number">2</span> Architecture of DALEX</a><ul>
 <li><a href="2-1-explainFunction.html#explainFunction"><span class="toc-section-number">2.1</span> The <code>explain()</code> function</a></li>
-<li class="has-sub"><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#use-case-regression.-apartment-prices-in-warsaw"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
-<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#linear-regression"><span class="toc-section-number">2.2.1</span> Linear regression</a></li>
-<li><a href="2-2-use-case-regression-apartment-prices-in-warsaw.html#random-forest"><span class="toc-section-number">2.2.2</span> Random forest</a></li>
+<li class="has-sub"><a href="2-2-useCaseApartmetns.html#useCaseApartmetns"><span class="toc-section-number">2.2</span> Use case: Regression. Apartment prices in Warsaw</a><ul>
+<li><a href="2-2-useCaseApartmetns.html#model-1-linear-regression"><span class="toc-section-number">2.2.1</span> Model 1: Linear regression</a></li>
+<li><a href="2-2-useCaseApartmetns.html#model-2-random-forest"><span class="toc-section-number">2.2.2</span> Model 2: Random forest</a></li>
 </ul></li>
-<li><a href="2-3-use-case-classification-tbd.html#use-case-classification.-tbd"><span class="toc-section-number">2.3</span> Use case: Classification. TBD</a></li>
 </ul></li>
 <li class="has-sub"><a href="3-modelUnderstanding.html#modelUnderstanding"><span class="toc-section-number">3</span> Model understanding</a><ul>
 <li><a href="3-1-modelPerformance.html#modelPerformance"><span class="toc-section-number">3.1</span> Model performance</a></li>
@@ -144,7 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="4-predictionUnderstanding.html#predictionUnderstanding"><span class="toc-section-number">4</span> Prediction understanding</a><ul>
 <li><a href="4-1-outlierDetection.html#outlierDetection"><span class="toc-section-number">4.1</span> Outlier detection</a></li>
-<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakdown</a></li>
+<li><a href="4-2-predictionBreakdown.html#predictionBreakdown"><span class="toc-section-number">4.2</span> Prediction breakDown</a></li>
 </ul></li>
 <li><a href="5-epilogue.html#epilogue"><span class="toc-section-number">5</span> Epilogue</a></li>
 </ul>
@@ -154,38 +153,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="row">
 <div class="col-sm-12">
 <div id="predictionBreakdown" class="section level2">
-<h2><span class="header-section-number">4.2</span> Prediction breakdown</h2>
-<p>Do your ML algorithm learn from mistakes? Understanding what causes wrong decisions may lead to model improvements.</p>
-<p>Lots of interesting arguments and examples are presented in the <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span> article. This approach for explanations of model predictions is implemented in the <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <label for="tufte-mn-23" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-23" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemyslaw Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>. <a href="https://github.com/MI2DataLab/live" class="uri">https://github.com/MI2DataLab/live</a>.</span>)</span>) which may be seen as an extension of the LIME method.</p>
-<p>In this section we present other method for explanations of model predictions implemented in the <code>breakDown</code> package <span class="citation">(Biecek <label for="tufte-mn-24" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span>. The function <code>single_prediction()</code> from <code>DALEX</code> is a wrapper around this package.</p>
-<p>Model prediction is visualized wirh Break Down Plots, which are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>. Break Down Plots show the contribution of every variable present in the model.</p>
-<p>Function <code>single_prediction()</code> generates variable attributions for selected prediction. The generic <code>plot()</code> function shows the break down plots.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">new_apartment_rf &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(explainer_rf, <span class="dt">observation =</span> new_apartment)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2">breakDown<span class="op">:::</span><span class="kw">print.broken</span>(new_apartment_rf)</a></code></pre></div>
+<h2><span class="header-section-number">4.2</span> Prediction breakDown</h2>
+<p>Does your ML algorithm learn from mistakes? Understanding what causes wrong model predictions will help to improve the model.</p>
+<p>Lots of arguments in favor of such explainers can be found in the <span class="citation">(Ribeiro, Singh, and Guestrin <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2016<span class="marginnote">Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “‘Why Should I Trust You?’: Explaining the Predictions of Any Classifier.” In, 1135–44. ACM Press. <a href="https://doi.org/10.1145/2939672.2939778" class="uri">https://doi.org/10.1145/2939672.2939778</a>.</span>)</span> article. This approach is implemented in the <strong>live</strong> package (see <span class="citation">(Staniak and Biecek <label for="tufte-mn-23" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-23" class="margin-toggle">2017<span class="marginnote">Staniak, Mateusz, and Przemyslaw Biecek. 2017. <em>Live: Local Interpretable (Model-Agnostic) Visual Explanations</em>. <a href="https://github.com/MI2DataLab/live" class="uri">https://github.com/MI2DataLab/live</a>.</span>)</span>) which may be seen as an extension of the LIME method.</p>
+<p>In this section we present other method for explanations of model predictions, the one implemented in the <code>breakDown</code> package <span class="citation">(Biecek <label for="tufte-mn-24" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-24" class="margin-toggle">2017<span class="marginnote">Biecek, Przemyslaw. 2017. <em>BreakDown: BreakDown Plots</em>. <a href="https://CRAN.R-project.org/package=breakDown" class="uri">https://CRAN.R-project.org/package=breakDown</a>.</span>)</span>. The function <code>single_prediction()</code> is a wrapper around this package.</p>
+<p>Model prediction is visualized with Break Down Plots, which are inspired by waterfall plots as in <a href="https://github.com/AppliedDataSciencePartners/xgboostExplainer"><code>xgboostExplainer</code> package</a>. Break Down Plots show the contribution of every variable present in the model.</p>
+<p>Function <code>single_prediction()</code> generates variable attributions for selected prediction. The generic <code>plot()</code> function shows them.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">new_apartment_rf &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(explainer_rf, <span class="dt">observation =</span> new_apartment)</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2">breakDown<span class="op">:::</span><span class="kw">print.broken</span>(new_apartment_rf)</a></code></pre></div>
 <pre><code>##                            contribution
 ## (Intercept)                       0.000
-## + district = Srodmiescie       1070.374
-## + surface = 22                  347.015
-## + floor = 1                     253.855
-## + no.rooms = 2                  221.732
-## + construction.year = 2005      -11.349
-## final_prognosis                1881.627
-## baseline:  3505.213</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">plot</span>(new_apartment_rf)</a></code></pre></div>
+## + district = Srodmiescie       1057.445
+## + surface = 22                  339.344
+## + floor = 1                     242.860
+## + no.rooms = 2                  226.717
+## + construction.year = 2005      -38.405
+## final_prognosis                1827.961
+## baseline:  3507.739</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">plot</span>(new_apartment_rf)</a></code></pre></div>
 <div class="figure">
 <p class="caption marginnote shownote">
-(#fig:single_prediction_break)Break down plot for prediction from the random forest model
+(#fig:single_prediction_break)Break Down Plot for prediction from the random forest model
 </p>
-<img src="DALEX_files/figure-html/single_prediction_break-1.png" alt="Break down plot for prediction from the random forest model" width="672"  />
+<img src="DALEX_files/figure-html/single_prediction_break-1.png" alt="Break Down Plot for prediction from the random forest model" width="672"  />
 </div>
-<p>Both the plot and the table confirm that all variables (<code>district</code>, <code>surface</code>, <code>floor</code>, <code>no.rooms</code>) have positive effects as then should have. Still these effects are too small and the final prediction is <code>3505  + 1881</code> much smaller than the observed value. Let’s see how the linear model behave for this observation.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">new_apartment_lm &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(explainer_lm, <span class="dt">observation =</span> new_apartment)</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw">plot</span>(new_apartment_lm, new_apartment_rf)</a></code></pre></div>
+<p>Both the plot and the table confirm that all variables (<code>district</code>, <code>surface</code>, <code>floor</code>, <code>no.rooms</code>) have positive effects as then should have. Still these effects are too small while the final prediction is <code>3505  + 1881</code> much smaller than the real price of a square meter <code>6679</code>. Let’s see how the linear model behaves for this observation.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">new_apartment_lm &lt;-<span class="st"> </span><span class="kw">single_prediction</span>(explainer_lm, <span class="dt">observation =</span> new_apartment)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="kw">plot</span>(new_apartment_lm, new_apartment_rf)</a></code></pre></div>
 <div class="figure">
 <p class="caption marginnote shownote">
-(#fig:single_prediction_break2)Break down plots that compare the linear model and the random forest model
+(#fig:single_prediction_break2)Break Down Plots that compare the linear model and the random forest model
 </p>
-<img src="DALEX_files/figure-html/single_prediction_break2-1.png" alt="Break down plots that compare the linear model and the random forest model" width="672"  />
+<img src="DALEX_files/figure-html/single_prediction_break2-1.png" alt="Break Down Plots that compare the linear model and the random forest model" width="672"  />
 </div>
 <p>Prediction for linear model is much closer to the real price of square meter for this apartment.</p>
 

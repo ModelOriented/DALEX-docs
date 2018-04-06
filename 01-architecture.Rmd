@@ -1,51 +1,51 @@
 # Architecture of DALEX {#architecture}
 
-DALEX architecture is simple and consistent. Actually there are only tree rules that should be remembered to use this tool.
+DALEX architecture is simple and consistent. Actually there are only three rules that should be remembered to use this tool.
 
-* First step is to use the `explain()` function to enrich a black-box model with additional metadata required by explainers. Different explainers require different additional inputs. Find the list of required elements in Section \@ref(explainFunction).
-* Second step is to use an explainer function that calculates required descriptions. Variouse explainers are introduced in Chapter \@ref(modelUnderstanding) and \@ref(predictionUnderstanding).
-* Third step is to use generic `print()` or `plot()` function to see the explainer. Both functions work for one or model models.
-
+* First - use the `explain()` function to enrich a black-box model with additional metadata required by explainers. Various explainers require various metadata. Find its list in Section \@ref(explainFunction).
+* Second - use the explainer function that calculates required descriptions. Consecutive explainers are introduced in Chapters \@ref(modelUnderstanding) and \@ref(predictionUnderstanding).
+* Third - use generic `print()` or `plot()` function to see the explainer. Both functions work for one or more models.
 
 These three steps are presented in Figure 2.1.
 
 <p><span class="marginnote">Figure 2.1. The overview of DALEX architecture. <br/><br/>
 *A)* Any predictive model with defined input $x$ and output $y_{raw} \in \mathcal R$ may be used. <br/><br/>
-*B)* Models are first enriched in additional metadata, like a function that calculates predictions, test data, and other components. The `explain()` function creates an object of the class `explainer`, that can bu used in further processing.<br/><br/> 
-*C)* Based on the `explainer` various summaries may be calculated. <br/>
-Each explainer calculates a numerical summaries that can be plotted with generic `plot()` function.
+*B)* Models are first enriched in additional metadata, like a function that calculates predictions, validation data, model label or other components. The `explain()` function creates an object of the class `explainer`, that is used in further processing.<br/><br/> 
+*C)* Specialized explainers calculate numerical summaries that can be plotted with generic `plot()` function.
 </span>
 <img src="images/architecture.png"/></p>
 
 
-
-
 ## The `explain()` function {#explainFunction}
 
+DALEX is designed to work with various black-box models like tree ensembles, linear models, neural networks etc. Unfortunately R packages that create such models are very inconsistent. Different tools use different interfaces to train, validate and use models. Two most popular frameworks for machine learning are `mlr` [@mlr] and `caret` [@caret]. But in addition to them dozens of R packages may be used for modeling. 
 
-DALEX is designed to work with various black-box models like tree ensemble, linear models, neural networks etc. Unfortunately R packages are very inconsistent when it comes to predictive modeling. Different tools use different interfaces to train, validate and apply models. There are two large frameworks for machine learning, namely `mlr` [@mlr] and `caret` [@caret]. But in addition to them dozens of R packages may be used for modeling. 
+This is why in the first step for  DALEX is to wrap-up the black-box model with a meta-data that unifies model interfacing.
 
-This is why in the first step of working with DALEX is to wrap-up the black-box model of interest with a meta-data that allow for unified approach to models.
+Here are arguments required by the `explain()` function. 
 
-Here arguments required by the `explain()` function. Some of these parameters are required only by selected explainers.
+```
+explain(model, data, y, predict_function, 
+               link, ..., label)
+```
 
 * `model` - an R object, a model to be explained. *Required by*: all explainers.
-* `data` - `data.frame` or `matrix`, set that will be used for model validation. Shall have the same structure as the dataset used for training. *Required by*: model performance, variable importance. *Default*: if possible, then it will be extracted from the `model` object.
+* `data` - `data.frame` or `matrix`, set that will be used for model validation. Shall have the same structure as the dataset used for training. *Required by*: model performance, variable importance. *Default*: if possible, will be extracted from the `model` object.
 * `y`	- numeric vector with true labels paired with observations in `data`. *Required by*: variable importance.  *Default*: no default.
-* `predict_function` - a function that takes two arguments: model and data and returns numeric vector with predictions. Predictions shall be calculated in the same scale as the `y` values. *Required by*:  all explainers. *Default*: the generic `predict()` function.
-* `link_function`	- a transformation/link function that is be applied to  model predictions. *Required by*: variable effect. *Default*: the identity `I()` function.
+* `predict_function` - a function that takes two arguments: model and data and returns numeric vector with predictions. Predictions shall be calculated in the same scale as the `y` labels. *Required by*:  all explainers. *Default*: the generic `predict()` function.
+* `link_function`	- a transformation/link function that is applied to  model predictions. *Required by*: variable effect. *Default*: the identity `I()` function.
 * `label`	- character, the name of the model that will be used in plots. *Required by*: plots. *Default*: extracted from the `class` attribute of the `model`.
 
-<p><span class="marginnote">Figure 2.2. The `explain()` function embeds the `model` and validation `data` and `y` in a container. Model is accesses via universal intreface supplied by `predict_function()` and `link_function()`. The `label` field stores an unique name of the model.
+<p><span class="marginnote">Figure 2.2. The `explain()` function embeds  `model`, validation `data` and `y` labels in a container. Model is accessed via universal interface specified by `predict_function()` and `link_function()`. The `label` field stores an unique name of the model.
 </span>
 <img src="images/explain_scheme.png"/></p>
 
 
-Next two sections introduce use cases for regression and binary classification. They will help to understand how to use the `explain()` function.
+Next section introduces use cases for regression. It will help to understand how to use the `explain()` function and how it may be useful. Same functions may be used for binary classification.
 
-## Use case: Regression. Apartment prices in Warsaw
+## Use case: Regression. Apartment prices in Warsaw {#useCaseApartmetns}
 
-To illustrate applications of DALEX to regression problems we will use an artificial dataset `apartments` available in the `DALEX` package. The goal here is to predict the price per square meter of an apartments based on selected features like construction.year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one.
+To illustrate applications of DALEX to regression problems we will use an artificial dataset `apartments` available in the `DALEX` package. The goal here is to predict the price per square meter of an apartments based on selected features like construction.year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one. Prices are in Euro.
 
 ```{r eval=FALSE}
 library("DALEX")
@@ -56,13 +56,13 @@ head(apartments)
 library("DALEX")
 knitr::kable(
   head(apartments),
-  caption = 'Artificial dataset about apartments in Warsaw. The goal in this study is to predict the average prise per square meter.'
+  caption = 'Artificial dataset about apartment prices in Warsaw. The goal here is to predict the price per square meter for a new apartment.'
   )
 ```
 
-### Linear regression
+### Model 1: Linear regression
 
-First model will be based on linear regression. This will be a simple model without any feature engineering.
+First model is based on a linear regression. This will be a simple model without any feature engineering.
 
 ```{r}
 apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor + 
@@ -70,14 +70,14 @@ apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor +
 summary(apartments_lm_model)
 ```
 
-We have also another dataset that can be used for validation of the model. Here is the mean square error calculated on the new dataset.
+We have also another `apartmentsTest` dataset that can be used for validation of the model. Here is the mean square error calculated on validation data.
 
 ```{r}
 predicted_mi2_lm <- predict(apartments_lm_model, apartmentsTest)
 sqrt(mean((predicted_mi2_lm - apartmentsTest$m2.price)^2))
 ```
 
-To create an explainer for regression model it is enough to use `explain()` function with the `model`, `data` and `y` parameters. In next chapter we will show how to use such explainer.
+To create an explainer for the regression model it is enough to use `explain()` function with the `model`, `data` and `y` parameters. In the next chapter we show how to use this explainer.
 
 ```{r}
 explainer_lm <- explain(apartments_lm_model, 
@@ -85,32 +85,32 @@ explainer_lm <- explain(apartments_lm_model,
 ```
 
 
-### Random forest
+### Model 2: Random forest
 
-Second model will be based on random forest. It's a very elastic out-of-the-box model. Let's see how it will deal with categorical variables.
+Second model is based on random forest. It's a very elastic out-of-the-box model. 
 
 ```{r}
 library("randomForest")
-set.seed(1313)
+set.seed(59)
 
 apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor + 
                       no.rooms + district, data = apartments)
 apartments_rf_model
 ```
 
-Here is the mean square error calculated on a `apartmentsTest` dataset.
+Here is the mean square error calculated for `apartmentsTest` dataset.
 
 ```{r}
 predicted_mi2_rf <- predict(apartments_rf_model, apartmentsTest)
 sqrt(mean((predicted_mi2_rf - apartmentsTest$m2.price)^2))
 ```
 
-Also for random forest model we are creating an explainer. In next chapter we will show how to use such explainer.
+Also for random forest model we are creating an explainer. In the next chapter we show how to use this explainer.
 
 ```{r}
 explainer_rf <- explain(apartments_rf_model, 
                        data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
 ```
 
+**These two models have identical performance!** Which one should be used?
 
-## Use case: Classification. TBD

@@ -1,9 +1,9 @@
 # Prediction understanding {#predictionUnderstanding}
 
-In this chapter we will introduce two groups of explainers that can be used to boost our understanding of model predictions.
+In this chapter we introduce two groups of explainers that can be used to boost our understanding of model predictions.
 
 * Section \@ref(outlierDetection) presents explainers that helps to identify outliers. 
-* Section \@ref(predictionBreakdown) presents explainers for model predictions. Each prediction can be attribute to particular variables.   Knowing which variables are important and if the prediction is accurate allow to validate the model.
+* Section \@ref(predictionBreakdown) presents explainers for model predictions. Each prediction can be split into parts attributed to particular variables.  Knowing which variables are important and if the prediction is accurate one can validate the model.
 
 Explainers presented here are illustrated based on two models fitted to the `apartments` data.
 
@@ -12,12 +12,12 @@ library("DALEX")
 apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor + 
                       no.rooms + district, data = apartments)
 library("randomForest")
-set.seed(1313)
+set.seed(59)
 apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor + 
                       no.rooms + district, data = apartments)
 ```
 
-First we need to prepare wrappers for these models. They will be available in `explainer_lm` and `explainer_rf` objects.
+First we need to prepare wrappers for these models. They are in `explainer_lm` and `explainer_rf` objects.
 
 ```{r, warning=FALSE, message=FALSE}
 explainer_lm <- explain(apartments_lm_model, 
@@ -29,23 +29,22 @@ explainer_rf <- explain(apartments_rf_model,
 ## Outlier detection {#outlierDetection}
 
 Function `model_performance()` may be used to identify outliers.
-This function was already introduced in section \@ref(modelPerformance) but here we will present it's other uses. 
+This function was already introduced in section \@ref(modelPerformance) but here we will present its other uses. 
 
-As you may remember, residuals for random forest were smaller in general, except for small fraction of observations with very high residuals. 
+As you may remember, residuals for random forest were smaller in general, except for small fraction of very high residuals. 
 
-Let's use the `model_performance()` function to extract residuals and plot them against observed true values.
+Let's use the `model_performance()` function to extract and plot residuals against observed true values.
 
-```{r outliersML, message=FALSE, warning=FALSE, fig.cap="Diagnostic plot for the random forest model. Clearly the more expensive is the apartment the more underestimated is model prediction"}
+```{r outliersML, message=FALSE, warning=FALSE, fig.cap="Diagnostic plot for the random forest model. Clearly the more expensive are apartments the more underestimated are model predictions"}
 mp_rf <- model_performance(explainer_rf)
 
 library("ggplot2")
-ggplot(mp_rf, aes(observed, diff)) +
-  geom_point() + 
-  xlab("Observed") + ylab("Predicted - Observed") + 
-  ggtitle("Diagnostic plot for the random forest model") + theme_mi2()
+ggplot(mp_rf, aes(observed, diff)) + geom_point() + 
+        xlab("Observed") + ylab("Predicted - Observed") + 
+        ggtitle("Diagnostic plot for the random forest model") + theme_mi2()
 ```
 
-Lets see which variables stand behind the prediction for observation with largest residual.
+Lets see which variables stand behind the model prediction for an apartment with largest residual.
 
 ```{r, eval=FALSE}
 which.min(mp_rf$diff)
@@ -58,36 +57,36 @@ new_apartment
 new_apartment <- apartmentsTest[which.min(mp_rf$diff), ]
 knitr::kable(
   head(new_apartment),
-  caption = 'Selected observation with the largest residual in the random forest model'
+  caption = 'Observation with the largest residual in the random forest model'
   )
 ```
 
-## Prediction breakdown {#predictionBreakdown}
+## Prediction breakDown {#predictionBreakdown}
 
-Do your ML algorithm learn from mistakes? 
-Understanding what causes wrong decisions may lead to model improvements.
+Does your ML algorithm learn from mistakes? 
+Understanding what causes wrong model predictions will help to improve the model.
 
-Lots of interesting arguments and examples are presented in the [@lime] article. This approach for explanations of model predictions is implemented in the **live** package (see [@live]) which may be seen as an extension of the LIME method.
+Lots of arguments in favor of such explainers can be found in the [@lime] article. This approach is implemented in the **live** package (see [@live]) which may be seen as an extension of the LIME method.
 
-In this section we present other method for explanations of model predictions implemented in the `breakDown` package [@breakDown].
-The function `single_prediction()` from `DALEX` is a wrapper around this package. 
+In this section we present other method for explanations of model predictions, the one implemented in the `breakDown` package [@breakDown].
+The function `single_prediction()` is a wrapper around this package. 
 
-Model prediction is visualized wirh Break Down Plots, which are inspired by waterfall plots as in [`xgboostExplainer` package](https://github.com/AppliedDataSciencePartners/xgboostExplainer). 
+Model prediction is visualized with Break Down Plots, which are inspired by waterfall plots as in [`xgboostExplainer` package](https://github.com/AppliedDataSciencePartners/xgboostExplainer). 
 Break Down Plots show the contribution of every variable present in the model. 
 
 Function `single_prediction()` generates variable attributions for selected prediction. 
-The generic `plot()` function shows the break down plots.
+The generic `plot()` function shows them.
 
-```{r single_prediction_break, fig.height=2.5, fig.cap="Break down plot for prediction from the random forest model"}
+```{r single_prediction_break, fig.height=2.5, fig.cap="Break Down Plot for prediction from the random forest model"}
 new_apartment_rf <- single_prediction(explainer_rf, observation = new_apartment)
 breakDown:::print.broken(new_apartment_rf)
 plot(new_apartment_rf)
 ```
 
-Both the plot and the table confirm that all variables (`district`, `surface`, `floor`, `no.rooms`) have positive effects as then should have. Still these effects are too small and the final prediction is `3505  + 1881` much smaller than the observed value.
-Let's see how the linear model behave for this observation.
+Both the plot and the table confirm that all variables (`district`, `surface`, `floor`, `no.rooms`) have positive effects as then should have. Still these effects are too small while the final prediction is `3505  + 1881` much smaller than the real price of a square meter `6679`.
+Let's see how the linear model behaves for this observation.
 
-```{r single_prediction_break2, fig.height=3.5, fig.cap="Break down plots that compare the linear model and the random forest model"}
+```{r single_prediction_break2, fig.height=3.5, fig.cap="Break Down Plots that compare the linear model and the random forest model"}
 new_apartment_lm <- single_prediction(explainer_lm, observation = new_apartment)
 plot(new_apartment_lm, new_apartment_rf)
 ```
