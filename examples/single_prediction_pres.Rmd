@@ -39,17 +39,19 @@ LIME: how it's done
 LIME: summary
 ---
 
+<!-- one sentence summary -->
+
 Pros:
 
-  - ...
+  - intuitive & suitable for different types of data
 
-  - ...
+  - easy to understand & interpret
   
 Cons:
 
-  - ...
+  - results can be inconsistent (see: Lundberg)
 
-  - ...
+  - depends on many _hyperparameters_ (kernel, size, ...)
   
 # Shapley Values
 
@@ -63,17 +65,23 @@ Shapley values: how it's done
 Shapley values: summary
 ---
 
+<!-- one sentence summary -->
+
 Pros:
 
-  - ...
-
-  - ...
+  - good theoretical properties
+  
+  - comes with good visual diagnostic tools
   
 Cons:
 
-  - ...
+  - won't produce sparse explanations
 
-  - ...
+  - assumes _additivity_, uses simplified inputs 
+   (exception: trees)  
+    
+  - computational issues
+ 
   
 # LIVE
 
@@ -86,39 +94,49 @@ LIVE: how it's done
 LIVE: summary
 ---
 
+<!-- one sentence summary -->
+
 Pros:
 
-  - ...
+  - flexible & focused on model visualization
 
-  - ...
+  - pretty stable despite randomness
+  
+  - local exploration in data space (no binary inputs)
   
 Cons:
 
-  - ...
+  - comes with no theoretical guarantees 
+    (though *works* at least in simple cases)
 
-  - ...
+  - inherits strengts/weaknesses of white box model
   
 # breakDown
 
 breakDown: general idea
 ---
 
+![](breakDownDistr.png)
+
 breakDown: how it's done
 ---
 
 breakDown: summary
 
+<!-- one sentence summary -->
+
 Pros:
 
-  - ...
+  - simple computation
 
-  - ...
+  - easy to interpret (in particular compared to SHAP)
   
 Cons:
 
-  - ...
+  - limited to additive effects
 
-  - ...
+  - again, no theoretical guarantees
+    (though can be thought of as a rough Shapley values estimate)
   
 # Times for examples!
 
