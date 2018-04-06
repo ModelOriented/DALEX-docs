@@ -5,7 +5,7 @@ output: ioslides_presentation
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE,
+knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE,
                       message = FALSE)
 ```
@@ -32,14 +32,23 @@ How?
 LIME: general idea
 ---
 
+![](intuition.png)
 
 LIME: how it's done
 ---
 
+  - Gaussian sampling for tabular, uniform sampling from interpretable inputs for image/text.
+  
+  - Scores for new observation are weighted by the distance from original observation.
+  
+  - Variable selection is usually based on ridge/lasso regression.
+  
+  - Weights are assigned to interpretable inputs to decide if they _vote_ for or against a given label.
+
 LIME: summary
 ---
 
-<!-- one sentence summary -->
+`LIME` approximates the complex model with a simple model and discovers which features in _interpretable representation_ of data drive the prediction.
 
 Pros:
 
@@ -58,14 +67,28 @@ Cons:
 Shapley values: general idea
 ---
 
+  - The goal is a decomposition of prediction into sum of scores related to (simplified) features.
+  
+  - The problem is solved using game theory: _Shapley values_. 
+  
+  - This approach unifies several methods (including `LIME`).
 
 Shapley values: how it's done
 ---
 
+  - Different approximate algorithms were proposed.
+  
+  - Exact methods exist for linear models and tree ensemble methods.
+  
+  - Classic way: sample permutations of variables, then average contributions.
+  
+  - Better way: approximation based on LIME and Shapley values for regression. 
+  
+  
 Shapley values: summary
 ---
 
-<!-- one sentence summary -->
+`Shapley values` decomposition prediction into feature contributions in a rigorous way rooted in game theory.
 
 Pros:
 
@@ -88,26 +111,35 @@ Cons:
 LIVE: general idea
 ---
 
+  - Modification of `LIME` for tabular data and regression problems.
+  - Similar observation for _fake_ dataset are sampled from empirical distributions.
+  - Variable selection is possible.
+  - Focused on model visualization.
+
 LIVE: how it's done
 ---
+
+  - All new observations are treated as similar (identity kernel & equal weights)
+    (Because of the use of empirical distributions)
+  - Variables are selected by LASSO (`glmnet` package).
+  - All models from `mlr` are supported both as black box and white box.
+  - Model visualization for linear models in particular.
 
 LIVE: summary
 ---
 
-<!-- one sentence summary -->
+`live` fits a simple model to approximate the black box locally and allows model visualization for this model.
 
 Pros:
 
   - flexible & focused on model visualization
-
-  - pretty stable despite randomness
   
   - local exploration in data space (no binary inputs)
   
 Cons:
 
   - comes with no theoretical guarantees 
-    (though *works* at least in simple cases)
+    (though *works* at least in simple cases and is pretty stable)
 
   - inherits strengts/weaknesses of white box model
   
@@ -121,9 +153,14 @@ breakDown: general idea
 breakDown: how it's done
 ---
 
+  - Contributions are assigned in a greedy way.
+  
+  - Waterfall plots are important tool as a visual representation.
+
+
 breakDown: summary
 
-<!-- one sentence summary -->
+`breakDown` decompositions the prediction into feature contributions and visualizes them.
 
 Pros:
 
@@ -138,43 +175,63 @@ Cons:
   - again, no theoretical guarantees
     (though can be thought of as a rough Shapley values estimate)
   
-# Times for examples!
+# Let's see some examples!
 
 Dataset
 ---
+
 ```{r data}
 library(DALEX)
 library(live)
 library(lime)
 library(shapleyr)
+library(mlr)
+# library(tidyverse)
 # wstawic dane i pokazac fragment
+# data <- # ciekawy zbior danych
+# head(data)
+# model <- # pouczajacy model
+# nobs <- 5 # wyjasniana obserwacja
 ```
 
 LIME
 ---
 
 ```{r lime_example}
-# pokazac wykres
+# lime_obj <- lime(data, model)
+# lime_expl <- lime::explain(data[nobs, ], lime_obj, n_features = 10)
+# plot_features(lime_expl)
 ```
 
 Shapley values
 ---
 
 ```{r shap_example}
-# pokazac wykres
+# tsk <- makeRegrTask(data = data, target = "")
+# model <- train("regr.", tsk)
+# shap_expl <- shapley(nobs, model = model, task = tsk)
+# shap_expl
 ```
 
 LIVE
 ---
 
 ```{r live_example}
-# pokazac dwa wykresy
+# local <- sample_locally(data, data[nobs, ], "", 500)
+# local <- add_predictions(data, local, model)
+# live_expl <- fit_explanation(local, "regr.lm")
+# plot_explanation(live_expl, "waterfallplot")
+# plot_explanation(live_expl, "forestplot")
 ```
 
 breakDown
+---
 
 ```{r breakDown_example}
-# pokazac wykres
+# breakDown_expl <- broken(model, data[nobs, ])
+# plot(breakDown_expl, baseline = "Intercept")
 ```
 ---
 
+
+# Time for discussion!
