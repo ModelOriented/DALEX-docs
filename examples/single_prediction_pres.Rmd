@@ -1,0 +1,162 @@
+---
+title: "Explaining single prediction"
+author: "Mateusz Staniak"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+Why?
+---
+
+  - to increase *trust* in important predictions
+  - to *understand* which factors drive the prediction 
+  - to inspect unusual/outlier predictions
+  - to improve the model
+
+How?
+---
+
+![](diag.png)
+
+
+# Now details!
+
+# LIME
+
+LIME: general idea
+---
+
+
+LIME: how it's done
+---
+
+LIME: summary
+---
+
+Pros:
+
+  - ...
+
+  - ...
+  
+Cons:
+
+  - ...
+
+  - ...
+  
+# Shapley Values
+
+Shapley values: general idea
+---
+
+
+Shapley values: how it's done
+---
+
+Shapley values: summary
+---
+
+Pros:
+
+  - ...
+
+  - ...
+  
+Cons:
+
+  - ...
+
+  - ...
+  
+# LIVE
+
+LIVE: general idea
+---
+
+LIVE: how it's done
+---
+
+LIVE: summary
+---
+
+Pros:
+
+  - ...
+
+  - ...
+  
+Cons:
+
+  - ...
+
+  - ...
+  
+# breakDown
+
+breakDown: general idea
+---
+
+breakDown: how it's done
+---
+
+breakDown: summary
+
+Pros:
+
+  - ...
+
+  - ...
+  
+Cons:
+
+  - ...
+
+  - ...
+  
+# Times for examples!
+
+Dataset
+---
+```{r data}
+library(DALEX)
+library(live)
+library(lime)
+library(shapleyr)
+# wstawic dane i pokazac fragment
+```
+
+LIME
+---
+
+```{r lime_example}
+# pokazac wykres
+```
+
+Shapley values
+---
+
+```{r shap_example}
+# pokazac wykres
+```
+
+LIVE
+---
+
+```{r live_example}
+# pokazac dwa wykresy
+```
+
+breakDown
+
+```{r breakDown_example}
+# pokazac wykres
+```
+---
+
