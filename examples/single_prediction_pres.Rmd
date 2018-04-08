@@ -186,50 +186,58 @@ library(live)
 library(lime)
 library(shapleyr)
 library(mlr)
-# library(tidyverse)
-# wstawic dane i pokazac fragment
-# data <- # ciekawy zbior danych
-# head(data)
-# model <- # pouczajacy model
-# nobs <- 5 # wyjasniana obserwacja
+library(tidyverse)
+library(e1071)
+load("wine.rda")
+glimpse(wine)
+wine_svm <- svm(quality ~., data = wine)
+nobs <- 5 # wyjasniana obserwacja
 ```
 
 LIME
 ---
 
 ```{r lime_example}
-# lime_obj <- lime(data, model)
-# lime_expl <- lime::explain(data[nobs, ], lime_obj, n_features = 10)
-# plot_features(lime_expl)
+lime_obj <- lime(wine, wine_svm)
+model_type.svm <- function(x, ...) "regression"
+lime_expl <- lime::explain(wine[nobs, ], lime_obj, n_features = 11)
+plot_features(lime_expl)
 ```
 
 Shapley values
 ---
 
 ```{r shap_example}
-# tsk <- makeRegrTask(data = data, target = "")
-# model <- train("regr.", tsk)
-# shap_expl <- shapley(nobs, model = model, task = tsk)
-# shap_expl
+tsk <- makeRegrTask(data = wine, target = "quality")
+model <- train("regr.svm", tsk)
+shap_expl <- shapley(nobs, model = model, task = tsk)
+gather(shap_expl, "variable", "contribution") %>%
+  arrange(desc(abs(contribution)))
 ```
 
 LIVE
 ---
 
 ```{r live_example}
-# local <- sample_locally(data, data[nobs, ], "", 500)
-# local <- add_predictions(data, local, model)
-# live_expl <- fit_explanation(local, "regr.lm")
-# plot_explanation(live_expl, "waterfallplot")
-# plot_explanation(live_expl, "forestplot")
+local <- sample_locally(wine, wine[nobs, ], "quality", 500)
+local <- live::add_predictions(wine, local, wine_svm)
+live_expl <- fit_explanation(local, "regr.lm")
+plot_explanation(live_expl, "waterfallplot", wine[nobs, ])
+```
+
+LIVE cont.
+---
+```{r live_forest}
+plot_explanation(live_expl, "forestplot")
 ```
 
 breakDown
 ---
 
 ```{r breakDown_example}
-# breakDown_expl <- broken(model, data[nobs, ])
-# plot(breakDown_expl, baseline = "Intercept")
+wine_explainer <- DALEX::explain(wine_svm, data = wine, y = "quality")
+wine_expl <- single_prediction(wine_explainer, wine[nobs, ])
+plot(wine_expl)
 ```
 ---
 
