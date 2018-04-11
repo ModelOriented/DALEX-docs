@@ -2,11 +2,11 @@
 
 In this chapter we introduce three groups of explainers that can be used to boost our understanding of black-box models.
 
-* Section \@ref(modelPerformance) presents explainers for model performance. Single number may be misleading when we need to compare complex models. Here you will find plots that give more information about model performance in a consistent form.
-* Section \@ref(featureImportance) presents explainers for variable importance. Knowing which variables are important allow to validate the model and increase our understanding of the domain.
-* Section \@ref(variableResponse) presents explainers for variable effect. Here you will find plots that summaries the relation between model response and particular variable.
+* Section \@ref(modelPerformance) presents explainers for model performance. A single number may be misleading when we need to compare complex models. In this section you will also find plots that give more information about model performance in a consistent form.
+* Section \@ref(featureImportance) presents explainers for variable importance. Knowing which variables are important allows us to validate the model and increase our understanding of the domain.
+* Section \@ref(variableResponse) presents explainers for variable effect.  You may find in it plots that summarize the relation between model response and particular variables.
 
-All explainers are illustrated based on the two models fitted to the `apartments` data.
+All explainers are illustrated on the basis of two models fitted to the `apartments` data.
 
 ```{r, warning=FALSE, message=FALSE}
 library("DALEX")
@@ -29,7 +29,7 @@ explainer_rf <- explain(apartments_rf_model,
 
 ## Model performance {#modelPerformance}
 
-As you may remember from the previous chapter the [root mean square](https://en.wikipedia.org/wiki/Root_mean_square) of residuals is identical for both considered models. Does it mean that these models are equally good?
+As you may remember from the previous chapter, the [root mean square](https://en.wikipedia.org/wiki/Root_mean_square) of residuals is identical for both considered models. Does it mean that these models are equally good?
 
 ```{r, warning=FALSE, message=FALSE}
 predicted_mi2_lm <- predict(apartments_lm_model, apartmentsTest)
@@ -50,13 +50,14 @@ mp_lm
 mp_rf
 ```
 
-The generic `plot()` function shows reversed empirical cumulative distribution function for absolute values from residuals. This function presents fraction of residuals larger than `x`. The figure below shows that majority of residuals for random forest are smaller than residuals for the linear model. But the small fraction of very large residuals affects the root mean square.
+The generic `plot()` function shows reversed empirical cumulative distribution function for absolute values from residuals. This function presents a fraction of residuals larger than `x`. The figure below shows that majority of residuals for the random forest is smaller than residuals for the linear model, yet the small fraction of very large residuals affects the root mean square.
+
 
 ```{r global_explain_ecdf, fig.cap="Comparison of residuals for linear model and random forest"}
 plot(mp_lm, mp_rf)
 ```
 
-Use the `geom = "boxplot"` parameter for the generic `plot()` function to get an alternative comparison of residuals. The red dot stands for root mean square.
+Use the `geom = "boxplot"` parameter for the generic `plot()` function to get an alternative comparison of residuals. The red dot stands for the root mean square.
 
 ```{r global_explain_boxplot, fig.height=2.5, fig.cap="Comparison of residuals for linear model and random forest"}
 plot(mp_lm, mp_rf, geom = "boxplot")
@@ -67,23 +68,23 @@ plot(mp_lm, mp_rf, geom = "boxplot")
 
 Explainers presented in this section are designed to better understand which variables are important.
 
-Some models, like linear regression or random forest have build-in *model specific* methods to calculate are visualize variable importance. They will be presented in Section \@ref(modelSpecific).
+Some models, such as linear regression or random forest, have a build-in *model specific* methods to calculate and visualize variable importance. They will be presented in Section \@ref(modelSpecific).
 
-Section \@ref(modelAgnostic) presents a model agnostic approach based on permutations. The advantage of this approach is that different models can be compare within a single setup.
+Section \@ref(modelAgnostic) presents a model agnostic approach on the basis of permutations. The advantage of this approach is that different models can be compared within a single setup.
 
 
 ### Model agnostic {#modelAgnostic}
 
-Model agnostic variable importance is calculated via permutations. Simply the loss function is calculated for validation dataset minus the loss function calculated for validation dataset with permuted values for a single variable. This concept and some extensions are described in [@variableImportancePermutations].
+Model agnostic variable importance is calculated by means of permutations. 
+We simply substract the loss function calculated for validation dataset with permuted values for a single variable from  the loss function calculated for validation dataset. This concept and some extensions are described in [@variableImportancePermutations].
 
-This method is implemented in the `variable_importance()` function. The foss function is calculated for:
+This method is implemented in the `variable_importance()` function. The loss function is calculated for:
 
-* the original validation `data`. This is an estimate of model performance and will be denoted as `_full_model_`,
-* validation data with resampled labels `y`. This is kind of *worst case* loss when model are compared against random labels. Will be denoted as `_baseline_`,
-* validation data with single variable being resampled. This will tell how much from the model performance is gone after the selected variable is blinded.
+* the original validation `data`. It is an estimate of a model performance and will be denoted as `_full_model_`,
+* validation data with resampled `y` labels. It is a kind of *worst case* loss when model are compared against random labels. It will be denoted as `_baseline_`,
+* validation data with single variable being resampled. It tells us how much is gone from the model performance after the selected variable is blinded.
 
-
-Let's see how this function is working for a random forest model. 
+Let's see how this function works for a random forest model. 
 
 ```{r}
 vi_rf <- variable_importance(explainer_rf, loss_function = loss_root_mean_square)
@@ -92,7 +93,7 @@ vi_rf
 
 <p><span class="marginnote">Here the `loss_root_mean_square()` function is defined as square root from averaged squared differences between labels and model predictions.
 </span>
-The same method may be applied to the linear model. Since we are using the same loss function and the same method for variable permutations then losses calculated with both methods can be directly compared.</p>
+The same method may be applied to a linear model. Since we are using the same loss function and the same method for variable permutations, the losses calculated with both methods can be directly compared.</p>
 
 
 ```{r}
@@ -109,12 +110,12 @@ plot(vi_lm, vi_rf)
 
 What we can read out of this plot?
 
-* left edges of intervals start in `_full_model_` for a give model. As we see the performances are similar for both models,
-* length of the interval correspond to variable importance. In both models the most important variables are `district` and `surface`,
-* in the random forest model the `construction_year` variable has some importance while for linear model its importance is almost zero,
+* left edges of intervals start in `_full_model_` for a given model. As we can see. the performances are similar for both models,
+* length of the interval corresponds to variable importance. In both models the most important variables are `district` and `surface`,
+* in the random forest model the `construction_year` variable has some importance, while its importance for linear model is almost equal to zero,
 * the variable `no.rooms` (which is correlated with `surface`) has some importance in the random forest model but not in the linear model.
 
-We may be interested in variables that behave differently between models (like `construction_year`) or variables that are important in both models (like `district` or `surface`). In the next section we introduce explainers for further investigations for these variables.
+We may be interested in variables that behave differently between models (like `construction_year`) or variables that are important in both models (like `district` or `surface`). In the next section we introduce explainers for further investigation of these variables.
 
 
 *NOTE:* If you want variable importance hooked at 0, just add `type = "difference"` parameter to `variable_importance()`.
@@ -129,18 +130,17 @@ plot(vi_lm, vi_rf)
 ### Model specific {#modelSpecific}
 
 Some models have build-in tools for calculation of variable importance.
-Random forest is using two different measures, one based on out-of-bag data and second based on gains in nodes. Read more about this approach in [@randomForest]. 
+Random forest uses two different measures - one based on out-of-bag data and second one based on gains in nodes. Read more about this approach in [@randomForest]. 
 
-Below we show an example of dot plot that summarizes default importance measure for random forest. The `varImpPlot()` function is available in the `randomForest` package.
-
+Below we show an example of a dot plot that summarizes default importance measure for a random forest. The `varImpPlot()` function is available in the `randomForest` package.
 
 ```{r modelImportanceRF, message=FALSE, warning=FALSE, fig.height=3.5, fig.cap="Built-in variable importance plot for random forest"}
 varImpPlot(apartments_rf_model)
 ```
 
-It is also straightforward to assess variable importance for linear models and generalized models. It is simple since model coefficients have direct interpretation.
+It is easy to assess variable importance for linear models and generalized models, since model coefficients have direct interpretation.
 
-[Forest plots](https://en.wikipedia.org/wiki/Forest_plot) were initially used in the meta analysis to visualize effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure / created with `lm` or `glm` functions.
+[Forest plots](https://en.wikipedia.org/wiki/Forest_plot) were initially used in the meta analysis to visualize effects in different studies. . At present, however, they are frequently used to present summary characteristics for models with linear structure / created with `lm` or `glm` functions.
 
 There are various implementations of forest plots in R. In the package `forestmodel` (see [@forestmodel]) one can use `forest_model()` function to draw a forest plot. This package is based on the `broom` package (see [@broom]) and this is why it handles a large variety of different regression models. 
 
@@ -164,38 +164,38 @@ The `forestmodel` package handles factor variables in a better way while the plo
 
 ## Variable response {#variableResponse}
 
-Explainers presented in this section are designed to better understand the relation between a variable and model output.
+Explainers presented in this section are designed to better understand the relation between a variable and a model output.
 
-Subsection \@ref(pdpchapter) presents Partial Dependence Plots (PDP), one of the most popular methods for exploration of a relation between a continuous variable and model outcome. 
-Subsection \@ref(accumulatedLocalEffects) presents Accumulated Local Effects Plots (ALEP), an extension of PDP, more suited for highly correlated variables.
+Subsection \@ref(pdpchapter) presents Partial Dependence Plots (PDP), one of the most popular methods for exploration of a relation between a continuous variable and a model outcome. 
+Subsection \@ref(accumulatedLocalEffects) presents Accumulated Local Effects Plots (ALEP), an extension of PDP more suited for highly correlated variables.
 
-Subsection \@ref(mergingPathPlot) presents Merging Path Plots, a method for exploration of a relation between a categorical variable and model outcome.
+Subsection \@ref(mergingPathPlot) presents Merging Path Plots, a method for exploration of a relation between a categorical variable and a model outcome.
+
 
 ### Partial Dependence Plot {#pdpchapter}
 
-Partial Dependence Plots (see `pdp` package [@pdp]) for a black box $f(x; \theta)$ shows the expected output condition on a selected variable.
+Partial Dependence Plots (see `pdp` package [@pdp]) for a black box $f(x; \theta)$ show the expected output condition on a selected variable.
 
 $$
 p_i(x_i) = E_{x_{-i}}[ f(x^i, x^{-i}; \theta) ].
 $$
 
-Of course this expectation cannot be calculated directly as we do not know fully the $f()$ neither the distribution of $x_{-i}$. Yet, this value may be estimated by 
+Of course, this expectation cannot be calculated directly as we do not know fully neither the distribution of $x_{-i}$ nor the $f()$. Yet this value may be estimated by 
 
 $$
 \hat p_i(x_i) = \frac{1}{n} \sum_{j=1}^{n} f(x^i_j, x_j^{-i}, \hat \theta).
 $$
 
+Let's see an example for the model `apartments_rf_model`. Below we use `variable_response()` from `DALEX`, which calls `pdp::partial` function to calculate PDP response.
 
-Let's see an example for the model `apartments_rf_model`. Below we are using `variable_response()` from `DALEX`, which is calling   `pdp::partial` function to calculate PDP response.
-
-Section \@ref(featureImportance) shows variable importance plots for different models. The variable `construction.year` is interesting as it is important for the random forest model `apartments_rf_model` but not for the linear model `apartments_lm_model`. Let's see the relation between the variable and model output. 
+Section \@ref(featureImportance) shows variable importance plots for different models. The variable `construction.year` is interesting as it is important for the random forest model `apartments_rf_model` but not for the linear model `apartments_lm_model`. Let's see the relation between the variable and the model output. 
 
 ```{r pdpRandomForest, message=FALSE, warning=FALSE, fig.cap="Relation between output from `apartments_rf_model` and variable `construction.year`"}
 sv_rf  <- single_variable(explainer_rf, variable =  "construction.year", type = "pdp")
 plot(sv_rf)
 ```
 
-We can use PDP plots to compare two or more models. Here we are plotting PDP for the linear model against the random forest model.
+We can use PDP plots to compare two or more models. Below we plot PDP for the linear model against the random forest model.
 
 ```{r pdpRandomForestLM, message=FALSE, warning=FALSE, fig.cap="Relation between output from models `apartments_rf_model` and `apartments_lm_model` against the variable `construction.year`"}
 sv_lm  <- single_variable(explainer_lm, variable =  "construction.year", type = "pdp")
@@ -203,17 +203,17 @@ sv_lm  <- single_variable(explainer_lm, variable =  "construction.year", type = 
 plot(sv_rf, sv_lm)
 ```
 
-It looks like the random forest captures non-linear relation that cannot be captured by linear models.
-
+It looks like the random forest captures the non-linear relation that cannot be captured by linear models.
 
 ### Accumulated Local Effects Plot {#accumulatedLocalEffects}
 
-As it is presented in section \@ref(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of $x_{-i}$. 
-In some cases, e.g. when repressors are highly correlated, expectation over the marginal distribution may lead to biases/poorly extrapolated model responses. 
+As demonstrated in section \@ref(pdpchapter), the Partial Dependence Plot presents the expected model response with respect to marginal distribution of $x_{-i}$. 
+In some cases, e.g. when repressors are highly correlated, expectation towards the marginal distribution may lead to biases/poorly extrapolated model responses. 
 
-Accumulated local effects (ALE) plots (see `ALEPlot` package [@ALEPlot]) solves this problem by using conditional distribution $x_{-i}|x_i = x_i^*$. This leads to more stable and reliable estimates (at least when the predictors are highly correlated).
+Accumulated local effects (ALE) plots (see `ALEPlot` package [@ALEPlot]) solve this problem by using conditional distribution $x_{-i}|x_i = x_i^*$. This solution leads to more stable and reliable estimates (at least when the predictors are highly correlated).
 
-Estimation of main effects for `construction.year` is similar to the PDP curves. Here we are using `DALEX::single_variable` function that is calling   `ALEPlot::ALEPlot` function to calculate ALE curve for variable `construction.year`. 
+Estimation of the main effects for `construction.year` is similar to the PDP curves. We use here `DALEX::single_variable` function that calls  `ALEPlot::ALEPlot` function to calculate the ALE curve for the variable `construction.year`. 
+
 
 ```{r alePlotsRF, message=FALSE, warning=FALSE, fig.cap="Relation between output from models `apartments_rf_model` and `apartments_lm_model` against the variable `construction.year` calculated with Accumulated local effects."}
 sva_rf  <- single_variable(explainer_rf, variable = "construction.year", type = "ale")
@@ -227,11 +227,12 @@ Results for PDP and ALEP are very similar except that effects for ALEP are cente
 
 ### Mering Path Plot {#mergingPathPlot}
 
-The package `ICEbox` is not working for factor variables while the `pdp` package returns plots that are hard to interpret.
+The package `ICEbox` does not work for factor variables, while the `pdp` package returns plots that are hard to interpret.
 
-An interesting tool that helps to understand what is happening with factor variables is the **factorMerger** package. See [@factorMerger].
+An interesting tool that helps to understand what happens with factor variables is the **factorMerger** package. See [@factorMerger].
 
-Here we have Merging Path Plot for a factor variable `district`.
+Below you may see a Merging Path Plot for a factor variable `district`.
+
 
 ```{r mergingPathPlots, message=FALSE, warning=FALSE, fig.width=12, fig.height=8, fig.cap="Merging Path Plot for `district` variable. Left panel shows the dendrogram for districts, here we have clearly three clusters. Right panel shows distribution of predictions for each district."}
 svd_rf  <- single_variable(explainer_rf, variable = "district", type = "factor")
@@ -240,7 +241,8 @@ svd_lm  <- single_variable(explainer_lm, variable = "district", type = "factor")
 plot(svd_rf, svd_lm)
 ```
 
-The three clusters are: the city center (Srodmiescie), districts well communicated with city center (Ochota, Mokotow, Zoliborz) and other districts closer to city borders.
+The three clusters are: the city center (Srodmiescie), districts well communicated with city center (Ochota, Mokotow, Zoliborz) and other districts closer to city boundaries.
 
-Factor variables are handled very differently by random forest and linear model. But despite of these differences both models result in very similar plots.
+Factor variables are handled very differently by random forest and linear model, yet despite these differences both models result in very similar plots.
+
 
