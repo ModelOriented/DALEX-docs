@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-05" />
+<meta name="date" content="2018-04-11" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -156,11 +156,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> Model understanding</h1>
 <p>In this chapter we introduce three groups of explainers that can be used to boost our understanding of black-box models.</p>
 <ul>
-<li>Section <a href="3-1-modelPerformance.html#modelPerformance">3.1</a> presents explainers for model performance. Single number may be misleading when we need to compare complex models. Here you will find plots that give more information about model performance in a consistent form.</li>
-<li>Section <a href="3-2-featureImportance.html#featureImportance">3.2</a> presents explainers for variable importance. Knowing which variables are important allow to validate the model and increase our understanding of the domain.</li>
-<li>Section <a href="3-3-variableResponse.html#variableResponse">3.3</a> presents explainers for variable effect. Here you will find plots that summaries the relation between model response and particular variable.</li>
+<li>Section <a href="3-1-modelPerformance.html#modelPerformance">3.1</a> presents explainers for model performance. A single number may be misleading when we need to compare complex models. In this section you will also find plots that give more information about model performance in a consistent form.</li>
+<li>Section <a href="3-2-featureImportance.html#featureImportance">3.2</a> presents explainers for variable importance. Knowing which variables are important allows us to validate the model and increase our understanding of the domain.</li>
+<li>Section <a href="3-3-variableResponse.html#variableResponse">3.3</a> presents explainers for variable effect. You may find in it plots that summarize the relation between model response and particular variables.</li>
 </ul>
-<p>All explainers are illustrated based on the two models fitted to the <code>apartments</code> data.</p>
+<p>All explainers are illustrated on the basis of two models fitted to the <code>apartments</code> data.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">apartments_lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">                      </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>

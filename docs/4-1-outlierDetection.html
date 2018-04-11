@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-05" />
+<meta name="date" content="2018-04-11" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -154,9 +154,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="outlierDetection" class="section level2">
 <h2><span class="header-section-number">4.1</span> Outlier detection</h2>
-<p>Function <code>model_performance()</code> may be used to identify outliers. This function was already introduced in section <a href="3-1-modelPerformance.html#modelPerformance">3.1</a> but here we will present its other uses.</p>
-<p>As you may remember, residuals for random forest were smaller in general, except for small fraction of very high residuals.</p>
-<p>Let’s use the <code>model_performance()</code> function to extract and plot residuals against observed true values.</p>
+<p>Function <code>model_performance()</code> may be used to identify outliers. This function was already introduced in section <a href="3-1-modelPerformance.html#modelPerformance">3.1</a> but we will present here its other uses.</p>
+<p>As you may remember, residuals for random forest were smaller in general, except for a small fraction of very high residuals.</p>
+<p>Let’s use the <code>model_performance()</code> function to extract and plot residuals against the observed true values.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">mp_rf &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_rf)</a>
 <a class="sourceLine" id="cb40-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</a>

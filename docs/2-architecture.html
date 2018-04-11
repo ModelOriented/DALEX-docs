@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-05" />
+<meta name="date" content="2018-04-11" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -154,15 +154,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="architecture" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Architecture of DALEX</h1>
-<p>DALEX architecture is simple and consistent. Actually there are only three rules that should be remembered to use this tool.</p>
+<p>DALEX’s architecture is simple and consistent. Actually, there are only three rules that should be remembered while using this tool.</p>
 <ul>
-<li>First - use the <code>explain()</code> function to enrich a black-box model with additional metadata required by explainers. Various explainers require various metadata. Find its list in Section <a href="2-1-explainFunction.html#explainFunction">2.1</a>.</li>
+<li>First - use the <code>explain()</code> function to enrich a black-box model with additional metadata required by explainers. Various explainers require various metadata. You may find their list in Section <a href="2-1-explainFunction.html#explainFunction">2.1</a>.</li>
 <li>Second - use the explainer function that calculates required descriptions. Consecutive explainers are introduced in Chapters <a href="3-modelUnderstanding.html#modelUnderstanding">3</a> and <a href="4-predictionUnderstanding.html#predictionUnderstanding">4</a>.</li>
 <li>Third - use generic <code>print()</code> or <code>plot()</code> function to see the explainer. Both functions work for one or more models.</li>
 </ul>
 <p>These three steps are presented in Figure 2.1.</p>
 <p>
-<span class="marginnote">Figure 2.1. The overview of DALEX architecture. <br/><br/> <em>A)</em> Any predictive model with defined input <span class="math inline">\(x\)</span> and output <span class="math inline">\(y_{raw} \in \mathcal R\)</span> may be used. <br/><br/> <em>B)</em> Models are first enriched in additional metadata, like a function that calculates predictions, validation data, model label or other components. The <code>explain()</code> function creates an object of the class <code>explainer</code>, that is used in further processing.<br/><br/> <em>C)</em> Specialized explainers calculate numerical summaries that can be plotted with generic <code>plot()</code> function. </span> <img src="images/architecture.png"/>
+<span class="marginnote">Figure 2.1. The overview of DALEX’s architecture. <br/><br/> <em>A)</em> Any predictive model with defined input <span class="math inline">\(x\)</span> and output <span class="math inline">\(y_{raw} \in \mathcal R\)</span> may be used. <br/><br/> <em>B)</em> Models are first enriched with additional metadata, such as a function that calculates predictions, validation data, model label or other components. The <code>explain()</code> function creates an object belonging to the <code>explainer</code> class that is used in further processing.<br/><br/> <em>C)</em> Specialized explainers calculate numerical summaries that can be plotted with generic <code>plot()</code> function. </span> <img src="images/architecture.png"/>
 </p> 
 </div>
 <p style="text-align: center;">

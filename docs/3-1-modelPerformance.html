@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-05" />
+<meta name="date" content="2018-04-11" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -154,7 +154,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="modelPerformance" class="section level2">
 <h2><span class="header-section-number">3.1</span> Model performance</h2>
-<p>As you may remember from the previous chapter the <a href="https://en.wikipedia.org/wiki/Root_mean_square">root mean square</a> of residuals is identical for both considered models. Does it mean that these models are equally good?</p>
+<p>As you may remember from the previous chapter, the <a href="https://en.wikipedia.org/wiki/Root_mean_square">root mean square</a> of residuals is identical for both considered models. Does it mean that these models are equally good?</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">predicted_mi2_lm &lt;-<span class="st"> </span><span class="kw">predict</span>(apartments_lm_model, apartmentsTest)</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>((predicted_mi2_lm <span class="op">-</span><span class="st"> </span>apartmentsTest<span class="op">$</span>m2.price)<span class="op">^</span><span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## [1] 283.0865</code></pre>
@@ -177,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##    56.382885   107.951447   157.411208   217.126002   290.952310 
 ##         100% 
 ##   772.729494</code></pre>
-<p>The generic <code>plot()</code> function shows reversed empirical cumulative distribution function for absolute values from residuals. This function presents fraction of residuals larger than <code>x</code>. The figure below shows that majority of residuals for random forest are smaller than residuals for the linear model. But the small fraction of very large residuals affects the root mean square.</p>
+<p>The generic <code>plot()</code> function shows reversed empirical cumulative distribution function for absolute values from residuals. This function presents a fraction of residuals larger than <code>x</code>. The figure below shows that majority of residuals for the random forest is smaller than residuals for the linear model, yet the small fraction of very large residuals affects the root mean square.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">plot</span>(mp_lm, mp_rf)</a></code></pre></div>
 <div class="figure">
 <p class="caption marginnote shownote">
@@ -185,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </p>
 <img src="DALEX_files/figure-html/global_explain_ecdf-1.png" alt="Comparison of residuals for linear model and random forest" width="672"  />
 </div>
-<p>Use the <code>geom = &quot;boxplot&quot;</code> parameter for the generic <code>plot()</code> function to get an alternative comparison of residuals. The red dot stands for root mean square.</p>
+<p>Use the <code>geom = &quot;boxplot&quot;</code> parameter for the generic <code>plot()</code> function to get an alternative comparison of residuals. The red dot stands for the root mean square.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">plot</span>(mp_lm, mp_rf, <span class="dt">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</a></code></pre></div>
 <div class="figure">
 <p class="caption marginnote shownote">

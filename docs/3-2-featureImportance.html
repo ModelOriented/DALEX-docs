@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-05" />
+<meta name="date" content="2018-04-11" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -155,18 +155,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="featureImportance" class="section level2">
 <h2><span class="header-section-number">3.2</span> Feature importance</h2>
 <p>Explainers presented in this section are designed to better understand which variables are important.</p>
-<p>Some models, like linear regression or random forest have build-in <em>model specific</em> methods to calculate are visualize variable importance. They will be presented in Section <a href="3-2-featureImportance.html#modelSpecific">3.2.2</a>.</p>
-<p>Section <a href="3-2-featureImportance.html#modelAgnostic">3.2.1</a> presents a model agnostic approach based on permutations. The advantage of this approach is that different models can be compare within a single setup.</p>
+<p>Some models, such as linear regression or random forest, have a build-in <em>model specific</em> methods to calculate and visualize variable importance. They will be presented in Section <a href="3-2-featureImportance.html#modelSpecific">3.2.2</a>.</p>
+<p>Section <a href="3-2-featureImportance.html#modelAgnostic">3.2.1</a> presents a model agnostic approach on the basis of permutations. The advantage of this approach is that different models can be compared within a single setup.</p>
 <div id="modelAgnostic" class="section level3">
 <h3><span class="header-section-number">3.2.1</span> Model agnostic</h3>
-<p>Model agnostic variable importance is calculated via permutations. Simply the loss function is calculated for validation dataset minus the loss function calculated for validation dataset with permuted values for a single variable. This concept and some extensions are described in <span class="citation">(Fisher, Rudin, and Dominici <label for="tufte-mn-14" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2018<span class="marginnote">Fisher, Aaron, Cynthia Rudin, and Francesca Dominici. 2018. “Model Class Reliance: Variable Importance Measures for Any Machine Learning Model Class, from the ’Rashomon’ Perspective.” <em>Journal of Computational and Graphical Statistics</em>. <a href="http://arxiv.org/abs/1801.01489" class="uri">http://arxiv.org/abs/1801.01489</a>.</span>)</span>.</p>
-<p>This method is implemented in the <code>variable_importance()</code> function. The foss function is calculated for:</p>
+<p>Model agnostic variable importance is calculated by means of permutations. We simply substract the loss function calculated for validation dataset with permuted values for a single variable from the loss function calculated for validation dataset. This concept and some extensions are described in <span class="citation">(Fisher, Rudin, and Dominici <label for="tufte-mn-14" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-14" class="margin-toggle">2018<span class="marginnote">Fisher, Aaron, Cynthia Rudin, and Francesca Dominici. 2018. “Model Class Reliance: Variable Importance Measures for Any Machine Learning Model Class, from the ’Rashomon’ Perspective.” <em>Journal of Computational and Graphical Statistics</em>. <a href="http://arxiv.org/abs/1801.01489" class="uri">http://arxiv.org/abs/1801.01489</a>.</span>)</span>.</p>
+<p>This method is implemented in the <code>variable_importance()</code> function. The loss function is calculated for:</p>
 <ul>
-<li>the original validation <code>data</code>. This is an estimate of model performance and will be denoted as <code>_full_model_</code>,</li>
-<li>validation data with resampled labels <code>y</code>. This is kind of <em>worst case</em> loss when model are compared against random labels. Will be denoted as <code>_baseline_</code>,</li>
-<li>validation data with single variable being resampled. This will tell how much from the model performance is gone after the selected variable is blinded.</li>
+<li>the original validation <code>data</code>. It is an estimate of a model performance and will be denoted as <code>_full_model_</code>,</li>
+<li>validation data with resampled <code>y</code> labels. It is a kind of <em>worst case</em> loss when model are compared against random labels. It will be denoted as <code>_baseline_</code>,</li>
+<li>validation data with single variable being resampled. It tells us how much is gone from the model performance after the selected variable is blinded.</li>
 </ul>
-<p>Let’s see how this function is working for a random forest model.</p>
+<p>Let’s see how this function works for a random forest model.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">vi_rf &lt;-<span class="st"> </span><span class="kw">variable_importance</span>(explainer_rf, <span class="dt">loss_function =</span> loss_root_mean_square)</a>
 <a class="sourceLine" id="cb25-2" data-line-number="2">vi_rf</a></code></pre></div>
 <pre><code>##            variable dropout_loss        label
@@ -178,7 +178,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6          district     848.6363 randomForest
 ## 7        _baseline_    1097.4217 randomForest</code></pre>
 <p>
-<span class="marginnote">Here the <code>loss_root_mean_square()</code> function is defined as square root from averaged squared differences between labels and model predictions. </span> The same method may be applied to the linear model. Since we are using the same loss function and the same method for variable permutations then losses calculated with both methods can be directly compared.
+<span class="marginnote">Here the <code>loss_root_mean_square()</code> function is defined as square root from averaged squared differences between labels and model predictions. </span> The same method may be applied to a linear model. Since we are using the same loss function and the same method for variable permutations, the losses calculated with both methods can be directly compared.
 </p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">vi_lm &lt;-<span class="st"> </span><span class="kw">variable_importance</span>(explainer_lm, <span class="dt">loss_function =</span> loss_root_mean_square)</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2">vi_lm</a></code></pre></div>
@@ -200,12 +200,12 @@ Figure 3.1: Model agnostic variable importance plot. Right edges correspond to l
 </div>
 <p>What we can read out of this plot?</p>
 <ul>
-<li>left edges of intervals start in <code>_full_model_</code> for a give model. As we see the performances are similar for both models,</li>
-<li>length of the interval correspond to variable importance. In both models the most important variables are <code>district</code> and <code>surface</code>,</li>
-<li>in the random forest model the <code>construction_year</code> variable has some importance while for linear model its importance is almost zero,</li>
+<li>left edges of intervals start in <code>_full_model_</code> for a given model. As we can see. the performances are similar for both models,</li>
+<li>length of the interval corresponds to variable importance. In both models the most important variables are <code>district</code> and <code>surface</code>,</li>
+<li>in the random forest model the <code>construction_year</code> variable has some importance, while its importance for linear model is almost equal to zero,</li>
 <li>the variable <code>no.rooms</code> (which is correlated with <code>surface</code>) has some importance in the random forest model but not in the linear model.</li>
 </ul>
-<p>We may be interested in variables that behave differently between models (like <code>construction_year</code>) or variables that are important in both models (like <code>district</code> or <code>surface</code>). In the next section we introduce explainers for further investigations for these variables.</p>
+<p>We may be interested in variables that behave differently between models (like <code>construction_year</code>) or variables that are important in both models (like <code>district</code> or <code>surface</code>). In the next section we introduce explainers for further investigation of these variables.</p>
 <p><em>NOTE:</em> If you want variable importance hooked at 0, just add <code>type = &quot;difference&quot;</code> parameter to <code>variable_importance()</code>.</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">vi_lm &lt;-<span class="st"> </span><span class="kw">variable_importance</span>(explainer_lm, <span class="dt">loss_function =</span> loss_root_mean_square, <span class="dt">type =</span> <span class="st">&quot;difference&quot;</span>)</a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">vi_rf &lt;-<span class="st"> </span><span class="kw">variable_importance</span>(explainer_rf, <span class="dt">loss_function =</span> loss_root_mean_square, <span class="dt">type =</span> <span class="st">&quot;difference&quot;</span>)</a>
@@ -219,8 +219,8 @@ Figure 3.2: Model agnostic variable importance plot. Right edges correspond to d
 </div>
 <div id="modelSpecific" class="section level3">
 <h3><span class="header-section-number">3.2.2</span> Model specific</h3>
-<p>Some models have build-in tools for calculation of variable importance. Random forest is using two different measures, one based on out-of-bag data and second based on gains in nodes. Read more about this approach in <span class="citation">(Liaw and Wiener <label for="tufte-mn-15" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-15" class="margin-toggle">2002<span class="marginnote">Liaw, Andy, and Matthew Wiener. 2002. “Classification and Regression by randomForest.” <em>R News</em> 2 (3):18–22. <a href="http://CRAN.R-project.org/doc/Rnews/" class="uri">http://CRAN.R-project.org/doc/Rnews/</a>.</span>)</span>.</p>
-<p>Below we show an example of dot plot that summarizes default importance measure for random forest. The <code>varImpPlot()</code> function is available in the <code>randomForest</code> package.</p>
+<p>Some models have build-in tools for calculation of variable importance. Random forest uses two different measures - one based on out-of-bag data and second one based on gains in nodes. Read more about this approach in <span class="citation">(Liaw and Wiener <label for="tufte-mn-15" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-15" class="margin-toggle">2002<span class="marginnote">Liaw, Andy, and Matthew Wiener. 2002. “Classification and Regression by randomForest.” <em>R News</em> 2 (3):18–22. <a href="http://CRAN.R-project.org/doc/Rnews/" class="uri">http://CRAN.R-project.org/doc/Rnews/</a>.</span>)</span>.</p>
+<p>Below we show an example of a dot plot that summarizes default importance measure for a random forest. The <code>varImpPlot()</code> function is available in the <code>randomForest</code> package.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">varImpPlot</span>(apartments_rf_model)</a></code></pre></div>
 <div class="figure"><span id="fig:modelImportanceRF"></span>
 <p class="caption marginnote shownote">
@@ -228,8 +228,8 @@ Figure 3.3: Built-in variable importance plot for random forest
 </p>
 <img src="DALEX_files/figure-html/modelImportanceRF-1.png" alt="Built-in variable importance plot for random forest" width="672"  />
 </div>
-<p>It is also straightforward to assess variable importance for linear models and generalized models. It is simple since model coefficients have direct interpretation.</p>
-<p><a href="https://en.wikipedia.org/wiki/Forest_plot">Forest plots</a> were initially used in the meta analysis to visualize effects in different studies. But now they are frequently used to present summary characteristics for models with linear structure / created with <code>lm</code> or <code>glm</code> functions.</p>
+<p>It is easy to assess variable importance for linear models and generalized models, since model coefficients have direct interpretation.</p>
+<p><a href="https://en.wikipedia.org/wiki/Forest_plot">Forest plots</a> were initially used in the meta analysis to visualize effects in different studies. . At present, however, they are frequently used to present summary characteristics for models with linear structure / created with <code>lm</code> or <code>glm</code> functions.</p>
 <p>There are various implementations of forest plots in R. In the package <code>forestmodel</code> (see <span class="citation">(Kennedy <label for="tufte-mn-16" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-16" class="margin-toggle">2017<span class="marginnote">Kennedy, Nick. 2017. <em>Forestmodel: Forest Plots from Regression Models</em>. <a href="https://CRAN.R-project.org/package=forestmodel" class="uri">https://CRAN.R-project.org/package=forestmodel</a>.</span>)</span>) one can use <code>forest_model()</code> function to draw a forest plot. This package is based on the <code>broom</code> package (see <span class="citation">(Robinson <label for="tufte-mn-17" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-17" class="margin-toggle">2017<span class="marginnote">Robinson, David. 2017. <em>Broom: Convert Statistical Analysis Objects into Tidy Data Frames</em>. <a href="https://CRAN.R-project.org/package=broom" class="uri">https://CRAN.R-project.org/package=broom</a>.</span>)</span>) and this is why it handles a large variety of different regression models.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;forestmodel&quot;</span>)</a>
 <a class="sourceLine" id="cb32-2" data-line-number="2"><span class="kw">forest_model</span>(apartments_lm_model)</a></code></pre></div>

@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-05" />
+<meta name="date" content="2018-04-11" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -155,15 +155,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">DALEX: Descriptive mAchine Learning EXplanations</h1>
 <h4 class="author"><em>Przemysław Biecek</em></h4>
-<h4 class="date"><em>2018-04-05</em></h4>
+<h4 class="date"><em>2018-04-11</em></h4>
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<p><em>Machine Learning</em> (ML) models have lots of applications in classification or regression problems. Due to the increasing computational power of computers and complexity of data sources ML models are more and more sophisticated. Models created with techniques like boosting, bagging of neural networks are described by thousands of parameters. They are obscure, it is hard to trace the link between input variables and model outcomes, in fact they are treated like black boxes. They are used because of elasticity and high performance, but the lack of interpretability is one of their weakest sides.</p>
-<p>In many applications we need to know, understand or prove how the input variables are used in the model. We need to know the impact on particular variables on final model predictions. We need tools that extract useful information from thousands of model parameters.</p>
-<p>DALEX is a library with such tools. DALEX helps to understand how complex models are working. In this document we show two typical use-cases for DALEX: that increase our understanding of a model and that increase our understanding of predictions for particular data points.</p>
+<p><em>Machine Learning</em> (ML) models have a wide range of applications in classification or regression problems. Due to the increasing computational power of computers and complexity of data sources, ML models are becoming more and more sophisticated. Models created with the use of techniques such as boosting or bagging of neural networks are parametrized by thousands of coefficients. They are obscure; it is hard to trace the link between input variables and model outcomes - in fact they are treated as black boxes. They are used because due to their elasticity and high performance, but their deficiency in interpretability is one of their weakest sides.</p>
+<p>In many applications we need to know, understand or prove how the input variables are used in the model. We need to know the impact of particular variables on the final model predictions. Thus we need tools that extract useful information from thousands of model parameters.</p>
+<p>DALEX is a library with such tools. DALEX helps to understand the way complex models work. In this document we show two typical use-cases for DALEX: one case will increase our understanding of a model, while the other will increase our understanding of predictions for particular data points.</p>
 <p>
-<span class="marginnote">Figure 1.1. Workflow of a typical machine learning modeling. <br/> A) Modeling is a process in which domain knowledge and data are turned into models. <br/> B) Models are used to generate predictions. <br/> C) Understanding of a model structure may increase our knowledge and in consequence leads to a better model. DALEX helps here.<br/> D) Understanding of drivers behind particular model predictions may help to correct wrong decisions and in consequence leads to a better model. DALEX helps here. </span> <img src="images/mp_understanding.png"/>
+<span class="marginnote">Figure 1.1. Workflow of a typical machine learning modeling. <br/> A) Modeling is a process in which domain knowledge and data are turned into models. <br/> B) Models are used to generate predictions. <br/> C) Understanding of a model structure may increase our knowledge, and in consequence it may lead to a better model. DALEX helps here.<br/> D) Understanding of drivers behind a particular model’s predictions may help to correct wrong decisions, and in consequence it leads to a better model. DALEX helps here. </span> <img src="images/mp_understanding.png"/>
 </p> 
 </div>
 <p style="text-align: center;">
