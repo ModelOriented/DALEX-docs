@@ -1,5 +1,6 @@
-# DALEX
-Descriptive mAchine Learning EXplanations
+# DALEX Stories
 
-EXPERIMENTAL
+Examples and documentation for Descriptive mAchine Learning EXplanations (package [DALEX](https://pbiecek.github.io/DALEX/) ).
+
+See the rendered version https://pbiecek.github.io/DALEX_docs/
 
