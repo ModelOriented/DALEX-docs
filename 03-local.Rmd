@@ -5,8 +5,7 @@ In this chapter we introduce two groups of explainers that can be used to boost 
 * Section \@ref(outlierDetection) presents explainers that helps to identify outliers. 
 * Section \@ref(predictionBreakdown) presents explainers for model predictions. Each prediction can be split into parts attributed to particular variables.  Having found out which variables are important and whether the prediction is accurate, one can validate the model.
 
-Explainers presented here are illustrated on the basis of two models fitted to the `apartments` data.
-
+Explainers presented here are illustrated based on two models fitted to the `apartments` data.
 
 ```{r, warning=FALSE, message=FALSE}
 library("DALEX")

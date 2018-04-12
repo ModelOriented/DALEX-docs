@@ -21,7 +21,7 @@ They are used because due to their elasticity and high performance, but their de
 
 In many applications we need to know, understand or prove how the input variables are used in the model. We need to know the impact of particular variables on the final model predictions. Thus we need tools that extract useful information from thousands of model parameters.
 
-DALEX is a library with such tools. DALEX helps to understand the way complex models work.
+DALEX [see @DALEX] is an R [@RcoreT] library with such tools. DALEX helps to understand the way complex models work.
 In this document we show two typical use-cases for DALEX: one case will  increase our understanding of a model, while the other will increase our understanding of predictions for particular data points.
 
 <p><span class="marginnote">Figure 1.1. Workflow of a typical machine learning modeling. <br/>
