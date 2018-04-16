@@ -4,7 +4,7 @@ author: "Przemysław Biecek"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: 
-  tufte::tufte_html:
+  tint::tufte_html:
     split_by: chapter
 documentclass: book
 bibliography: [book.bib, packages.bib]
