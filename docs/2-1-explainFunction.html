@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-12" />
+<meta name="date" content="2018-04-17" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -30,6 +30,9 @@ MathJax.Hub.Config({
 
 <title>DALEX: Descriptive mAchine Learning EXplanations</title>
 
+<link href="libs/tufte-css-2015.12.29/tufte-fonts.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/tufte-background.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/tufte-italics.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 
 
@@ -168,7 +171,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>label</code> - a character, a name of the model that will be used in plots. <em>Required by</em>: plots. <em>Default</em>: extracted from the <code>class</code> attribute of the <code>model</code>.</li>
 </ul>
 <p>
-<span class="marginnote">Figure 2.2. The <code>explain()</code> function embeds <code>model</code>, validation <code>data</code> and <code>y</code> labels in a container. Model is accessed via universal interface specified by <code>predict_function()</code> and <code>link_function()</code>. The <code>label</code> field contains a unique name of the model. </span> <img src="images/explain_scheme.png"/>
+<span class="marginnote">Figure 2.2. The <code>explain()</code> function embeds <code>model</code>, validation <code>data</code> and <code>y</code> labels in a container. Model is accessed via universal interface specified by <code>predict_function()</code> and <code>link_function()</code>. The <code>label</code> field contains a unique name of the model.
+</span>
+<img src="images/explain_scheme.png"/>
 </p>
 <p>The next section introduces use cases of regression. It will help to understand how to use the <code>explain()</code> function and for what purposes. Same functions may be used for binary classification.</p>
 </div>

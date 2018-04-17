@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-12" />
+<meta name="date" content="2018-04-17" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -30,6 +30,9 @@ MathJax.Hub.Config({
 
 <title>DALEX: Descriptive mAchine Learning EXplanations</title>
 
+<link href="libs/tufte-css-2015.12.29/tufte-fonts.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/tufte-background.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/tufte-italics.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 
 
@@ -155,7 +158,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="variableResponse" class="section level2">
 <h2><span class="header-section-number">3.3</span> Variable response</h2>
 <p>Explainers presented in this section are designed to better understand the relation between a variable and a model output.</p>
-<p>Subsection <a href="3-3-variableResponse.html#pdpchapter">3.3.1</a> presents Partial Dependence Plots (PDP), one of the most popular methods for exploration of a relation between a continuous variable and a model outcome. Subsection <a href="3-3-variableResponse.html#accumulatedLocalEffects">3.3.2</a> presents Accumulated Local Effects Plots (ALEP), an extension of PDP more suited for highly correlated variables.</p>
+<p>Subsection <a href="3-3-variableResponse.html#pdpchapter">3.3.1</a> presents Partial Dependence Plots (PDP), one of the most popular methods for exploration of a relation between a continuous variable and a model outcome.
+Subsection <a href="3-3-variableResponse.html#accumulatedLocalEffects">3.3.2</a> presents Accumulated Local Effects Plots (ALEP), an extension of PDP more suited for highly correlated variables.</p>
 <p>Subsection <a href="3-3-variableResponse.html#mergingPathPlot">3.3.3</a> presents Merging Path Plots, a method for exploration of a relation between a categorical variable and a model outcome.</p>
 <div id="pdpchapter" class="section level3">
 <h3><span class="header-section-number">3.3.1</span> Partial Dependence Plot</h3>
@@ -191,7 +195,8 @@ Figure 3.7: Relation between output from models <code>apartments_rf_model</code>
 </div>
 <div id="accumulatedLocalEffects" class="section level3">
 <h3><span class="header-section-number">3.3.2</span> Accumulated Local Effects Plot</h3>
-<p>As demonstrated in section <a href="3-3-variableResponse.html#pdpchapter">3.3.1</a>, the Partial Dependence Plot presents the expected model response with respect to marginal distribution of <span class="math inline">\(x_{-i}\)</span>. In some cases, e.g. when repressors are highly correlated, expectation towards the marginal distribution may lead to biases/poorly extrapolated model responses.</p>
+<p>As demonstrated in section <a href="3-3-variableResponse.html#pdpchapter">3.3.1</a>, the Partial Dependence Plot presents the expected model response with respect to marginal distribution of <span class="math inline">\(x_{-i}\)</span>.
+In some cases, e.g. when repressors are highly correlated, expectation towards the marginal distribution may lead to biases/poorly extrapolated model responses.</p>
 <p>Accumulated local effects (ALE) plots (see <code>ALEPlot</code> package <span class="citation">(Apley <label for="tufte-mn-22" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-22" class="margin-toggle">2017<span class="marginnote">Apley, Dan. 2017. <em>ALEPlot: Accumulated Local Effects (Ale) Plots and Partial Dependence (Pd) Plots</em>. <a href="https://CRAN.R-project.org/package=ALEPlot" class="uri">https://CRAN.R-project.org/package=ALEPlot</a>.</span>)</span>) solve this problem by using conditional distribution <span class="math inline">\(x_{-i}|x_i = x_i^*\)</span>. This solution leads to more stable and reliable estimates (at least when the predictors are highly correlated).</p>
 <p>Estimation of the main effects for <code>construction.year</code> is similar to the PDP curves. We use here <code>DALEX::single_variable</code> function that calls <code>ALEPlot::ALEPlot</code> function to calculate the ALE curve for the variable <code>construction.year</code>.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">sva_rf  &lt;-<span class="st"> </span><span class="kw">single_variable</span>(explainer_rf, <span class="dt">variable =</span> <span class="st">&quot;construction.year&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;ale&quot;</span>)</a>

@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-12" />
+<meta name="date" content="2018-04-17" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -30,6 +30,9 @@ MathJax.Hub.Config({
 
 <title>DALEX: Descriptive mAchine Learning EXplanations</title>
 
+<link href="libs/tufte-css-2015.12.29/tufte-fonts.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/tufte-background.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/tufte-italics.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 
 
@@ -162,7 +165,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>These three steps are presented in Figure 2.1.</p>
 <p>
-<span class="marginnote">Figure 2.1. The overview of DALEX’s architecture. <br/><br/> <em>A)</em> Any predictive model with defined input <span class="math inline">\(x\)</span> and output <span class="math inline">\(y_{raw} \in \mathcal R\)</span> may be used. <br/><br/> <em>B)</em> Models are first enriched with additional metadata, such as a function that calculates predictions, validation data, model label or other components. The <code>explain()</code> function creates an object belonging to the <code>explainer</code> class that is used in further processing.<br/><br/> <em>C)</em> Specialized explainers calculate numerical summaries that can be plotted with generic <code>plot()</code> function. </span> <img src="images/architecture.png"/>
+<span class="marginnote">Figure 2.1. The overview of DALEX’s architecture. <br/><br/>
+<em>A)</em> Any predictive model with defined input <span class="math inline">\(x\)</span> and output <span class="math inline">\(y_{raw} \in \mathcal R\)</span> may be used. <br/><br/>
+<em>B)</em> Models are first enriched with additional metadata, such as a function that calculates predictions, validation data, model label or other components. The <code>explain()</code> function creates an object belonging to the <code>explainer</code> class that is used in further processing.<br/><br/>
+<em>C)</em> Specialized explainers calculate numerical summaries that can be plotted with generic <code>plot()</code> function.
+</span>
+<img src="images/architecture.png"/>
 </p> 
 </div>
 <p style="text-align: center;">

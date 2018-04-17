@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-04-12" />
+<meta name="date" content="2018-04-17" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -30,6 +30,9 @@ MathJax.Hub.Config({
 
 <title>DALEX: Descriptive mAchine Learning EXplanations</title>
 
+<link href="libs/tufte-css-2015.12.29/tufte-fonts.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/tufte-background.css" rel="stylesheet" />
+<link href="libs/tufte-css-2015.12.29/tufte-italics.css" rel="stylesheet" />
 <link href="libs/tufte-css-2015.12.29/tufte.css" rel="stylesheet" />
 
 
@@ -159,7 +162,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Section <a href="3-2-featureImportance.html#modelAgnostic">3.2.1</a> presents a model agnostic approach on the basis of permutations. The advantage of this approach is that different models can be compared within a single setup.</p>
 <div id="modelAgnostic" class="section level3">
 <h3><span class="header-section-number">3.2.1</span> Model agnostic</h3>
-<p>Model agnostic variable importance is calculated by means of permutations. We simply substract the loss function calculated for validation dataset with permuted values for a single variable from the loss function calculated for validation dataset. This concept and some extensions are described in <span class="citation">(Fisher, Rudin, and Dominici <label for="tufte-mn-16" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-16" class="margin-toggle">2018<span class="marginnote">Fisher, Aaron, Cynthia Rudin, and Francesca Dominici. 2018. “Model Class Reliance: Variable Importance Measures for Any Machine Learning Model Class, from the ’Rashomon’ Perspective.” <em>Journal of Computational and Graphical Statistics</em>. <a href="http://arxiv.org/abs/1801.01489" class="uri">http://arxiv.org/abs/1801.01489</a>.</span>)</span>.</p>
+<p>Model agnostic variable importance is calculated by means of permutations.
+We simply substract the loss function calculated for validation dataset with permuted values for a single variable from the loss function calculated for validation dataset. This concept and some extensions are described in <span class="citation">(Fisher, Rudin, and Dominici <label for="tufte-mn-16" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-16" class="margin-toggle">2018<span class="marginnote">Fisher, Aaron, Cynthia Rudin, and Francesca Dominici. 2018. “Model Class Reliance: Variable Importance Measures for Any Machine Learning Model Class, from the ’Rashomon’ Perspective.” <em>Journal of Computational and Graphical Statistics</em>. <a href="http://arxiv.org/abs/1801.01489" class="uri">http://arxiv.org/abs/1801.01489</a>.</span>)</span>.</p>
 <p>This method is implemented in the <code>variable_importance()</code> function. The loss function is calculated for:</p>
 <ul>
 <li>the original validation <code>data</code>. It is an estimate of a model performance and will be denoted as <code>_full_model_</code>,</li>
@@ -170,27 +174,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">vi_rf &lt;-<span class="st"> </span><span class="kw">variable_importance</span>(explainer_rf, <span class="dt">loss_function =</span> loss_root_mean_square)</a>
 <a class="sourceLine" id="cb25-2" data-line-number="2">vi_rf</a></code></pre></div>
 <pre><code>##            variable dropout_loss        label
-## 1      _full_model_     276.0107 randomForest
-## 2          no.rooms     384.1662 randomForest
-## 3 construction.year     393.6847 randomForest
-## 4             floor     446.0324 randomForest
-## 5           surface     463.1788 randomForest
-## 6          district     848.6363 randomForest
-## 7        _baseline_    1097.4217 randomForest</code></pre>
+## 1      _full_model_     285.1355 randomForest
+## 2          no.rooms     391.0710 randomForest
+## 3 construction.year     410.5866 randomForest
+## 4             floor     445.2164 randomForest
+## 5           surface     480.1431 randomForest
+## 6          district     843.6519 randomForest
+## 7        _baseline_    1081.3710 randomForest</code></pre>
 <p>
-<span class="marginnote">Here the <code>loss_root_mean_square()</code> function is defined as square root from averaged squared differences between labels and model predictions. </span> The same method may be applied to a linear model. Since we are using the same loss function and the same method for variable permutations, the losses calculated with both methods can be directly compared.
+<span class="marginnote">Here the <code>loss_root_mean_square()</code> function is defined as square root from averaged squared differences between labels and model predictions.
+</span>
+The same method may be applied to a linear model. Since we are using the same loss function and the same method for variable permutations, the losses calculated with both methods can be directly compared.
 </p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">vi_lm &lt;-<span class="st"> </span><span class="kw">variable_importance</span>(explainer_lm, <span class="dt">loss_function =</span> loss_root_mean_square)</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2">vi_lm</a></code></pre></div>
 <pre><code>##            variable dropout_loss label
-## 1      _full_model_     276.6243    lm
-## 2 construction.year     276.5978    lm
-## 3          no.rooms     284.5154    lm
-## 4             floor     498.7674    lm
-## 5           surface     636.1856    lm
-## 6          district     995.1654    lm
-## 7        _baseline_    1249.2592    lm</code></pre>
-<p>It is much easier to compare both models when these values are plotted close to each other. The generic <code>plot()</code> function may handle both models.</p>
+## 1      _full_model_     284.2788    lm
+## 2 construction.year     284.2638    lm
+## 3          no.rooms     295.5020    lm
+## 4             floor     495.7685    lm
+## 5           surface     600.4308    lm
+## 6          district    1025.7208    lm
+## 7        _baseline_    1232.6798    lm</code></pre>
+<p>It is much easier to compare both models when these values are plotted close to each other.
+The generic <code>plot()</code> function may handle both models.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">plot</span>(vi_lm, vi_rf)</a></code></pre></div>
 <div class="figure"><span id="fig:modelImportanceRaw"></span>
 <p class="caption marginnote shownote">
@@ -219,7 +226,8 @@ Figure 3.2: Model agnostic variable importance plot. Right edges correspond to d
 </div>
 <div id="modelSpecific" class="section level3">
 <h3><span class="header-section-number">3.2.2</span> Model specific</h3>
-<p>Some models have build-in tools for calculation of variable importance. Random forest uses two different measures - one based on out-of-bag data and second one based on gains in nodes. Read more about this approach in <span class="citation">(Liaw and Wiener <label for="tufte-mn-17" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-17" class="margin-toggle">2002<span class="marginnote">Liaw, Andy, and Matthew Wiener. 2002. “Classification and Regression by randomForest.” <em>R News</em> 2 (3):18–22. <a href="http://CRAN.R-project.org/doc/Rnews/" class="uri">http://CRAN.R-project.org/doc/Rnews/</a>.</span>)</span>.</p>
+<p>Some models have build-in tools for calculation of variable importance.
+Random forest uses two different measures - one based on out-of-bag data and second one based on gains in nodes. Read more about this approach in <span class="citation">(Liaw and Wiener <label for="tufte-mn-17" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-17" class="margin-toggle">2002<span class="marginnote">Liaw, Andy, and Matthew Wiener. 2002. “Classification and Regression by randomForest.” <em>R News</em> 2 (3):18–22. <a href="http://CRAN.R-project.org/doc/Rnews/" class="uri">http://CRAN.R-project.org/doc/Rnews/</a>.</span>)</span>.</p>
 <p>Below we show an example of a dot plot that summarizes default importance measure for a random forest. The <code>varImpPlot()</code> function is available in the <code>randomForest</code> package.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">varImpPlot</span>(apartments_rf_model)</a></code></pre></div>
 <div class="figure"><span id="fig:modelImportanceRF"></span>
