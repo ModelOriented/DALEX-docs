@@ -1,0 +1,308 @@
+---
+title: "How to use DALEX with caret"
+author: "Alicja Gosiewska"
+date: "2018-04-29"
+output: 
+  html_document:
+    toc: true  
+    toc_float: true
+    number_sections: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Introdution
+
+DALEX is designed to work with various black-box models like tree ensembles, linear models, neural networks etc. Unfortunately R packages that create such models are very inconsistent. Different tools use different interfaces to train, validate and use models. 
+
+In this vignette we will show explanations for models from [caret package](https://CRAN.R-project.org/package=caret) (Jed Wing et al. 2016).
+
+
+# Regression use case - apartments data
+
+```{r}
+library(DALEX)
+library(caret)
+```
+
+To illustrate applications of *DALEX* to regression problems we will use an artificial dataset `apartments` available in the *DALEX* package. Our goal is to predict the price per square meter of an apartment based on selected features such as construction year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one. Prices are given in Euro.
+
+```{r}
+data(apartments)
+head(apartments)
+```
+
+## The explain() function
+
+The first step of using the *DALEX* package is to wrap-up the black-box model with meta-data that unifies model interfacing. 
+
+Below, we use the *caret* function `train()` to fit 3 models: random forest, gradient boosting machine model, and neutral network.
+
+```{r, results = "hide"}
+set.seed(123)
+regr_rf <- train(m2.price~., data = apartments, method="rf", ntree = 100)
+
+regr_gbm <- train(m2.price~. , data = apartments, method="gbm")
+
+regr_nn <- train(m2.price~., data = apartments,
+                   method = "nnet",
+                   linout = TRUE,
+                   preProcess = c('center', 'scale'),
+                   maxit = 500,
+                   tuneGrid = expand.grid(size = 2, decay = 0),
+                   trControl = trainControl(method = "none", seeds = 1))
+```
+
+To create an explainer for these models it is enough to use `explain()` function with the *model*, *data* and *y* parameters. 
+Validation dataset for the models is `apartmentsTest` data from the *DALEX* package. 
+
+```{r}
+data(apartmentsTest)
+
+explainer_regr_rf <- DALEX::explain(regr_rf, label="rf", 
+                                    data = apartmentsTest, y = apartmentsTest$m2.price)
+
+explainer_regr_gbm <- DALEX::explain(regr_gbm, label = "gbm", 
+                                     data = apartmentsTest, y = apartmentsTest$m2.price)
+
+explainer_regr_nn <- DALEX::explain(regr_nn, label = "nn", 
+                                    data = apartmentsTest, y = apartmentsTest$m2.price)
+
+```
+
+
+## Model performance
+
+Function `model_performance()` calculates predictions and residuals for validation dataset.
+
+```{r}
+mp_regr_rf <- model_performance(explainer_regr_rf)
+mp_regr_gbm <- model_performance(explainer_regr_gbm)
+mp_regr_nn <- model_performance(explainer_regr_nn)
+```
+
+Generic function `print()` returns quantiles for residuals.
+
+```{r}
+mp_regr_rf
+```
+
+Generic function `plot()` shows reversed empirical cumulative distribution function for absolute values from residuals. Plots can be generated for one or more models.
+
+```{r}
+plot(mp_regr_rf, mp_regr_nn, mp_regr_gbm)
+```
+
+The figure above shows that majority of residuals for random forest and gbm are smaller than residuals for the neural network.
+
+We are also able to use the `plot()` function to get an alternative comparison of residuals. 
+Setting the `geom = "boxplot"` parameter we can compare the distribution of residuals for selected models.
+
+```{r}
+plot(mp_regr_rf, mp_regr_nn, mp_regr_gbm, geom = "boxplot")
+```
+
+
+## Variable importance
+
+Using he DALEX package we are able to better understand which variables are important.
+
+Model agnostic variable importance is calculated by means of permutations. We simply substract the loss function calculated for validation dataset with permuted values for a single variable from the loss function calculated for validation dataset. 
+
+This method is implemented in the `variable_importance()` function.
+
+```{r}
+vi_regr_rf <- variable_importance(explainer_regr_rf, loss_function = loss_root_mean_square)
+vi_regr_gbm <- variable_importance(explainer_regr_gbm, loss_function = loss_root_mean_square)
+vi_regr_nn <- variable_importance(explainer_regr_nn, loss_function = loss_root_mean_square)
+
+```
+
+We can compare all models using the generic `plot()` function.
+
+```{r}
+plot(vi_regr_rf, vi_regr_gbm, vi_regr_nn)
+```
+
+Left edges of intervals start in full model, as we can see performances for random forest and gbm are similar, while neutral network has worse performace.
+
+Length of the interval coresponds to a variable importance. Longer interval means larger loss, so the variable is more important.
+For random forest and gbm the rankings of the important variables are the same.
+
+## Variable response
+
+Explainers presented in this section are designed to better understand the relation between a variable and model output.
+
+For more details of methods desribed in this section see [Variable response section in DALEX docs](https://pbiecek.github.io/DALEX_docs/3-3-variableResponse.html).
+
+
+### Partial Dependence Plot
+
+Partial Dependence Plots (PDP) are one of the most popular methods for exploration of the relation between a continuous variable and the model outcome.
+
+Function `variable_response()` with the parameter `type = "pdp"` calls `pdp::partial()` function to calculate PDP response.
+
+```{r}
+pdp_regr_rf  <- variable_response(explainer_regr_rf, variable =  "construction.year", type = "pdp")
+pdp_regr_gbm  <- variable_response(explainer_regr_gbm, variable =  "construction.year", type = "pdp")
+pdp_regr_nn  <- variable_response(explainer_regr_nn, variable =  "construction.year", type = "pdp")
+
+plot(pdp_regr_rf, pdp_regr_gbm, pdp_regr_nn)
+```
+
+We use PDP plots to compare our 3 models. As we can see above performance of random forest and gbm is very similar. It looks like they capture the non-linear relation which wasn't captured by neutral network.
+
+### Acumulated Local Effects plot
+
+Acumulated Local Effects (ALE) plot is the extension of PDP, that is more suited for highly correlated variables.
+
+Function `variable_response()` with the parameter `type = "ale"` calls `ALEPlot::ALEPlot()` function to calculate the ALE curve for the variable `construction.year`.
+
+```{r}
+ale_regr_rf  <- variable_response(explainer_regr_rf, variable =  "construction.year", type = "ale")
+ale_regr_gbm  <- variable_response(explainer_regr_gbm, variable =  "construction.year", type = "ale")
+ale_regr_nn  <- variable_response(explainer_regr_nn, variable =  "construction.year", type = "ale")
+
+plot(ale_regr_rf, ale_regr_gbm, ale_regr_nn)
+```
+
+
+
+### Merging Path Plots
+
+Merging Path Plot is a method for exploration of a relation between a categorical variable and model outcome. 
+
+Function `variable_response()` with the parameter `type = "factor"` calls `factorMerger::mergeFactors()` function.
+
+```{r, fig.height = 10, fig.width= 7}
+mpp_regr_rf  <- variable_response(explainer_regr_rf, variable =  "district", type = "factor")
+mpp_regr_gbm  <- variable_response(explainer_regr_gbm, variable =  "district", type = "factor")
+mpp_regr_nn  <- variable_response(explainer_regr_nn, variable =  "district", type = "factor")
+
+plot(mpp_regr_rf, mpp_regr_gbm, mpp_regr_nn)
+```
+
+We can note three clusters: the city center (Srodmiescie), districts well communicated with city center (Ochota, Mokotow, Zoliborz) and other districts closer to city boundaries.
+
+# Classification use case - wine data
+
+To illustrate applications of *DALEX* to classification problems we will use a wine dataset available in the *breakDown* package. We want to classify the quality of wine. Originally this variable has 7 levels but in our example, it will be reduced to the binary classification. Our classification will be based on eleven features from this data set.
+
+White wine quality data is related to variants of the Portuguese "Vinho Verde" wine. For more details, consult: http://www.vinhoverde.pt/en/.
+
+```{r}
+library(breakDown)
+data(wine)
+
+wine$quality <- factor(ifelse(wine$quality > 5, 1, 0))
+```
+
+First, we use *caret* function `createDataPartition()` to create train and test datasets. 
+
+```{r}
+trainIndex <- createDataPartition(wine$quality, p = 0.6, list = FALSE, times = 1)
+wineTrain <- wine[ trainIndex,]
+wineTest  <- wine[-trainIndex,]
+```
+
+Next, we use `train()` to fit 3 classification models: random forest, logistic regression and support vector machines. 
+
+```{r classif_models, results = 'hide'}
+classif_rf <- train(quality~., data = wineTrain, method="rf", ntree = 100, tuneLength = 1)
+
+classif_glm <- train(quality~., data = wineTrain, method="glm", family="binomial")
+
+classif_svm <- train(quality~., data = wineTrain, method="svmRadial", prob.model = TRUE, tuneLength = 1)
+```
+
+
+As previously, to create an explainer for these models we use `explain()` function.
+Validation dataset for the models is `wineTest`.
+
+In this case we consider the differences between observed class and predicted probabilities to be residuals. So, we have to provide custom predict function which takes two arguments: *model* and *newdata* and returns a numeric vector with probabilities.
+
+```{r}
+p_fun <- function(object, newdata){predict(object, newdata=newdata, type="prob")[,2]}
+yTest <- as.numeric(as.character(wineTest$quality))
+
+explainer_classif_rf <- DALEX::explain(classif_rf, label = "rf",
+                                       data = wineTest, y = yTest,
+                                       predict_function = p_fun)
+
+explainer_classif_glm <- DALEX::explain(classif_glm, label = "glm", 
+                                        data = wineTest, y = yTest,
+                                        predict_function = p_fun)
+
+explainer_classif_svm <- DALEX::explain(classif_svm,  label = "svm", 
+                                        data = wineTest, y = yTest,
+                                        predict_function = p_fun)
+```
+
+
+
+## Model performance
+
+Function `model_performance()` calculates predictions and residuals for validation dataset `wineTest`.
+
+We use the generic `plot()` function to get a comparison of models.
+
+```{r}
+mp_classif_rf <- model_performance(explainer_classif_rf)
+mp_classif_glm <- model_performance(explainer_classif_glm)
+mp_classif_svm <- model_performance(explainer_classif_svm)
+
+plot(mp_classif_rf, mp_classif_glm, mp_classif_svm)
+```
+
+
+
+Setting the `geom = "boxplot"` parameter we can compare the distribution of residuals for selected models.
+
+```{r}
+plot(mp_classif_rf, mp_classif_glm, mp_classif_svm, geom = "boxplot")
+```
+
+
+## Variable importance
+
+Function `variable_importance()` computes variable importances which may be plotted.
+
+```{r}
+vi_classif_rf <- variable_importance(explainer_classif_rf, loss_function = loss_root_mean_square)
+vi_classif_glm <- variable_importance(explainer_classif_glm, loss_function = loss_root_mean_square)
+vi_classif_svm <- variable_importance(explainer_classif_svm, loss_function = loss_root_mean_square)
+
+plot(vi_classif_rf, vi_classif_glm, vi_classif_svm)
+```
+
+Left edges of intervals start in full model. Length of the interval coresponds to a variable importance. Longer interval means larger loss, so the variable is more important.
+
+
+## Variable response
+
+As previously we create explainers which are designed to better understand the relation between a variable and model output: PDP plots and ALE plots.
+For more details of methods desribed in this section see [Variable response section in DALEX docs](https://pbiecek.github.io/DALEX_docs/3-3-variableResponse.html).
+
+### Partial Depedence Plot
+
+```{r}
+pdp_classif_rf  <- variable_response(explainer_classif_rf, variable = "pH", type = "pdp")
+pdp_classif_glm  <- variable_response(explainer_classif_glm, variable = "pH", type = "pdp")
+pdp_classif_svm  <- variable_response(explainer_classif_svm, variable = "pH", type = "pdp")
+
+plot(pdp_classif_rf, pdp_classif_glm, pdp_classif_svm)
+```
+
+### Acumulated Local Effects plot
+
+```{r}
+ale_classif_rf  <- variable_response(explainer_classif_rf, variable = "alcohol", type = "ale")
+ale_classif_glm  <- variable_response(explainer_classif_glm, variable = "alcohol", type = "ale")
+ale_classif_svm  <- variable_response(explainer_classif_svm, variable = "alcohol", type = "ale")
+
+plot(ale_classif_rf, ale_classif_glm, ale_classif_svm)
+```
+
