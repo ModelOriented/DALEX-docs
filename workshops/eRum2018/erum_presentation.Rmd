@@ -1,0 +1,315 @@
+---
+title: "Prediction understanding"
+author: "Mateusz Staniak"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+```
+
+## Why explain a single prediction?
+
+(Bird's-eye view)
+
+![](ilustracje_erum/bird.jpg)
+  
+  * when important decision are made based on ML model, it needs to be **trustworthy**
+  
+  * trust comes from **understanding**
+
+  * the demand for interpretable algorithms is growing
+    (see: _Weapons of math destruction_, Facebook feed controversies etc.)
+  
+(Worm-eye view)
+
+![](ilustracje_erum/worm.jpg)
+
+  * this demand is transfered into legal regulations (see: RODO)
+  
+=>  more and more institutions have to explain model predictions
+  (debt collection, loans ...)
+  
+  * understanding models helps improve them
+  
+  
+## Which predictions need explanation?
+
+  1. Every prediction the client (or the boss) wants to understand
+  
+  2. Predictions that seem suspicious
+     
+     * How to spot them?
+     
+     * How to explain them?
+     
+  **=> model performance**
+  
+  **=> model diagnostics**
+  
+## Model diagnostics: example data
+
+```{r data}
+library(tidyverse)
+library(readr)
+library(randomForest)
+house <- read_csv("mieszkania.csv")
+house <- mutate_if(house, is.character, as.factor)
+house # pozmieniam nazwy na angielskie
+load("rda_files/house_rf.rda")
+house_task <- mlr::makeRegrTask(id = "mieszkania", data = house, target = "cena_m2")
+hrf <- mlr::getLearnerModel(house_rf)
+```
+
+## Model diagnostics: predicted vs observed values
+
+```{r pred_obs, echo = F}
+ggplot(tibble(x = house$cena_m2, y = predict(hrf)), aes(x, y)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, size = 1.2, color = "blue") +
+  theme_bw() +
+  xlab("True prices") +
+  ylab("Fitted prices")
+```
+
+  * Points on the plot should be close to the `y = x` line,
+  
+  * Questions:
+    
+    - is there a pattern? (For example: does the devation from true value grow as true value grows?)
+    
+    - are there any points especially far from the line (meaning: points with large residuals)?
+    
+## Model performance
+
+```{r performance}
+library(DALEX)
+rf_explainer <- explain(hrf, data = house, y = house$cena_m2)
+rf_perf <- model_performance(rf_explainer)
+plot(rf_perf, geom = "boxplot")
+```
+
+  * shortly summarizes the distribution of the absolute value of residuals
+  
+  * red dot is the root mean square error
+  
+  * we can put boxplots for several models on the same plot (simply by passing the as arguments to `plot`) to compare models
+  
+  * boxplots help discover outliers
+  
+## Single prediction explanation
+
+  * Once we identified predictions we want to explain, we need tools that will help us!
+  
+  * Methods:
+  
+    - LIME
+    
+    - Shapley values
+    
+    - Break Down
+    
+    - LIVE
+    
+  * Two main ideas:
+   
+    - Attribute scores to explanatory variables according to their influence on the prediction (**contributions**)
+    
+    - Fit a model locally around an observation and investigate it
+    
+    - NOTE: both approaches lead to local feature importance
+    
+  * Contributions: Shapley values and Break Down
+  
+  * Local models: LIME and LIVE
+  
+## LIME (Locally Interpretable Model-agnostic Explanations)
+
+  * General idea
+  
+  ![](ilustracje_erum/lime_intuition.png)
+  
+  * Some details:
+  
+    - Gaussian sampling for tabular, uniform sampling from interpretable inputs for image/text.
+  
+  - Scores for new observation are weighted by the distance from original observation.
+  
+  - Variable selection is usually based on ridge/lasso regression.
+  
+  - Weights are assigned to interpretable inputs to decide if they _vote_ for or against a given label.
+  
+  * Note: method depends on many hyperparameters
+  
+### Example  
+
+```{r lime}
+library(lime)
+explained_prediction <- house[4036, ]
+lime_explainer <- lime(house,
+                       model = hrf)
+model_type.randomForest <- function(x, ...) "regression"
+# predict_model.randomForest <- function(x, newdata, type, ...) {
+#   predict(x, newdata, type = "response")
+# }
+# lime_explanation <- lime::explain(house[4036, ],
+#                                   explainer = lime_explainer,
+#                                   n_features = 10,
+                                  # feature_select = "none")
+```
+
+LIME chwilowo nie działa, sprawdzę, o co chodzi i naprawię, wtedy będzie obrazek.
+
+  *  weights from ridge regression are on the plot (NOT weights multiplied by actual feature values)
+  
+  * positive weights are _for_, negative weights are _against_
+  
+
+## Shapley values
+
+  * General idea
+
+    - The goal is a decomposition of prediction into a **sum** of scores related to (simplified) features.
+  
+    - The problem is solved using game theory: _Shapley values_. 
+  Variables are _players_ who contribute to the outcome - the prediction - and we try to _pay_ them accordingly to their contributions.
+  
+  - This approach unifies several methods (including `LIME`).
+  
+  * Some details
+
+    - Exact methods exist for linear models and tree ensemble methods.
+  In other cases, approximations are needed.
+  
+    - The classic way: sample permutations of variables, then average contributions.
+  
+    - The better way: approximation based on LIME and Shapley values for regression.
+
+  * This method has good theoretical properties, but will not produce sparse explanations
+
+### Example
+
+```{r shapley}
+library(shapleyr)
+shapley_explanation <- shapley(4036,
+                               task = house_task,
+                               model = house_rf)
+class(shapley_explanation) <- c("shapley.singleValue", "list")
+gather(shapley_explanation$values, "feature", "shapley.score")
+plot(shapley_explanation)
+```
+
+  * **0** is the mean of all predictions
+  
+  * the **black dot** is the prediction we are explaining
+  
+  * values and the plot describe how we move from the global mean of predictions to this particular predictions
+  
+  * most important features are the ones that help move the most
+
+## But isn't it enough to calculate feature importance?
+  
+```{r global_feature_importance}
+global_feat_imp <- DALEX::variable_importance(rf_explainer)
+plot(global_feat_imp)
+```
+
+
+  * No. Particular instances can be influenced the most by different features,
+  not necessarily the ones that are most important globally.
+  
+
+## Break Down
+
+  * General idea
+  
+  ![](ilustracje_erum/breakdown_intuition.png)
+  
+  * Another approach to finding *additive* feature contributions
+  
+  * Contributions are assigned in a greedy manner
+  
+  * Waterfall plots as a visual tool
+
+**=> more intuitive interpretation**
+
+### Example
+
+  * Break Down for linear models
+
+```{r breakdown}
+linear_model <- lm(cena_m2 ~., data = house)
+lm_explainer <- DALEX::explain(linear_model, data = house, y = house$cena_m2)
+breakdown_linear <- single_prediction(lm_explainer, house[4036, -3])
+plot(breakdown_linear)
+```
+  
+    - Contributions are scaled, so they do not depend on the scale of the data (insensitive to location/scale change)
+  
+    - We can see actual contributions, not just the weights (as in LIME plots)
+
+  * Model-agnostic Break Down
+  
+```{r breakdown2}
+breakdown_explanation <- single_prediction(rf_explainer, house[4036, -3])
+plot(breakdown_explanation)
+```
+
+  * Again, we can see how important District and Year are in this random forest prediction
+
+## LIVE (Local Interpretable Visual Explanations)
+
+  * General idea
+  
+    - Modification of `LIME` for tabular data and regression problems with emphasis on model visualization.
+  
+    - Similar observations for _fake_ dataset are sampled from empirical distributions.
+    
+    - Variable selection is possible (LASSO, then explanation model is fitted to selected features).
+    
+  * More details
+  
+    - Two methods of creating the new dataset are available: by permuting each variable and by changing one feature per observations
+    
+    - We can control which variables are allowed to vary through `fixed` variable argument to `sample_locally` (keeping date/factor/correlated variables unchanged)
+    
+### Example
+
+```{r live}
+library(live)
+new_dataset <- sample_locally(data = house,
+                              explained_instance = house[4036, ],
+                              explained_var = "cena_m2",
+                              size = 1000)
+with_predictions <- add_predictions(new_dataset, hrf)
+live_explanation <- fit_explanation(with_predictions, "regr.lm")
+```
+    
+  Aktualnie standaryzacja zmiennych jest niepotrzebnie w sample_locally, jak to zmienię, forestplot będzie lepiej wyglądał, bo będzie po standaryzacji
+    
+  * Default method of sampling is _live_, default explanation model is linear regression and distance is measured (weights are assigned) by gaussian kernel.   
+
+  * Plot local model structure: forest plot
+  
+```{r forest}
+plot_explanation(live_explanation, "forest")
+```
+
+  * Plot local variable contributions: waterfall plot (Break Down)
+  
+```{r waterfall}
+plot_explanation(live_explanation, "waterfall")
+```
+
+## More
+
+
+  * More tools will be developed at MI2DataLab. See GitHub page https://github.com/MI2DataLab
+  
+  * Logo Data Labu?
+  
+  * Inne linki/zachęty?
