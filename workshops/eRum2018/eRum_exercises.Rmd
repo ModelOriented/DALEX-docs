@@ -8,43 +8,228 @@ output: pdf_document
 
 ### Exercise 1
 
-Fit random forest, linear regression and SVM to the housing prices data. Create DALEX explainer object for each of the models. Create and compare boxplots of residuals for all the models. Which model is the best?
+Run the following code to fit  random forest, linear regression and SVM to the housing prices data.
 
+```{r models, warning = F, message = F}
+library(tidyverse)
+library(live)
+library(DALEX)
+library(randomForest)
+library(e1071)
+library(auditor)
+load("./rda_files/houses.rda")
+
+house_rf <- randomForest(sqm_price ~., data = houses)
+house_svm <- svm(sqm_price ~., data = houses)
+house_lm <- lm(sqm_price ~., data = houses)
+```
+
+Create DALEX explainer object for each of the models. 
+Create and compare boxplots of residuals for all the models (`model_performance`). 
+
+  * Which model is the best?
+  * Are there any outlying predictions?
+  * Find the observation with the largest absolute value of residual among houses cheaper than 7000 PLN. 
+
+TIP: object returned by `model_performance` function is a data frame with colnames 
+_predicted_, _observed_, _diff_ and _label_.
 
 ### Exercise 2
 
-Draw plots of fitted vs observed values for each of these models. Can you spot any problems with the predictions? Are the prices usually underestimated of overestimated? Identify the worst predictions.
+Create single prediction explainers for the instance chosen in **Exercise 1**.
+Create Break Down plots for each of the observations. What are the keys factors that drive the prediction?
+Are they the same for every model?
+
+
+## Bonus for part 1:
+
+Draw plots of fitted vs observed values for each of these models. Can you spot any problems with the predictions? Are the prices usually underestimated of overestimated?
 
 
 ### Exercise 3
 
-Create single prediction explainers for a few of the worst predictions identified in Exercise 2. Create Break Down plots for each of the observations. What are the keys factors that drive the prediction?
+```{r ex3}
+n_obs <- 1189
+```
+
+Simulate new data around the observation from **Exercise 1** (its index is in the `n_obs` object.) and the add random forest predictions.
+Then fit a linear model locally.
+
+TIP: remember to load `mlr` package.
+TIP2: don't use too small `size` for the simulated dataset. I recommend at least 1000.
 
 
 ### Exercise 4
 
-Use shapleyR package to calculate Shapley values for predictions examined in Exercise 3. Are the results consistent with Break Down results?
+Visualize approximation created in **Exercise 3**.
+Use `plot_explanation2` function to create a forest plot of the linear model and then the Break Down plot. 
 
+### Bonus for part 2
+
+Use `add_predictions` function to add SVM and LM predictions to the simulated dataset. Compare plots for all three models.
 
 ### Exercise 5
 
-Create variable importance explainer. Compare global variable importance to scores obtained in Exercise 4 and Exercise 3 for chosen observations.
+Run the following code to train model random forest model using `mlr` interface 
+(this is necessary for `shapleyR` package).
+
+```{r ex51, message = F, warning = F}
+library(mlr)
+load("./rda_files/houses.rda")
+n_obs <- 1189
+
+house_task <- makeRegrTask(data = houses, target = "sqm_price")
+house_rf_mlr <- train("regr.randomForest", house_task)
+```
+
+Use shapleyR package to calculate Shapley values for prediction chosen in **Exercise 1** (its index is in `n_obs` object). 
+Are the results consistent with Break Down results from **Exercise 2**?
+Draw a plot of Shapley values.
+
+TIP: remember to set class of the object returned by `shapley` function to `shapley.singleValue` before using `plot`.
+
 
 ### Exercise 6
 
-Simulate new data around on of the _bad_ predictions from Exercise 3 using `sample_locally` function and then add predictions from black box models (`add_predictions` function). Then fit a linear model locally (`fit_explanation` function). Create waterfall plot and forest plot for the fitted model.
+Use `lime` package to approximate random forest model around prediction chosen in  **Exercise 1** (its index is in `n_obs` object).
+Follow the `lime` work flow: 
+  1. Create an explainer.
+  2. Approximate the model around the explained instane.
+  3. Use `plot_features` function to see, how features influence this prediction.
+
+
+TIP: use `house_rf_mlr` object from **Exercise 5**, because `lime` works well with `mlr` objects.
+
+
+### Bonus for part 3:
+
+Create variable importance explainer. Compare global variable importance to scores obtained in **Exercise 5** and **Exercise 6**.
 
 
 ## Solutions
 
 ### Exercise 1
 
+```{r sol1}
+rf_expl <- DALEX::explain(house_rf, data = houses, y = houses$sqm_price)
+svm_expl <- DALEX::explain(house_svm, data = houses, y = houses$sqm_price)
+lm_expl <- DALEX::explain(house_lm, data = houses, y = houses$sqm_price)
+
+rf_perf <- model_performance(rf_expl)
+svm_perf <- model_performance(svm_expl)
+lm_perf <- model_performance(lm_expl)
+
+plot(rf_perf, 
+     svm_perf,
+     lm_perf,
+     geom = "boxplot")
+
+arrange(rf_perf, desc(abs(diff))) %>%
+  filter(observed < 7000) %>%
+  head(5)
+arrange(svm_perf, desc(abs(diff))) %>%
+  filter(observed < 7000) %>%
+  head(5)
+arrange(lm_perf, desc(abs(diff))) %>%
+  filter(observed < 7000) %>%
+  head(5)
+
+n_obs <- which(houses$sqm_price == 1585)
+```
 
 ### Exercise 2
 
+```{r sol2}
+rf_expl_sp <- single_prediction(rf_expl, houses[n_obs, -3])
+svm_expl_sp <- single_prediction(svm_expl, houses[n_obs, -3])
+lm_expl_sp  <-single_prediction(lm_expl, houses[n_obs, -3])
+
+plot(rf_expl_sp,
+     svm_expl_sp,
+     lm_expl_sp)
+```
+
+### Bonus
+
+```{r solbonus1, warning = F, message = F}
+rf_audit <- audit(rf_expl)
+svm_audit <- audit(svm_expl)
+lm_audit <- audit(lm_expl)
+
+plotPrediction(rf_audit)
+plotPrediction(svm_audit)
+plotPrediction(lm_audit)
+```
 
 ### Exercise 3
+
+```{r sol3}
+library(live)
+library(mlr)
+
+houses_similar <- sample_locally2(houses, houses[n_obs, ], "sqm_price", 1000)
+houses_similar2 <- add_predictions2(houses_similar, house_rf)
+lm_approx <- fit_explanation2(houses_similar2, "regr.lm")
+
+lm_approx
+```
 
 
 ### Exercise 4
 
+```{r sol4}
+plot_explanation2(lm_approx, regr_plot_type = "forest")
+plot_explanation2(lm_approx, regr_plot_type = "waterfall")
+```
+
+
+### Bonus
+
+```{r bonsol2}
+houses_similar3 <- add_predictions2(houses_similar, house_svm)
+houses_similar4 <- add_predictions2(houses_similar, house_lm)
+lm_approx2 <- fit_explanation2(houses_similar3)
+lm_approx3 <- fit_explanation2(houses_similar4)
+
+plot_explanation2(lm_approx2, "waterfall")
+plot_explanation2(lm_approx3, "waterfall")
+
+plot_explanation2(lm_approx2, "forest")
+plot_explanation2(lm_approx3, "forest")
+```
+
+### Exercise 5
+
+```{r sol5}
+library(shapleyr)
+
+shapley_vals <- shapley(n_obs, house_task, house_rf_mlr)
+
+gather(shapley_vals$values, "colname", "contribution") %>%
+  filter(colname %in% colnames(houses)) %>%
+  mutate(contribution = as.numeric(contribution)) %>%
+  arrange(desc(abs(contribution)))
+# alternatively use just
+shapley_vals
+
+class(shapley_vals) <- c("shapley.singleValue", "list")
+plot(shapley_vals)
+```
+
+### Exercise 6
+
+```{r sol6}
+library(lime)
+lime_rf <- lime(houses, house_rf_mlr)
+lime_explanation <- lime::explain(houses[n_obs, ], lime_rf, n_features = 5)
+plot_features(lime_explanation)
+
+plot(rf_expl_sp)
+```
+
+### Bonus
+
+```{r bonsol3}
+rf_global <- variable_importance(rf_expl)
+plot(rf_global)
+```
