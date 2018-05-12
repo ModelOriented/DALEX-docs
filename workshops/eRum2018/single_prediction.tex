@@ -178,22 +178,27 @@ ggplot(tibble(x = houses$sqm_price, y = predict(hrf)), aes(x, y)) +
 \end{frame}
 
 \begin{frame}[fragile]{Model diagnostics: fitted vs observed}
-	% wstawic obrazek
+
+\begin{multicols}{2}
+	\includegraphics[scale=0.45]{ilustracje_erum/fitvsobs.png}
+
+	\columnbreak
 	\begin{itemize}
-		\item Points on the plot should be close to the \texttt{y = x} line,
+	\item Points on the plot should be close to the \texttt{y = x} line,
+	
+	\item Questions:
+	
+	\begin{itemize}
 		
-		\item Questions:
+		\item is there a pattern? (For example: does the devation from true value grow as true value grows?)
 		
-		    \begin{itemize}
-		    	
-		    	\item is there a pattern? (For example: does the devation from true value grow as true value grows?)
-		    	
-		    	\item are there any points especially far from the line (meaning: points with large residuals)?
-		    	
-		    \end{itemize}
+		\item are there any points especially far from the line (meaning: points with large residuals)?
 		
-		\item More diagnostic tools: \texttt{auditor} package
 	\end{itemize}
+	
+	\item More diagnostic tools: \texttt{auditor} package
+\end{itemize}
+\end{multicols}
 \end{frame}
 
 
@@ -209,13 +214,17 @@ plot(rf_perf, geom = "boxplot")
 \end{frame}
 
 \begin{frame}{Model performance}
-	% wstawic obrazek
+\begin{multicols}{2}
+	\includegraphics[scale=0.45]{ilustracje_erum/boxres.png}
+\columnbreak
 	\begin{itemize}
-		\item shortly summarizes the distribution of the absolute value of residuals
-		\item red dot is the root mean square error
-		\item we can put boxplots for several models on the same plot (simply by passing the as arguments to \texttt{plot}) to compare models
-		\item boxplots help discover outliers
-	\end{itemize}
+	\item shortly summarizes the distribution of the absolute value of residuals
+	\item red dot is the root mean square error
+	\item we can put boxplots for several models on the same plot (simply by passing the as arguments to \texttt{plot}) to compare models
+	\item boxplots help discover outliers
+\end{itemize}
+\end{multicols}
+
 \end{frame}
 
 \begin{frame}{Single prediction explanations}
@@ -276,7 +285,8 @@ plot(breakdown_linear)
 \end{frame}
 
 \begin{frame}{Break Down for linear models}
-	% \includegraphics{erum_ilustracje/}
+	\centering
+	\includegraphics[scale=0.45]{ilustracje_erum/breaklm.png}
 	\begin{itemize}
 		\item Contributions are scaled, so they do not depend on the scale of the data (insensitive to location/scale change)
 		\item We can see actual contributions, not just the weights (as in LIME plots)
@@ -293,7 +303,8 @@ plot(breakdown_explanation)
 
 
 \begin{frame}{Model-agnostic Break Down}
-	%\includegraphics{}
+	\centering
+	\includegraphics[scale=0.5]{ilustracje_erum/breakma.png}
 	\begin{itemize}
 		\item We can see how important District and Year are in this random forest prediction
 	\end{itemize}
@@ -304,7 +315,8 @@ plot(breakdown_explanation)
 global_feat_imp <- DALEX::variable_importance(rf_explainer)
 plot(global_feat_imp)
 	\end{lstlisting}
-	% includegraphics!	
+	\centering
+	\includegraphics[scale=0.48]{ilustracje_erum/global.png}	
 	
 	No. Particular instances can be influenced the most by different features,
 	not necessarily the ones that are most important globally.
@@ -342,7 +354,25 @@ house_rf_mlr <- train("regr.randomForest", house_task)
 shapley_explanation <- shapley(4036,
                                task = house_task,
                                model = house_rf_mlr)
+class(shapley_explanation) <- c("shapley.singleValue", "list")
+plot(shapley_explanation)
 	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Shapley values: example}
+	\centering
+	\includegraphics[height = 120px, width = 300px]{ilustracje_erum/shapley.png}
+	\begin{itemize}
+		\item \textbf{0} is the mean of all predictions
+		
+		\item the \textbf{black dot} is the prediction we are explaining
+		
+		\item values and the plot describe how we move from the global mean of predictions to this particular predictions
+		
+		\item most important features are the ones that help move the most
+		
+		\item many different \textit{paths} from the mean to the predictions are considered and averaged
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Shapley values: example}
@@ -370,24 +400,7 @@ gather(shapley_explanation$values, "feature", "shapley.score")
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Shapley values: example}
-% includegraphics
-\begin{lstlisting}
-class(shapley_explanation) <- c("shapley.singleValue", "list")
-plot(shapley_explanation)
-\end{lstlisting}
-\begin{itemize}
-	\item \textbf{0} is the mean of all predictions
-	
-	\item the \textbf{black dot} is the prediction we are explaining
-	
-	\item values and the plot describe how we move from the global mean of predictions to this particular predictions
-	
-	\item most important features are the ones that help move the most
-	
-	\item many different \textit{paths} from the mean to the predictions are considered and averaged
-\end{itemize}
-\end{frame}
+
 
 \begin{frame}{Time to practice!}
 	
@@ -460,11 +473,15 @@ TIP: remember to set class of the object returned by \texttt{shapley} function t
 \section{Local approximations}
 
 \begin{frame}{LIME: General idea}
-\includegraphics[scale=0.4]{ilustracje_erum/lime_intuition.png}
+	\begin{center}
+\includegraphics[scale=0.4]{ilustracje_erum/lime_intuition.png}		
+	\end{center}
 \end{frame}
 
 \begin{frame}{LIME: some details}
 	\begin{itemize}
+\item Observations are transformed to \textit{interpretable input space}
+
 \item Gaussian sampling for tabular, uniform sampling from interpretable inputs for image/text.
 
 \item Scores for new observation are weighted by the distance from original observation.
@@ -493,7 +510,8 @@ plot_features(lime_explanation)
 \end{frame}
 
 \begin{frame}{LIME: example}
-% \includegraphics	
+	\centering
+\includegraphics[scale = 0.53]{ilustracje_erum/lime.png}
 \begin{itemize}
 	\item weights from ridge regression are on the plot (NOT weights multiplied by actual feature values)
 	\item positive weights are \textit{votes for}, negative weights are \textit{against}
@@ -529,7 +547,9 @@ new_dataset <- sample_locally2(data = houses,
                                explained_var = "sqm_price",
                                size = 1000)
 with_predictions <- add_predictions2(new_dataset, hrf)
-live_explanation <- fit_explanation2(with_predictions, "regr.lm")
+live_explanation <- fit_explanation2(with_predictions, 
+                                     "regr.lm", 
+                                     standardize = TRUE)
 \end{lstlisting}
 \end{frame}
 
@@ -554,15 +574,20 @@ Explanation model:
 \end{frame}
 
 \begin{frame}[fragile]{Plot local model structure: forest plot}
-	x
+	\begin{center}
+	\includegraphics[scale=0.6]{ilustracje_erum/forest.png}		
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Plot local variable contributions: waterfall plot}
-	x
+	\begin{center}
+		\includegraphics[scale=0.6]{ilustracje_erum/waterfall.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Acknowledgement}
-	 logo UWr i IM
+	\centering
+	\includegraphics[scale=0.5]{ilustracje_erum/uwr.png}
 \end{frame} 
 
 
