@@ -15,13 +15,23 @@ knitr::opts_chunk$set(echo = TRUE,
 
 ## Outline
 
-1. Intro & `breakDown` package.
+1. Intro
 
-2. Local approximations: `live` package.
+2. Predictions breakdown
+  
+   * breakDown package
+   
+   * Shapley values
+   
+3. Local approximations
 
-3. Summary & state of the art solutions (LIME and Shapley values)
+   * LIVE
+   
+   * LIME
+   
+4. Summary
 
-# Intro & prediction breakdown
+# Introduction
 
 ## Why explain a single prediction?
 
@@ -138,6 +148,7 @@ plot(rf_perf, geom = "boxplot")
   
   * Local models: LIME and LIVE
   
+# Prediction breakdown
 
 ## Break Down
 
@@ -189,11 +200,60 @@ plot(global_feat_imp)
   * No. Particular instances can be influenced the most by different features,
   not necessarily the ones that are most important globally.
   
+
+## Shapley values
+
+  * General idea
+
+    - The goal is a decomposition of prediction into a **sum** of scores related to (simplified) features.
+  
+    - The problem is solved using game theory: _Shapley values_. 
+  Variables are _players_ who contribute to the outcome - the prediction - and we try to _pay_ them accordingly to their contributions.
+  
+  - This approach unifies several methods (including `LIME`).
+  
+  * Some details
+
+    - Exact methods exist for linear models and tree ensemble methods.
+  In other cases, approximations are needed.
+  
+    - The classic way: sample permutations of variables, then average contributions.
+  
+    - The better way: approximation based on LIME and Shapley values for regression.
+
+  * This method has good theoretical properties, but will not produce sparse explanations
+
+### Example
+
+```{r shapley}
+library(shapleyr)
+library(mlr)
+house_task <- makeRegrTask(data = houses, target = "sqm_price")
+house_rf_mlr <- train("regr.randomForest", house_task)
+
+shapley_explanation <- shapley(4036,
+                               task = house_task,
+                               model = house_rf_mlr)
+class(shapley_explanation) <- c("shapley.singleValue", "list")
+gather(shapley_explanation$values, "feature", "shapley.score")
+plot(shapley_explanation)
+```
+
+  * **0** is the mean of all predictions
+  
+  * the **black dot** is the prediction we are explaining
+  
+  * values and the plot describe how we move from the global mean of predictions to this particular predictions
+  
+  * most important features are the ones that help move the most
+
+  
 ## Time to practice!
 
 First set of exercises goes here
 
-# Part II: local approximations 
+
+# Local approximations 
 
 ## LIVE (Local Interpretable Visual Explanations)
 
@@ -242,14 +302,6 @@ plot_explanation2(live_explanation, "waterfall")
 ```
 
 
-## Time to practice!
-
-Second set of exercises goes here
-
-
-
-# Part III: state-of-the-art solutions & summary  
-  
 ## LIME (Locally Interpretable Model-agnostic Explanations)
 
   * General idea
@@ -271,10 +323,6 @@ Second set of exercises goes here
 ### Example  
 
 ```{r lime}
-library(mlr)
-house_task <- makeRegrTask(data = houses, target = "sqm_price")
-house_rf_mlr <- train("regr.randomForest", house_task)
-
 library(lime)
 explained_prediction <- houses[4036, ]
 lime_explainer <- lime(houses,
@@ -289,48 +337,6 @@ lime_explanation <- lime::explain(houses[4036, ],
   
   * positive weights are _for_, negative weights are _against_
   
-
-## Shapley values
-
-  * General idea
-
-    - The goal is a decomposition of prediction into a **sum** of scores related to (simplified) features.
-  
-    - The problem is solved using game theory: _Shapley values_. 
-  Variables are _players_ who contribute to the outcome - the prediction - and we try to _pay_ them accordingly to their contributions.
-  
-  - This approach unifies several methods (including `LIME`).
-  
-  * Some details
-
-    - Exact methods exist for linear models and tree ensemble methods.
-  In other cases, approximations are needed.
-  
-    - The classic way: sample permutations of variables, then average contributions.
-  
-    - The better way: approximation based on LIME and Shapley values for regression.
-
-  * This method has good theoretical properties, but will not produce sparse explanations
-
-### Example
-
-```{r shapley}
-library(shapleyr)
-shapley_explanation <- shapley(4036,
-                               task = house_task,
-                               model = house_rf_mlr)
-class(shapley_explanation) <- c("shapley.singleValue", "list")
-gather(shapley_explanation$values, "feature", "shapley.score")
-plot(shapley_explanation)
-```
-
-  * **0** is the mean of all predictions
-  
-  * the **black dot** is the prediction we are explaining
-  
-  * values and the plot describe how we move from the global mean of predictions to this particular predictions
-  
-  * most important features are the ones that help move the most
 
 ## Acknowledgement
 

@@ -8,7 +8,7 @@ output: pdf_document
 
 ### Exercise 1
 
-Run the following code to fit  random forest, linear regression and SVM to the housing prices data.
+Run the following code to fit random forest, linear regression and SVM to the housing prices data.
 
 ```{r models, warning = F, message = F}
 library(tidyverse)
@@ -19,6 +19,7 @@ library(e1071)
 library(auditor)
 load("./rda_files/houses.rda")
 
+set.seed(33)
 house_rf <- randomForest(sqm_price ~., data = houses)
 house_svm <- svm(sqm_price ~., data = houses)
 house_lm <- lm(sqm_price ~., data = houses)
@@ -34,6 +35,7 @@ Create and compare boxplots of residuals for all the models (`model_performance`
 TIP: object returned by `model_performance` function is a data frame with colnames 
 _predicted_, _observed_, _diff_ and _label_.
 
+
 ### Exercise 2
 
 Create single prediction explainers for the instance chosen in **Exercise 1**.
@@ -41,34 +43,7 @@ Create Break Down plots for each of the observations. What are the keys factors 
 Are they the same for every model?
 
 
-## Bonus for part 1:
-
-Draw plots of fitted vs observed values for each of these models. Can you spot any problems with the predictions? Are the prices usually underestimated of overestimated?
-
-
 ### Exercise 3
-
-```{r ex3}
-n_obs <- 1189
-```
-
-Simulate new data around the observation from **Exercise 1** (its index is in the `n_obs` object.) and the add random forest predictions.
-Then fit a linear model locally.
-
-TIP: remember to load `mlr` package.
-TIP2: don't use too small `size` for the simulated dataset. I recommend at least 1000.
-
-
-### Exercise 4
-
-Visualize approximation created in **Exercise 3**.
-Use `plot_explanation2` function to create a forest plot of the linear model and then the Break Down plot. 
-
-### Bonus for part 2
-
-Use `add_predictions` function to add SVM and LM predictions to the simulated dataset. Compare plots for all three models.
-
-### Exercise 5
 
 Run the following code to train model random forest model using `mlr` interface 
 (this is necessary for `shapleyR` package).
@@ -89,6 +64,35 @@ Draw a plot of Shapley values.
 TIP: remember to set class of the object returned by `shapley` function to `shapley.singleValue` before using `plot`.
 
 
+## Bonus 1:
+
+Draw plots of fitted vs observed values for each of these models. Can you spot any problems with the predictions? Are the prices usually underestimated of overestimated?
+
+
+### Bonus 2:
+
+Create variable importance explainer. Compare global variable importance to scores obtained in **Exercise 2** and **Exercise 3**.
+
+
+### Exercise 4
+
+```{r ex3}
+n_obs <- 1189
+```
+
+Simulate new data around the observation from **Exercise 1** (its index is in the `n_obs` object.) and the add random forest predictions.
+Then fit a linear model locally.
+
+TIP: remember to load `mlr` package.
+TIP2: don't use too small `size` for the simulated dataset. I recommend at least 1000.
+
+
+### Exercise 5
+
+Visualize approximation created in **Exercise 4**.
+Use `plot_explanation2` function to create a forest plot of the linear model and then the Break Down plot. 
+
+
 ### Exercise 6
 
 Use `lime` package to approximate random forest model around prediction chosen in  **Exercise 1** (its index is in `n_obs` object).
@@ -100,10 +104,32 @@ Follow the `lime` work flow:
 
 TIP: use `house_rf_mlr` object from **Exercise 5**, because `lime` works well with `mlr` objects.
 
+### Bonus 3
 
-### Bonus for part 3:
+Use `add_predictions` function to add SVM and LM predictions to the simulated dataset. Compare plots for all three models.
 
-Create variable importance explainer. Compare global variable importance to scores obtained in **Exercise 5** and **Exercise 6**.
+
+### Bonus 4
+
+Run the following code to see largest residuals for _Psie Pole_ district.
+
+```{r boncode}
+library(tidyverse)
+houses %>%
+  mutate(id = 1:n()) %>%
+  mutate(rf_pred = predict(house_rf)) %>%
+  mutate(abs_res = abs(sqm_price - rf_pred)) %>%
+  arrange(desc(abs_res)) %>%
+  filter(sqm_price < 7000,
+         district == "Psie Pole") %>%
+  head(5)
+
+n_obs2 <- 5830
+```
+
+Using `live` package, fit a linear model around the top observation.
+Compare waterfall plots for this prediction and the prediction from **Exercise 5**.
+How are they different?
 
 
 ## Solutions
@@ -124,13 +150,19 @@ plot(rf_perf,
      lm_perf,
      geom = "boxplot")
 
-arrange(rf_perf, desc(abs(diff))) %>%
+rf_perf %>%
+  mutate(id = 1:n()) %>%
+  arrange(desc(abs(diff))) %>%
   filter(observed < 7000) %>%
   head(5)
-arrange(svm_perf, desc(abs(diff))) %>%
+svm_perf %>%
+  mutate(id = 1:n()) %>%
+  arrange(desc(abs(diff))) %>%
   filter(observed < 7000) %>%
   head(5)
-arrange(lm_perf, desc(abs(diff))) %>%
+lm_perf %>%
+  mutate(id = 1:n()) %>%
+  arrange(desc(abs(diff))) %>%
   filter(observed < 7000) %>%
   head(5)
 
@@ -149,58 +181,9 @@ plot(rf_expl_sp,
      lm_expl_sp)
 ```
 
-### Bonus
-
-```{r solbonus1, warning = F, message = F}
-rf_audit <- audit(rf_expl)
-svm_audit <- audit(svm_expl)
-lm_audit <- audit(lm_expl)
-
-plotPrediction(rf_audit)
-plotPrediction(svm_audit)
-plotPrediction(lm_audit)
-```
-
 ### Exercise 3
 
 ```{r sol3}
-library(live)
-library(mlr)
-
-houses_similar <- sample_locally2(houses, houses[n_obs, ], "sqm_price", 1000)
-houses_similar2 <- add_predictions2(houses_similar, house_rf)
-lm_approx <- fit_explanation2(houses_similar2, "regr.lm")
-
-lm_approx
-```
-
-
-### Exercise 4
-
-```{r sol4}
-plot_explanation2(lm_approx, regr_plot_type = "forest")
-plot_explanation2(lm_approx, regr_plot_type = "waterfall")
-```
-
-
-### Bonus
-
-```{r bonsol2}
-houses_similar3 <- add_predictions2(houses_similar, house_svm)
-houses_similar4 <- add_predictions2(houses_similar, house_lm)
-lm_approx2 <- fit_explanation2(houses_similar3)
-lm_approx3 <- fit_explanation2(houses_similar4)
-
-plot_explanation2(lm_approx2, "waterfall")
-plot_explanation2(lm_approx3, "waterfall")
-
-plot_explanation2(lm_approx2, "forest")
-plot_explanation2(lm_approx3, "forest")
-```
-
-### Exercise 5
-
-```{r sol5}
 library(shapleyr)
 
 shapley_vals <- shapley(n_obs, house_task, house_rf_mlr)
@@ -216,6 +199,48 @@ class(shapley_vals) <- c("shapley.singleValue", "list")
 plot(shapley_vals)
 ```
 
+
+### Bonus 1
+
+```{r solbonus1, warning = F, message = F}
+rf_audit <- audit(rf_expl)
+svm_audit <- audit(svm_expl)
+lm_audit <- audit(lm_expl)
+
+plotPrediction(rf_audit)
+plotPrediction(svm_audit)
+plotPrediction(lm_audit)
+```
+
+### Bonus 2
+
+```{r bonsol3}
+rf_global <- variable_importance(rf_expl)
+plot(rf_global)
+```
+
+### Exercise 4
+
+```{r sol4}
+library(live)
+library(mlr)
+
+houses_similar <- sample_locally2(houses, houses[n_obs, ], "sqm_price", 1000)
+houses_similar2 <- add_predictions2(houses_similar, house_rf)
+lm_approx <- fit_explanation2(houses_similar2, "regr.lm")
+
+lm_approx
+```
+
+
+### Exercise 5
+
+```{r sol5}
+plot_explanation2(lm_approx, regr_plot_type = "forest")
+plot_explanation2(lm_approx, regr_plot_type = "waterfall")
+```
+
+
 ### Exercise 6
 
 ```{r sol6}
@@ -227,9 +252,36 @@ plot_features(lime_explanation)
 plot(rf_expl_sp)
 ```
 
-### Bonus
 
-```{r bonsol3}
-rf_global <- variable_importance(rf_expl)
-plot(rf_global)
+### Bonus 3
+
+```{r bonsol2}
+houses_similar3 <- add_predictions2(houses_similar, house_svm)
+houses_similar4 <- add_predictions2(houses_similar, house_lm)
+lm_approx2 <- fit_explanation2(houses_similar3)
+lm_approx3 <- fit_explanation2(houses_similar4)
+
+plot_explanation2(lm_approx2, "waterfall")
+plot_explanation2(lm_approx3, "waterfall")
+
+plot_explanation2(lm_approx2, "forest")
+plot_explanation2(lm_approx3, "forest")
+```
+
+
+
+### Bonus 4
+
+```{r bonsol4}
+library(live)
+library(mlr)
+n_obs2 <- 5830
+houses_similar <- sample_locally2(houses, houses[n_obs2, ], "sqm_price", 1000)
+houses_similar2 <- add_predictions2(houses_similar, house_rf)
+n_obs2expl <- fit_explanation2(houses_similar2)
+n_obs2expl
+
+plot_explanation2(n_obs2expl, "waterfall")
+
+plot_explanation2(lm_approx, regr_plot_type = "waterfall")
 ```
