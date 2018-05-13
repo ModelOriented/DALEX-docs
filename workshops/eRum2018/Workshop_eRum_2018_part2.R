@@ -26,6 +26,8 @@ plot(breakdown_explanation)
 ## Global feature importance ----
 global_feat_imp <- DALEX::variable_importance(rf_explainer)
 plot(global_feat_imp)
+### Compared to local
+plot(single_prediction(rf_explainer, houses[5147, -3]))
 ## Shapley values ----
 library(shapleyr)
 library(mlr)
