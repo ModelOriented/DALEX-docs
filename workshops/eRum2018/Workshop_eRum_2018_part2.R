@@ -5,6 +5,7 @@ library(tidyverse)
 library(randomForest)
 load(url("https://github.com/pbiecek/DALEX_docs/raw/master/workshops/eRum2018/houses.rda"))
 houses
+set.seed(2018-05-14)
 hrf <- randomForest(sqm_price ~., data = houses)
 ## Model diagnostics: fitted vs observed. ----
 library(DALEX)
