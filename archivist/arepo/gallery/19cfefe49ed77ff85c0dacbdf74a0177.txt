@@ -1,0 +1,7 @@
+       x            y               var type label
+1 1920.0 3517.112.... construction.year  pdp    lm
+2 1921.8 3516.700.... construction.year  pdp    lm
+3 1923.6 3516.288.... construction.year  pdp    lm
+4 1925.4 3515.876.... construction.year  pdp    lm
+5 1927.2 3515.464.... construction.year  pdp    lm
+6 1929.0 3515.052.... construction.year  pdp    lm

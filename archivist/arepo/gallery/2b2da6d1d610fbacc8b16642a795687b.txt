@@ -1,0 +1,7 @@
+     x            y               var type label
+1 1920 10.16064.... construction.year  ale    lm
+2 1922 9.702657.... construction.year  ale    lm
+3 1924 9.244673.... construction.year  ale    lm
+4 1927 8.557698.... construction.year  ale    lm
+5 1929 8.099715.... construction.year  ale    lm
+6 1931 7.641732.... construction.year  ale    lm

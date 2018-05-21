@@ -1,0 +1,2 @@
+     m2.price construction.year surface floor no.rooms    district
+1161     6679              2005      22     1        2 Srodmiescie

@@ -1,0 +1,7 @@
+       x            y               var type        label
+1 1920.0 3751.215.... construction.year  pdp randomForest
+2 1921.8 3787.609.... construction.year  pdp randomForest
+3 1923.6 3779.602.... construction.year  pdp randomForest
+4 1925.4 3766.142.... construction.year  pdp randomForest
+5 1927.2 3751.179.... construction.year  pdp randomForest
+6 1929.0 3751.766.... construction.year  pdp randomForest
