@@ -1,7 +1,0 @@
-  m2.price construction.year surface floor no.rooms    district
-1     5897              1953      25     3        1 Srodmiescie
-2     1818              1992     143     9        5     Bielany
-3     3643              1937      56     1        2       Praga
-4     3517              1995      93     7        3      Ochota
-5     3013              1992     144     6        5     Mokotow
-6     5795              1926      61     6        2 Srodmiescie

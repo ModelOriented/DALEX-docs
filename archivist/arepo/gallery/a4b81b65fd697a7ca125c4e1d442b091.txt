@@ -1,7 +1,0 @@
-           variable dropout_loss label
-1      _full_model_    0.0000000    lm
-2 construction.year   -0.2012837    lm
-3          no.rooms   12.4856172    lm
-4             floor  207.5967921    lm
-5           surface  326.6221040    lm
-6          district  715.4704273    lm
