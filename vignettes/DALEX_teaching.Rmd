@@ -51,6 +51,7 @@ Let's compare four models: fandom forest, svm, lm and the ground truth.
 library(randomForest)
 library(DALEX)
 library(e1071)
+library(rms)
 
 df <- data.frame(y, X1, X2, X3, X4, X5)
 
@@ -58,9 +59,19 @@ model_rf <- randomForest(y~., df)
 model_svm <- svm(y ~ ., df)
 model_lm <- lm(y ~ ., df)
 
+# thanks to https://github.com/pbiecek/DALEX/issues/24
+## important setup step required for use of rms functions
+dd <- datadist(df)
+options(datadist="dd")
+## add rcs terms to linear model
+## this is a very convenient, objective way to account for non-linearity
+## still a "linear" model because terms are linear combinations (additive)
+model_rms <- ols(y ~ rcs(X1) + rcs(X2) + rcs(X3) + rcs(X4) + rcs(X5), df)
+
 ex_rf <- explain(model_rf)
 ex_svm <- explain(model_svm)
 ex_lm <- explain(model_lm)
+ex_rms <- explain(model_rms, label = "rms", data = df[, -1], y = df$y)
 ex_tr <- explain(model_lm, data = df[,-1], 
                  predict_function = function(m, x) f(x[,1], x[,2], x[,3], x[,4], x[,5]), 
                  label = "True Model")
@@ -77,6 +88,7 @@ library(ggplot2)
 plot(single_variable(ex_rf, "X1"),
      single_variable(ex_svm, "X1"),
      single_variable(ex_lm, "X1"),
+     single_variable(ex_rms, "X1"),
      single_variable(ex_tr, "X1")) +
   ggtitle("Responses for X1. Truth: y ~ (2*x1 - 1)^2")
 ```
@@ -90,6 +102,7 @@ The random forest guesses the shape, svm is not that elastic, the linear model d
 plot(single_variable(ex_rf, "X2"),
      single_variable(ex_svm, "X2"),
      single_variable(ex_lm, "X2"),
+     single_variable(ex_rms, "X2"),
      single_variable(ex_tr, "X2")) +
   ggtitle("Responses for X2. Truth: y ~ sin(10 * x2)")
 ```
@@ -102,6 +115,7 @@ The random forest is still able to guesses the shape, svm and linear are close.
 plot(single_variable(ex_rf, "X3"),
      single_variable(ex_svm, "X3"),
      single_variable(ex_lm, "X3"),
+     single_variable(ex_rms, "X3"),
      single_variable(ex_tr, "X3")) +
   ggtitle("Responses for X3. Truth: y ~ x3^6")
 ```
@@ -114,6 +128,7 @@ The linear model is doing the best job (as expected), svm are still pretty good,
 plot(single_variable(ex_rf, "X4"),
      single_variable(ex_svm, "X4"),
      single_variable(ex_lm, "X4"),
+     single_variable(ex_rms, "X4"),
      single_variable(ex_tr, "X4")) +
   ggtitle("Responses for X4. Truth: y ~ (2 * x4 - 1)")
 ```
@@ -126,6 +141,7 @@ All models except the lieanr one are guessing the shape.
 plot(single_variable(ex_rf, "X5"),
      single_variable(ex_svm, "X5"),
      single_variable(ex_lm, "X5"),
+     single_variable(ex_rms, "X5"),
      single_variable(ex_tr, "X5")) +
   ggtitle("Responses for X5. Truth: y ~ |2 * x5 - 1|")
 ```
