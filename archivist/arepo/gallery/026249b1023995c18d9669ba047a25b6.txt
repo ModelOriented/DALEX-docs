@@ -1,7 +1,0 @@
-           variable dropout_loss        label
-1      _full_model_     285.1355 randomForest
-2          no.rooms     391.0710 randomForest
-3 construction.year     410.5866 randomForest
-4             floor     445.2164 randomForest
-5           surface     480.1431 randomForest
-6          district     843.6519 randomForest
