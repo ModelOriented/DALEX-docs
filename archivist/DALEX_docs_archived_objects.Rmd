@@ -1,0 +1,530 @@
+---
+title: "DALEX docs archived objects"
+author: "Alicja Gosiewska"
+date: "17 May 2018"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, results='asis', warning=FALSE, message=FALSE, cache=FALSE)
+```
+
+
+
+```{r}
+library(archivist)
+library(DALEX)
+library(gbm)
+library(ggplot2)
+library(knitr)
+library(randomForest)
+
+# store everything in the archivist repo
+addHooksToPrint(class=c("broken", "data.frame", "explainer", "gbm", "ggplot", "knitr_kable", 
+                        "lm", "model_performance_explainer", "randomForest", "summary.lm"),
+                 repoDir = "arepo", 
+                 repo = "DALEX_docs", user = "pbiecek", subdir = "archivist/arepo")
+```
+
+
+```{r, echo = FALSE}
+addHook <- function(object){
+  name <- deparse(substitute(object))
+  hook <- asave(object, repoDir = "arepo", artifactName = name)
+cat("Load ", name,": [`archivist::aread('pbiecek/DALEX_docs/archivist/arepo/", hook, "')`](https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/archivist/arepo/gallery/", hook, ".rda)"," \n \n", sep = "")
+}
+```
+
+# Chapter 2 Architecture of DALEX
+
+## 2.2 Use case: Regression. Apartment prices in Warsaw
+
+```{r, results = 'hide', fig.show = FALSE}
+library(DALEX)
+head(apartments)
+```
+
+
+```{r, echo = FALSE}
+print(kable(head(apartments)))
+```
+
+### 2.2.1 Model 1: Linear regression
+
+```{r, results = 'markup'}
+apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor +
+                         no.rooms + district, data = apartments)
+summary(apartments_lm_model)
+```
+
+```{r, echo = FALSE}
+addHook(apartments_lm_model)
+```
+
+
+```{r}
+predicted_mi2_lm <- predict(apartments_lm_model, apartmentsTest)
+sqrt(mean((predicted_mi2_lm - apartmentsTest$m2.price)^2))
+```
+
+
+```{r}
+explainer_lm <- explain(apartments_lm_model,
+                          data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
+
+```{r, echo = FALSE}
+addHook(explainer_lm)
+```
+
+### 2.2.2 Model 2: Random forest
+
+```{r, results = 'markup'}
+library("randomForest")
+set.seed(59)
+
+apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor +
+                      no.rooms + district, data = apartments)
+apartments_rf_model
+```
+
+```{r, echo = FALSE}
+addHook(apartments_rf_model)
+```
+
+
+```{r}
+predicted_mi2_rf <- predict(apartments_rf_model, apartmentsTest)
+sqrt(mean((predicted_mi2_rf - apartmentsTest$m2.price)^2))
+```
+
+```{r}
+explainer_rf <- explain(apartments_rf_model,
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
+
+```{r, echo = FALSE}
+addHook(explainer_rf)
+```
+
+# Chapter 3 Model understanding
+
+```{r}
+library("DALEX")
+apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor +
+                      no.rooms + district, data = apartments)
+
+library("randomForest")
+set.seed(59)
+apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor +
+                      no.rooms + district, data = apartments)
+```
+
+```{r, echo = FALSE}
+addHook(apartments_lm_model)
+addHook(apartments_rf_model)
+```
+
+```{r}
+explainer_lm <- explain(apartments_lm_model,
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+
+explainer_rf <- explain(apartments_rf_model,
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
+
+```{r, echo = FALSE}
+addHook(explainer_lm)
+addHook(explainer_rf)
+```
+
+## 3.1 Model performance
+
+```{r}
+predicted_mi2_lm <- predict(apartments_lm_model, apartmentsTest)
+sqrt(mean((predicted_mi2_lm - apartmentsTest$m2.price)^2))
+
+predicted_mi2_rf <- predict(apartments_rf_model, apartmentsTest)
+sqrt(mean((predicted_mi2_rf - apartmentsTest$m2.price)^2))
+```
+
+
+```{r, results='markup'}
+mp_lm <- model_performance(explainer_lm)
+mp_rf <- model_performance(explainer_rf)
+mp_lm
+mp_rf
+```
+
+```{r, echo = FALSE}
+addHook(mp_lm)
+addHook(mp_rf)
+```
+
+
+```{r}
+plot(mp_lm, mp_rf)
+```
+
+```{r, echo = FALSE}
+plot <- plot(mp_lm, mp_rf)
+addHook(plot)
+```
+
+```{r}
+plot(mp_lm, mp_rf, geom = "boxplot")
+```
+
+```{r, echo = FALSE}
+plot <- plot(mp_lm, mp_rf, geom = "boxplot")
+addHook(plot)
+```
+
+## 3.2 Feature importance
+
+### 3.2.1 Model agnostic
+
+```{r, results='markup'}
+vi_rf <- variable_importance(explainer_rf, loss_function = loss_root_mean_square)
+vi_rf
+```
+
+```{r, echo = FALSE}
+addHook(vi_rf)
+```
+
+```{r, results='markup'}
+vi_lm <- variable_importance(explainer_lm, loss_function = loss_root_mean_square)
+vi_lm
+```
+
+```{r, echo = FALSE}
+addHook(vi_lm)
+```
+
+```{r}
+plot(vi_lm, vi_rf)
+```
+
+```{r, echo = FALSE}
+plot <- plot(vi_lm, vi_rf)
+addHook(plot)
+```
+
+```{r}
+vi_lm <- variable_importance(explainer_lm, loss_function = loss_root_mean_square, type = "difference")
+vi_rf <- variable_importance(explainer_rf, loss_function = loss_root_mean_square, type = "difference")
+plot(vi_lm, vi_rf)
+```
+
+```{r, echo = FALSE}
+addHook(vi_lm)
+addHook(vi_rf)
+plot <- plot(vi_lm, vi_rf)
+addHook(plot)
+```
+
+### 3.2.2 Model specific
+
+```{r, fig.show = FALSE, results = 'hide'}
+varImpPlot(apartments_rf_model)
+```
+
+```{r, echo = FALSE}
+plot <- varImpPlot(apartments_rf_model)
+addHook(plot)
+```
+
+```{r}
+library("forestmodel")
+forest_model(apartments_lm_model)
+```
+
+```{r, echo = FALSE}
+plot <- forest_model(apartments_lm_model)
+addHook(plot)
+```
+
+```{r}
+library("sjPlot")
+plot_model(apartments_lm_model, type = "est", sort.est = TRUE)
+```
+
+```{r, echo = FALSE}
+plot <- plot_model(apartments_lm_model, type = "est", sort.est = TRUE)
+addHook(plot)
+```
+
+
+## 3.3 Variable response
+
+### 3.3.1 Partial Dependence Plot
+
+
+```{r}
+sv_rf  <- single_variable(explainer_rf, variable =  "construction.year", type = "pdp")
+plot(sv_rf)
+```
+
+```{r, echo = FALSE}
+addHook(sv_rf) 
+plot <- plot(sv_rf)
+addHook(plot)
+```
+
+```{r}
+sv_lm  <- single_variable(explainer_lm, variable =  "construction.year", type = "pdp")
+plot(sv_rf, sv_lm)
+```
+
+```{r, echo = FALSE}
+addHook(sv_lm)
+plot <- plot(sv_rf, sv_lm)
+addHook(plot)
+```
+
+### 3.3.2 Accumulated Local Effects Plot
+
+```{r ale}
+sva_rf  <- single_variable(explainer_rf, variable = "construction.year", type = "ale")
+sva_lm  <- single_variable(explainer_lm, variable = "construction.year", type = "ale")
+
+plot(sva_rf, sva_lm)
+```
+
+```{r, echo = FALSE}
+addHook(sva_rf)
+addHook(sva_lm)
+plot <- plot(sva_rf, sva_lm)
+addHook(plot)
+```
+
+
+### 3.3.3 Mering Path Plot
+
+
+```{r factorMerger}
+svd_rf  <- single_variable(explainer_rf, variable = "district", type = "factor")
+svd_lm  <- single_variable(explainer_lm, variable = "district", type = "factor")
+
+plot(svd_rf, svd_lm)
+```
+
+```{r, echo = FALSE}
+addHook(svd_rf)
+addHook(svd_lm)
+plot <- plot(svd_rf, svd_lm)
+addHook(plot)
+```
+
+# Chapter 4 Prediction understanding
+
+
+
+```{r}
+library("DALEX")
+apartments_lm_model <- lm(m2.price ~ construction.year + surface + floor +
+                      no.rooms + district, data = apartments)
+library("randomForest")
+set.seed(59)
+apartments_rf_model <- randomForest(m2.price ~ construction.year + surface + floor +
+                      no.rooms + district, data = apartments)
+```
+
+```{r, echo = FALSE}
+addHook(apartments_lm_model)
+addHook(apartments_rf_model)
+```
+
+
+```{r}
+explainer_lm <- explain(apartments_lm_model,
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+explainer_rf <- explain(apartments_rf_model,
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
+
+```{r, echo = FALSE}
+addHook(explainer_lm)
+addHook(explainer_rf)
+```
+
+## 4.1 Outlier detection
+
+```{r}
+mp_rf <- model_performance(explainer_rf)
+
+library("ggplot2")
+ggplot(mp_rf, aes(observed, diff)) + geom_point() +
+        xlab("Observed") + ylab("Predicted - Observed") +
+        ggtitle("Diagnostic plot for the random forest model") + theme_mi2()
+```
+
+```{r, echo = FALSE}
+addHook(mp_rf)
+plot <- ggplot(mp_rf, aes(observed, diff)) + geom_point() +
+        xlab("Observed") + ylab("Predicted - Observed") +
+        ggtitle("Diagnostic plot for the random forest model") + theme_mi2()
+addHook(plot)
+```
+
+```{r, results='markup'}
+which.min(mp_rf$diff)
+## 1161
+new_apartment <- apartmentsTest[which.min(mp_rf$diff), ]
+new_apartment
+```
+
+
+```{r, echo = FALSE}
+addHook(new_apartment)
+```
+
+4.2 Prediction breakDown
+
+```{r, results='markup'}
+new_apartment_rf <- single_prediction(explainer_rf, observation = new_apartment)
+breakDown:::print.broken(new_apartment_rf)
+```
+
+```{r, echo = FALSE}
+addHook(new_apartment_rf)
+```
+
+
+```{r}
+plot(new_apartment_rf)
+```
+
+```{r, echo = FALSE}
+plot <- plot(new_apartment_rf)
+addHook(plot)
+```
+
+```{r}
+new_apartment_lm <- single_prediction(explainer_lm, observation = new_apartment)
+plot(new_apartment_lm, new_apartment_rf)
+```
+
+```{r, echo = FALSE}
+addHook(new_apartment_lm)
+plot <- plot(new_apartment_lm) 
+addHook(plot)
+```
+
+# Chapter 5 Epilogue
+
+
+```{r}
+library("DALEX")
+
+apartments_lm_model_improved <- lm(m2.price ~ I(construction.year < 1935 | construction.year > 1995) + surface + floor +
+                         no.rooms + district, data = apartments)
+
+explainer_lm_improved <- explain(apartments_lm_model_improved,
+                          data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+
+mp_lm_improved <- model_performance(explainer_lm_improved)
+plot(mp_lm_improved, geom = "boxplot")
+```
+
+```{r, echo = FALSE}
+addHook(apartments_lm_model_improved)
+addHook(explainer_lm_improved)
+addHook(mp_lm_improved)
+plot <- plot(mp_lm_improved, geom = "boxplot")
+addHook(plot)
+```
+
+# Chapter 6 Exercises
+
+```{r, results = 'hide'}
+library("DALEX")
+library("gbm")
+
+apartments_gbm_model <- gbm(m2.price ~ construction.year + surface + floor +
+                         no.rooms + district, data = apartments, n.trees = 1000)
+
+explainer_gbm <- explain(apartments_gbm_model,
+                          data = apartmentsTest[,2:6], y = apartmentsTest$m2.price,
+                         predict_function = function(m, d) predict(m, d, n.trees = 1000))
+```
+
+```{r, echo = FALSE}
+addHook(apartments_gbm_model)
+addHook(explainer_gbm)
+```
+
+```{r, results = 'hide'}
+library("nnet")
+apartments_nnet_model <- nnet(m2.price ~ construction.year + surface + floor +
+                         no.rooms + district, data = apartments,
+                         linout=TRUE,
+                         size = 50, maxit=100)
+
+explainer_nnet <- explain(apartments_nnet_model,
+                          data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
+
+```{r, echo = FALSE}
+addHook(apartments_nnet_model)
+addHook(explainer_nnet)
+```
+
+```{r}
+library("e1071")
+apartments_svm_model <- svm(m2.price ~ construction.year + surface + floor +
+                         no.rooms + district, data = apartments)
+
+explainer_svm <- explain(apartments_svm_model,
+                          data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+
+```
+
+
+```{r, echo = FALSE}
+addHook(apartments_svm_model)
+addHook(explainer_svm)
+```
+
+```{r}
+library("caret")
+mapartments <- model.matrix(m2.price ~ ., data = apartments)
+mapartmentsTest <- model.matrix(m2.price ~ ., data = apartmentsTest)
+apartments_knn_model <- knnreg(mapartments, apartments[,1], k = 5)
+
+explainer_knn <- explain(apartments_knn_model,
+                          data = mapartmentsTest, y = apartmentsTest$m2.price)
+```
+
+```{r, echo = FALSE}
+addHook(apartments_knn_model)
+addHook(explainer_knn)
+```
+
+
+
+```{r}
+mp_knn <- model_performance(explainer_knn)
+mp_svm <- model_performance(explainer_svm)
+mp_gbm <- model_performance(explainer_gbm)
+mp_nnet <- model_performance(explainer_nnet)
+plot(mp_gbm, mp_nnet, mp_svm, mp_knn, geom = "boxplot")
+```
+
+
+```{r, echo = FALSE}
+addHook(mp_knn)
+addHook(mp_svm)
+addHook(mp_gbm)
+addHook(mp_nnet)
+plot <- plot(mp_gbm, mp_nnet, mp_svm, mp_knn, geom = "boxplot")
+addHook(plot)
+```
+
+
+
+

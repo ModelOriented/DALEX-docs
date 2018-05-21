@@ -1,0 +1,7 @@
+     x            y               var type        label
+1 1920 245.2582.... construction.year  ale randomForest
+2 1922 282.3868.... construction.year  ale randomForest
+3 1924 273.1835.... construction.year  ale randomForest
+4 1927 242.8690.... construction.year  ale randomForest
+5 1929 243.0960.... construction.year  ale randomForest
+6 1931 195.1553.... construction.year  ale randomForest

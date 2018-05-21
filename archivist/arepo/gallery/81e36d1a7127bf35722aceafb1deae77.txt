@@ -1,0 +1,11 @@
+# A tibble: 6 x 14
+  term_label  variable class level level_no     n term  estimate std.error
+  <chr>       <chr>    <chr> <chr>    <int> <int> <chr>    <dbl>     <dbl>
+1 constructi~ constru~ nume~ <NA>        NA  1000 cons~   -0.229     0.348
+2 surface     surface  nume~ <NA>        NA  1000 surf~  -10.2       0.578
+3 floor       floor    nume~ <NA>        NA  1000 floor  -99.5       3.09 
+4 no.rooms    no.rooms nume~ <NA>        NA  1000 no.r~  -37.7      15.8  
+5 district    district fact~ Bemo~        1    98 dist~    0        NA    
+6 district    <NA>     fact~ Biel~        2    96 dist~   17.2      40.5  
+# ... with 5 more variables: statistic <dbl>, p.value <dbl>,
+#   conf.low <dbl>, conf.high <dbl>, reference <lgl>

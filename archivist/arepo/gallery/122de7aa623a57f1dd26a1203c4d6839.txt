@@ -1,0 +1,7 @@
+  label          variable dropout_loss.x dropout_loss.y
+2    lm construction.year       284.2638       284.2788
+1    lm      _full_model_       284.2788       284.2788
+3    lm          no.rooms       295.5020       284.2788
+4    lm             floor       495.7685       284.2788
+5    lm           surface       600.4308       284.2788
+6    lm          district      1025.7208       284.2788
