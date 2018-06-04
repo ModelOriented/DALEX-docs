@@ -1,0 +1,147 @@
+---
+title: "What they have learned?"
+author: "Przemyslaw Biecek"
+date: "2018-05-20"
+output: 
+  html_document:
+    toc: true  
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 4.5)
+```
+
+
+# Introduction
+
+DALEX explainers may be used to see what type of relation the model can learn / what the model has learned.
+
+If we know the ground truth then we may verify model capability of learning particular types of relations.
+
+# Simulated data
+
+Let's simulate a model response as a function of four arguments
+
+$$
+(2x_1-1)^2 + sin(10 x_2) +  x_3^{6} + (2 x_4 - 1) + |2x_5-1| 
+$$
+
+```{r}
+set.seed(13)
+N <- 250
+X1 <- runif(N)
+X2 <- runif(N)
+X3 <- runif(N)
+X4 <- runif(N)
+X5 <- runif(N)
+
+f <- function(x1, x2, x3, x4, x5) {
+  ((x1-0.5)*2)^2-0.5 + sin(x2*10) + x3^6 + (x4-0.5)*2 + abs(2*x5-1) 
+}
+y <- f(X1, X2, X3, X4, X5)
+```
+
+# Model fits
+
+Let's compare four models: fandom forest, svm, lm and the ground truth.
+
+```{r, results="hide"}
+library(randomForest)
+library(DALEX)
+library(e1071)
+library(rms)
+
+df <- data.frame(y, X1, X2, X3, X4, X5)
+
+model_rf <- randomForest(y~., df)
+model_svm <- svm(y ~ ., df)
+model_lm <- lm(y ~ ., df)
+
+# thanks to https://github.com/pbiecek/DALEX/issues/24
+## important setup step required for use of rms functions
+dd <- datadist(df)
+options(datadist="dd")
+## add rcs terms to linear model
+## this is a very convenient, objective way to account for non-linearity
+## still a "linear" model because terms are linear combinations (additive)
+model_rms <- ols(y ~ rcs(X1) + rcs(X2) + rcs(X3) + rcs(X4) + rcs(X5), df)
+
+ex_rf <- explain(model_rf)
+ex_svm <- explain(model_svm)
+ex_lm <- explain(model_lm)
+ex_rms <- explain(model_rms, label = "rms", data = df[, -1], y = df$y)
+ex_tr <- explain(model_lm, data = df[,-1], 
+                 predict_function = function(m, x) f(x[,1], x[,2], x[,3], x[,4], x[,5]), 
+                 label = "True Model")
+```
+
+# Explainers
+
+For `X1` we want to see `(2*x1 - 1)^2`.
+
+The linear model cannot guess the relation without prior preprocessing, the random forest is seeing something but the closest bet is from svm models.
+
+```{r}
+library(ggplot2)
+plot(single_variable(ex_rf, "X1"),
+     single_variable(ex_svm, "X1"),
+     single_variable(ex_lm, "X1"),
+     single_variable(ex_rms, "X1"),
+     single_variable(ex_tr, "X1")) +
+  ggtitle("Responses for X1. Truth: y ~ (2*x1 - 1)^2")
+```
+
+For `X2` we want to see `sin(10 * x2)`.
+
+The random forest guesses the shape, svm is not that elastic, the linear model does not see anything.
+
+
+```{r}
+plot(single_variable(ex_rf, "X2"),
+     single_variable(ex_svm, "X2"),
+     single_variable(ex_lm, "X2"),
+     single_variable(ex_rms, "X2"),
+     single_variable(ex_tr, "X2")) +
+  ggtitle("Responses for X2. Truth: y ~ sin(10 * x2)")
+```
+
+For `X3` we want to see `x3^6`.
+
+The random forest is still able to guesses the shape, svm and linear are close.
+
+```{r}
+plot(single_variable(ex_rf, "X3"),
+     single_variable(ex_svm, "X3"),
+     single_variable(ex_lm, "X3"),
+     single_variable(ex_rms, "X3"),
+     single_variable(ex_tr, "X3")) +
+  ggtitle("Responses for X3. Truth: y ~ x3^6")
+```
+
+For `X4` we want to see `2 x4 - 1`.
+
+The linear model is doing the best job (as expected), svm are still pretty good, random forest model is more biased towards the mean.
+
+```{r}
+plot(single_variable(ex_rf, "X4"),
+     single_variable(ex_svm, "X4"),
+     single_variable(ex_lm, "X4"),
+     single_variable(ex_rms, "X4"),
+     single_variable(ex_tr, "X4")) +
+  ggtitle("Responses for X4. Truth: y ~ (2 * x4 - 1)")
+```
+
+For `X5` we want to see `|2 x5 - 1|`.
+
+All models except the lieanr one are guessing the shape.
+
+```{r}
+plot(single_variable(ex_rf, "X5"),
+     single_variable(ex_svm, "X5"),
+     single_variable(ex_lm, "X5"),
+     single_variable(ex_rms, "X5"),
+     single_variable(ex_tr, "X5")) +
+  ggtitle("Responses for X5. Truth: y ~ |2 * x5 - 1|")
+```
