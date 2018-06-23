@@ -1,0 +1,269 @@
+---
+title: "Comparison of breakDown, lime and shapleyR"
+author: "Aleksandra Grudzi¹¿"
+date: "15 czerwca 2018"
+output: 
+  html_document:
+    toc: true  
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+In the vignette below we will see how methods implemented in three R packages focuses on variables in selected model.
+For our model we consider breakDown, lime and shapleyr.
+
+```{r}
+library(breakDown)
+library(lime)
+library(shapleyr)
+```
+
+
+#Data
+To illustrate the differences in explanation of prediction between methods we will use an artificial dataset created below.
+```{r}
+set.seed(123)
+N <- 10000
+
+x1 <- 2*(runif(N) - 0.5)
+x2 <- 2*(runif(N) - 0.5)
+
+y1 <- sign(x1) + sign(x2) + rnorm(N)
+y2 <- sign(x1) * sign(x2) + rnorm(N)
+
+df <- data.frame(y1, y2, x1, x2)
+```
+
+We also want to find the differences between interactions and additive effect in model.
+
+
+#Models
+
+```{r}
+df_train <- df[1:1000,]
+df_test <- df[1001:nrow(df),]
+
+library(mlr)
+
+
+regr_task_y1 <- makeRegrTask(id = "df_y1", data = df_train[,-2], target = "y1")
+regr_lrn_rf_y1 <- makeLearner("regr.randomForest")
+regr_rf_y1 <- train(regr_lrn_rf_y1, regr_task_y1)
+
+regr_task_y2 <- makeRegrTask(id = "df_y2", data = df_train[,-1], target = "y2")
+regr_lrn_rf_y2 <- makeLearner("regr.randomForest")
+regr_rf_y2 <- train(regr_lrn_rf_y2, regr_task_y2)
+```
+
+
+
+#Methods
+In this vignette we would like to compare three approaches to analysis of a single prediction: [breakDown](https://arxiv.org/abs/1804.01955), [lime](https://arxiv.org/abs/1602.04938) and [shapley values](https://arxiv.org/abs/1705.07874).
+
+##breakDown
+*breakDown* is the methodology delevoped by PrzemysÅ‚aw Biecek and Mateusz Staniak. A description of the method can be found [here](https://arxiv.org/abs/1804.01955).
+
+
+This methodology is implemented by PrzemysÅ‚aw Biecek and Mateusz Staniak in the R package [*breakDown*](https://github.com/pbiecek/breakDown).
+
+The *breakDown* package is a model agnostic tool for decomposition of predictions from black boxes. Break Down Table shows contributions of every variable to a final prediction. Break Down Plot presents variable contributions in a concise graphical way. This package works for binary classifiers and general regression models.
+
+##lime
+*lime* is the methodology developed by Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. A description of the method can be found [here](https://arxiv.org/abs/1602.04938).
+
+The purpose of *lime* is to explain the predictions of black box classifiers. What this means is that for any given prediction and any given classifier it is able to determine a small set of features in the original data that has driven the outcome of the prediction.
+Using here package [*lime*](https://github.com/thomasp85/lime) is an R port of the Python lime package (https://github.com/marcotcr/lime) developed by the authors of the lime ( approach for black-box model explanations.
+
+##shapleyR
+
+A methodology based on the use of shapley values known from game theory to explain predictions is developed by Scott Lundberg and Su-In Lee. A description of the method can be found [here](https://arxiv.org/abs/1705.07874).
+
+The Shapley value is a method that gives a solution to the following problem: A coalition of players play a game, for which they get a payout, but it is not clear how to distribute the payout fairly among the players. The Shapley value solves this problem by trying out different coalitions of players to decide how much each player changes the amount of the payout. What does this have to do with machine learning? In machine learning, the features (= players) work together to get the payout (=predicted value). The Shapley value tells us, how much each feature contributed to the prediction. 
+
+This methodology is implemented by Hermann Redich in the R package [*shapleyR*](https://github.com/redichh/ShapleyR).
+
+#Model with additive effect
+
+Now for the three new observations we will compare results of *breakDown*, *lime* and *shapleyR* for model with additive effect between variables x1 and x2.
+
+
+## x1 = -1, x2 = -1
+
+###Explainers
+```{r}
+new_observation_1 <- data.frame(x1 = -1,x2 = -1)
+custom_predict <- function(object, newdata) {pred <- predict(object, newdata=newdata)
+                  response <- pred$data$response
+                  return(response)}
+
+df_test <- rbind(df_test, data.frame(y1 = sign(-1) + sign(-1) + rnorm(1) , y2 = sign(-1)*sign(-1) + rnorm(1), x1 = -1, x2 = -1),  data.frame(y1 = sign(-1) + sign(1) + rnorm(1) , y2 = sign(-1)*sign(1) + rnorm(1), x1 = -1, x2 = 1),
+                 data.frame(y1 = sign(0) + sign(0) + rnorm(1) , y2 = sign(0)*sign(0) + rnorm(1), x1 = 0, x2 = 0))
+
+br_new_observation_1 <- broken(regr_rf_y1, new_observation_1, data = df_test[,-c(1,2)], predict.function = custom_predict)
+
+explainer <- lime(df_train[,-c(1,2)], regr_rf_y1)
+
+lime_new_observation_1 <- lime::explain(new_observation_1, explainer, n_features = 2)
+
+regr.task <- makeRegrTask(id = "df_y1", data = df_test[,-2] , target = "y1")
+
+sh_new_observation_1 <- shapley(row.nr = 9001, task = regr.task, model = regr_rf_y1)
+
+
+```
+
+###Comparison
+
+```{r}
+plot(br_new_observation_1)
+plot_features(lime_new_observation_1)
+shapleyr:::plot.shapley.singleValue(sh_new_observation_1)
+```
+
+We see that in all methods both, x1 and x2 contradicts the predicted value of y1.
+
+## x1 = -1, x2 = 1
+
+
+###Explainers
+```{r}
+new_observation_2 <- data.frame(x1 = -1,x2 = 1)
+
+br_new_observation_2 <- broken(regr_rf_y1, new_observation_2, data = df_test[,-c(1,2)], predict.function = custom_predict)
+
+lime_new_observation_2 <- lime::explain(new_observation_2, explainer, n_features = 2)
+
+sh_new_observation_2 <- shapley(row.nr = 9002, task = regr.task, model = regr_rf_y1)
+```
+
+###Comparison
+
+```{r}
+plot(br_new_observation_2)
+plot_features(lime_new_observation_2)
+shapleyr:::plot.shapley.singleValue(sh_new_observation_2)
+```
+
+For all methods we see that variable x1 contradicts the prediction and x2 supports it.
+
+## x1 = 0, x2 = 0
+
+
+###Explainers
+```{r}
+new_observation_3 <- data.frame(x1 = 0,x2 = 0)
+
+br_new_observation_3 <- broken(regr_rf_y1, new_observation_3, data = df_test[,-c(1,2)], predict.function = custom_predict)
+
+lime_new_observation_3 <- lime::explain(new_observation_3, explainer, n_features = 5)
+
+sh_new_observation_3 <- shapley(row.nr = 9003, task = regr.task, model = regr_rf_y1)
+```
+
+###Comparison
+
+```{r}
+plot(br_new_observation_3)
+plot_features(lime_new_observation_3)
+shapleyr:::plot.shapley.singleValue(sh_new_observation_3)
+```
+
+For *breakDown* and *shapleyR* we see that both variables contradicts the prediction, but in *lime* method we see that both variables support the value od y1.
+
+
+#Model with interaction
+
+Now for the three new observations we will compare results of *breakDown*, *lime* and *shapleyR* for the model with interaction between variables x1 and x2.
+
+
+## x1 = -1, x2 = -1
+
+###Explainers
+```{r}
+new_observation_1 <- data.frame(x1 = -1,x2 = -1)
+
+br_new_observation_1 <- broken(regr_rf_y2, new_observation_1, data = df_test[,-c(1,2)], predict.function = custom_predict)
+
+explainer <- lime(df_train[,-c(1,2)], regr_rf_y2)
+
+lime_new_observation_1 <- lime::explain(new_observation_1, explainer, n_features = 2)
+
+regr.task <- makeRegrTask(id = "df_y2", data = df_test[,-1] , target = "y2")
+
+sh_new_observation_1 <- shapley(row.nr = 9001, task = regr.task, model = regr_rf_y2)
+
+
+```
+
+###Comparison
+
+```{r}
+plot(br_new_observation_1)
+plot_features(lime_new_observation_1)
+shapleyr:::plot.shapley.singleValue(sh_new_observation_1)
+```
+
+We see that in *lime* and *shapleyR* x1 and x2  support the predicted value of y2. In *breakDown* x1 supports and x2 contradicts prediction.
+
+##x1 = -1, x2 = 1
+
+
+###Explainers
+```{r}
+new_observation_2 <- data.frame(x1 = -1,x2 = 1)
+
+br_new_observation_2 <- broken(regr_rf_y2, new_observation_2, data = df_test[,-c(1,2)], predict.function = custom_predict)
+
+lime_new_observation_2 <- lime::explain(new_observation_2, explainer, n_features = 2)
+
+sh_new_observation_2 <- shapley(row.nr = 9002, task = regr.task, model = regr_rf_y2)
+```
+
+###Comparison
+
+```{r}
+plot(br_new_observation_2)
+plot_features(lime_new_observation_2)
+shapleyr:::plot.shapley.singleValue(sh_new_observation_2)
+```
+
+For all methods we see that both variables contradict the prediction.
+
+## x1 = 0, x2 = 0
+
+
+###Explainers
+```{r}
+new_observation_3 <- data.frame(x1 = 0,x2 = 0)
+
+br_new_observation_3 <- broken(regr_rf_y2, new_observation_3, data = df_test[,-c(1,2)], predict.function = custom_predict)
+
+lime_new_observation_3 <- lime::explain(new_observation_3, explainer, n_features = 5)
+
+sh_new_observation_3 <- shapley(row.nr = 9003, task = regr.task, model = regr_rf_y2)
+```
+
+###Comparison
+
+```{r}
+plot(br_new_observation_3)
+plot_features(lime_new_observation_3)
+shapleyr:::plot.shapley.singleValue(sh_new_observation_3)
+```
+
+For *breakDown* and *shapleyR* we see that both variables support the prediction, but in *lime* method we see that both variables contradict the value od y2.
+
+#Comparison for additive and interaction effect
+
+After plotting the values of explainers for *breakDown*, *lime* and *shapleyr* we see that for model with additive effect all three methods produce similar results (only in the case of observation with x1 = 0 and x2 = 0).
+On the other hand, when considering the model with interactions, we see that the results for our methods are usually different (only in the case of observation with x1 = -1 and x2 = 1 we have similar results).
+
+#Session info
+
+```{r}
+devtools::session_info()
+```
