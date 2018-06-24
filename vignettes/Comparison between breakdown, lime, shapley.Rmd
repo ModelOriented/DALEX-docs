@@ -121,7 +121,9 @@ sh_new_observation_1 <- shapley(row.nr = 9001, task = regr.task, model = regr_rf
 ```{r}
 plot(br_new_observation_1)
 plot_features(lime_new_observation_1)
+lime_new_observation_1
 shapleyr:::plot.shapley.singleValue(sh_new_observation_1)
+getShapleyValues(sh_new_observation_1)
 ```
 
 We see that in all methods both, x1 and x2 contradicts the predicted value of y1.
@@ -145,7 +147,9 @@ sh_new_observation_2 <- shapley(row.nr = 9002, task = regr.task, model = regr_rf
 ```{r}
 plot(br_new_observation_2)
 plot_features(lime_new_observation_2)
+lime_new_observation_2
 shapleyr:::plot.shapley.singleValue(sh_new_observation_2)
+getShapleyValues(sh_new_observation_2)
 ```
 
 For all methods we see that variable x1 contradicts the prediction and x2 supports it.
@@ -169,7 +173,9 @@ sh_new_observation_3 <- shapley(row.nr = 9003, task = regr.task, model = regr_rf
 ```{r}
 plot(br_new_observation_3)
 plot_features(lime_new_observation_3)
+lime_new_observation_3
 shapleyr:::plot.shapley.singleValue(sh_new_observation_3)
+getShapleyValues(sh_new_observation_3)
 ```
 
 For *breakDown* and *shapleyR* we see that both variables contradicts the prediction, but in *lime* method we see that both variables support the value od y1.
@@ -204,7 +210,9 @@ sh_new_observation_1 <- shapley(row.nr = 9001, task = regr.task, model = regr_rf
 ```{r}
 plot(br_new_observation_1)
 plot_features(lime_new_observation_1)
+lime_new_observation_1
 shapleyr:::plot.shapley.singleValue(sh_new_observation_1)
+getShapleyValues(sh_new_observation_1)
 ```
 
 We see that in *lime* and *shapleyR* x1 and x2  support the predicted value of y2. In *breakDown* x1 supports and x2 contradicts prediction.
@@ -228,7 +236,9 @@ sh_new_observation_2 <- shapley(row.nr = 9002, task = regr.task, model = regr_rf
 ```{r}
 plot(br_new_observation_2)
 plot_features(lime_new_observation_2)
+lime_new_observation_2
 shapleyr:::plot.shapley.singleValue(sh_new_observation_2)
+getShapleyValues(sh_new_observation_2)
 ```
 
 For all methods we see that both variables contradict the prediction.
@@ -252,7 +262,9 @@ sh_new_observation_3 <- shapley(row.nr = 9003, task = regr.task, model = regr_rf
 ```{r}
 plot(br_new_observation_3)
 plot_features(lime_new_observation_3)
+lime_new_observation_3
 shapleyr:::plot.shapley.singleValue(sh_new_observation_3)
+getShapleyValues(sh_new_observation_3)
 ```
 
 For *breakDown* and *shapleyR* we see that both variables support the prediction, but in *lime* method we see that both variables contradict the value od y2.
