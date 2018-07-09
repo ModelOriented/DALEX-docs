@@ -85,6 +85,13 @@ sv_svm
 # compare explainers
 plot(sv_rf, sv_svm)
 
+# another explainer
+sv_lm  <- single_variable(explainer_lm,
+                           variable = "construction.year",
+                           type     = "pdp")
+
+plot(sv_rf, sv_svm, sv_lm)
+
 #
 # Single categorical variable
 # Factor Merger Plots
@@ -102,14 +109,17 @@ plot(sv_svm)
 #
 # Model performance
 
-mp_svm <- model_performance(explainer_svm)
-mp_svm
-
 mp_rf <- model_performance(explainer_rf)
 mp_rf
 
 mp_lm <- model_performance(explainer_lm)
 mp_lm
+
+plot(mp_rf, mp_lm, geom = "boxplot")
+plot(mp_rf, mp_lm)
+
+mp_svm <- model_performance(explainer_svm)
+mp_svm
 
 plot(mp_svm, mp_rf, mp_lm, geom = "boxplot")
 plot(mp_svm, mp_rf, mp_lm)
@@ -136,6 +146,9 @@ plotResidual(audit_rf, variable = "construction.year")
 
 audit_lm <- audit(explainer_lm)
 plotResidual(audit_lm, variable = "construction.year")
+
+audit_svm <- audit(explainer_svm)
+plotResidual(audit_svm, variable = "construction.year")
 
 
 #
