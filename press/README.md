@@ -1,0 +1,1 @@
+* [When Is It Important for an Algorithm to Explain Itself?](https://hbr.org/2018/07/when-is-it-important-for-an-algorithm-to-explain-itself?utm_source=linkedin&utm_campaign=hbr&utm_medium=social) Harvard Business Review, 2018
