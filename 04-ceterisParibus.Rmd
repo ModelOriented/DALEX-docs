@@ -1,0 +1,100 @@
+# Ceteris Paribus Profiles {#ceterisParibus}
+
+In this chapter we introduce a universal tool for model exploration based on the Ceteris Paribus principle ^[Ceteris paribus is a Latin phrase meaning  "other things held constant" or "all else unchanged".]. 
+
+Methods presented in this chapter unify other popular techniques such as Partial Dependence Plots [@pdp], Individual Conditional Expectation Plots (ICEPlots) or Accumulated Local Effects Plots [@ALEPlot].
+
+
+* Section \@ref(cetParSingleObseSingleModel) presents Ceteris Paribus Plots applied for a single observation and single model.
+
+In this chapter we are using three models trained for `apartments` dataset, model trained with Random Forest method, Support Vector Machines and Linear Model.
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+set.seed(59)
+model_lm <- lm(m2.price ~ construction.year + surface + floor + 
+                      no.rooms + district, data = apartments)
+library("randomForest")
+model_rf <- randomForest(m2.price ~ construction.year + surface + floor + 
+                      no.rooms + district, data = apartments)
+
+library("e1071")
+model_svm <- svm(m2.price ~ construction.year + surface + floor + 
+                         no.rooms + district, data = apartments)
+```
+
+For these models we use `DALEX` explainers.
+
+```{r, warning=FALSE, message=FALSE}
+explainer_lm <- explain(model_lm, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+explainer_rf <- explain(model_rf, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+explainer_svm <- explain(model_svm, 
+                       data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
+```
+
+Examples presented in this chapter are generated with the `ceterisParibus` package.
+
+```{r, warning=FALSE, message=FALSE}
+library("ceterisParibus")
+```
+
+
+## What-If scenarios: Single Observation and Single Model {#cetParSingleObseSingleModel}
+
+Let's start with a simplest possible use-case. Here we will introduce Ceteris Paribus Plots for a single observation, a single model and a single variable.
+
+Our models are trained for the `apartments` data. Let's assume that we have a new apartment with following attributes.
+
+```{r, warning=FALSE, message=FALSE}
+aplevels <- levels(apartments$district)
+
+new_apartment <- data.frame(construction.year = 2000, 
+                            surface = 100,
+                            floor = 1L,
+                            no.rooms = 4,
+                            district = factor("Bemowo", levels = aplevels))
+new_apartment
+```
+
+And we are interested in the predicted price for this apartment calculated with the random forest model `model_rf`.
+
+```{r, warning=FALSE, message=FALSE}
+predict(model_rf, new_apartment)
+```
+
+We also know, that the variable `construction.year` is used in the model. So how would the model response change for different values of `construction.year` attribute?
+
+Based on this observation we create $N$ virtual apartments with `construction.year` span between 1920 and 2010. New values for this attribute are selected from empirical distribution of the `apartments$construction.year` variable. By default $N = 101$ so percentiles are used for new values of `construction.year`. 
+
+```{r, warning=FALSE, message=FALSE}
+profile_rf <- ceteris_paribus(explainer_rf, observations = new_apartment)
+profile_rf
+```
+
+Also note, that the `apartments` data is available in the model explainer specified as the first parameter of the `ceteris_paribus` function.
+
+These artificial apartments constitute profile of conditional model response for different values of `construction.year`. Such profiles may be plotted with the generic `plot()` function. Note that the `ceteris_paribus()` function by default calculates profiles for every variable in the dataset (this can be changes with the `variables` parameter). 
+
+We use `selected_variables` parameter in the `plot()` function to limit plot to only a single variable `construction.year`.
+
+```{r, warning=FALSE, message=FALSE}
+plot(profile_rf, selected_variables = "construction.year")
+```
+
+
+
+### Many variables
+
+```{r, warning=FALSE, message=FALSE}
+plot(profile_rf)
+```
+
+### Single Observation Many Models
+
+```{r, warning=FALSE, message=FALSE}
+profile_svm <- ceteris_paribus(explainer_svm, observations = new_apartment)
+plot(profile_rf, profile_svm, color = "_label_")
+```
+
