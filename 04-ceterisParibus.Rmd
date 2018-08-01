@@ -1,29 +1,47 @@
 # Ceteris Paribus Profiles {#ceterisParibus}
 
-In this chapter we introduce a universal tool for model exploration based on the Ceteris Paribus principle ^[Ceteris paribus is a Latin phrase meaning  "other things held constant" or "all else unchanged".]. 
+*NOTE: This chapter is still a work in progress. Expect changes.*
 
-Methods presented in this chapter unify other popular techniques such as Partial Dependence Plots [@pdp], Individual Conditional Expectation Plots (ICEPlots) or Accumulated Local Effects Plots [@ALEPlot].
+In this chapter we introduce a model agnostic method for model exploration based on the Ceteris Paribus principle ^[Ceteris paribus is a Latin phrase meaning  "other things held constant" or "all else unchanged".]. This universal method helps to understand both local and global structure of a model, helps to compare few models and is useful in diagnostic of model fit.
+
+Some specific versions of this method are in literature under different names, as Partial Dependence Plots [@pdp], Individual Conditional Expectation Plots (ICEPlots) or Accumulated Local Effects Plots [@ALEPlot]. Here we present an uniform yet more extensible approach. We adopt a new name for this approach, namely Ceteris Paribus Profiles, as it better described the idea behind.
+
+This chapter is divided into 5 sections. Each introduces a different aspect of Ceteris Paribus Profiles (CPP).
+
+* Section \@ref(cetParSingleObseSingleModel) introduces Ceteris Paribus profiles for a single observation and a single model. This section introduces basic concepts and notation behind CPP.
+
+* Section \@ref(cetParLocalObseSingleModel) show how to combine set of CP profiles around a single data point in orded to inspect a model locally. This allows to assess model stability, additivness and local fit.
+
+* Section \@ref(cetParGlobalObseSingleModel) show how to combine CP profiles for all observations in order to inspect global features of a model. 
+
+* Section \@ref(cetParGlobalObseMultipleModels) shows how CP profiles can be used for model comparisons on any level. Examples are related to single observation, local and global CP profiles.
+
+* Section \@ref(cetParSingleObseManyModel) shows how different profiles can be aligned on a single plot.
 
 
-* Section \@ref(cetParSingleObseSingleModel) presents Ceteris Paribus Plots applied for a single observation and single model.
+In this chapter we show examples for three predictive models trained on `apartments` dataset from the `DALEX` package. Random Forest model (elastic but biased), Support Vector Machines model (large variance on boundaries) and Linear Model (stable but not very elastic). 
+Presented examples are for regression (prediction of square meter price), but the CP profiles may be used in the same way for classification.
 
-In this chapter we are using three models trained for `apartments` dataset, model trained with Random Forest method, Support Vector Machines and Linear Model.
 
 ```{r, warning=FALSE, message=FALSE}
 library("DALEX")
-set.seed(59)
+# Linear model trained on apartments data
 model_lm <- lm(m2.price ~ construction.year + surface + floor + 
                       no.rooms + district, data = apartments)
+
 library("randomForest")
+set.seed(59)
+# Random Forest model trained on apartments data
 model_rf <- randomForest(m2.price ~ construction.year + surface + floor + 
                       no.rooms + district, data = apartments)
 
 library("e1071")
+# Support Vector Machinesr model trained on apartments data
 model_svm <- svm(m2.price ~ construction.year + surface + floor + 
                          no.rooms + district, data = apartments)
 ```
 
-For these models we use `DALEX` explainers.
+For these models we use `DALEX` explainers created with `explain()` function. There exapliners  wrap models, predict functions and validation data.
 
 ```{r, warning=FALSE, message=FALSE}
 explainer_lm <- explain(model_lm, 
@@ -34,18 +52,34 @@ explainer_svm <- explain(model_svm,
                        data = apartmentsTest[,2:6], y = apartmentsTest$m2.price)
 ```
 
-Examples presented in this chapter are generated with the `ceterisParibus` package.
+Examples presented in this chapter are generated with the `ceterisParibus` package in version `r installed.packages()["ceterisParibus","Version"]`.
 
 ```{r, warning=FALSE, message=FALSE}
 library("ceterisParibus")
 ```
 
 
-## What-If scenarios: Single Observation and Single Model {#cetParSingleObseSingleModel}
 
-Let's start with a simplest possible use-case. Here we will introduce Ceteris Paribus Plots for a single observation, a single model and a single variable.
 
-Our models are trained for the `apartments` data. Let's assume that we have a new apartment with following attributes.
+## Ceteris Paribus profiles for a single observation  {#cetParSingleObseSingleModel}
+
+Let $f_{M}(x): \mathcal R^{d} \rightarrow \mathcal R$ denote a predictive model, i.e. function that takes $d$ dimensional vector and calculate numerical score. In section in which we work with larger number of models we use subscript $M$ to index models. But to simplify notation, this subscript is omitted if profiles for only one model are considered. 
+
+Symbol $x \in \mathcal R^d$ refers to a point in the feature space. We use subscript $x_i$ to refer to a different data points and superscript $x^j$ to refer to specific dimensions. Additionally, let $x^{-j}$ denote all coordinates except $j$-th and let $x|^j=z$ denote a data point $x^*$ with all coordinates equal to $x$ except coordinate $j$ equal to value $z$. I.e. $\forall_{i \neq {j}} x^i = x^{*,i}$ and $x^j = z$. In other words $x|^j=z$ denote a $x$ with $j$th coordinate changed to $z$.
+
+Now we can define Ceteris Paribus Profile for model $f$, variable $j$ and point $x$ as
+
+$$
+CP^{f, j, x}(z) := f(x|^j = z).
+$$
+I.e. CP profile is a model response obtained for observations created based on $x$ with $j$ coordinated changes and all other coordinates kept unchanged.
+
+It is convenient to use an alternative name What-If Plots, since these profiles show what would happen if only a single variable is changed.
+
+
+#### Example
+
+Let's assume that we have a new apartment with following attributes.
 
 ```{r, warning=FALSE, message=FALSE}
 aplevels <- levels(apartments$district)
@@ -85,16 +119,105 @@ plot(profile_rf, selected_variables = "construction.year")
 
 
 
-### Many variables
+#### Many variables
 
 ```{r, warning=FALSE, message=FALSE}
 plot(profile_rf)
 ```
 
-### Single Observation Many Models
+
+
+
+
+
+
+
+
+#### Data selection
+
+![](images/data_points.png)
+![](images/data_points_neighbours.png)
+![](images/data_points_sample.png)
+
+
+## Local Structure and Single Model {#cetParLocalObseSingleModel}
+
+```{r, warning=FALSE, message=FALSE}
+neighbours <- select_neighbours(apartmentsTest, observation = new_apartment, n = 10)
+
+profile_rf_neig  <- ceteris_paribus(explainer_rf,  observations = neighbours, y = neighbours$m2.price)
+
+plot(profile_rf_neig, 
+      selected_variables = "surface", size_residuals = 2,
+      color_residuals = "red", show_residuals = TRUE, show_observations = FALSE) 
+```
+
+```{r, warning=FALSE, message=FALSE}
+plot(profile_rf_neig, 
+      selected_variables = "surface", size_residuals = 2,
+      color_residuals = "red", show_residuals = TRUE, show_observations = FALSE) +
+  ceteris_paribus_layer(profile_rf, size = 3, alpha = 1, color = "blue",
+                        selected_variables = "surface") 
+```
+
+```{r, warning=FALSE, message=FALSE}
+plot(profile_rf_neig, 
+      selected_variables = "surface", size_residuals = 2,
+      color_residuals = "red", show_residuals = TRUE, show_observations = FALSE) +
+  ceteris_paribus_layer(profile_rf, size = 3, alpha = 1, color = "blue",
+                        selected_variables = "surface") +
+  ceteris_paribus_layer(profile_rf_neig, size = 3, alpha = 1, color = "black",
+                        aggregate_profiles = mean, show_observations = FALSE,
+                        selected_variables = "surface")
+```
+
+## Global Structure and Single Model {#cetParGlobalObseSingleModel}
+
+```{r, warning=FALSE, message=FALSE}
+profile_rf_global  <- ceteris_paribus(explainer_rf, observations = apartments, y = apartments$m2.price)
+
+plot(profile_rf_global, 
+      selected_variables = c("construction.year", "surface"), 
+      aggregate_profiles = mean, show_observations = FALSE) 
+```
+
+
+
+```{r, warning=FALSE, message=FALSE}
+apartments_sample <- select_sample(apartments, n = 20)
+profile_rf_sample  <- ceteris_paribus(explainer_rf, observations = apartments_sample, y = apartments_sample$m2.price)
+
+plot(profile_rf_sample, 
+      selected_variables = c("construction.year", "surface"), 
+      alpha = 1, color = "black",
+      aggregate_profiles = mean, show_observations = FALSE) +
+  ceteris_paribus_layer(profile_rf_sample,
+            selected_variables = c("construction.year", "surface"), 
+            show_rugs = TRUE)
+```
+
+
+## What-If scenarios: Single Observation and Multiple Models {#cetParSingleObseManyModel}
 
 ```{r, warning=FALSE, message=FALSE}
 profile_svm <- ceteris_paribus(explainer_svm, observations = new_apartment)
-plot(profile_rf, profile_svm, color = "_label_")
+profile_lm  <- ceteris_paribus(explainer_lm, observations = new_apartment)
+plot(profile_rf, profile_svm, profile_lm, color = "_label_")
 ```
+
+
+## Global Structure and Multiple Models {#cetParGlobalObseMultipleModels}
+
+
+```{r, warning=FALSE, message=FALSE}
+profile_svm_global  <- ceteris_paribus(explainer_svm, observations = apartments_sample, y = apartments_sample$m2.price)
+profile_lm_global  <- ceteris_paribus(explainer_lm, observations = apartments_sample, y = apartments_sample$m2.price)
+
+plot(profile_rf_sample, profile_svm_global, profile_lm_global,
+      color = "_label_", alpha = 1,
+      selected_variables = c("construction.year", "surface"), 
+      aggregate_profiles = mean, show_observations = FALSE) 
+
+```
+
 
