@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-08-01" />
+<meta name="date" content="2018-08-02" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -150,7 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="5-ceterisParibus.html#ceterisParibus"><span class="toc-section-number">5</span> Ceteris Paribus Profiles</a><ul>
 <li><a href="5-1-cetParSingleObseSingleModel.html#cetParSingleObseSingleModel"><span class="toc-section-number">5.1</span> Ceteris Paribus profiles for a single observation</a></li>
-<li><a href="5-2-cetParLocalObseSingleModel.html#cetParLocalObseSingleModel"><span class="toc-section-number">5.2</span> Local Structure and Single Model</a></li>
+<li><a href="5-2-cetParLocalObseSingleModel.html#cetParLocalObseSingleModel"><span class="toc-section-number">5.2</span> Exploration of local structure with Ceteris Paribus profiles</a></li>
 <li><a href="5-3-cetParGlobalObseSingleModel.html#cetParGlobalObseSingleModel"><span class="toc-section-number">5.3</span> Global Structure and Single Model</a></li>
 <li><a href="5-4-cetParSingleObseManyModel.html#cetParSingleObseManyModel"><span class="toc-section-number">5.4</span> What-If scenarios: Single Observation and Multiple Models</a></li>
 <li><a href="5-5-cetParGlobalObseMultipleModels.html#cetParGlobalObseMultipleModels"><span class="toc-section-number">5.5</span> Global Structure and Multiple Models</a></li>
@@ -165,17 +165,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="cetParSingleObseSingleModel" class="section level2">
 <h2><span class="header-section-number">5.1</span> Ceteris Paribus profiles for a single observation</h2>
-<p>Let $f_{M}(x): R^{d} R $ denote a predictive model, i.e. function that takes <span class="math inline">\(d\)</span> dimensional vector and calculate numerical score. In section in which we work with larger number of models we use subscript <span class="math inline">\(M\)</span> to index models. But to simplify notation, this subscript is omitted if profiles for only one model are considered.</p>
+<p>Let <span class="math inline">\(f_{M}(x): \mathcal R^{d} \rightarrow \mathcal R\)</span> denote a predictive model, i.e. function that takes <span class="math inline">\(d\)</span> dimensional vector and calculate numerical score. In section in which we work with larger number of models we use subscript <span class="math inline">\(M\)</span> to index models. But to simplify notation, this subscript is omitted if profiles for only one model are considered.</p>
 <p>Symbol <span class="math inline">\(x \in \mathcal R^d\)</span> refers to a point in the feature space. We use subscript <span class="math inline">\(x_i\)</span> to refer to a different data points and superscript <span class="math inline">\(x^j\)</span> to refer to specific dimensions. Additionally, let <span class="math inline">\(x^{-j}\)</span> denote all coordinates except <span class="math inline">\(j\)</span>-th and let <span class="math inline">\(x|^j=z\)</span> denote a data point <span class="math inline">\(x^*\)</span> with all coordinates equal to <span class="math inline">\(x\)</span> except coordinate <span class="math inline">\(j\)</span> equal to value <span class="math inline">\(z\)</span>. I.e. <span class="math inline">\(\forall_{i \neq {j}} x^i = x^{*,i}\)</span> and <span class="math inline">\(x^j = z\)</span>. In other words <span class="math inline">\(x|^j=z\)</span> denote a <span class="math inline">\(x\)</span> with <span class="math inline">\(j\)</span>th coordinate changed to <span class="math inline">\(z\)</span>.</p>
 <p>Now we can define Ceteris Paribus Profile for model <span class="math inline">\(f\)</span>, variable <span class="math inline">\(j\)</span> and point <span class="math inline">\(x\)</span> as</p>
 <p><span class="math display">\[
 CP^{f, j, x}(z) := f(x|^j = z).
 \]</span>
 I.e. CP profile is a model response obtained for observations created based on <span class="math inline">\(x\)</span> with <span class="math inline">\(j\)</span> coordinated changes and all other coordinates kept unchanged.</p>
-<p>It is convenient to use an alternative name What-If Plots, since these profiles show what would happen if only a single variable is changed.</p>
-<div id="example" class="section level4">
-<h4><span class="header-section-number">5.1.0.1</span> Example</h4>
-<p>Let’s assume that we have a new apartment with following attributes.</p>
+<p>It is convenient to use an alternative name for this plot: What-If Plots. CP profiles show what would happen if only a single variable is changed.</p>
+<p>Figure 5.1 shows an example of Ceteris Paribus profile. The black dot stands for prediction for a single observation. Grey line show how the model response would change if in this single observation coordinate <code>surface</code> will be changes to selected value. From this profile one may read that the model response is non monotonic. If <code>construction.year</code> for this observation would be below 1935 the model response would be higher, but if construction year were between 1935 and 1995 the model response would be lower.</p>
+<div class="figure"><span id="fig:unnamed-chunk-26"></span>
+<p class="caption marginnote shownote">
+Figure 5.1: Ceteris Paribus profiles for a single observation
+</p>
+<img src="DALEX_files/figure-html/unnamed-chunk-26-1.png" alt="Ceteris Paribus profiles for a single observation" width="672"  />
+</div>
+<div id="how-to-do-this-in-r" class="section level4">
+<h4><span class="header-section-number">5.1.0.1</span> How to do this in R?</h4>
+<p>First, we need to specify an observation. Let’s assume that we have a new apartment with following attributes.</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">aplevels &lt;-<span class="st"> </span><span class="kw">levels</span>(apartments<span class="op">$</span>district)</a>
 <a class="sourceLine" id="cb49-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb49-3" data-line-number="3">new_apartment &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">construction.year =</span> <span class="dv">2000</span>, </a>
@@ -218,18 +225,14 @@ I.e. CP profile is a model response obtained for observations created based on <
 <p>These artificial apartments constitute profile of conditional model response for different values of <code>construction.year</code>. Such profiles may be plotted with the generic <code>plot()</code> function. Note that the <code>ceteris_paribus()</code> function by default calculates profiles for every variable in the dataset (this can be changes with the <code>variables</code> parameter).</p>
 <p>We use <code>selected_variables</code> parameter in the <code>plot()</code> function to limit plot to only a single variable <code>construction.year</code>.</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">plot</span>(profile_rf, <span class="dt">selected_variables =</span> <span class="st">&quot;construction.year&quot;</span>)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-29-1.png" width="672"  /></p>
-</div>
-<div id="many-variables" class="section level4">
-<h4><span class="header-section-number">5.1.0.2</span> Many variables</h4>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">plot</span>(profile_rf)</a></code></pre></div>
 <p><img src="DALEX_files/figure-html/unnamed-chunk-30-1.png" width="672"  /></p>
 </div>
-<div id="data-selection" class="section level4">
-<h4><span class="header-section-number">5.1.0.3</span> Data selection</h4>
-<p><img src="images/data_points.png" />
-<img src="images/data_points_neighbours.png" />
-<img src="images/data_points_sample.png" /></p>
+<div id="ceteris-paribus-for-many-variables" class="section level4">
+<h4><span class="header-section-number">5.1.0.2</span> Ceteris Paribus for many variables</h4>
+<p>There is no reason to limit our perspective to only one variable. The <code>plot()</code> function by default plots profiles for all numerical variables.</p>
+<p>Use the <code>selected_variables</code> parameter to limit number of variables to be presented.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">plot</span>(profile_rf)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-31-1.png" width="672"  /></p>
 </div>
 </div>
 <p style="text-align: center;">

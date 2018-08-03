@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-08-01" />
+<meta name="date" content="2018-08-02" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -150,7 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="has-sub"><a href="5-ceterisParibus.html#ceterisParibus"><span class="toc-section-number">5</span> Ceteris Paribus Profiles</a><ul>
 <li><a href="5-1-cetParSingleObseSingleModel.html#cetParSingleObseSingleModel"><span class="toc-section-number">5.1</span> Ceteris Paribus profiles for a single observation</a></li>
-<li><a href="5-2-cetParLocalObseSingleModel.html#cetParLocalObseSingleModel"><span class="toc-section-number">5.2</span> Local Structure and Single Model</a></li>
+<li><a href="5-2-cetParLocalObseSingleModel.html#cetParLocalObseSingleModel"><span class="toc-section-number">5.2</span> Exploration of local structure with Ceteris Paribus profiles</a></li>
 <li><a href="5-3-cetParGlobalObseSingleModel.html#cetParGlobalObseSingleModel"><span class="toc-section-number">5.3</span> Global Structure and Single Model</a></li>
 <li><a href="5-4-cetParSingleObseManyModel.html#cetParSingleObseManyModel"><span class="toc-section-number">5.4</span> What-If scenarios: Single Observation and Multiple Models</a></li>
 <li><a href="5-5-cetParGlobalObseMultipleModels.html#cetParGlobalObseMultipleModels"><span class="toc-section-number">5.5</span> Global Structure and Multiple Models</a></li>
@@ -164,7 +164,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="row">
 <div class="col-sm-12">
 <div id="cetParLocalObseSingleModel" class="section level2">
-<h2><span class="header-section-number">5.2</span> Local Structure and Single Model</h2>
+<h2><span class="header-section-number">5.2</span> Exploration of local structure with Ceteris Paribus profiles</h2>
+<p>Profiles presented in the Section <a href="5-1-cetParSingleObseSingleModel.html#cetParSingleObseSingleModel">5.1</a> are also useful for exploration of the local structure of a model. This may be usefull to</p>
+<ul>
+<li>assess local fitness of a model,</li>
+<li>assess stability of a model,</li>
+<li>assess local additivity of a model.</li>
+</ul>
+<p>To assess the local structure of a model we use points from validation data that are close to the point of interest (see Figure 5.2).</p>
+<p>
+<span class="marginnote shownote">
+<!--
+<div class="figure">--><span id="fig:unnamed-chunk-32"></span>
+<img src="images/data_points_neighbours.png" alt="Red point stands for the new observation, while green points stand for it's neighbours from validation data." width="657"  />
+<!--
+<p class="caption marginnote">-->Figure 5.2: Red point stands for the new observation, while green points stand for it’s neighbours from validation data.<!--</p>-->
+<!--</div>--></span>
+</p>
+<div class="figure"><span id="fig:unnamed-chunk-33"></span>
+<p class="caption marginnote shownote">
+Figure 5.3: Blue point stands for the point of interests. Black points are predictions for the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. Grey profiles are for neighbours.
+</p>
+<img src="DALEX_files/figure-html/unnamed-chunk-33-1.png" alt="Blue point stands for the point of interests. Black points are predictions for the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. Grey profiles are for neighbours. " width="672"  />
+</div>
+<div class="figure"><span id="fig:unnamed-chunk-34"></span>
+<p class="caption marginnote shownote">
+Figure 5.4: Blue point stands for the point of interests. Red points are the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. The red intervals are residuals - differences between the true label and the model response. The grey profiles are Ceteris Paribus profiles for neighbours.
+</p>
+<img src="DALEX_files/figure-html/unnamed-chunk-34-1.png" alt="Blue point stands for the point of interests. Red points are the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. The red intervals are residuals - differences between the true label and the model response. The grey profiles are Ceteris Paribus profiles for neighbours. " width="672"  />
+</div>
+<div id="how-to-do-this-in-r-1" class="section level4">
+<h4><span class="header-section-number">5.2.0.1</span> How to do this in R?</h4>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">neighbours &lt;-<span class="st"> </span><span class="kw">select_neighbours</span>(apartmentsTest, <span class="dt">observation =</span> new_apartment, <span class="dt">n =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb57-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb57-3" data-line-number="3">profile_rf_neig  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf,  <span class="dt">observations =</span> neighbours, <span class="dt">y =</span> neighbours<span class="op">$</span>m2.price)</a>
@@ -172,13 +202,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb57-5" data-line-number="5"><span class="kw">plot</span>(profile_rf_neig, </a>
 <a class="sourceLine" id="cb57-6" data-line-number="6">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb57-7" data-line-number="7">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-31-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-35-1.png" width="672"  /></p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">plot</span>(profile_rf_neig, </a>
 <a class="sourceLine" id="cb58-2" data-line-number="2">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb58-3" data-line-number="3">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb58-4" data-line-number="4"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>,</a>
 <a class="sourceLine" id="cb58-5" data-line-number="5">                        <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>) </a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-32-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-36-1.png" width="672"  /></p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">plot</span>(profile_rf_neig, </a>
 <a class="sourceLine" id="cb59-2" data-line-number="2">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb59-3" data-line-number="3">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
@@ -187,7 +217,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb59-6" data-line-number="6"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf_neig, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</a>
 <a class="sourceLine" id="cb59-7" data-line-number="7">                        <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb59-8" data-line-number="8">                        <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-33-1.png" width="672"  /></p>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-37-1.png" width="672"  /></p>
+</div>
 </div>
 <p style="text-align: center;">
 <a href="5-1-cetParSingleObseSingleModel.html"><button class="btn btn-default">Previous</button></a>

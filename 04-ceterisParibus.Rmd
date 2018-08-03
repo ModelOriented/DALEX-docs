@@ -74,12 +74,28 @@ CP^{f, j, x}(z) := f(x|^j = z).
 $$
 I.e. CP profile is a model response obtained for observations created based on $x$ with $j$ coordinated changes and all other coordinates kept unchanged.
 
-It is convenient to use an alternative name What-If Plots, since these profiles show what would happen if only a single variable is changed.
+It is convenient to use an alternative name for this plot: What-If Plots. CP profiles show what would happen if only a single variable is changed.
+
+Figure 5.1 shows an example of Ceteris Paribus profile. The black dot stands for prediction for a single observation. Grey line show how the model response would change if in this single observation coordinate `surface` will be changes to selected value. From this profile one may read that the model response is non monotonic. If `construction.year` for this observation would be below 1935 the model response would be higher, but if construction year were between 1935 and 1995 the model response would be lower.
 
 
-#### Example
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.cap = "Ceteris Paribus profiles for a single observation"}
+aplevels <- levels(apartments$district)
+new_apartment <- data.frame(construction.year = 2000, 
+                            surface = 100,
+                            floor = 1L,
+                            no.rooms = 4,
+                            district = factor("Bemowo", levels = aplevels))
+profile_rf <- ceteris_paribus(explainer_rf, observations = new_apartment)
+plot(profile_rf, selected_variables = "construction.year", 
+     size = 0.5, size_points = 3, as.gg = TRUE) +
+  xlab("x|surface = ") + ylab("f(x)")
+```
 
-Let's assume that we have a new apartment with following attributes.
+
+#### How to do this in R?
+
+First, we need to specify an observation. Let's assume that we have a new apartment with following attributes.
 
 ```{r, warning=FALSE, message=FALSE}
 aplevels <- levels(apartments$district)
@@ -107,6 +123,7 @@ profile_rf <- ceteris_paribus(explainer_rf, observations = new_apartment)
 profile_rf
 ```
 
+
 Also note, that the `apartments` data is available in the model explainer specified as the first parameter of the `ceteris_paribus` function.
 
 These artificial apartments constitute profile of conditional model response for different values of `construction.year`. Such profiles may be plotted with the generic `plot()` function. Note that the `ceteris_paribus()` function by default calculates profiles for every variable in the dataset (this can be changes with the `variables` parameter). 
@@ -118,8 +135,11 @@ plot(profile_rf, selected_variables = "construction.year")
 ```
 
 
+#### Ceteris Paribus for many variables
 
-#### Many variables
+There is no reason to limit our perspective to only one variable. The `plot()` function by default plots profiles for all numerical variables. 
+
+Use the `selected_variables` parameter to limit number of variables to be presented.
 
 ```{r, warning=FALSE, message=FALSE}
 plot(profile_rf)
@@ -128,19 +148,50 @@ plot(profile_rf)
 
 
 
+## Exploration of local structure with Ceteris Paribus profiles {#cetParLocalObseSingleModel}
+
+Profiles presented in the Section \@ref(cetParSingleObseSingleModel) are also useful for exploration of the local structure of a model. This may be usefull to
+
+* assess local fitness of a model, 
+* assess stability of a model, 
+* assess local additivity of a model. 
+
+To assess the local structure of a model we use points from validation data that are close to the point of interest (see Figure 5.2). 
+
+```{r, echo=FALSE, fig.cap="Red point stands for the new observation, while green points stand for it's neighbours from validation data.", fig.margin = TRUE}
+knitr::include_graphics('images/data_points_neighbours.png')
+```
+
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.cap="Blue point stands for the point of interests. Black points are predictions for the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. Grey profiles are for neighbours. "}
+neighbours <- select_neighbours(apartmentsTest, observation = new_apartment, n = 10)
+profile_rf_neig  <- ceteris_paribus(explainer_rf,  observations = neighbours, y = neighbours$m2.price)
+plot(profile_rf_neig, 
+      selected_variables = "surface") +
+  ceteris_paribus_layer(profile_rf, size = 3, alpha = 1, color = "blue1",
+                        size_points = 5, color_points = "blue4",
+                        selected_variables = "surface") 
+```
 
 
 
 
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.cap="Blue point stands for the point of interests. Red points are the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. The red intervals are residuals - differences between the true label and the model response. The grey profiles are Ceteris Paribus profiles for neighbours. "}
+neighbours <- select_neighbours(apartmentsTest, observation = new_apartment, n = 10)
+profile_rf_neig  <- ceteris_paribus(explainer_rf,  observations = neighbours, y = neighbours$m2.price)
+plot(profile_rf_neig, 
+      selected_variables = "surface", size_residuals = 2,
+      color_residuals = "red", show_residuals = TRUE) +
+  ceteris_paribus_layer(profile_rf, size = 3, alpha = 1, color = "blue1",
+                        size_points = 5, color_points = "blue4",
+                        selected_variables = "surface") 
+```
 
-#### Data selection
-
-![](images/data_points.png)
-![](images/data_points_neighbours.png)
-![](images/data_points_sample.png)
 
 
-## Local Structure and Single Model {#cetParLocalObseSingleModel}
+#### How to do this in R?
+
 
 ```{r, warning=FALSE, message=FALSE}
 neighbours <- select_neighbours(apartmentsTest, observation = new_apartment, n = 10)
@@ -170,6 +221,8 @@ plot(profile_rf_neig,
                         aggregate_profiles = mean, show_observations = FALSE,
                         selected_variables = "surface")
 ```
+
+
 
 ## Global Structure and Single Model {#cetParGlobalObseSingleModel}
 
