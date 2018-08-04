@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-08-02" />
+<meta name="date" content="2018-08-04" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -166,12 +166,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="cetParLocalObseSingleModel" class="section level2">
 <h2><span class="header-section-number">5.2</span> Exploration of local structure with Ceteris Paribus profiles</h2>
 <p>Profiles presented in the Section <a href="5-1-cetParSingleObseSingleModel.html#cetParSingleObseSingleModel">5.1</a> are also useful for exploration of the local structure of a model. This may be usefull to</p>
-<ul>
-<li>assess local fitness of a model,</li>
-<li>assess stability of a model,</li>
-<li>assess local additivity of a model.</li>
-</ul>
-<p>To assess the local structure of a model we use points from validation data that are close to the point of interest (see Figure 5.2).</p>
 <p>
 <span class="marginnote shownote">
 <!--
@@ -181,12 +175,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p class="caption marginnote">-->Figure 5.2: Red point stands for the new observation, while green points stand for it’s neighbours from validation data.<!--</p>-->
 <!--</div>--></span>
 </p>
+<ul>
+<li>assess local fitness of a model,</li>
+<li>assess stability of a model,</li>
+<li>assess local additivity of a model.</li>
+</ul>
+<p>To assess the local structure of a model we use points from validation data that are close to the point of interest (see Figure 5.2). Close mean here <em>close in a metric d(x,y)</em> where the metric may be specified by a user. By default it’s Gower’s distance implemented in teh <code>gower</code> package <span class="citation">(van der Loo <label for="tufte-mn-29" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-29" class="margin-toggle">2017<span class="marginnote">van der Loo, Mark. 2017. <em>Gower: Gower’s Distance</em>. <a href="https://CRAN.R-project.org/package=gower" class="uri">https://CRAN.R-project.org/package=gower</a>.</span>)</span>. Gower distance takes into account both quantitative and qualitative variables.</p>
+<p>Once neighbors are identified, one can plot profiles for every neighbor. In the Figure 5.3 the blue curve shows Ceteris Paribus profiles for a variable of interest, while all other profiles are for the neighbors.</p>
+<p>Profiles are parallel here, what suggests that model is additive in respect to the <code>surface</code> variable. Profiles are not far from each other, what suggests that the observation is stable.</p>
 <div class="figure"><span id="fig:unnamed-chunk-33"></span>
 <p class="caption marginnote shownote">
 Figure 5.3: Blue point stands for the point of interests. Black points are predictions for the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. Grey profiles are for neighbours.
 </p>
 <img src="DALEX_files/figure-html/unnamed-chunk-33-1.png" alt="Blue point stands for the point of interests. Black points are predictions for the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. Grey profiles are for neighbours. " width="672"  />
 </div>
+<p>An interesting extension of such plots is so called <code>Wangkardu Plot</code> in which additionally we also present true labels for neighbors. Since neighbors come from validation data, then we may plot also residuals for these predictions.</p>
+<p>In the Figure 5.4 below we highlight residuals with red intervals. Residuals here are relatively small what suggest that around the point of interest the fit is relatively good.</p>
 <div class="figure"><span id="fig:unnamed-chunk-34"></span>
 <p class="caption marginnote shownote">
 Figure 5.4: Blue point stands for the point of interests. Red points are the neighbours. The blue curve is the Ceteris Paribus profile for the blue observation. The red intervals are residuals - differences between the true label and the model response. The grey profiles are Ceteris Paribus profiles for neighbours.
@@ -195,29 +199,45 @@ Figure 5.4: Blue point stands for the point of interests. Red points are the nei
 </div>
 <div id="how-to-do-this-in-r-1" class="section level4">
 <h4><span class="header-section-number">5.2.0.1</span> How to do this in R?</h4>
+<p>First, one need to identify neighbors for selected points of interest. This can be done with the <code>select_neighbours()</code> function. By default it is using the <code>gower</code> distance, but one may change it with the <code>distance</code> argument.</p>
+<p>Here we select 10 closes points.</p>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">neighbours &lt;-<span class="st"> </span><span class="kw">select_neighbours</span>(apartmentsTest, <span class="dt">observation =</span> new_apartment, <span class="dt">n =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb57-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb57-3" data-line-number="3">profile_rf_neig  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf,  <span class="dt">observations =</span> neighbours, <span class="dt">y =</span> neighbours<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb57-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb57-5" data-line-number="5"><span class="kw">plot</span>(profile_rf_neig, </a>
-<a class="sourceLine" id="cb57-6" data-line-number="6">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb57-7" data-line-number="7">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-35-1.png" width="672"  /></p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">plot</span>(profile_rf_neig, </a>
-<a class="sourceLine" id="cb58-2" data-line-number="2">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb58-3" data-line-number="3">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb58-4" data-line-number="4"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>,</a>
-<a class="sourceLine" id="cb58-5" data-line-number="5">                        <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>) </a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-36-1.png" width="672"  /></p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">plot</span>(profile_rf_neig, </a>
-<a class="sourceLine" id="cb59-2" data-line-number="2">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb59-3" data-line-number="3">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb59-4" data-line-number="4"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>,</a>
-<a class="sourceLine" id="cb59-5" data-line-number="5">                        <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb59-6" data-line-number="6"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf_neig, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</a>
-<a class="sourceLine" id="cb59-7" data-line-number="7">                        <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb59-8" data-line-number="8">                        <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb57-2" data-line-number="2"><span class="kw">head</span>(neighbours)</a></code></pre></div>
+<pre><code>##      m2.price construction.year surface floor no.rooms district
+## 5668     3413              2000     129     1        4   Bemowo
+## 5332     3031              1988      97     2        4   Bemowo
+## 1379     3855              2000      90     1        3   Bemowo
+## 1681     3324              1990      78     1        4   Bemowo
+## 7369     3340              1990      76     1        4   Bemowo
+## 2050     3449              2004     105     3        4   Bemowo</code></pre>
+<p>Profiles for neighbors can be calculated with the <code>ceteris_paribus()</code> function. We also supply here true labels, they will be useful to calculate residuals</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">profile_rf_neig  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf,  </a>
+<a class="sourceLine" id="cb59-2" data-line-number="2">                                    <span class="dt">observations =</span> neighbours, </a>
+<a class="sourceLine" id="cb59-3" data-line-number="3">                                    <span class="dt">y =</span> neighbours<span class="op">$</span>m2.price)</a></code></pre></div>
+<p>One profiles are calculated, one can plot them with the generic <code>plot()</code> function.
+Here we additionally specify color for residuals, and turn on presentation of residuals, but not the observations.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">plot</span>(profile_rf_neig, </a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb60-3" data-line-number="3">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
 <p><img src="DALEX_files/figure-html/unnamed-chunk-37-1.png" width="672"  /></p>
+<p>It is useful to add an additional layer that present the Ceteris Paribus profile for the point of interest.</p>
+<p>This profile is highligheted here as a blue curve.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">plot</span>(profile_rf_neig, </a>
+<a class="sourceLine" id="cb61-2" data-line-number="2">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb61-3" data-line-number="3">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb61-4" data-line-number="4"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>,</a>
+<a class="sourceLine" id="cb61-5" data-line-number="5">                        <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>) </a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-38-1.png" width="672"  /></p>
+<p>Merging of profiles is a very useful technique. Below we add a new layer with the average model response foot model predictions. The black line marks the average response from neighbors.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">plot</span>(profile_rf_neig, </a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">      <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>, <span class="dt">size_residuals =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3">      <span class="dt">color_residuals =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">show_residuals =</span> <span class="ot">TRUE</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb62-4" data-line-number="4"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>,</a>
+<a class="sourceLine" id="cb62-5" data-line-number="5">                        <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb62-6" data-line-number="6"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf_neig, <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</a>
+<a class="sourceLine" id="cb62-7" data-line-number="7">                        <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb62-8" data-line-number="8">                        <span class="dt">selected_variables =</span> <span class="st">&quot;surface&quot;</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-39-1.png" width="672"  /></p>
 </div>
 </div>
 <p style="text-align: center;">

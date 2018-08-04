@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-08-02" />
+<meta name="date" content="2018-08-04" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -165,10 +165,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="cetParSingleObseManyModel" class="section level2">
 <h2><span class="header-section-number">5.4</span> What-If scenarios: Single Observation and Multiple Models</h2>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">profile_svm &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_svm, <span class="dt">observations =</span> new_apartment)</a>
-<a class="sourceLine" id="cb62-2" data-line-number="2">profile_lm  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_lm, <span class="dt">observations =</span> new_apartment)</a>
-<a class="sourceLine" id="cb62-3" data-line-number="3"><span class="kw">plot</span>(profile_rf, profile_svm, profile_lm, <span class="dt">color =</span> <span class="st">&quot;_label_&quot;</span>)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-40-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">profile_svm &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_svm, <span class="dt">observations =</span> new_apartment)</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2">profile_lm  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_lm, <span class="dt">observations =</span> new_apartment)</a>
+<a class="sourceLine" id="cb65-3" data-line-number="3"><span class="kw">plot</span>(profile_rf, profile_svm, profile_lm, <span class="dt">color =</span> <span class="st">&quot;_label_&quot;</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-42-1.png" width="672"  /></p>
 </div>
 <p style="text-align: center;">
 <a href="5-3-cetParGlobalObseSingleModel.html"><button class="btn btn-default">Previous</button></a>

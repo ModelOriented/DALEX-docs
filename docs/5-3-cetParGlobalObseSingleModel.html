@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-08-02" />
+<meta name="date" content="2018-08-04" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -165,23 +165,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="cetParGlobalObseSingleModel" class="section level2">
 <h2><span class="header-section-number">5.3</span> Global Structure and Single Model</h2>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">profile_rf_global  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf, <span class="dt">observations =</span> apartments, <span class="dt">y =</span> apartments<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb60-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb60-3" data-line-number="3"><span class="kw">plot</span>(profile_rf_global, </a>
-<a class="sourceLine" id="cb60-4" data-line-number="4">      <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
-<a class="sourceLine" id="cb60-5" data-line-number="5">      <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-38-1.png" width="672"  /></p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">apartments_sample &lt;-<span class="st"> </span><span class="kw">select_sample</span>(apartments, <span class="dt">n =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb61-2" data-line-number="2">profile_rf_sample  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf, <span class="dt">observations =</span> apartments_sample, <span class="dt">y =</span> apartments_sample<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb61-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb61-4" data-line-number="4"><span class="kw">plot</span>(profile_rf_sample, </a>
-<a class="sourceLine" id="cb61-5" data-line-number="5">      <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
-<a class="sourceLine" id="cb61-6" data-line-number="6">      <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</a>
-<a class="sourceLine" id="cb61-7" data-line-number="7">      <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb61-8" data-line-number="8"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf_sample,</a>
-<a class="sourceLine" id="cb61-9" data-line-number="9">            <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
-<a class="sourceLine" id="cb61-10" data-line-number="10">            <span class="dt">show_rugs =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-39-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">profile_rf_global  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf, <span class="dt">observations =</span> apartments, <span class="dt">y =</span> apartments<span class="op">$</span>m2.price)</a>
+<a class="sourceLine" id="cb63-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb63-3" data-line-number="3"><span class="kw">plot</span>(profile_rf_global, </a>
+<a class="sourceLine" id="cb63-4" data-line-number="4">      <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
+<a class="sourceLine" id="cb63-5" data-line-number="5">      <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-40-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">apartments_sample &lt;-<span class="st"> </span><span class="kw">select_sample</span>(apartments, <span class="dt">n =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">profile_rf_sample  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf, <span class="dt">observations =</span> apartments_sample, <span class="dt">y =</span> apartments_sample<span class="op">$</span>m2.price)</a>
+<a class="sourceLine" id="cb64-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb64-4" data-line-number="4"><span class="kw">plot</span>(profile_rf_sample, </a>
+<a class="sourceLine" id="cb64-5" data-line-number="5">      <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
+<a class="sourceLine" id="cb64-6" data-line-number="6">      <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</a>
+<a class="sourceLine" id="cb64-7" data-line-number="7">      <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb64-8" data-line-number="8"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf_sample,</a>
+<a class="sourceLine" id="cb64-9" data-line-number="9">            <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
+<a class="sourceLine" id="cb64-10" data-line-number="10">            <span class="dt">show_rugs =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-41-1.png" width="672"  /></p>
 </div>
 <p style="text-align: center;">
 <a href="5-2-cetParLocalObseSingleModel.html"><button class="btn btn-default">Previous</button></a>
