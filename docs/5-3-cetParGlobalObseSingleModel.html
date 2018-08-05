@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-08-04" />
+<meta name="date" content="2018-08-05" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -151,7 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="has-sub"><a href="5-ceterisParibus.html#ceterisParibus"><span class="toc-section-number">5</span> Ceteris Paribus Profiles</a><ul>
 <li><a href="5-1-cetParSingleObseSingleModel.html#cetParSingleObseSingleModel"><span class="toc-section-number">5.1</span> Ceteris Paribus profiles for a single observation</a></li>
 <li><a href="5-2-cetParLocalObseSingleModel.html#cetParLocalObseSingleModel"><span class="toc-section-number">5.2</span> Exploration of local structure with Ceteris Paribus profiles</a></li>
-<li><a href="5-3-cetParGlobalObseSingleModel.html#cetParGlobalObseSingleModel"><span class="toc-section-number">5.3</span> Global Structure and Single Model</a></li>
+<li><a href="5-3-cetParGlobalObseSingleModel.html#cetParGlobalObseSingleModel"><span class="toc-section-number">5.3</span> Exploration of global structure with Ceteris Paribus profiles</a></li>
 <li><a href="5-4-cetParSingleObseManyModel.html#cetParSingleObseManyModel"><span class="toc-section-number">5.4</span> What-If scenarios: Single Observation and Multiple Models</a></li>
 <li><a href="5-5-cetParGlobalObseMultipleModels.html#cetParGlobalObseMultipleModels"><span class="toc-section-number">5.5</span> Global Structure and Multiple Models</a></li>
 </ul></li>
@@ -164,24 +164,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="row">
 <div class="col-sm-12">
 <div id="cetParGlobalObseSingleModel" class="section level2">
-<h2><span class="header-section-number">5.3</span> Global Structure and Single Model</h2>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">profile_rf_global  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf, <span class="dt">observations =</span> apartments, <span class="dt">y =</span> apartments<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb63-3" data-line-number="3"><span class="kw">plot</span>(profile_rf_global, </a>
-<a class="sourceLine" id="cb63-4" data-line-number="4">      <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
-<a class="sourceLine" id="cb63-5" data-line-number="5">      <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-40-1.png" width="672"  /></p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">apartments_sample &lt;-<span class="st"> </span><span class="kw">select_sample</span>(apartments, <span class="dt">n =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb64-2" data-line-number="2">profile_rf_sample  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf, <span class="dt">observations =</span> apartments_sample, <span class="dt">y =</span> apartments_sample<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb64-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb64-4" data-line-number="4"><span class="kw">plot</span>(profile_rf_sample, </a>
-<a class="sourceLine" id="cb64-5" data-line-number="5">      <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
-<a class="sourceLine" id="cb64-6" data-line-number="6">      <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</a>
-<a class="sourceLine" id="cb64-7" data-line-number="7">      <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-8" data-line-number="8"><span class="st">  </span><span class="kw">ceteris_paribus_layer</span>(profile_rf_sample,</a>
-<a class="sourceLine" id="cb64-9" data-line-number="9">            <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
-<a class="sourceLine" id="cb64-10" data-line-number="10">            <span class="dt">show_rugs =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-41-1.png" width="672"  /></p>
+<h2><span class="header-section-number">5.3</span> Exploration of global structure with Ceteris Paribus profiles</h2>
+<p>Profiles presented in previous sections are also useful for exploration of the global structure of a model. This may be useful to</p>
+<ul>
+<li>assess the average model response for a selected variable,</li>
+<li>identify interaction between variables,</li>
+<li>assess the variable importance.</li>
+</ul>
+<p>Once neighbors are identified, one can plot profiles for every neighbor. In the Figure 5.3 the blue curve shows Ceteris Paribus profiles for a variable of interest, while all other profiles are for the neighbors.</p>
+<p>Profiles are parallel here, what suggests that model is additive in respect to the <code>surface</code> variable. Profiles are not far from each other, what suggests that the observation is stable.</p>
+<div class="figure"><span id="fig:unnamed-chunk-40"></span>
+<p class="caption marginnote shownote">
+Figure 5.5: a1
+</p>
+<img src="DALEX_files/figure-html/unnamed-chunk-40-1.png" alt="a1" width="672"  />
+</div>
+<div class="figure"><span id="fig:unnamed-chunk-41"></span>
+<p class="caption marginnote shownote">
+Figure 5.6: a1
+</p>
+<img src="DALEX_files/figure-html/unnamed-chunk-41-1.png" alt="a1" width="672"  />
+</div>
+<div class="figure"><span id="fig:unnamed-chunk-42"></span>
+<p class="caption marginnote shownote">
+Figure 5.7: a1
+</p>
+<img src="DALEX_files/figure-html/unnamed-chunk-42-1.png" alt="a1" width="672"  />
+</div>
+<div class="figure"><span id="fig:unnamed-chunk-43"></span>
+<p class="caption marginnote shownote">
+Figure 5.8: a1
+</p>
+<img src="DALEX_files/figure-html/unnamed-chunk-43-1.png" alt="a1" width="672"  />
+</div>
+<div id="how-to-do-this-in-r-2" class="section level4">
+<h4><span class="header-section-number">5.3.0.1</span> How to do this in R?</h4>
+<p>First, one need to identify neighbors for selected points of interest. This can be done with the <code>select_neighbours()</code> function. By default it is using the <code>gower</code> distance, but one may change it with the <code>distance</code> argument.</p>
+<p>Here we select 10 closes points.</p>
+</div>
 </div>
 <p style="text-align: center;">
 <a href="5-2-cetParLocalObseSingleModel.html"><button class="btn btn-default">Previous</button></a>

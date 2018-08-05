@@ -249,31 +249,74 @@ plot(profile_rf_neig,
 ```
 
 
+## Exploration of global structure with Ceteris Paribus profiles {#cetParGlobalObseSingleModel}
 
-## Global Structure and Single Model {#cetParGlobalObseSingleModel}
+Profiles presented in previous sections are also useful for exploration of the global structure of a model. This may be useful to
 
-```{r, warning=FALSE, message=FALSE}
-profile_rf_global  <- ceteris_paribus(explainer_rf, observations = apartments, y = apartments$m2.price)
-
-plot(profile_rf_global, 
-      selected_variables = c("construction.year", "surface"), 
-      aggregate_profiles = mean, show_observations = FALSE) 
-```
+* assess the average model response for a selected variable,
+* identify interaction between variables,
+* assess the variable importance. 
 
 
+Once neighbors are identified, one can plot profiles for every neighbor. In the Figure 5.3 the blue curve shows Ceteris Paribus profiles for a variable of interest, while all other profiles are for the neighbors.
 
-```{r, warning=FALSE, message=FALSE}
+Profiles are parallel here, what suggests that model is additive in respect to the `surface` variable. Profiles are not far from each other, what suggests that the observation is stable.
+
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.cap="a1"}
 apartments_sample <- select_sample(apartments, n = 20)
 profile_rf_sample  <- ceteris_paribus(explainer_rf, observations = apartments_sample, y = apartments_sample$m2.price)
 
 plot(profile_rf_sample, 
       selected_variables = c("construction.year", "surface"), 
-      alpha = 1, color = "black",
+      alpha = 1, color = "black", size = 0.5, size_points = 1,
+      show_observations = TRUE) 
+```
+
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.cap="a1"}
+plot(profile_rf_sample, 
+      selected_variables = c("construction.year", "surface"), 
+      alpha = 1, color = "black", size = 2,
       aggregate_profiles = mean, show_observations = FALSE) +
   ceteris_paribus_layer(profile_rf_sample,
+            show_observations = FALSE, size = 0.5,
             selected_variables = c("construction.year", "surface"), 
             show_rugs = TRUE)
 ```
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.cap="a1"}
+profile_rf_global  <- ceteris_paribus(explainer_rf, observations = apartments, y = apartments$m2.price)
+
+plot(profile_rf_global, 
+      alpha = 1,
+      selected_variables = c("construction.year", "surface"), 
+      aggregate_profiles = mean, show_observations = FALSE) 
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.cap="a1"}
+profile_svm_global  <- ceteris_paribus(explainer_svm, observations = apartments_sample, y = apartments_sample$m2.price)
+profile_lm_global  <- ceteris_paribus(explainer_lm, observations = apartments_sample, y = apartments_sample$m2.price)
+
+plot(profile_rf_sample, profile_svm_global, profile_lm_global,
+      color = "_label_", alpha = 1,
+      selected_variables = c("construction.year", "surface"), 
+      aggregate_profiles = mean, show_observations = FALSE) 
+
+```
+
+
+
+#### How to do this in R?
+
+First, one need to identify neighbors for selected points of interest. This can be done with the `select_neighbours()` function. By default it is using the `gower` distance, but one may change it with the `distance` argument. 
+
+Here we select 10 closes points.
+
+
 
 
 ## What-If scenarios: Single Observation and Multiple Models {#cetParSingleObseManyModel}
@@ -288,15 +331,28 @@ plot(profile_rf, profile_svm, profile_lm, color = "_label_")
 ## Global Structure and Multiple Models {#cetParGlobalObseMultipleModels}
 
 
-```{r, warning=FALSE, message=FALSE}
-profile_svm_global  <- ceteris_paribus(explainer_svm, observations = apartments_sample, y = apartments_sample$m2.price)
-profile_lm_global  <- ceteris_paribus(explainer_lm, observations = apartments_sample, y = apartments_sample$m2.price)
 
-plot(profile_rf_sample, profile_svm_global, profile_lm_global,
-      color = "_label_", alpha = 1,
-      selected_variables = c("construction.year", "surface"), 
-      aggregate_profiles = mean, show_observations = FALSE) 
 
+```{r}
+library("DALEX")
+library("randomForest")
+library("ceterisParibus")
+set.seed(59)
+
+model <- randomForest(status ~ gender + age + hours + evaluation + salary, data = HR)
+
+pred1 <- function(m, x)   predict(m, x, type = "prob")[,1]
+
+explainer_rf_fired <- explain(model, data = HR[,1:5], 
+                              y = HR$status == "fired", 
+                              predict_function = pred1, label = "fired")
+
+cp_rf_fired <- ceteris_paribus(explainer_rf_fired, HR[1:4,])
+
+plot(cp_rf_fired, color = "gender", 
+     selected_variables = c("age", "hours", "gender"), 
+     alpha = 1, size = 0.5, show_observations = FALSE,  as.gg = TRUE) +
+  scale_y_continuous(trans = "probit", breaks = c(0.01,0.02,0.05,0.1,0.5,0.9,0.95,0.98,0.99)) +
+  theme(legend.position = "bottom")
 ```
-
 

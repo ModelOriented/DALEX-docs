@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-08-04" />
+<meta name="date" content="2018-08-05" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -151,7 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="has-sub"><a href="5-ceterisParibus.html#ceterisParibus"><span class="toc-section-number">5</span> Ceteris Paribus Profiles</a><ul>
 <li><a href="5-1-cetParSingleObseSingleModel.html#cetParSingleObseSingleModel"><span class="toc-section-number">5.1</span> Ceteris Paribus profiles for a single observation</a></li>
 <li><a href="5-2-cetParLocalObseSingleModel.html#cetParLocalObseSingleModel"><span class="toc-section-number">5.2</span> Exploration of local structure with Ceteris Paribus profiles</a></li>
-<li><a href="5-3-cetParGlobalObseSingleModel.html#cetParGlobalObseSingleModel"><span class="toc-section-number">5.3</span> Global Structure and Single Model</a></li>
+<li><a href="5-3-cetParGlobalObseSingleModel.html#cetParGlobalObseSingleModel"><span class="toc-section-number">5.3</span> Exploration of global structure with Ceteris Paribus profiles</a></li>
 <li><a href="5-4-cetParSingleObseManyModel.html#cetParSingleObseManyModel"><span class="toc-section-number">5.4</span> What-If scenarios: Single Observation and Multiple Models</a></li>
 <li><a href="5-5-cetParGlobalObseMultipleModels.html#cetParGlobalObseMultipleModels"><span class="toc-section-number">5.5</span> Global Structure and Multiple Models</a></li>
 </ul></li>
@@ -165,14 +165,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="col-sm-12">
 <div id="cetParGlobalObseMultipleModels" class="section level2">
 <h2><span class="header-section-number">5.5</span> Global Structure and Multiple Models</h2>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">profile_svm_global  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_svm, <span class="dt">observations =</span> apartments_sample, <span class="dt">y =</span> apartments_sample<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2">profile_lm_global  &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_lm, <span class="dt">observations =</span> apartments_sample, <span class="dt">y =</span> apartments_sample<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb66-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb66-4" data-line-number="4"><span class="kw">plot</span>(profile_rf_sample, profile_svm_global, profile_lm_global,</a>
-<a class="sourceLine" id="cb66-5" data-line-number="5">      <span class="dt">color =</span> <span class="st">&quot;_label_&quot;</span>, <span class="dt">alpha =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb66-6" data-line-number="6">      <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;construction.year&quot;</span>, <span class="st">&quot;surface&quot;</span>), </a>
-<a class="sourceLine" id="cb66-7" data-line-number="7">      <span class="dt">aggregate_profiles =</span> mean, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
-<p><img src="DALEX_files/figure-html/unnamed-chunk-43-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb64-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;ceterisParibus&quot;</span>)</a>
+<a class="sourceLine" id="cb64-4" data-line-number="4"><span class="kw">set.seed</span>(<span class="dv">59</span>)</a>
+<a class="sourceLine" id="cb64-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb64-6" data-line-number="6">model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(status <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>hours <span class="op">+</span><span class="st"> </span>evaluation <span class="op">+</span><span class="st"> </span>salary, <span class="dt">data =</span> HR)</a>
+<a class="sourceLine" id="cb64-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb64-8" data-line-number="8">pred1 &lt;-<span class="st"> </span><span class="cf">function</span>(m, x)   <span class="kw">predict</span>(m, x, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb64-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb64-10" data-line-number="10">explainer_rf_fired &lt;-<span class="st"> </span><span class="kw">explain</span>(model, <span class="dt">data =</span> HR[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], </a>
+<a class="sourceLine" id="cb64-11" data-line-number="11">                              <span class="dt">y =</span> HR<span class="op">$</span>status <span class="op">==</span><span class="st"> &quot;fired&quot;</span>, </a>
+<a class="sourceLine" id="cb64-12" data-line-number="12">                              <span class="dt">predict_function =</span> pred1, <span class="dt">label =</span> <span class="st">&quot;fired&quot;</span>)</a>
+<a class="sourceLine" id="cb64-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb64-14" data-line-number="14">cp_rf_fired &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_fired, HR[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,])</a>
+<a class="sourceLine" id="cb64-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb64-16" data-line-number="16"><span class="kw">plot</span>(cp_rf_fired, <span class="dt">color =</span> <span class="st">&quot;gender&quot;</span>, </a>
+<a class="sourceLine" id="cb64-17" data-line-number="17">     <span class="dt">selected_variables =</span> <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;hours&quot;</span>, <span class="st">&quot;gender&quot;</span>), </a>
+<a class="sourceLine" id="cb64-18" data-line-number="18">     <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="fl">0.5</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>,  <span class="dt">as.gg =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb64-19" data-line-number="19"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;probit&quot;</span>, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="fl">0.01</span>,<span class="fl">0.02</span>,<span class="fl">0.05</span>,<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.9</span>,<span class="fl">0.95</span>,<span class="fl">0.98</span>,<span class="fl">0.99</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb64-20" data-line-number="20"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-45-1.png" width="672"  /></p>
 
 </div>
 <!-- </div> -->
