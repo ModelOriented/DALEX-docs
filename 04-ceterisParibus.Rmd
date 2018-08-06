@@ -6,18 +6,24 @@ In this chapter we introduce a model agnostic method for model exploration based
 
 Some specific versions of this method are in literature under different names, as Partial Dependence Plots [@pdp], Individual Conditional Expectation Plots (ICEPlots) or Accumulated Local Effects Plots [@ALEPlot]. Here we present an uniform yet more extensible approach. We adopt a new name for this approach, namely Ceteris Paribus Profiles, as it better described the idea behind.
 
-This chapter is divided into 5 sections. Each introduces a different aspect of Ceteris Paribus Profiles (CPP).
+This chapter is divided into 6 sections. First three sections introduce Ceteris Paribus profiles in different contexts, exploration for a single observation, exploration of local structure and exploration of global structure of a model.
 
-* Section \@ref(cetParSingleObseSingleModel) introduces Ceteris Paribus profiles for a single observation and a single model. This section introduces basic concepts and notation behind CPP.
+* Section \@ref(cetParSingleObseSingleModel) introduces Ceteris Paribus profiles for a single observation. This section introduces basic concepts and notation behind CPP.
 
-* Section \@ref(cetParLocalObseSingleModel) show how to combine set of CP profiles around a single data point in orded to inspect a model locally. This allows to assess model stability, additivness and local fit.
+* Section \@ref(cetParLocalObseSingleModel) show how to combine set of CP profiles around a single data point in order to inspect local structure of a model. This allows to assess model stability, additivity and local fit.
 
 * Section \@ref(cetParGlobalObseSingleModel) show how to combine CP profiles for all observations in order to inspect global features of a model. 
 
-* Section \@ref(cetParGlobalObseMultipleModels) shows how CP profiles can be used for model comparisons on any level. Examples are related to single observation, local and global CP profiles.
+Ceteris Paribus profiles calculated for different subsets or different models can be combined and this gives new opportunities for the model exploration. In following three sections we present three most common combinations of CP profiles.
 
-* Section \@ref(cetParSingleObseManyModel) shows how different profiles can be aligned on a single plot.
+* Section \@ref(cetParSingleObseManyModel) shows how CP profiles calculated for different subsets of data can be aligned in a single plot.
 
+* Section \@ref(cetParSingleObseManyModel) shows how CP profiles can be used for multiclass models or model with multivariate response.
+
+* Section \@ref(cetParGlobalObseMultipleModels) shows how CP profiles can be used for model cross-comparisons. Examples are related to single observation, local and global explanations.
+
+
+#### HR Dataset
 
 In this chapter we show examples for three predictive models trained on `apartments` dataset from the `DALEX` package. Random Forest model (elastic but biased), Support Vector Machines model (large variance on boundaries) and Linear Model (stable but not very elastic). 
 Presented examples are for regression (prediction of square meter price), but the CP profiles may be used in the same way for classification.
