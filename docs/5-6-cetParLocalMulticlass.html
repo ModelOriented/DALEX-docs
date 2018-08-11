@@ -17,7 +17,7 @@
 
 <meta name="author" content="Przemysław Biecek" />
 
-<meta name="date" content="2018-08-11" />
+<meta name="date" content="2018-08-06" />
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -153,8 +153,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="5-2-cetParLocalObseSingleModel.html#cetParLocalObseSingleModel"><span class="toc-section-number">5.2</span> Exploration of local structure with Ceteris Paribus profiles</a></li>
 <li><a href="5-3-cetParGlobalObseSingleModel.html#cetParGlobalObseSingleModel"><span class="toc-section-number">5.3</span> Exploration of global structure with Ceteris Paribus profiles</a></li>
 <li><a href="5-4-cetParSingleObseManyModel.html#cetParSingleObseManyModel"><span class="toc-section-number">5.4</span> What-If scenarios: Single Observation and Multiple Models</a></li>
-<li><a href="5-5-cetParLocalMulticlass.html#cetParLocalMulticlass"><span class="toc-section-number">5.5</span> Exploration of multiclass classification models</a></li>
-<li><a href="5-6-cetParGlobalObseMultipleModels.html#cetParGlobalObseMultipleModels"><span class="toc-section-number">5.6</span> Global Structure and Multiple Models</a></li>
+<li><a href="5-5-cetParGlobalObseMultipleModels.html#cetParGlobalObseMultipleModels"><span class="toc-section-number">5.5</span> Global Structure and Multiple Models</a></li>
+<li><a href="5-6-cetParLocalMulticlass.html#cetParLocalMulticlass"><span class="toc-section-number">5.6</span> Exploration of multiclass classification models</a></li>
 </ul></li>
 <li><a href="6-epilogue.html#epilogue"><span class="toc-section-number">6</span> Epilogue</a></li>
 <li><a href="7-exercises.html#exercises"><span class="toc-section-number">7</span> Exercises</a></li>
@@ -164,28 +164,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="architecture" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Architecture of DALEX</h1>
-<p>DALEX’s architecture is simple and consistent. Actually, there are only three rules that should be remembered while using this tool.</p>
-<ul>
-<li>First - use the <code>explain()</code> function to enrich a black-box model with additional metadata required by explainers. Various explainers require various metadata. You may find their list in Section <a href="2-1-explainFunction.html#explainFunction">2.1</a>.</li>
-<li>Second - use the explainer function that calculates required descriptions. Consecutive explainers are introduced in Chapters <a href="3-modelUnderstanding.html#modelUnderstanding">3</a> and <a href="4-predictionUnderstanding.html#predictionUnderstanding">4</a>.</li>
-<li>Third - use generic <code>print()</code> or <code>plot()</code> function to see the explainer. Both functions work for one or more models.</li>
-</ul>
-<p>These three steps are presented in Figure 2.1.</p>
-<p>
-<span class="marginnote">Figure 2.1. The overview of DALEX’s architecture. <br/><br/>
-<em>A)</em> Any predictive model with defined input <span class="math inline">\(x\)</span> and output <span class="math inline">\(y_{raw} \in \mathcal R\)</span> may be used. <br/><br/>
-<em>B)</em> Models are first enriched with additional metadata, such as a function that calculates predictions, validation data, model label or other components. The <code>explain()</code> function creates an object belonging to the <code>explainer</code> class that is used in further processing.<br/><br/>
-<em>C)</em> Specialized explainers calculate numerical summaries that can be plotted with generic <code>plot()</code> function.
-</span>
-<img src="images/architecture.png"/>
-</p> 
+<div id="cetParLocalMulticlass" class="section level2">
+<h2><span class="header-section-number">5.6</span> Exploration of multiclass classification models</h2>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="kw">head</span>(HR)</a></code></pre></div>
+<pre><code>##   gender      age    hours evaluation salary   status
+## 1   male 32.58267 41.88626          3      1    fired
+## 2 female 41.21104 36.34339          2      5    fired
+## 3   male 37.70516 36.81718          3      0    fired
+## 4 female 30.06051 38.96032          3      2    fired
+## 5   male 21.10283 62.15464          5      3 promoted
+## 6   male 40.11812 69.53973          2      0    fired</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;ceterisParibus&quot;</span>)</a>
+<a class="sourceLine" id="cb67-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">59</span>)</a>
+<a class="sourceLine" id="cb67-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5">model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(status <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>hours <span class="op">+</span><span class="st"> </span>evaluation <span class="op">+</span><span class="st"> </span>salary, <span class="dt">data =</span> HR)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">pred1 &lt;-<span class="st"> </span><span class="cf">function</span>(m, x)   <span class="kw">predict</span>(m, x, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">pred2 &lt;-<span class="st"> </span><span class="cf">function</span>(m, x)   <span class="kw">predict</span>(m, x, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">pred3 &lt;-<span class="st"> </span><span class="cf">function</span>(m, x)   <span class="kw">predict</span>(m, x, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5">explainer_rf_fired &lt;-<span class="st"> </span><span class="kw">explain</span>(model, <span class="dt">data =</span> HR[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], </a>
+<a class="sourceLine" id="cb68-6" data-line-number="6">                              <span class="dt">y =</span> HR<span class="op">$</span>status <span class="op">==</span><span class="st"> &quot;fired&quot;</span>, </a>
+<a class="sourceLine" id="cb68-7" data-line-number="7">                              <span class="dt">predict_function =</span> pred1, <span class="dt">label =</span> <span class="st">&quot;fired&quot;</span>)</a>
+<a class="sourceLine" id="cb68-8" data-line-number="8">explainer_rf_ok &lt;-<span class="st"> </span><span class="kw">explain</span>(model, <span class="dt">data =</span> HR[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], </a>
+<a class="sourceLine" id="cb68-9" data-line-number="9">                              <span class="dt">y =</span> HR<span class="op">$</span>status <span class="op">==</span><span class="st"> &quot;ok&quot;</span>, </a>
+<a class="sourceLine" id="cb68-10" data-line-number="10">                              <span class="dt">predict_function =</span> pred2, <span class="dt">label =</span> <span class="st">&quot;ok&quot;</span>)</a>
+<a class="sourceLine" id="cb68-11" data-line-number="11">explainer_rf_promoted &lt;-<span class="st"> </span><span class="kw">explain</span>(model, <span class="dt">data =</span> HR[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], </a>
+<a class="sourceLine" id="cb68-12" data-line-number="12">                               <span class="dt">y =</span> HR<span class="op">$</span>status <span class="op">==</span><span class="st"> &quot;promoted&quot;</span>, </a>
+<a class="sourceLine" id="cb68-13" data-line-number="13">                               <span class="dt">predict_function =</span> pred3, <span class="dt">label =</span> <span class="st">&quot;promoted&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">cp_rf1 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_fired, HR[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">cp_rf2 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_ok, HR[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">cp_rf3 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_promoted, HR[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb69-5" data-line-number="5"><span class="kw">plot</span>(cp_rf1, cp_rf2, cp_rf3, </a>
+<a class="sourceLine" id="cb69-6" data-line-number="6">     <span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">color=</span><span class="st">&quot;_label_&quot;</span>, <span class="dt">size_points =</span> <span class="dv">4</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-49-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">cp_rf1 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_fired, HR[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,])</a>
+<a class="sourceLine" id="cb70-2" data-line-number="2">cp_rf2 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_ok, HR[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,])</a>
+<a class="sourceLine" id="cb70-3" data-line-number="3">cp_rf3 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_promoted, HR[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,])</a>
+<a class="sourceLine" id="cb70-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb70-5" data-line-number="5"><span class="kw">plot</span>(cp_rf1, cp_rf2, cp_rf3, </a>
+<a class="sourceLine" id="cb70-6" data-line-number="6">     <span class="dt">aggregate_profiles =</span> mean, </a>
+<a class="sourceLine" id="cb70-7" data-line-number="7">     <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>, <span class="dt">color=</span><span class="st">&quot;_label_&quot;</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-50-1.png" width="672"  /></p>
+<div id="how-to-do-this-in-r-3" class="section level4">
+<h4><span class="header-section-number">5.6.0.1</span> How to do this in R?</h4>
+
 </div>
+</div>
+<!-- </div> -->
 <p style="text-align: center;">
-<a href="1-2-trivia.html"><button class="btn btn-default">Previous</button></a>
-<a href="https://github.com/pbiecek/DALEX/edit/master/01-architecture.Rmd"><button class="btn btn-default">Edit</button></a>
-<a href="2-1-explainFunction.html"><button class="btn btn-default">Next</button></a>
+<a href="5-5-cetParGlobalObseMultipleModels.html"><button class="btn btn-default">Previous</button></a>
+<a href="https://github.com/pbiecek/DALEX/edit/master/04-ceterisParibus.Rmd"><button class="btn btn-default">Edit</button></a>
+<a href="6-epilogue.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

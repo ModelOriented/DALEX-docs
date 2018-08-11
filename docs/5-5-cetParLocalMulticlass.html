@@ -164,73 +164,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="exercises" class="section level1">
-<h1><span class="header-section-number">Chapter 7</span> Exercises</h1>
-<p>Examples in previous chapters were based on random forest model and linear model.
-But there are so many different approaches for regression modeling.
-Try <code>gbm</code> (Generalized Boosted Regression Models), <code>knn</code> (k-Nearest Neighbour), <code>svm</code> (Support Vector Machines), <code>nnet</code> (Neural Networks) or other models.</p>
-<ol style="list-style-type: decimal">
-<li>Prepare explainers for model performance,</li>
-<li>Prepare explainers for variable importance,</li>
-<li>Prepare explainers for variable response for <code>construction.year</code>,</li>
-<li>Prepare explainers for model predictions.</li>
-</ol>
-<p>Below you will find fits for few different models. Try them out.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
-<a class="sourceLine" id="cb72-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;gbm&quot;</span>)</a>
-<a class="sourceLine" id="cb72-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb72-4" data-line-number="4">apartments_gbm_model &lt;-<span class="st"> </span><span class="kw">gbm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb72-5" data-line-number="5"><span class="st">                         </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments, <span class="dt">n.trees =</span> <span class="dv">1000</span>)</a></code></pre></div>
-<pre><code>## Distribution not specified, assuming gaussian ...</code></pre>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">explainer_gbm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_gbm_model, </a>
-<a class="sourceLine" id="cb74-2" data-line-number="2">                          <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price,</a>
-<a class="sourceLine" id="cb74-3" data-line-number="3">                         <span class="dt">predict_function =</span> <span class="cf">function</span>(m, d) <span class="kw">predict</span>(m, d, <span class="dt">n.trees =</span> <span class="dv">1000</span>))</a>
-<a class="sourceLine" id="cb74-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb74-5" data-line-number="5"><span class="kw">library</span>(<span class="st">&quot;nnet&quot;</span>)</a>
-<a class="sourceLine" id="cb74-6" data-line-number="6">apartments_nnet_model &lt;-<span class="st"> </span><span class="kw">nnet</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb74-7" data-line-number="7"><span class="st">                         </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments,</a>
-<a class="sourceLine" id="cb74-8" data-line-number="8">                         <span class="dt">linout=</span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb74-9" data-line-number="9">                         <span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">maxit=</span><span class="dv">100</span>)</a></code></pre></div>
-<pre><code>## # weights:  751
-## initial  value 12969184089.822304 
-## final  value 821267660.638999 
-## converged</code></pre>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">explainer_nnet &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_nnet_model, </a>
-<a class="sourceLine" id="cb76-2" data-line-number="2">                          <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb76-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb76-4" data-line-number="4"><span class="kw">library</span>(<span class="st">&quot;e1071&quot;</span>)</a>
-<a class="sourceLine" id="cb76-5" data-line-number="5">apartments_svm_model &lt;-<span class="st"> </span><span class="kw">svm</span>(m2.price <span class="op">~</span><span class="st"> </span>construction.year <span class="op">+</span><span class="st"> </span>surface <span class="op">+</span><span class="st"> </span>floor <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb76-6" data-line-number="6"><span class="st">                         </span>no.rooms <span class="op">+</span><span class="st"> </span>district, <span class="dt">data =</span> apartments)</a>
-<a class="sourceLine" id="cb76-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb76-8" data-line-number="8">explainer_svm &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_svm_model, </a>
-<a class="sourceLine" id="cb76-9" data-line-number="9">                          <span class="dt">data =</span> apartmentsTest[,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb76-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb76-11" data-line-number="11"><span class="kw">library</span>(<span class="st">&quot;caret&quot;</span>)</a>
-<a class="sourceLine" id="cb76-12" data-line-number="12">mapartments &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartments)</a>
-<a class="sourceLine" id="cb76-13" data-line-number="13">mapartmentsTest &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartmentsTest)</a>
-<a class="sourceLine" id="cb76-14" data-line-number="14">apartments_knn_model &lt;-<span class="st"> </span><span class="kw">knnreg</span>(mapartments, apartments[,<span class="dv">1</span>], <span class="dt">k =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb76-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb76-16" data-line-number="16">explainer_knn &lt;-<span class="st"> </span><span class="kw">explain</span>(apartments_knn_model, </a>
-<a class="sourceLine" id="cb76-17" data-line-number="17">                          <span class="dt">data =</span> mapartmentsTest, <span class="dt">y =</span> apartmentsTest<span class="op">$</span>m2.price)</a>
-<a class="sourceLine" id="cb76-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb76-19" data-line-number="19"><span class="co"># Model performance</span></a>
-<a class="sourceLine" id="cb76-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb76-21" data-line-number="21">mp_knn &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_knn)</a>
-<a class="sourceLine" id="cb76-22" data-line-number="22">mp_svm &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_svm)</a>
-<a class="sourceLine" id="cb76-23" data-line-number="23">mp_gbm &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_gbm)</a>
-<a class="sourceLine" id="cb76-24" data-line-number="24">mp_nnet &lt;-<span class="st"> </span><span class="kw">model_performance</span>(explainer_nnet)</a>
-<a class="sourceLine" id="cb76-25" data-line-number="25"><span class="kw">plot</span>(mp_gbm, mp_nnet, mp_svm, mp_knn, <span class="dt">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</a></code></pre></div>
-<div class="figure"><span id="fig:Exercises"></span>
-<p class="caption marginnote shownote">
-Figure 7.1: Distribution of residuals for fourn new models
-</p>
-<img src="DALEX_files/figure-html/Exercises-1.png" alt="Distribution of residuals for fourn new models" width="672"  />
+<div id="cetParLocalMulticlass" class="section level2">
+<h2><span class="header-section-number">5.5</span> Exploration of multiclass classification models</h2>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;DALEX&quot;</span>)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="kw">head</span>(HR)</a></code></pre></div>
+<pre><code>##   gender      age    hours evaluation salary   status
+## 1   male 32.58267 41.88626          3      1    fired
+## 2 female 41.21104 36.34339          2      5    fired
+## 3   male 37.70516 36.81718          3      0    fired
+## 4 female 30.06051 38.96032          3      2    fired
+## 5   male 21.10283 62.15464          5      3 promoted
+## 6   male 40.11812 69.53973          2      0    fired</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>)</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;ceterisParibus&quot;</span>)</a>
+<a class="sourceLine" id="cb66-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">59</span>)</a>
+<a class="sourceLine" id="cb66-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb66-5" data-line-number="5">model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(status <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>hours <span class="op">+</span><span class="st"> </span>evaluation <span class="op">+</span><span class="st"> </span>salary, <span class="dt">data =</span> HR)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pred1 &lt;-<span class="st"> </span><span class="cf">function</span>(m, x)   <span class="kw">predict</span>(m, x, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">pred2 &lt;-<span class="st"> </span><span class="cf">function</span>(m, x)   <span class="kw">predict</span>(m, x, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">pred3 &lt;-<span class="st"> </span><span class="cf">function</span>(m, x)   <span class="kw">predict</span>(m, x, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb67-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5">explainer_rf_fired &lt;-<span class="st"> </span><span class="kw">explain</span>(model, <span class="dt">data =</span> HR[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], </a>
+<a class="sourceLine" id="cb67-6" data-line-number="6">                              <span class="dt">y =</span> HR<span class="op">$</span>status <span class="op">==</span><span class="st"> &quot;fired&quot;</span>, </a>
+<a class="sourceLine" id="cb67-7" data-line-number="7">                              <span class="dt">predict_function =</span> pred1, <span class="dt">label =</span> <span class="st">&quot;fired&quot;</span>)</a>
+<a class="sourceLine" id="cb67-8" data-line-number="8">explainer_rf_ok &lt;-<span class="st"> </span><span class="kw">explain</span>(model, <span class="dt">data =</span> HR[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], </a>
+<a class="sourceLine" id="cb67-9" data-line-number="9">                              <span class="dt">y =</span> HR<span class="op">$</span>status <span class="op">==</span><span class="st"> &quot;ok&quot;</span>, </a>
+<a class="sourceLine" id="cb67-10" data-line-number="10">                              <span class="dt">predict_function =</span> pred2, <span class="dt">label =</span> <span class="st">&quot;ok&quot;</span>)</a>
+<a class="sourceLine" id="cb67-11" data-line-number="11">explainer_rf_promoted &lt;-<span class="st"> </span><span class="kw">explain</span>(model, <span class="dt">data =</span> HR[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], </a>
+<a class="sourceLine" id="cb67-12" data-line-number="12">                               <span class="dt">y =</span> HR<span class="op">$</span>status <span class="op">==</span><span class="st"> &quot;promoted&quot;</span>, </a>
+<a class="sourceLine" id="cb67-13" data-line-number="13">                               <span class="dt">predict_function =</span> pred3, <span class="dt">label =</span> <span class="st">&quot;promoted&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">cp_rf1 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_fired, HR[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">cp_rf2 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_ok, HR[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">cp_rf3 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_promoted, HR[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="kw">plot</span>(cp_rf1, cp_rf2, cp_rf3, </a>
+<a class="sourceLine" id="cb68-6" data-line-number="6">     <span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">color=</span><span class="st">&quot;_label_&quot;</span>, <span class="dt">size_points =</span> <span class="dv">4</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-48-1.png" width="672"  /></p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">cp_rf1 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_fired, HR[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,])</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">cp_rf2 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_ok, HR[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,])</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">cp_rf3 &lt;-<span class="st"> </span><span class="kw">ceteris_paribus</span>(explainer_rf_promoted, HR[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,])</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb69-5" data-line-number="5"><span class="kw">plot</span>(cp_rf1, cp_rf2, cp_rf3, </a>
+<a class="sourceLine" id="cb69-6" data-line-number="6">     <span class="dt">aggregate_profiles =</span> mean, </a>
+<a class="sourceLine" id="cb69-7" data-line-number="7">     <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">show_observations =</span> <span class="ot">FALSE</span>, <span class="dt">color=</span><span class="st">&quot;_label_&quot;</span>)</a></code></pre></div>
+<p><img src="DALEX_files/figure-html/unnamed-chunk-49-1.png" width="672"  /></p>
+<div id="how-to-do-this-in-r-3" class="section level4">
+<h4><span class="header-section-number">5.5.0.1</span> How to do this in R?</h4>
 </div>
-
 </div>
 <p style="text-align: center;">
-<a href="6-epilogue.html"><button class="btn btn-default">Previous</button></a>
-<a href="https://github.com/pbiecek/DALEX/edit/master/06-exercises.Rmd"><button class="btn btn-default">Edit</button></a>
+<a href="5-4-cetParSingleObseManyModel.html"><button class="btn btn-default">Previous</button></a>
+<a href="https://github.com/pbiecek/DALEX/edit/master/04-ceterisParibus.Rmd"><button class="btn btn-default">Edit</button></a>
+<a href="5-6-cetParGlobalObseMultipleModels.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

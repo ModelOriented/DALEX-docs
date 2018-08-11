@@ -1,5 +1,9 @@
 # Ceteris Paribus Profiles {#ceterisParibus}
 
+See a short 100 secs introduction to the package [on YouTube](https://youtu.be/ya1SEWFXN08).
+
+[![Ceteris Paribus 100 sec introduction](images/ceterisParibus100sec.png)](https://youtu.be/ya1SEWFXN08 "100 sec into ceterisParobis package")
+
 *NOTE: This chapter is still a work in progress. Expect changes.*
 
 In this chapter we introduce a model agnostic method for model exploration based on the Ceteris Paribus principle ^[Ceteris paribus is a Latin phrase meaning  "other things held constant" or "all else unchanged".]. This universal method helps to understand both local and global structure of a model, helps to compare few models and is useful in diagnostic of model fit.
@@ -18,7 +22,7 @@ Ceteris Paribus profiles calculated for different subsets or different models ca
 
 * Section \@ref(cetParSingleObseManyModel) shows how CP profiles calculated for different subsets of data can be aligned in a single plot.
 
-* Section \@ref(cetParSingleObseManyModel) shows how CP profiles can be used for multiclass models or model with multivariate response.
+* Section \@ref(cetParLocalMulticlass) shows how CP profiles can be used for multiclass models or model with multivariate response.
 
 * Section \@ref(cetParGlobalObseMultipleModels) shows how CP profiles can be used for model cross-comparisons. Examples are related to single observation, local and global explanations.
 
@@ -320,7 +324,7 @@ plot(profile_rf_sample, profile_svm_global, profile_lm_global,
 
 First, one need to identify neighbors for selected points of interest. This can be done with the `select_neighbours()` function. By default it is using the `gower` distance, but one may change it with the `distance` argument. 
 
-Here we select 10 closes points.
+Here we select 10 closest points.
 
 
 
@@ -332,6 +336,63 @@ profile_svm <- ceteris_paribus(explainer_svm, observations = new_apartment)
 profile_lm  <- ceteris_paribus(explainer_lm, observations = new_apartment)
 plot(profile_rf, profile_svm, profile_lm, color = "_label_")
 ```
+
+
+
+## Exploration of multiclass classification models {#cetParLocalMulticlass}
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+head(HR)
+```
+
+```{r, warning=FALSE, message=FALSE}
+library("randomForest")
+library("ceterisParibus")
+set.seed(59)
+
+model <- randomForest(status ~ gender + age + hours + evaluation + salary, data = HR)
+```
+
+```{r, warning=FALSE, message=FALSE}
+pred1 <- function(m, x)   predict(m, x, type = "prob")[,1]
+pred2 <- function(m, x)   predict(m, x, type = "prob")[,2]
+pred3 <- function(m, x)   predict(m, x, type = "prob")[,3]
+
+explainer_rf_fired <- explain(model, data = HR[,1:5], 
+                              y = HR$status == "fired", 
+                              predict_function = pred1, label = "fired")
+explainer_rf_ok <- explain(model, data = HR[,1:5], 
+                              y = HR$status == "ok", 
+                              predict_function = pred2, label = "ok")
+explainer_rf_promoted <- explain(model, data = HR[,1:5], 
+                               y = HR$status == "promoted", 
+                               predict_function = pred3, label = "promoted")
+```
+
+```{r, warning=FALSE, message=FALSE}
+cp_rf1 <- ceteris_paribus(explainer_rf_fired, HR[1,])
+cp_rf2 <- ceteris_paribus(explainer_rf_ok, HR[1,])
+cp_rf3 <- ceteris_paribus(explainer_rf_promoted, HR[1,])
+
+plot(cp_rf1, cp_rf2, cp_rf3, 
+     alpha = 0.5, color="_label_", size_points = 4)
+```
+
+```{r, warning=FALSE, message=FALSE}
+cp_rf1 <- ceteris_paribus(explainer_rf_fired, HR[1:100,])
+cp_rf2 <- ceteris_paribus(explainer_rf_ok, HR[1:100,])
+cp_rf3 <- ceteris_paribus(explainer_rf_promoted, HR[1:100,])
+
+plot(cp_rf1, cp_rf2, cp_rf3, 
+     aggregate_profiles = mean, 
+     alpha = 1, show_observations = FALSE, color="_label_")
+```
+
+#### How to do this in R?
+
+
+
 
 
 ## Global Structure and Multiple Models {#cetParGlobalObseMultipleModels}
