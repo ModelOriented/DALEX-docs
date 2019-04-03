@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 *DALEX* is designed to work with various black-box models like tree ensembles, linear models, neural networks etc. Unfortunately R packages that create such models are very inconsistent. Different tools use different interfaces to train, validate and use models. Fortunately *DALEX* can handle it all easily.
 
-In this vignette we will show explanations for models from [parsnip](https://cran.r-project.org/web/packages/parsnip/index.html) (TBD).
+In this vignette we will show explanations for models from [parsnip](https://cran.r-project.org/web/packages/parsnip/index.html) Max Kuhn and Davis Vaughan (2019).
 
 # Regression use case - titanic
 
@@ -73,9 +73,9 @@ nn_model <- nn_model %>% update(epochs = 30)
 Below, we use the *parsnip* function `fit()` to train our models.
 
 ```{r, results="hide"}
-bt_fited <- bt_model%>% fit(fare ~ ., data = titanic_r[train_index,])
-nn_fited <- nn_model%>% fit(fare ~ ., data = titanic_r[train_index,])
-svm_fited <- svm_model%>% fit(fare ~ ., data = titanic_r[train_index,])
+bt_fitted <- bt_model%>% fit(fare ~ ., data = titanic_r[train_index,])
+nn_fitted <- nn_model%>% fit(fare ~ ., data = titanic_r[train_index,])
+svm_fitted <- svm_model%>% fit(fare ~ ., data = titanic_r[train_index,])
 ```
 
 
@@ -88,10 +88,10 @@ custom_predict <- function(object, newdata) {pred <- predict(object, newdata)
                                               response <- pred$.pred
                                               return(response)}
 
-explainer_regr_bt <- DALEX::explain(bt_fited, data=titanic_r_test, y=titanic_r_test$fare, predict_function = custom_predict, label="bt")
-explainer_regr_nn <- DALEX::explain(nn_fited, data=titanic_r_test, y=titanic_r_test$fare,
+explainer_regr_bt <- DALEX::explain(bt_fitted, data=titanic_r_test, y=titanic_r_test$fare, predict_function = custom_predict, label="bt")
+explainer_regr_nn <- DALEX::explain(nn_fitted, data=titanic_r_test, y=titanic_r_test$fare,
 predict_function = custom_predict, label="nn")
-explainer_regr_svm <- DALEX::explain(svm_fited, data=titanic_r_test, y=titanic_r_test$fare,
+explainer_regr_svm <- DALEX::explain(svm_fitted, data=titanic_r_test, y=titanic_r_test$fare,
 predict_function = custom_predict, label="svm")
 
 ```
@@ -225,9 +225,9 @@ svm_model <- svm_rbf(mode = "classification", rbf_sigma = 0.2) %>% set_engine("k
 Next, we use `fit()` to train our models. 
 
 ```{r classif_models, results = 'hide'}
-rf_fited <- rf_model%>% fit(survived ~ ., data = titanic_num[train_index,])
-lr_fited <- lr_model%>% fit(survived ~ ., data = titanic_num[train_index,])
-svm_fited <- svm_model%>% fit(survived ~ ., data = titanic_num[train_index,])
+rf_fitted <- rf_model%>% fit(survived ~ ., data = titanic_num[train_index,])
+lr_fitted <- lr_model%>% fit(survived ~ ., data = titanic_num[train_index,])
+svm_fitted <- svm_model%>% fit(survived ~ ., data = titanic_num[train_index,])
 ```
 
 As previously, to create an explainer for these models we use `explain()` function.
@@ -240,9 +240,9 @@ y_test <- as.numeric(as.character(titanic_num_test$survived))
 custom_predict_classif <- function(objectPred, set){
   as.data.frame(predict(objectPred, set, type = "prob"))[,2]
 }
-explainer_classif_rf <- DALEX::explain(rf_fited, data=titanic_num_test, y=y_test, label= "rf", predict_function = custom_predict_classif)
-explainer_classif_lr <- DALEX::explain(lr_fited, data=titanic_num_test, y=y_test, label="lr", predict_function = custom_predict_classif)
-explainer_classif_svm <- DALEX::explain(svm_fited, data=titanic_num_test, y=y_test, label ="svm", predict_function = custom_predict_classif)
+explainer_classif_rf <- DALEX::explain(rf_fitted, data=titanic_num_test, y=y_test, label= "rf", predict_function = custom_predict_classif)
+explainer_classif_lr <- DALEX::explain(lr_fitted, data=titanic_num_test, y=y_test, label="lr", predict_function = custom_predict_classif)
+explainer_classif_svm <- DALEX::explain(svm_fitted, data=titanic_num_test, y=y_test, label ="svm", predict_function = custom_predict_classif)
 
 ```
 
