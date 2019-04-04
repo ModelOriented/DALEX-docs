@@ -44,6 +44,7 @@ The first step of using the *DALEX* package is to wrap-up the black-box model wi
 
 First, we create a train and test sets which ones are needed to train the *parsnip* models when we don't have an additional test set given.
 ```{r}
+set.seed(123)
 titanic_r$survived <- factor(titanic_r$survived)
 train_index <- sample(1:nrow(titanic_r), 0.7 * nrow(titanic_r))
 test_index <- setdiff(1:nrow(titanic_r), train_index)
@@ -188,6 +189,28 @@ plot(mpp_regr_bt, mpp_regr_nn, mpp_regr_svm)
 
 We can note that svm model, in contrast to neural net and boosting tree, does not see any difference between 1st and 2nd class which may be a bit surprising.
 
+## Break down plots
+
+We have already shown how to check variable importance and many other model's explenations using *DALEX* package. All of those refered to global behaviour of our models. Now we will look at specific passenger, twenty seven years old woman that has been traveling in the first class, and look how our model predicted her fare.
+
+```{r}
+pb_bt <-  prediction_breakdown(explainer_regr_bt, observation = filter(titanic_r_test, 
+                                                                          gender == "female",
+                                                                          age == 27,
+                                                                          class == "1st")[1,])
+pb_nn <-  prediction_breakdown(explainer_regr_nn, observation = filter(titanic_r_test, 
+                                                                          gender == "female",
+                                                                          age == 27,
+                                                                          class == "1st")[1,])
+pb_svm <-  prediction_breakdown(explainer_regr_svm, observation = filter(titanic_r_test, 
+                                                                          gender == "female",
+                                                                          age == 27,
+                                                                          class == "1st")[1,])
+plot(pb_bt, pb_nn, pb_svm)
+
+```
+
+
 # Classification use case - titanic
 
 As previously, in regression use case, to illustrate applications of *DALEX* to classification problems we are going to use titanic dataset. We want to classify if specified passager has survived Titanic's maiden voyage. Originally dataset had factor with two levels, *yes* and *no*, at target column, but we have changed it to *1* and *0*. Reasons will be explained below. Our classification will be based on seven features from this data set, we drop `country` column.
@@ -204,6 +227,7 @@ titanic_num$survived <-  (titanic_num$survived %>% as.numeric()) - 1
 First, we once again create a train and test sets which ones are needed to train the *parsnip* models when we don't have an additional test set given.
 
 ```{r}
+set.seed(123)
 titanic_num$survived <- factor(titanic_num$survived)
 train_index <- sample(1:nrow(titanic_num), 0.7 * nrow(titanic_num))
 test_index <- setdiff(1:nrow(titanic_num), train_index)
@@ -313,4 +337,25 @@ ale_classif_rf  <- variable_response(explainer_classif_rf, variable = "fare", ty
 ale_classif_lr  <- variable_response(explainer_classif_lr, variable = "fare", type = "ale")
 ale_classif_svm  <- variable_response(explainer_classif_svm, variable = "fare", type = "ale")
 plot(ale_classif_rf, ale_classif_lr, ale_classif_svm)
+```
+
+## Break down plots
+
+As previously in regression use case, we will look at specific passenger now. This time we will see hove our model predicted survival of two years old girl that was travelling at 3rd class. 
+
+```{r}
+pb_rf <-  prediction_breakdown(explainer_classif_rf, observation = filter(titanic_num_test, 
+                                                                          gender == "female",
+                                                                          age == 2,
+                                                                          class == "3rd")[1,])
+pb_lr <-  prediction_breakdown(explainer_classif_lr, observation = filter(titanic_num_test, 
+                                                                          gender == "female",
+                                                                          age == 2,
+                                                                          class == "3rd")[1,])
+pb_svm <-  prediction_breakdown(explainer_classif_svm, observation = filter(titanic_num_test, 
+                                                                          gender == "female",
+                                                                          age == 2,
+                                                                          class == "3rd")[1,])
+plot(pb_rf, pb_lr, pb_svm)
+
 ```
