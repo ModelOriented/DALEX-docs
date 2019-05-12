@@ -1,0 +1,289 @@
+---
+title: "R, Java and Python models comparison"
+author: "Szymon Maksymiuk"
+date: "25 April 2019"
+output: 
+  html_document:
+    toc: true  
+    toc_float: true
+    number_sections: true
+---
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(kableExtra)
+library(ggplot2)
+titanic_test_X <- select(read.csv("titanic_test.csv"), -c(survived))
+titanic_test_Y <- select(read.csv("titanic_test.csv"), c(survived))
+titanic_train_X <-
+select(read.csv("titanic_train.csv"), -c(survived))
+titanic_train_Y <-
+select(read.csv("titanic_train.csv"), c(survived))
+y <- unclass(titanic_test_Y)
+y <- y$survived
+```
+
+# Introduction
+
+Machine learning is changing very fast. During those years of constant development many algorithms were implemented in multiple programming languges. Since those implementations were made by different people, it was impossible to keep them identical. That is the reason why we may be interested in comparing models' performance accros different languages. `DALEX` can handle this task in a blink of the eye. We can learn four different models, `gbm` and `CatBoost` R, `h2o` implementation of gbm, `scikit-learn` gbm in Python and thanks to DALEX's flexibility explain them at once.  
+
+# Data
+
+We are going to use preprocessed data from `titanic` dataseta avaiable in `DALEX` package. We split dataset into `titanic_test` and `titanic_train`. Data frames lack country column, in comparision to original `titanic`, all factor columns were one-hot-encoded and `survived` column was changed from two level factor `yes`, `no` to `0` and `1` numeric vector. In this vignette We want to classify if specified passager has survived Titanic's maiden voyage.
+
+
+```{r}
+kable(titanic_test_X %>% head(), "html") %>% kable_styling("striped") %>%
+  scroll_box(width = "100%")
+kable(titanic_train_X %>% head(), "html") %>% kable_styling("striped") %>%
+  scroll_box(width = "100%")
+```
+
+#Languages
+
+## R gbm
+
+First, we would like to introduce R implementation of `gbm` which we will acces thorugh `mlr` package as a wrapper. Specifying most of parameters helps us fiting similiar models accros langugaes, at least in theory.
+
+```{r message=FALSE, warning=FALSE}
+set.seed(123, "L'Ecuyer")
+library(mlr)
+
+task <-
+makeClassifTask(
+id = "R",
+data = cbind(titanic_train_X, titanic_train_Y),
+target = "survived"
+)
+learner <- makeLearner(
+"classif.gbm",
+par.vals = list(
+distribution = "bernoulli",
+n.trees = 5000,
+interaction.depth = 4,
+n.minobsinnode = 12,
+shrinkage = 0.001,
+bag.fraction = 0.5,
+train.fraction = 1
+),
+predict.type = "prob"
+)
+
+r_gbm <- train(learner, task)
+performance(predict(r_gbm, newdata = cbind(titanic_test_X, titanic_test_Y)),
+measures = auc)
+
+```
+
+As we can see R implementation of `gbm` was quite sucessfull. AUC measure above 80% shows high quality of our model, especially taking into account that dataset isn't so big.
+
+## R CatBoost
+
+`CatBoost` is a machine learning algorithm that uses gradient boosting on decision trees. It is similiar to `gbm`, therefore it make sense to compare them.
+
+```{r message=FALSE, error=FALSE, results="hide"}
+library(catboost)
+
+pool_train <- catboost.load_pool(titanic_train_X, titanic_train_Y$survived)
+pool_test <- catboost.load_pool(titanic_test_X)
+r_catboost <- catboost.train(pool_train, 
+               test_pool = NULL, 
+               params = list(
+                 custom_loss = "AUC",
+                 iterations = 5000,
+                 learing_rate = 0.001,
+                 depth = 4,
+                 logging_level = "Silent"
+               ))
+preds <- catboost.predict(r_catboost, pool_test, "Probability")
+```
+```{r}
+mltools::auc_roc(preds, y)
+```
+
+## Java h2o gbm
+
+We will access `h2o` via R package. Using [h2o documentation](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/gbm.html) we are able to match as many parameters as it possible which will help objectively comapre models.
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, include=FALSE}
+set.seed(123, "L'Ecuyer")
+library(h2o)
+h2o.init()
+h2o.no_progress()
+titanic_h2o <- as.h2o(cbind(titanic_train_X, titanic_train_Y))
+titanic_h2o["survived"] <- as.factor(titanic_h2o["survived"])
+
+titanic_test_h2o <- as.h2o(cbind(titanic_test_X, titanic_test_Y))
+h2o_y <- as.h2o(as.factor(y))
+  
+```
+
+```{r, warning=FALSE, message=FALSE}
+set.seed(123, "L'Ecuyer")
+java_h2o_gbm <- h2o.gbm(
+training_frame = titanic_h2o,
+y = "survived",
+distribution = "bernoulli",
+ntrees = 5000,
+max_depth = 4,
+min_rows =  12,
+learn_rate = 0.001
+)
+
+
+h2o.auc(h2o.performance(java_h2o_gbm, newdata = titanic_test_h2o))
+
+```
+
+## python scikit-learn gbm
+
+Inspection of models that have been created at Python via R is not as hard as it may seem to. It is possbile thanks to two packages. `reticulate` avaiable at R and `pickle` from Python.
+
+```{python eval = FALSE}
+from pandas import DataFrame, read_csv
+import pandas as pd 
+import pickle
+import sklearn.ensemble
+from sklearn.metrics import auc, accuracy_score, confusion_matrix, mean_squared_error
+model = sklearn.ensemble.GradientBoostingClassifier(
+n_estimators= 5000,
+learning_rate=0.001, 
+max_depth=4, 
+min_samples_split = 12
+)
+model = model.fit(titanic_train_X, titanic_train_Y)
+pickle.dump(model, open("gbm.pkl", "wb"))
+
+```
+
+
+```{r}
+library(reticulate)
+
+
+python_scikitlearn_gbm <- py_load_object("gbm.pkl", pickle = "pickle")
+preds <- python_scikitlearn_gbm$predict_proba(titanic_test_X)[, 2]
+mltools::auc_roc(preds, y)
+
+```
+
+`scikit-learn` turned up to be better than `h2o` and slightly better than R model. Fortunately high AUC measure , although it's importance is not the only thing that matter in models, therefore it's high time to make some explanations.
+
+
+
+# Comparison
+
+Because all four packages return sligthly diffrent objects, we have to specify predict functions in order to get plain predicted probabilities vector. 
+
+```{r warning=FALSE, message=FALSE}
+h2o_predict <- function(model, newdata) {
+  newdata_h2o <- as.h2o(newdata)
+  res <-
+  as.data.frame(h2o.predict(model,
+  newdata_h2o))
+  return(as.numeric(res$p1))
+}
+
+catboost_predict <- function(object, newdata) {
+newdata_pool <- catboost.load_pool(newdata)
+catboost.predict(object, newdata_pool, "Probability")
+}
+
+mlr_predict <- function(object, newdata) {
+pred <- predict(object, newdata = newdata)
+response <-
+pred$data[, 1]
+return(response)
+}
+
+py_predict <- function(model, newdata) {
+model$predict_proba(newdata)[, 2]
+}
+
+library(DALEX)
+r_explain <- DALEX::explain(
+r_gbm,
+data = titanic_test_X,
+y = y,
+label = "R",
+predict_function = mlr_predict
+)
+
+catboost_explain <- DALEX::explain(
+r_catboost,
+data = titanic_test_X,
+y = y,
+label = "CatBoost",
+predict_function = catboost_predict
+)
+
+
+h2o_explain <- DALEX::explain(
+java_h2o_gbm,
+data = titanic_test_X,
+y = y,
+label = "h2o",
+predict_function = h2o_predict
+)
+
+
+py_explain <- explain(
+python_scikitlearn_gbm,
+data = titanic_test_X,
+y = y,
+label = "python",
+predict_function = py_predict
+)
+
+
+```
+
+## Model performance
+
+With explainers ready, we can compare our models in order to find possible differences. Models performance and residual distribution gets our first look.
+
+```{r message=FALSE, warning=FALSE}
+plot(
+  model_performance(r_explain),
+  model_performance(h2o_explain),
+  model_performance(py_explain),
+  model_performance(catboost_explain)
+  )
+```
+
+As we can see, models are quite similiar. The biggest difference is residuals distrubution in [0, 0.13] compartment where R `gbm` has biggest mistake ratio. R is worse in compartment [0.13, 0.25] aswell, but diffence is not as easy to spot as in previous area. `CatBoost`, on the other hand, is the best model for residuals [0, 0.13].
+
+## Variable importance
+
+```{r message=FALSE, warning=FALSE}
+custom_loss_function <- function(yhat, y) {
+  1 - mltools::auc_roc(yhat, y)
+  
+}
+plot(
+variable_importance(r_explain, type = "difference", loss_function = custom_loss_function),
+variable_importance(h2o_explain, type = "difference", loss_function = custom_loss_function),
+variable_importance(py_explain, type = "difference", loss_function = custom_loss_function),
+variable_importance(catboost_explain, type = "difference", loss_function = custom_loss_function)
+)
+```
+
+This time we can see significant difference. `h2o` model figured out correlation between `gender.male` and `gender.female` and dropped one of them. Other models use both of those columns. What is interesting, next four most significant variables are the same for all three of models. 
+
+## pdp plots
+
+```{r}
+pdp_r  <-
+  ingredients::partial_dependency(r_explain, variables = "fare")
+pdp_h2o  <-
+  ingredients::partial_dependency(h2o_explain, variables = "fare")
+pdp_py <-
+  ingredients::partial_dependency(py_explain, variables = "fare")
+pdp_catboost <-
+  ingredients::partial_dependency(catboost_explain, variables = "fare")
+plot(pdp_r, pdp_h2o, pdp_py) + xlim(0, 150)
+  
+```
+
+We can see the difference in how our model behaves for different values of `fare`. Response is similiar only in [0,25] compartment.
+
+
