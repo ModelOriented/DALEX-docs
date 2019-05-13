@@ -257,7 +257,7 @@ plot(
 
 This time we can see significant difference. `h2o` model figured out correlation between `gender.male` and `gender.female` and dropped one of them. Other models use both of those columns. What is interesting, next four most significant variables are the same for all three of models. 
 
-## PDP plots
+## PDP plots for fare
 
 ```{r message=FALSE, warning=FALSE}
 library("ingredients")
@@ -270,9 +270,26 @@ pdp_py <- partial_dependency(py_explain,
                          variable_splits = list(fare = seq(0,100,0.1)))
 pdp_catboost <- partial_dependency(catboost_explain, 
                          variable_splits = list(fare = seq(0,100,0.1)))
+
 plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) + xlim(0, 150) + ylim(0, 0.5)
-  
 ```
 
 We can see the difference in how our model behaves for different values of `fare`. Response is similiar only in [0,25] compartment.
+
+
+## PDP plots for age
+
+```{r message=FALSE, warning=FALSE}
+pdp_r   <- partial_dependency(r_explain, 
+                          variable_splits = list(age = seq(0,80,0.1)))
+pdp_h2o  <- partial_dependency(h2o_explain, 
+                          variable_splits = list(age = seq(0,80,0.1)))
+pdp_py <- partial_dependency(py_explain,
+                         variable_splits = list(age = seq(0,80,0.1)))
+pdp_catboost <- partial_dependency(catboost_explain, 
+                         variable_splits = list(age = seq(0,80,0.1)))
+
+plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) + xlim(0, 80) + ylim(0, 1)
+```
+
 
