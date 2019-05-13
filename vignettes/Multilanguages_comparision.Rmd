@@ -271,7 +271,7 @@ This time we can see significant difference. `h2o` model figured out correlation
 
 ## pdp plots
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 pdp_r  <-
   ingredients::partial_dependency(r_explain, variables = "fare")
 pdp_h2o  <-
@@ -280,7 +280,7 @@ pdp_py <-
   ingredients::partial_dependency(py_explain, variables = "fare")
 pdp_catboost <-
   ingredients::partial_dependency(catboost_explain, variables = "fare")
-plot(pdp_r, pdp_h2o, pdp_py) + xlim(0, 150)
+plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) + xlim(0, 150) + ylim(0, 0.5)
   
 ```
 
