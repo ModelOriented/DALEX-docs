@@ -26,7 +26,7 @@ y <- y$survived
 
 Machine learning models are being developed in different tools and different languages. On one hand it is great as everyone can choose tool that suits his needs, but on another hand it is hard to compare such models in a different way that simply by comparing accuracies.
 
-In this vignette we will show how `DALEX` can bu used for comparison of models across different languages.
+In this vignette we will show how `DALEX` can be used for comparison of models across different languages.
 
 We trained four models, `gbm` and `CatBoost` in R, `h2o` implementation of  in java and `scikit-learn` implementation of gbm in Python. Then we visually explore their similarities and differences through DALEX explainers.  
 
@@ -52,7 +52,6 @@ First, we train R implementation of `gbm` which we will acces thorugh `mlr` pack
 ```{r message=FALSE, warning=FALSE}
 library("mlr")
 set.seed(123, "L'Ecuyer")
-
 task <- makeClassifTask(
             id = "R",
             data = cbind(titanic_train_X, titanic_train_Y),
@@ -71,12 +70,10 @@ learner <- makeLearner(
             ),
             predict.type = "prob"
           )
-
 r_gbm <- train(learner, task)
 performance(predict(r_gbm, 
                     newdata = cbind(titanic_test_X, titanic_test_Y)), 
             measures = auc)
-
 ```
 
 ## CatBoost in R
@@ -85,7 +82,6 @@ performance(predict(r_gbm,
 
 ```{r message=FALSE, error=FALSE, results="hide"}
 library("catboost")
-
 pool_train <- catboost.load_pool(titanic_train_X, titanic_train_Y$survived)
 pool_test  <- catboost.load_pool(titanic_test_X)
 r_catboost <- catboost.train(pool_train, 
@@ -115,7 +111,6 @@ h2o.init()
 h2o.no_progress()
 titanic_h2o <- as.h2o(cbind(titanic_train_X, titanic_train_Y))
 titanic_h2o["survived"] <- as.factor(titanic_h2o["survived"])
-
 titanic_test_h2o <- as.h2o(cbind(titanic_test_X, titanic_test_Y))
 h2o_y <- as.h2o(as.factor(y))
   
@@ -132,7 +127,6 @@ java_h2o_gbm <- h2o.gbm(
                   min_rows =  12,
                   learn_rate = 0.001
                 )
-
 h2o.auc(h2o.performance(java_h2o_gbm, newdata = titanic_test_h2o))
 ```
 
@@ -159,7 +153,6 @@ pickle.dump(model, open("gbm.pkl", "wb"))
 
 ```{r}
 library("reticulate")
-
 python_scikitlearn_gbm <- py_load_object("gbm.pkl", pickle = "pickle")
 preds <- python_scikitlearn_gbm$predict_proba(titanic_test_X)[, 2]
 mltools::auc_roc(preds, y)
@@ -178,20 +171,17 @@ h2o_predict <- function(model, newdata) {
   res <- as.data.frame(h2o.predict(model, newdata_h2o))
   return(as.numeric(res$p1))
 }
-
 # catboost wrapper 
 catboost_predict <- function(object, newdata) {
   newdata_pool <- catboost.load_pool(newdata)
   catboost.predict(object, newdata_pool, "Probability")
 }
-
 # mlr wrapper 
 mlr_predict <- function(object, newdata) {
   pred <- predict(object, newdata = newdata)
   response <- pred$data[, 1]
   return(response)
 }
-
 # python wrapper
 py_predict <- function(model, newdata) {
   model$predict_proba(newdata)[, 2]
@@ -206,17 +196,14 @@ r_explain <- DALEX::explain(r_gbm,
   data = titanic_test_X, y = y, label = "gmb (R)",
   predict_function = mlr_predict
 )
-
 catboost_explain <- DALEX::explain(r_catboost,
   data = titanic_test_X, y = y, label = "CatBoost (R)",
   predict_function = catboost_predict
 )
-
 h2o_explain <- DALEX::explain(java_h2o_gbm,
   data = titanic_test_X, y = y, label = "gbm (h2o/java)",
   predict_function = h2o_predict
 )
-
 py_explain <- explain(python_scikitlearn_gbm,
   data = titanic_test_X, y = y, label = "gbm (python/sklearn)",
   predict_function = py_predict
@@ -246,7 +233,6 @@ Here the drop in `1 - AUC` is used to compare variable perforamnce.
 custom_loss_function <- function(yhat, y) {
   1 - mltools::auc_roc(yhat, y)
 }
-
 plot(
   variable_importance(r_explain, type = "difference", loss_function = custom_loss_function),
   variable_importance(h2o_explain, type = "difference", loss_function = custom_loss_function),
@@ -261,7 +247,6 @@ This time we can see significant difference. `h2o` model figured out correlation
 
 ```{r message=FALSE, warning=FALSE}
 library("ingredients")
-
 pdp_r   <- partial_dependency(r_explain, 
                           variable_splits = list(fare = seq(0,100,0.1)))
 pdp_h2o  <- partial_dependency(h2o_explain, 
@@ -270,7 +255,6 @@ pdp_py <- partial_dependency(py_explain,
                          variable_splits = list(fare = seq(0,100,0.1)))
 pdp_catboost <- partial_dependency(catboost_explain, 
                          variable_splits = list(fare = seq(0,100,0.1)))
-
 plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) + xlim(0, 150) + ylim(0, 0.5)
 ```
 
@@ -288,8 +272,5 @@ pdp_py <- partial_dependency(py_explain,
                          variable_splits = list(age = seq(0,80,0.1)))
 pdp_catboost <- partial_dependency(catboost_explain, 
                          variable_splits = list(age = seq(0,80,0.1)))
-
 plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) + xlim(0, 80) + ylim(0, 1)
 ```
-
-
