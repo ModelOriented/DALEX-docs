@@ -227,10 +227,10 @@ As we can see, models are quite similiar. The biggest difference is residuals di
 
 ## Variable importance
 
-Here the drop in `1 - AUC` is used to compare variable perforamnce.
+Here the drop in `1 - AUC` is used to compare variable perforamnce. Keep in mind that when defining `custom_loss_function` you have to provide arguments in correct order. Real values of `y` first and predicted second. 
 
 ```{r message=FALSE, warning=FALSE}
-custom_loss_function <- function(yhat, y) {
+custom_loss_function <- function(y, yhat) {
   1 - mltools::auc_roc(yhat, y)
 }
 plot(
