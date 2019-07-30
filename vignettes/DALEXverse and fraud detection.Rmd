@@ -1,0 +1,616 @@
+---
+title: "DALEXverse and fraud detection"
+author: "Jakub Sztachelski"
+date: "9/07/2019"
+output: 
+  html_document:
+    toc: yes
+    theme: united 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, message=FALSE, warning=FALSE, echo=FALSE}
+library('DALEX')
+library('ingredients')
+library('iBreakDown')
+library('randomForest')
+library('gbm')
+library('ggplot2')
+library('PRROC')
+library('e1071')
+library('glmnet')
+library('precrec')
+```
+
+## Introduction
+
+To illustrate applications of explailers from the DrWhy.AI universe we will use fraud data available under the following address: https://www.openml.org/d/1597
+Our data consists of a 28 (V1-V28) anonymized variables. They are transformed by PCA from the raw dataset, but due to the sensitivity of the raw data, we have access only to its anonymized version. Moreover, there are 3 additional variables: Time, Amount and Class. Time describes time, when a transaction was taken and Amount describes amount of used money. Class is a target variable where 1 means that a transaction was fraudulent.
+
+## Exploratory Data Analysis
+
+Let's download our data and display a few observations to get some insight.
+
+```{r load_data, message=FALSE, warning=FALSE, eval=FALSE}
+set.seed(333)
+OpenML <- getOMLDataSet(data.id = 1597)
+data <- OpenML$data
+# there are a few duplicates which I remove at the beginning
+data <- data[!duplicated(data), ]
+head(data)
+```
+
+```{r load_data_true, echo=FALSE}
+set.seed(333)
+setwd("xxx")
+load('data')
+head(data)
+```
+
+We see that all variables are numeric. We will take a closer look at Time and Amount variables. The rest is anonymized, so we won't be able to do anything more advanced than just plot simple summary statistics. All anonymized variables look pretty similar, so I decided to show only first 4 of them.
+
+```{r, echo=FALSE}
+compute_outliers <- function(variable){
+    # The function takes a variable and then computes how many observations lie further than 1.5 inter-quartile 
+    # range from the median. Then it returns percentage of such observations. 
+    # Value 1.5 was chosen, because it corresponds to how geom_boxplot displays dots in a plot.
+    
+    tr <- 1.5*IQR(variable)
+    med <- median(variable)
+    outliers <- lapply(variable, function(x){ 
+                                                if((x >= med-tr) & (x <= med+tr)) 
+                                                    return (FALSE)
+                                                else 
+                                                    return (TRUE)
+                                                })
+    res <- 100*sum(unlist(outliers))/length(variable)
+    return (round(res, 1))
+}
+```
+
+```{r plots, fig.height=1.5}
+theme_update(plot.title = element_text(hjust = 0.5))
+# summary statistics only for variables with letter V (i.e. V1-V28)
+anonymized_variables <- colnames(data[, grep('V', colnames(data))])
+for (v in anonymized_variables[1:4]){
+    D2 <- round(var(data[, v]), 2)
+    outliers <- compute_outliers(data[, v])
+    kurt <- round(kurtosis(data[, v]), 2)
+    pl <- ggplot(data, aes(x = '', y = data[, v])) +
+        geom_boxplot(outlier.size = 0.01) +
+        ggtitle(paste('Variable:', v,
+                      '\n Variance of a variable:', D2,
+                      '\n Percentage of outliers:', outliers, '%',
+                      '\n Kurtosis of a variable: ', kurt)) +
+        ylab('') +
+        xlab('') +
+        coord_flip()
+    print(pl)
+}
+```
+
+We can see that variables have many outliers (in this case defined as points which lie further than 1.5 interquartile range from the median). Additionaly, all kurtoses are positive which means that our variables are light-tailed. Two things can be done with them. Firstly, we can standarise variances so they all will be equal to 1. It's very common procedure during data preparation which usually makes a training algorithm perform better. We also should note that all variables have mean around zero, hence there is no need to center them. 
+
+```{r plots2, message=FALSE, warning=FALSE, fig.height=3.8, fig.width=3.8}
+theme_update(plot.title = element_text(hjust = 0.5))
+
+ggplot(data, aes(x = Time)) +
+    geom_histogram(color = 'black', fill = 'grey') +
+    ylab('Frequency') +
+    ggtitle('Histogram of Time variable')
+
+ggplot(data, aes(x = Amount)) +
+    geom_histogram(color = 'black', fill = 'grey') +
+    ylab('Frequency') +
+    ggtitle('Histogram of Amount variable')
+
+ggplot(data, aes(x = log(Amount + 0.1))) +
+    geom_histogram(color = 'black', fill = 'grey') +
+    ylab('Frequency') +
+    ggtitle('Amount variable after log transformation')
+
+temp <- data.frame(table(data$Class))
+ggplot(temp, aes(x = as.factor(Var1), y = Freq)) +
+    geom_bar(stat = 'identity') +
+    geom_text(aes(label = Freq), vjust = -0.2) +
+    ggtitle('Histogram of classes') +
+    xlab('') +
+    ylab('Frequency')
+```
+
+It should be reasonable to apply log transformation to the Amount variable as it is really skewed. We will also categorize Time variable. Although it is not written, it is sensible to assume that high values in the histogram are times of transactions which were done during a day whereas low values stand for nights. The last thing to note is huge disproportion between positive (473) and negative (283 253) cases. We have to have in mind that we work with extremly unbalanced data. With all those corrections let's build our train and test datasets.
+
+```{r data_preparation, eval=FALSE}
+# changing numeric time into categorical variable
+data[, 1] <- sapply(data[, 1], function(x){
+                                            if (x < 30000) 
+                                             {return (0)}
+                                            if ((x > 85000) & (x < 115000)) 
+                                              {return (0)}
+                                            return (1)})
+# turning characters into numbers from {0, 1}
+data$Class <- as.numeric(data$Class) - 1
+# scaling data
+data$Amount <-(data$Amount - mean(data$Amount))/sd(data$Amount)
+for (v in anonymized_variables){
+    data[, v] = data[, v]/sd(data[, v])
+}
+# preparing subtable with only fraud observations
+data_fraud <- data[data$Class == 1, ]
+data_fraud <- data_fraud[sample(nrow(data_fraud)), ]
+data_nonfraud <- data[data$Class == 0, ]
+# creating train and test datasets which have similiar percentage of fraudulent and non fraudulent transactions
+# train data has 80% of the whole dataset included in the analysis
+data_train <- rbind(data_fraud[1 : floor(0.8*nrow(data_fraud)), ],
+                    data_nonfraud[1 : floor(0.8*nrow(data_nonfraud)), ])
+data_test <- rbind(data_fraud[(floor(0.8*nrow(data_fraud))+1) : nrow(data_fraud), ],
+                   data_nonfraud[(floor(0.8*nrow(data_nonfraud))+1) : nrow(data_nonfraud), ])
+col = ncol(data)
+```
+
+```{r, echo=FALSE}
+setwd('~/repo/')
+load('fraud_serv/data/data_train_final')
+load('fraud_serv/data/data_test_final')
+col = ncol(data_train)
+```
+
+## Modelling 
+
+Finally, we are able to build models. Hyperparameters were tuned using bayesian optimization algorithms. Goal during optimization was to maximize area under precision-recall curve which should be a good alternative to standard AUC score in case of a such unbalanced dataset. Optimization scripts are attached at the bottom. Additionally, weighting observations made minority class more important during training. 
+
+```{r modelling, message=FALSE, warning=FALSE, eval=FALSE}
+frauds = sum(data_train$Class)/nrow(data_train)
+weights <- ifelse(data_train$Class == 1, 1-frauds, frauds)
+weights_for_rf <- c(1-frauds, frauds)
+names(weights_for_rf) <- c('1', '0')
+
+
+model_glm <- glmnet(x = as.matrix(data_train[, -col]),
+                    y = data_train$Class,
+                    family = 'binomial',
+                    weights = weights,
+                    lambda = 1,
+                    alpha = 0.063)
+model_rf <- randomForest(as.factor(Class) ~ .,
+                         data = data_train,
+                         classwt = weights_for_rf,
+                         ntree = 1000,
+                         mtry = 4,
+                         replace = TRUE,
+                         samplesize = 0.5, 
+                         nodesize = 1)
+model_gbm <- gbm(Class == 1 ~ .,
+                 data = data_train,
+                 weights = weights,
+                 distribution = 'adaboost', 
+                 n.trees = 1172,
+                 interaction.depth = 3,
+                 shrinkage = 0.1614,
+                 bag.fraction = 0.7865)
+```
+
+```{r load_models, echo=FALSE}
+load('fraud_serv/models/model_gbm')
+load('fraud_serv/models/model_glmnet')
+load('fraud_serv/models/model_rf')
+```
+
+## Diagnostics
+
+### ROC and precision-recall curves
+
+```{r def1}
+plot_curves <- function(predictions){
+    plot(roc.curve(scores.class0 = predictions,
+               weights.class0 = data_test$Class,
+               curve = TRUE))
+    plot(pr.curve(scores.class0 = predictions,
+               weights.class0 = data_test$Class,
+               curve = TRUE))
+}
+```
+
+#### Generalized Linear Model (Logistic Regression)
+
+```{r pl1, fig.height=3, fig.width=3.8}
+par(mfrow = c(1, 2))
+pred_glm <- predict(model_glm, as.matrix(data_test[, -col]), type = 'response')
+plot_curves(pred_glm)
+```
+
+#### Random Forest
+
+```{r pl2, fig.height=3, fig.width=3.8}
+par(mfrow = c(1, 2))
+pred_rf <- predict(model_rf, data_test[, -col], type = 'prob')[, 2]
+plot_curves(pred_rf)
+```
+
+#### Gradient Boosting Machine
+
+```{r pl3, fig.height=3, fig.width=3.8}
+par(mfrow = c(1, 2))
+pred_gbm <- predict(model_gbm, data_test[, -col], n.trees = 1172, type = 'response')
+plot_curves(pred_gbm)
+```
+
+#### Comparison of PR curves
+
+Data is unbalanced, hence it is better to look at precision-recall curves instead of standard ROC. Let's print all 3 curves in one plot in order to make comparision easier.
+
+```{r all_prcurves}
+temp <- mmdata(cbind(pred_gbm, pred_glm, pred_rf), data_test$Class, modnames=c('gbm', 'glm', 'rf'))
+ms <- evalmod(temp)
+autoplot(ms, 'PRC')
+```
+
+As we see, all models work really well. From the last plot we can deduce GLM is a model which performance drops first. GBM and RF have very similar precision-recall curves.
+
+## Explanations
+
+Now we can explain our models. It's not necessary to use explain function from the DALEX package, but it makes a whole procedure easier. 
+
+```{r explainers}
+explainer_glm <- explain(model_glm,
+                         data = data_train[, -col],
+                         y = data_train$Class,
+                         predict_function = function(m, x) as.vector(predict(m, as.matrix(x), type = 'response')),
+                         label = 'glm')
+explainer_rf <- explain(model_rf,
+                        data = data_train[, -col],
+                        y = (data_train$Class),
+                        label = 'rf')
+explainer_gbm <- explain(model_gbm,
+                         data = data_train[, -col],
+                         y = (data_train$Class == 1),
+                         predict_function = function(m, x) predict(m, x, n.trees = 1172, type = "response"),
+                         label = 'gbm')
+```
+
+### Feature importance
+
+Using the DrWhy.AI universe we are able to better understand which variables are important.
+
+Model agnostic variable importance is calculated by means of permutations. We simply substract the loss function calculated for validation dataset with permuted values for a single variable from the loss function calculated for validation dataset.
+
+This method is implemented in the feature_importance() function from the ingredients package. Because there are many variables, we can display only these with the biggest importance. 
+
+```{r fi}
+custom_loss_function <- function(y, yhat) {
+  1 - mltools::auc_roc(yhat, y)
+}
+vars = c('V11', 'V16', 'V4', 'V10', 'V12', 'V14')
+fi_glm <- ingredients::feature_importance(x = explainer_glm, 
+                                          type = "difference", 
+                                          loss_function = custom_loss_function, 
+                                          variables = vars)
+fi_rf <- ingredients::feature_importance(x = explainer_rf, 
+                                         type = "difference", 
+                                         loss_function = custom_loss_function,
+                                         variables = vars)
+fi_gbm <- ingredients::feature_importance(x = explainer_gbm, 
+                                          type = "difference", 
+                                          loss_function = custom_loss_function,
+                                          variables = vars)
+```
+
+We can visualize those values in a single plot using generic plot() or plotD3() functions
+
+```{r plot_fi}
+plot(fi_glm, fi_rf, fi_gbm)
+```
+
+As we see, tree-based models have very little drops after perturbations.
+
+### Single observation explainations
+
+The break_down function finds Variable Attributions via Sequential Variable Conditioning and them compute contributions of particular variables in a whole prediction. In case of non-additive models the function can compute interactions between predictors. Let's check which variables had majority impact on prediction at 12th observation from the training dataset.
+
+```{r break_down, eval=FALSE}
+plotD3(break_down(explainer_glm, data_train[12, ]))
+plotD3(break_down(explainer_rf, data_train[12, ]))
+plotD3(break_down(explainer_gbm, data_train[12, ]))
+```
+
+```{r load_bd, echo=FALSE}
+load('fraud_serv/plots/glm_bd')
+load('fraud_serv/plots/gbm_bd')
+load('fraud_serv/plots/rf_bd')
+plotD3(glm_bd)
+plotD3(rf_bd)
+plotD3(gbm_bd)
+```
+
+This particular observation was fraudulent, so we see that all models correctly classified its label. 
+
+Additionally, if we are not confident with just one specific ordering of variables, we can estimate an impact of each variable by sampling a couple of different orderings and then compute averages. We can even obtain interquartile ranges for estimators and all these functionalities are implemented in a function from the iBreakDown package called break_down_uncertainty.
+
+```{r plot_un, eval=FALSE}
+plot(break_down_uncertainty(explainer_glm, data_train[12, ], B = 25))
+plot(break_down_uncertainty(explainer_rf, data_train[12, ], B = 25))
+plot(break_down_uncertainty(explainer_gbm, data_train[12, ], B = 25))
+```
+
+```{r load_un, echo=FALSE}
+load('fraud_serv/plots/glm_un')
+load('fraud_serv/plots/gbm_un')
+load('fraud_serv/plots/rf_un')
+plot(glm_un)
+plot(rf_un)
+plot(gbm_un)
+```
+
+We can deduce that GLM is the most consistent with variables' contributions through different orderings whereas RF can be unstable. One more thing to note is that variables in RF model can have only positive contribution (i.e. variables' values can't decrease prediction)
+
+### Partial Dependency Profiles
+
+Partial Dependency Profiles are averages from Ceteris Paribus Profiles over a whole dataset. The latter can be used to hypothesize about model results if selected variable is changed. For this reason it is also called 'What-If Profiles'. Averaging ensures more stability in explainations. Let's print Partial Dependency Profiles for variables V4, V12 and V14.
+
+```{r load_pdp, echo=FALSE}
+load('fraud_serv/plots/plots_pdp')
+pdp_glm_V4 <- plots[[1]]
+pdp_rf_V4 <- plots[[2]]
+pdp_gbm_V4 <- plots[[3]]
+
+pdp_glm_V12 <- plots[[4]]
+pdp_rf_V12 <- plots[[5]]
+pdp_gbm_V12 <- plots[[6]]
+
+pdp_glm_V14 <- plots[[7]]
+pdp_rf_V14 <- plots[[8]]
+pdp_gbm_V14 <- plots[[9]]
+```
+
+```{r long_chunk, eval=FALSE}
+pdp_glm_V4 <- ingredients::partial_dependency(explainer_glm , variables = "V4")
+pdp_rf_V4 <- ingredients::partial_dependency(explainer_rf, variables = "V4")
+pdp_gbm_V4 <- ingredients::partial_dependency(explainer_gbm , variables = "V4")
+plot(pdp_glm_V4, pdp_rf_V4, pdp_gbm_V4)
+
+pdp_glm_V12 <- ingredients::partial_dependency(explainer_glm , variables = "V12")
+pdp_rf_V12 <- ingredients::partial_dependency(explainer_rf, variables = "V12")
+pdp_gbm_V12 <- ingredients::partial_dependency(explainer_gbm , variables = "V12")
+plot(pdp_glm_V12, pdp_rf_V12, pdp_gbm_V12)
+
+pdp_glm_V14 <- ingredients::partial_dependency(explainer_glm , variables = "V14")
+pdp_rf_V14 <- ingredients::partial_dependency(explainer_rf, variables = "V14")
+pdp_gbm_V14 <- ingredients::partial_dependency(explainer_gbm , variables = "V14")
+plot(pdp_glm_V14, pdp_rf_V14, pdp_gbm_V14)
+```
+
+```{r plot_pdp, echo=FALSE}
+plot(pdp_glm_V14, pdp_rf_V14, pdp_gbm_V14)
+```
+
+Let's take a look at the last variable. The figure shows that decreasing value of variable increases probability for transaction to be fraudulent both for logistic regression and gradient boosting machine whereas random forest treats this variable as insignificant in this particular observation. Note that changes for tree-based models are rather small which is consistent with the fact that individual variables don't cause dramatical changes in model's performance (what we have seen in feature importance plots)
+
+## Bayesian Optimization Scripts
+
+### Logistic Regression
+
+```{r glm, eval=FALSE}
+if (!require('rBayesianOptimization')){
+    install.packages('rBayesianOptimization')
+    library('rBayesianOptimization')
+}
+if (!require('PRROC')){
+	install.packages('PRROC')
+	library('PRROC')
+}
+if (!require('glmnet')){
+    install.packages('glmnet')
+    library('glmnet')
+}
+
+
+# load('../data/data_train_small')
+# load('../data/data_test_small')
+load('../data/data_train_final')
+load('../data/data_test_final')
+col = ncol(data_train)
+
+
+# optimizations
+cv_folds = KFold(target = data_train$Class,
+                 nfolds = 5,
+                 stratified = TRUE)
+
+
+# LR optimization
+glm_optim <- function(alpha, lambda){
+    scores <- numeric(5)
+    for (i in 1:5){
+        train <- data_train[cv_folds[[i]], ]
+        test <- data_test[-cv_folds[[i]], ]
+        frauds = sum(train$Class)/nrow(train)
+        weights <- ifelse(train$Class == 1, 1-frauds, frauds)
+        model_glm <- glmnet(as.matrix(train[, -col]), 
+                            train$Class,
+                            family = 'binomial',
+                            lambda = lambda,
+                            alpha = alpha,
+                            weights = weights) 
+        pred = predict(model_glm, as.matrix(test[, -col]))
+        pred <- sapply(pred, function(x) {1/(1 + exp(-x))})
+        roc <- pr.curve(scores.class0 = pred, 
+                         weights.class0 = test$Class)
+        scores[i] = roc$auc.integral
+    }
+    return (list(Score = mean(scores), Pred = 0))
+}
+
+start <- Sys.time()
+print('Training has begun!')
+glm_bayes <- BayesianOptimization(FUN = glm_optim, 
+                                  bounds = list(alpha = c(0, 1),
+                                                lambda = c(0, 1)), 
+                                  n_iter = 50,
+                                  init_points = 10,     
+                                  verbose = TRUE)
+
+stop <- Sys.time()
+print(stop-start)
+save(glm_bayes, file = 'glmnet_bayes')
+}
+```
+
+
+### Random Forest
+
+```{r rf, eval=FALSE}
+if (!require('rBayesianOptimization')){
+    install.packages('rBayesianOptimization')
+    library('rBayesianOptimization')
+}
+if (!require('PRROC')){
+    install.packages('PRROC')
+    library('PRROC')
+}
+if (!require('randomForest')){
+    install.packages('randomForest')
+    library('randomForest')
+}
+
+
+# load('../data/data_train_small')
+# load('../data/data_test_small')
+load('../data/data_train_final')
+load('../data/data_test_final')
+col = ncol(data_train)
+
+
+# optimizations
+cv_folds = KFold(target = data_train$Class,
+                 nfolds = 5,
+                 stratified = TRUE)
+
+# RF optimization
+rf_optim <- function(ntree, mtry, replace, samplesize, nodesize){
+    scores <- numeric(5)
+    for (i in 1:5){
+        train <- data_train[cv_folds[[i]], ]
+        test <- data_test[-cv_folds[[i]], ]
+        frauds = sum(train$Class)/nrow(train)
+        weights <- c(1-frauds, frauds)
+        names(weights) <- c('1', '0')
+        model_rf <- randomForest(as.factor(Class) ~ .,
+                                 data = train,
+                                 classwt = weights,
+                                 ntree = ntree,
+                                 mtry = mtry,
+                                 replace = replace,
+                                 samplesize = samplesize, 
+                                 nodesize = nodesize)
+        roc <- pr.curve(scores.class0 = predict(model_rf, test[, -col], type = 'prob')[, 2], 
+                         weights.class0 = test$Class)
+        scores[i] = roc$auc.integral
+    }
+    return (list(Score = mean(scores), Pred = 0))
+}
+
+
+start <- Sys.time()
+print('Training has begun!')
+rf_bayes <- BayesianOptimization(FUN = rf_optim, 
+                                 bounds = list(ntree = c(300L, 1000L),
+                                               mtry = c(4L, 8L),
+                                               # 0 and 1 stand for FALSE and TRUE values
+                                               replace = c(0L, 1L),
+                                               samplesize = c(0.5, 0.8),
+                                               nodesize = c(1L, 4L)), 
+                                 n_iter = 30,
+                                 init_points = 10,     
+                                 verbose = TRUE)
+
+stop <- Sys.time()
+print(stop-start)
+save(rf_bayes, file = 'rf_bayes')
+```
+
+### Gradient Boosting Machine
+
+```{r gbm, eval=FALSE}
+if (!require('rBayesianOptimization')){
+    install.packages('rBayesianOptimization')
+    library('rBayesianOptimization')
+}
+if (!require('PRROC')){
+    install.packages('PRROC')
+    library('PRROC')
+}
+if (!require('gbm')){
+    install.packages('gbm')
+    library('gbm')
+}
+
+
+# load('../data/data_train_small')
+# load('../data/data_test_small')
+load('../data/data_train_final')
+load('../data/data_test_final')
+col = ncol(data_train)
+
+
+# optimizations
+cv_folds = KFold(target = data_train$Class,
+                 nfolds = 5,
+                 stratified = TRUE)
+opts.distribution = c('bernoulli', 'huberized', 'adaboost')
+
+
+# GBM optimization
+gbm_optim <- function(distribution, n.trees, interaction.depth, shrinkage, bag.fraction){
+    distribution = opts.distribution[distribution]
+    scores <- numeric(5)
+    for (i in 1:5){
+        train <- data_train[cv_folds[[i]], ]
+        test <- data_test[-cv_folds[[i]], ]
+        frauds = sum(train$Class)/nrow(train)
+        weights <- ifelse(train$Class == 1, 1-frauds, frauds)
+        model_gbm <- gbm(Class == 1 ~ .,
+                         data = train,
+                         distribution = distribution,
+                         n.trees = n.trees,
+                         weights = weights,
+                         interaction.depth = interaction.depth,
+                         shrinkage = shrinkage,
+                         bag.fraction = bag.fraction)
+        roc <- pr.curve(scores.class0 = predict(model_gbm, 
+                                                 test[, -col], 
+                                                 n.trees = n.trees,
+                                                 type = 'response'), 
+                         weights.class0 = test$Class)
+        scores[i] = roc$auc.integral
+    }
+    return (list(Score = mean(scores), Pred = 0))
+}
+
+
+start <- Sys.time()
+print('Training has begun!')
+gbm_bayes <- BayesianOptimization(FUN = gbm_optim, 
+                                 bounds = list(distribution = c(1L, 3L),
+                                               n.trees = c(50L, 2000L),
+                                               interaction.depth = c(1L, 3L),
+                                               shrinkage = c(0.001, 0.3),
+                                               bag.fraction = c(0.2, 0.8)), 
+                                 n_iter = 30,
+                                 init_points = 10,     
+                                 verbose = TRUE)
+
+stop <- Sys.time()
+print(stop-start)
+save(gbm_bayes, file = 'gbm_bayes')
+```
+
+## Session Info
+
+```{r ses}
+sessionInfo()
+```
+```
