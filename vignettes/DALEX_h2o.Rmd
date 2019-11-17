@@ -10,8 +10,10 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(warnings = FALSE, message = FALSE, results='hide', fig.keep='all')
+knitr::opts_chunk$set(warnings = FALSE, message = FALSE)
 ```
+
+<span style="color:red">Please keep in mind, that [DALEXtra](https://CRAN.R-project.org/package=DALEXtra) now support usage of mlr with dedicated `explain_h2o` function. It is recommended to use it.</span> 
 
 # Introduction
 
@@ -44,6 +46,7 @@ To do this w need to first initialize h2o and we need to convert apartments to H
 
 ```{r}
 h2o.init()
+h2o.no_progress()
 
 apartments_hf <- as.h2o(apartments)
 
@@ -74,26 +77,29 @@ explainer_h2o_glm <- explain(model = model_h2o_glm,
                              data = apartmentsTest[,2:6],  
                              y = apartmentsTest$m2.price,
                              predict_function = custom_predict,
-                             label = "h2o glm")
+                             label = "h2o glm",
+                             colorize = FALSE)
 
 explainer_h2o_gbm <- explain(model = model_h2o_gbm, 
                              data = apartmentsTest[,2:6],  
                              y = apartmentsTest$m2.price,
                              predict_function = custom_predict,
-                             label = "h2o gbm")
+                             label = "h2o gbm",
+                             colorize = FALSE)
 
 explainer_h2o_automl <- explain(model = model_h2o_automl, 
                              data = apartmentsTest[,2:6],  
                              y = apartmentsTest$m2.price,
                              predict_function = custom_predict,
-                             label = "h2o automl")
+                             label = "h2o automl",
+                             colorize = FALSE)
 ```
 
 # Model performance
 
 Function `model_performance()` calculates predictions and residuals for validation dataset.
 
-```{r, cache=TRUE}
+```{r}
 mp_h2o_glm <- model_performance(explainer_h2o_glm)
 mp_h2o_gbm <- model_performance(explainer_h2o_gbm)
 mp_h2o_automl <- model_performance(explainer_h2o_automl)
@@ -107,7 +113,7 @@ mp_h2o_glm
 
 Generic function `plot()` shows reversed empirical cumulative distribution function for absolute values from residuals. Plots can be generated for one or more models.
 
-```{r, cache=TRUE}
+```{r}
 plot(mp_h2o_glm, mp_h2o_gbm, mp_h2o_automl)
 ```
 
@@ -125,7 +131,7 @@ Model agnostic variable importance is calculated by means of permutations. We si
 
 This method is implemented in the `variable_importance()` function.
 
-```{r, cache=TRUE}
+```{r}
 vi_h2o_glm <- variable_importance(explainer_h2o_glm)
 vi_h2o_gbm <- variable_importance(explainer_h2o_gbm)
 vi_h2o_automl <- variable_importance(explainer_h2o_automl)
@@ -141,7 +147,7 @@ Length of the interval coresponds to a variable importance. Longer interval mean
 
 For better comparison of the models we can hook the variabe importance at 0 using the `type="difference"`.
 
-```{r, cache=TRUE}
+```{r}
 vi_h2o_glm <- variable_importance(explainer_h2o_glm, type="difference")
 vi_h2o_gbm <- variable_importance(explainer_h2o_gbm, type="difference")
 vi_h2o_automl <- variable_importance(explainer_h2o_automl, type="difference")
@@ -174,7 +180,7 @@ Acumulated Local Effects (ALE) plot is the extension of PDP, that is more suited
 
 Function `variable_response()` with the parameter `type = "ale"` calls `ALEPlot::ALEPlot()` function to calculate the ALE curve for the variable `construction.year`.
 
-```{r, cache=TRUE}
+```{r}
 ale_h2o_glm <- variable_response(explainer_h2o_glm, variable = "construction.year", type = "ale")
 ale_h2o_gbm <- variable_response(explainer_h2o_gbm, variable = "construction.year", type = "ale")
 ale_h2o_automl <- variable_response(explainer_h2o_automl, variable = "construction.year", type = "ale")
@@ -188,7 +194,7 @@ Merging Path Plot is a method for exploration of a relation between a categorica
 
 Function `variable_response()` with the parameter `type = "factor"` calls `factorMerger::mergeFactors()` function.
 
-```{r, cache=TRUE, fig.height=12}
+```{r fig.height=12}
 mpp_h2o_glm <- variable_response(explainer_h2o_glm, variable = "district", type = "factor")
 mpp_h2o_gbm <- variable_response(explainer_h2o_gbm, variable = "district", type = "factor")
 mpp_h2o_automl <- variable_response(explainer_h2o_automl, variable = "district", type = "factor")
@@ -203,7 +209,7 @@ Model prediction is visualized with Break Down Plots, which show the contributio
 Function `prediction_breakdown()` generates variable attributions for selected prediction. The generic `plot()` function shows these attributions.
 
 
-```{r, cache=TRUE}
+```{r}
 new_apartment <- apartmentsTest[1,]
 pb_h2o_glm <- prediction_breakdown(explainer_h2o_glm, observation = new_apartment)
 pb_h2o_gbm <- prediction_breakdown(explainer_h2o_gbm, observation = new_apartment)
@@ -212,3 +218,9 @@ pb_h2o_automl <- prediction_breakdown(explainer_h2o_automl, observation = new_ap
 plot(pb_h2o_glm, pb_h2o_gbm, pb_h2o_automl)
 ```
 
+
+# Session info
+
+```{r}
+sessionInfo()
+```

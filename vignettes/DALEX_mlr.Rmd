@@ -13,6 +13,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
+<span style="color:red">Please keep in mind, that [DALEXtra](https://CRAN.R-project.org/package=DALEXtra) now support usage of mlr with dedicated `explain_mlr` function. It is recommended to use it.</span> 
 
 # Introduction
 
@@ -76,11 +77,11 @@ custom_predict <- function(object, newdata) {pred <- predict(object, newdata=new
                                               response <- pred$data$response
                                               return(response)}
 
-explainer_regr_rf <- DALEX::explain(regr_rf, data=apartmentsTest, y=apartmentsTest$m2.price, predict_function = custom_predict, label="rf")
+explainer_regr_rf <- DALEX::explain(regr_rf, data=apartmentsTest, y=apartmentsTest$m2.price, predict_function = custom_predict, label="rf", colorize = FALSE)
 explainer_regr_nn <- DALEX::explain(regr_nn, data=apartmentsTest, y=apartmentsTest$m2.price,
-predict_function = custom_predict, label="nn")
+predict_function = custom_predict, label="nn", colorize = FALSE)
 explainer_regr_gbm <- DALEX::explain(regr_gbm, data=apartmentsTest, y=apartmentsTest$m2.price,
-predict_function = custom_predict, label="gbm")
+predict_function = custom_predict, label="gbm", colorize = FALSE)
 
 ```
 
@@ -262,9 +263,12 @@ custom_predict_classif <- function(object, newdata) {pred <- predict(object, new
                                               response <- pred$data[,3]
                                               return(response)}
 
-explainer_classif_rf <- DALEX::explain(classif_rf, data=wineTest, y=y_test, label= "rf", predict_function = custom_predict_classif)
-explainer_classif_glm <- DALEX::explain(classif_glm, data=wineTest, y=y_test, label="glm", predict_function = custom_predict_classif)
-explainer_classif_svm <- DALEX::explain(classif_svm, data=wineTest, y=y_test, label ="svm", predict_function = custom_predict_classif)
+explainer_classif_rf <- DALEX::explain(classif_rf, data=wineTest, y=y_test, label= "rf", predict_function = custom_predict_classif,
+                                       colorize = FALSE)
+explainer_classif_glm <- DALEX::explain(classif_glm, data=wineTest, y=y_test, label="glm", predict_function = custom_predict_classif,
+                                        colorize = FALSE)
+explainer_classif_svm <- DALEX::explain(classif_svm, data=wineTest, y=y_test, label ="svm", predict_function = custom_predict_classif,
+                                        colorize = FALSE)
 
 ```
 
@@ -331,3 +335,8 @@ ale_classif_svm  <- variable_response(explainer_classif_svm, variable = "alcohol
 plot(ale_classif_rf, ale_classif_glm, ale_classif_svm)
 ```
 
+# Session info
+
+```{r}
+sessionInfo()
+```
