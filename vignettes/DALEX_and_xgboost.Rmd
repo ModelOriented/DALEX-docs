@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+<span style="color:red">Please keep in mind, that `breakDown` package is archived and is no under development anymore. We suggests to use [iBreakDown](https://CRAN.R-project.org/package=iBreakDown) instead.</span> 
+
 This vigniette demonstrates how to use the `DALEX` package with models created with the [xgboost](https://CRAN.R-project.org/package=xgboost) package. 
 
 # Regression
@@ -174,6 +176,6 @@ plot(vd_xgb)
 # Session info
 
 ```{r, warning=FALSE, message=FALSE}
-devtools::session_info()
+sessionInfo()
 ```
 

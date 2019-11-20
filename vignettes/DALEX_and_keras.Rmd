@@ -13,6 +13,8 @@ output:
 knitr::opts_chunk$set(warnings = FALSE, message = FALSE, results='hide', fig.keep='all')
 ```
 
+<span style="color:red">Please keep in mind, that [DALEXtra](https://CRAN.R-project.org/package=DALEXtra) now support usage of keras models imported from Python with dedicated `explain_keras` function. It is recommended to use it.</span> 
+
 # Introduction
 
 DALEX is designed to work with various black-box models like tree ensembles, linear models, neural networks etc. Unfortunately R packages that create such models are very inconsistent. Different tools use different interfaces to train, validate and use models. Fortunately DALEX can handle it all easily.
@@ -56,8 +58,9 @@ titanic_small_x <- titanic_small %>% select(-Survived) %>% as.matrix()
 We can build MLP model in `h2o` using `h2o.deeplearning` function.
 To do this w need to first initialize `h2o` and we need to convert `titanic_small` to `H2OFrame`.
 
-```{r}
+```{r warning=FALSE}
 h2o.init()
+h2o.no_progress()
 
 titanic_h2o <- as.h2o(titanic_small, destination_frame = "titanic_small")
 
@@ -133,9 +136,9 @@ custom_predict_h2o <- function(model, newdata)  {
 }
 
 explainer_titanic_h2o <- explain(model = model_h2o, data = titanic_small[ , -1], y = as.numeric(as.character(titanic_small$Survived)),
-                                 predict_function = custom_predict_h2o, label = "MLP_h2o")
+                                 predict_function = custom_predict_h2o, label = "MLP_h2o", colorize = FALSE)
 explainer_titanic_keras <- explain(model = model_keras, data = titanic_small_x, y = as.numeric(titanic_small_y),
-                                   predict_function = predict, label = "MLP_keras")
+                                   predict_function = predict, label = "MLP_keras", colorize = FALSE)
 ```
 
 # Model performance
@@ -239,4 +242,10 @@ Function `prediction_breakdown()` generates variable attributions for selected p
 sp_h2o <- prediction_breakdown(explainer_titanic_h2o, henry)
 sp_keras <- prediction_breakdown(explainer_titanic_keras, henry_keras)
 plot(sp_h2o, sp_keras)
+```
+
+# Session info
+
+```{r}
+sessionInfo()
 ```

@@ -89,11 +89,12 @@ custom_predict <- function(object, newdata) {pred <- predict(object, newdata)
                                               response <- pred$.pred
                                               return(response)}
 
-explainer_regr_bt <- DALEX::explain(bt_fitted, data=titanic_r_test, y=titanic_r_test$fare, predict_function = custom_predict, label="bt")
+explainer_regr_bt <- DALEX::explain(bt_fitted, data=titanic_r_test, y=titanic_r_test$fare, predict_function = custom_predict, 
+                                    label="bt", colorize = FALSE)
 explainer_regr_nn <- DALEX::explain(nn_fitted, data=titanic_r_test, y=titanic_r_test$fare,
-predict_function = custom_predict, label="nn")
+                                    predict_function = custom_predict, label="nn", colorize = FALSE)
 explainer_regr_svm <- DALEX::explain(svm_fitted, data=titanic_r_test, y=titanic_r_test$fare,
-predict_function = custom_predict, label="svm")
+                                     predict_function = custom_predict, label="svm", colorize = FALSE)
 
 ```
 
@@ -264,9 +265,11 @@ y_test <- as.numeric(as.character(titanic_num_test$survived))
 custom_predict_classif <- function(objectPred, set){
   as.data.frame(predict(objectPred, set, type = "prob"))[,2]
 }
-explainer_classif_rf <- DALEX::explain(rf_fitted, data=titanic_num_test, y=y_test, label= "rf", predict_function = custom_predict_classif)
-explainer_classif_lr <- DALEX::explain(lr_fitted, data=titanic_num_test, y=y_test, label="lr", predict_function = custom_predict_classif)
-explainer_classif_svm <- DALEX::explain(svm_fitted, data=titanic_num_test, y=y_test, label ="svm", predict_function = custom_predict_classif)
+explainer_classif_rf <- DALEX::explain(rf_fitted, data=titanic_num_test, y=y_test, label= "rf", predict_function = custom_predict_classif, colorize = FALSE)
+explainer_classif_lr <- DALEX::explain(lr_fitted, data=titanic_num_test, y=y_test, label="lr", predict_function = custom_predict_classif,
+                                       colorize = FALSE)
+explainer_classif_svm <- DALEX::explain(svm_fitted, data=titanic_num_test, y=y_test, label ="svm", 
+                                        predict_function = custom_predict_classif, colorize = FALSE)
 
 ```
 
@@ -358,4 +361,10 @@ pb_svm <-  prediction_breakdown(explainer_classif_svm, observation = filter(tita
                                                                           class == "3rd")[1,])
 plot(pb_rf, pb_lr, pb_svm)
 
+```
+
+# Session inof
+
+```{r}
+sessionInfo()
 ```

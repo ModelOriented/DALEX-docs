@@ -63,13 +63,16 @@ Validation dataset for the models is `apartmentsTest` data from the *DALEX* pack
 data(apartmentsTest)
 
 explainer_regr_rf <- DALEX::explain(regr_rf, label="rf", 
-                                    data = apartmentsTest, y = apartmentsTest$m2.price)
+                                    data = apartmentsTest, y = apartmentsTest$m2.price,
+                                    colorize = FALSE)
 
 explainer_regr_gbm <- DALEX::explain(regr_gbm, label = "gbm", 
-                                     data = apartmentsTest, y = apartmentsTest$m2.price)
+                                     data = apartmentsTest, y = apartmentsTest$m2.price,
+                                     colorize = FALSE)
 
 explainer_regr_nn <- DALEX::explain(regr_nn, label = "nn", 
-                                    data = apartmentsTest, y = apartmentsTest$m2.price)
+                                    data = apartmentsTest, y = apartmentsTest$m2.price,
+                                    colorize = FALSE)
 
 ```
 
@@ -230,15 +233,18 @@ yTest <- as.numeric(as.character(wineTest$quality))
 
 explainer_classif_rf <- DALEX::explain(classif_rf, label = "rf",
                                        data = wineTest, y = yTest,
-                                       predict_function = p_fun)
+                                       predict_function = p_fun,
+                                       colorize = FALSE)
 
 explainer_classif_glm <- DALEX::explain(classif_glm, label = "glm", 
                                         data = wineTest, y = yTest,
-                                        predict_function = p_fun)
+                                        predict_function = p_fun,
+                                        colorize = FALSE)
 
 explainer_classif_svm <- DALEX::explain(classif_svm,  label = "svm", 
                                         data = wineTest, y = yTest,
-                                        predict_function = p_fun)
+                                        predict_function = p_fun,
+                                        colorize = FALSE)
 ```
 
 
@@ -306,3 +312,8 @@ ale_classif_svm  <- variable_response(explainer_classif_svm, variable = "alcohol
 plot(ale_classif_rf, ale_classif_glm, ale_classif_svm)
 ```
 
+# Session Info
+
+```{r}
+sessionInfo()
+```

@@ -22,6 +22,8 @@ y <- unclass(titanic_test_Y)
 y <- y$survived
 ```
 
+<span style="color:red">Please keep in mind, that [DALEXtra](https://CRAN.R-project.org/package=DALEXtra) now support usage of h2o with dedicated `explain_h2o` function and usage of scikit-learn models imported from Python with dedicated `explain_scikit` function. It is recommended to use them.</span> 
+
 # Introduction
 
 Machine learning models are being developed in different tools and different languages. On one hand it is great as everyone can choose tool that suits his needs, but on another hand it is hard to compare such models in a different way that simply by comparing accuracies.
@@ -273,4 +275,10 @@ pdp_py <- partial_dependency(py_explain,
 pdp_catboost <- partial_dependency(catboost_explain, 
                          variable_splits = list(age = seq(0,80,0.1)))
 plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) + xlim(0, 80) + ylim(0, 1)
+```
+
+# Session info
+
+```{r}
+sessionInfo()
 ```
