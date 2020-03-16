@@ -110,7 +110,7 @@ It is the `ggplot2` object, so one can modify it as any other `ggplot2` object.
 ```{r, warning=FALSE, message=FALSE}
 library("ggplot2")
 plot(bd_rf) +
-  ggtitle("Break Down Plot") +
+  ggtitle("Which variables affect survival of Johny D?") +
   theme(panel.grid = element_blank())
 ```
 
