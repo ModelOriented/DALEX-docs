@@ -1,0 +1,160 @@
+---
+title: "Break-down Plots for Instance Level Attributions"
+subtitle: "Code snippets for R "
+author: "Przemysław Biecek"
+date: "for DALEX 1.0"
+output: 
+  tint::tintHtml:
+    toc: true
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tint)
+set.seed(1313)
+```
+
+In this section, we use an `DALEX::predict_parts()` function for calculation of Break Down plots.
+
+If you want learn more about Break Down plots read https://pbiecek.github.io/ema/breakDown.html.
+
+# Prepare data
+
+In this example we will use the titanic data.
+It has few variables that are easy to understand.
+The `titanic_imputed` dataset from `DALEX` package has imputed missing values.
+Find more about the data https://pbiecek.github.io/ema/dataSetsIntro.html#TitanicDataset
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+head(titanic_imputed)
+```
+
+# Train a model
+
+Here we use `ranger` library to train a classification random forest model.
+
+```{r, warning=FALSE, message=FALSE}
+library("ranger")
+titanic_rf <- ranger(survived ~ class + gender + age + sibsp + 
+         parch + fare + embarked, data = titanic_imputed,
+         probability = TRUE,
+         classification = TRUE)
+titanic_rf
+```
+
+# Prepare an explainer
+
+Different models have different structures.
+We use `DALEX::explain()` function to create an uniform interface for the model 
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+titanic_ex <- explain(titanic_rf,
+                data  = titanic_imputed,
+                y     = titanic_imputed$survived,
+                label = "Regression Forest for Titanic")
+```
+
+# Prepare an instance
+
+For instance level explanations we need an observation for which we can generate explanation.
+
+Let's create a data.frame with a single row that corresponds to 8 years old boy from 1st class.
+
+```{r, warning=FALSE, message=FALSE}
+johny_d <- data.frame(
+            class = factor("1st", levels = c("1st", "2nd", "3rd", "deck crew",
+                        "engineering crew", "restaurant staff", "victualling crew")),
+            gender = factor("male", levels = c("female", "male")),
+            age = 8,
+            sibsp = 0,
+            parch = 0,
+            fare = 72,
+            embarked = factor("Southampton", levels = c("Belfast",
+                        "Cherbourg","Queenstown","Southampton")))
+```
+
+The predicted survival for `johny_d` is
+
+```{r, warning=FALSE, message=FALSE}
+predict(titanic_ex, johny_d)
+```
+
+# Break-down plots with `predict_parts()` 
+
+The `DALEX::predict_parts()` function calculates the variable attributions for a selected model and the instance of interest. 
+
+The result is a data frame containing the calculated attributions. 
+In the simplest call, the function requires only three arguments: 
+
+* the model explainer, 
+* the data frame with the instance of interest and 
+* the method for calculation of variable attribution, by default `break_down`. 
+
+```{r, warning=FALSE, message=FALSE}
+bd_rf <- predict_parts(titanic_ex,
+                 new_observation = johny_d,
+                 type = "break_down")
+bd_rf
+```
+
+Applying the generic `plot()` function to the object resulting from the application of the `variable_attribution()` function creates a BD plot.
+
+```{r, warning=FALSE, message=FALSE}
+plot(bd_rf) 
+```
+
+It is the `ggplot2` object, so one can modify it as any other `ggplot2` object.
+
+```{r, warning=FALSE, message=FALSE}
+library("ggplot2")
+plot(bd_rf) +
+  ggtitle("Break Down Plot") +
+  theme(panel.grid = element_blank())
+```
+
+# Advanced use of the `predict_parts()` 
+
+The function `predict_parts()` allows more arguments. The most commonly used are:
+
+* `x` - a wrapper over a model created with function `DALEX::explain()`, 
+* `new_observation` - an observation to be explained is should be a data frame with structure that matches the training data, 
+* `order` - a vector of characters (column names) or integers (column indexes) that specify order of explanatory variables that is used for computing the variable-importance measures. If not specified (default), then a one-step heuristic is used to determine the order, 
+* `keep_distributions` - a logical value; if `TRUE`, then additional diagnostic information about conditional distributions is stored in the resulting object and can be plotted with the generic `plot()` function.
+
+In what follows we illustrate the use of the arguments.
+
+First, we will specify the ordering of the explanatory variables. Toward this end we can use integer indexes or variable names. The latter option is preferable in most cases because of transparency. . 
+
+```{r, warning=FALSE, message=FALSE}
+bd_rf_order <- predict_parts(titanic_ex,
+         new_observation = johny_d, 
+         type = "break_down",
+         order = c("class", "age", "gender", "fare", "parch", 
+                           "sibsp", "embarked"))
+
+plot(bd_rf_order) 
+```
+
+We can use the`keep_distributions = TRUE` argument to enrich the resulting object with additional information about conditional distributions. Subsequently, we can apply the `plot_distributions = TRUE` argument in the `plot()` function to present the distributions as violin plots. 
+
+```{r, warning=FALSE, message=FALSE}
+bd_rf_distr <- variable_attribution(titanic_ex,
+          new_observation = johny_d, 
+          type = "break_down",
+          keep_distributions = TRUE)
+
+plot(bd_rf_distr, plot_distributions = TRUE) 
+```
+
+We can also limit the number of variables in the plot to the `max_features` most important.
+
+```{r, warning=FALSE, message=FALSE}
+bd_rf <- variable_attribution(titanic_ex,
+          new_observation = johny_d, 
+          type = "break_down")
+
+plot(bd_rf, max_features = 3) 
+```
+

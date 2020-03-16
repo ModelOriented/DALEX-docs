@@ -1,0 +1,122 @@
+---
+title: "iBreak-down Plots for Instance Level Attributions with Interactions"
+subtitle: "Code snippets for R "
+author: "Przemysław Biecek"
+date: "for DALEX 1.0"
+output: 
+  tint::tintHtml:
+    toc: true
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tint)
+set.seed(1313)
+```
+
+In this section, we use an `DALEX::predict_parts()` function for calculation of Break Down plots with interactions.
+
+If you want learn more about these plots read https://pbiecek.github.io/ema/iBreakDown.html.
+
+# Prepare data
+
+In this example we will use the titanic data.
+It has few variables that are easy to understand.
+The `titanic_imputed` dataset from `DALEX` package has imputed missing values.
+Find more about the data https://pbiecek.github.io/ema/dataSetsIntro.html#TitanicDataset
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+head(titanic_imputed)
+```
+
+# Train a model
+
+Here we use `ranger` library to train a classification random forest model.
+
+```{r, warning=FALSE, message=FALSE}
+library("ranger")
+titanic_rf <- ranger(survived ~ class + gender + age + sibsp + 
+         parch + fare + embarked, data = titanic_imputed,
+         probability = TRUE,
+         classification = TRUE)
+titanic_rf
+```
+
+# Prepare an explainer
+
+Different models have different structures.
+We use `DALEX::explain()` function to create an uniform interface for the model 
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+titanic_ex <- explain(titanic_rf,
+                data  = titanic_imputed,
+                y     = titanic_imputed$survived,
+                label = "Regression Forest for Titanic")
+```
+
+# Prepare an instance
+
+For instance level explanations we need an observation for which we can generate explanation.
+
+Let's create a data.frame with a single row that corresponds to 8 years old boy from 1st class.
+
+```{r, warning=FALSE, message=FALSE}
+henry <- data.frame(
+         class = factor("2nd", levels = c("1st", "2nd", "3rd", "deck crew", 
+                     "engineering crew", "restaurant staff", "victualling crew")),
+         gender = factor("male", levels = c("female", "male")),
+         age = 15,
+         sibsp = 0,
+         parch = 0,
+         fare = 100,
+         embarked = factor("Cherbourg", levels = c("Belfast",
+                           "Cherbourg","Queenstown","Southampton"))
+)
+```
+
+The predicted survival for `henry` is
+
+```{r, warning=FALSE, message=FALSE}
+predict(titanic_ex, henry)
+```
+
+# iBreak-down plots with `predict_parts()` 
+
+The `DALEX::predict_parts()` function calculates the variable attributions for a selected model and the instance of interest. 
+
+For BD with interactions this function requires three arguments: 
+
+* the model explainer, 
+* the data frame with the instance of interest, 
+* the method for calculation of variable attribution, here `break_down_interactions` and
+
+The resulting object is a data frame with variable contributions. 
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+ibd_rf <- predict_parts(titanic_ex,
+                 new_observation = henry,
+                 type = "break_down_interactions")
+ibd_rf
+```
+
+Now we can plot this object with the generic `plot()` function. 
+
+```{r, warning=FALSE, message=FALSE}
+plot(ibd_rf) 
+```
+
+Let's see how this interaction was identified. Here we have Break down plots with two different orderings.
+
+```{r, warning=FALSE, message=FALSE}
+library("patchwork")
+bd_rf_fag <- predict_parts(titanic_ex,
+                 new_observation = henry,
+                 order = c("class", "fare", "gender", "age", "embarked", "sibsp", "parch"))
+bd_rf_afg <- predict_parts(titanic_ex,
+                 new_observation = henry,
+                 order = c("fare", "class", "gender", "age", "embarked", "sibsp", "parch"))
+plot(bd_rf_afg) / plot(bd_rf_fag)
+```
