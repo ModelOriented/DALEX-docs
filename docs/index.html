@@ -35,6 +35,23 @@
 
  gtag('config', 'UA-5650686-14');
 </script>
+<style type="text/css">
+.div-table {
+  display: table;         
+  width: 100%;
+}
+.div-table-row {
+  display: table-row;
+  width: auto;
+  clear: both;
+}
+.div-table-col {
+  float: left; 
+  display: table-column;         
+  width: 49%;         
+}
+
+</style>
 </head>
 <body>
     <div class="container template-home">
@@ -72,9 +89,91 @@
 <div id="model-agnostic-language-for-exploration-and-explanation-" class="section level1">
 
 <div id="overview" class="section level2">
-<h2 class="hasAnchor"><a href="#Introduction" class="anchor"></a>Introduction</h2>
 <p>The <code>DALEX</code> package xrays predictive ML models and helps to explore and explain its behaviour, helps to understand how complex models are working. </p> 
-<p>Below you will find links to various materials for self-learning. Want to add some interesting materials? <a href="https://github.com/pbiecek/DALEX_docs/issues">Let us know</a>.</p> 
+</div>
+<div id="why" class="section level2">
+<p>
+
+ <div class="div-table">
+  <div class="div-table-row" align="center">
+    <b>Episode 1.</b> Introduction to the Explanatory Model Analysis
+   </div>
+   <div class="div-table-row">
+      <div class="div-table-col" align="center"><b>R track</b></div>
+      <div class="div-table-col" align="center"><b>Python track</b></div>
+   </div>
+  <div class="div-table-row" align="center">
+        <div class="div-table-col" align="center">
+          <b>Episode 2.</b> DALEX for R
+        </div>
+        <div class="div-table-col" align="center">
+          <b>Episode 2.</b> dalex for Python
+        </div>
+  </div>
+  <div class="div-table-row" align="center">
+    <b>Part I. </b>Instance level explanations<br/>
+    <b>Episode 3.</b> <a href="https://pbiecek.github.io/ema/breakDown.html">Break Down method</a>
+   </div>
+  <div class="div-table-row" align="center">
+        <div class="div-table-col" align="center">
+        <a href="https://www.youtube.com/watch?v=UcM4UyBPgFc">Video <br/>
+        <img width="200" src="misc/r-snip-break-down.png"></a><br/>
+        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/06-Break-Down.html">Snippets</a>
+      </div>
+      <div class="div-table-col" align="center">TBA</div>
+  </div>
+  <div class="div-table-row" align="center">
+    <b>Episode 4.</b> <a href="https://pbiecek.github.io/ema/shapley.html">Shapley values</a> and <a href="https://pbiecek.github.io/ema/iBreakDown.html">Break Down with interactions</a>
+   </div>
+  <div class="div-table-row" align="center">
+      <div class="div-table-col" align="center">
+        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/07-iBreak-Down.html">Snippets</a>
+      </div> 
+      <div class="div-table-col" align="center">TBA</div>
+  </div>
+  <div class="div-table-row" align="center">
+    <b>Episode 5.</b> <a href="https://pbiecek.github.io/ema/ceterisParibus.html"> Ceteris Paribus profiles</a>
+   </div>
+  <div class="div-table-row" align="center">
+      <div class="div-table-col" align="center">
+        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/10-Ceteris-paribus-Profiles.html">Snippets</a>
+      </div> 
+      <div class="div-table-col" align="center">TBA</div>
+  </div>
+   <div class="div-table-row" align="center">
+    <b>Part II. </b>Dataset level explanations<br/>
+    <b>Episode 6.</b> <a href="https://pbiecek.github.io/ema/modelPerformance.html"> Model Performance</a>
+   </div>
+  <div class="div-table-row" align="center">
+      <div class="div-table-col" align="center">
+        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/15-Model-performance.html">Snippets</a>
+      </div> 
+      <div class="div-table-col" align="center">TBA</div>
+  </div>
+  <div class="div-table-row" align="center">
+    <b>Episode 7.</b> <a href="https://pbiecek.github.io/ema/featureImportance.html">Variable's Importance</a>
+   </div>
+  <div class="div-table-row" align="center">
+      <div class="div-table-col" align="center">TBA</div>
+      <div class="div-table-col" align="center">TBA</div>
+  </div>
+  <div class="div-table-row" align="center">
+    <b>Episode 8.</b> <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html"> Partial Dependence Profile</a>
+   </div>
+  <div class="div-table-row" align="center">
+      <div class="div-table-col" align="center">TBA</div>
+      <div class="div-table-col" align="center">TBA</div>
+  </div>
+  <div class="div-table-row" align="center">
+    <b>Episode 9.</b> <a href="https://pbiecek.github.io/ema/residualDiagnostic.html"> Residual Diagnostics</a>
+   </div>
+  <div class="div-table-row" align="center">
+      <div class="div-table-col" align="center">TBA</div>
+      <div class="div-table-col" align="center">TBA</div>
+  </div>
+</div>
+
+</p>
 </div>
 <hr>
 <div id="show-case-r" class="section level2">
@@ -93,34 +192,7 @@
 <li><a href="https://raw.githack.com/pbiecek/DALEX_docs/master/examples/What%20they%20have%20learned%20-%20part%202.html" rel="nofollow">How to use DALEX for teaching. Part 2</a></li>
 </p>
 </div>
-<hr>
-<div id="why" class="section level2">
-<h2 class="hasAnchor"><a href="#why" class="anchor"></a>Online step-by-step materials</h2>
-<p>
-    <ol>
-  <li>Introduction to the DALEX</li>
-  <li>Instance level explorations vs Data level exploration</li>
-  <li>Instance level: 
-    <ol type="A">
-  <li>Break Down: <br/> <a href="https://pbiecek.github.io/ema/breakDown.html">Introduction and details</a> <br/>
-    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/06-Break-Down.html">R snippets</a><br/> 
-    <a href="https://www.youtube.com/watch?v=UcM4UyBPgFc">Video snippets R &nbsp;&nbsp;&nbsp; <img width="200" src="misc/r-snip-break-down.png"></a>
-  <li> Shapley values</li>
-  <li> Break Down with interactions</li>
-  <li> Ceteris Paribus</li>
-    </ol>
-    </li>
-  <li>Data level</li>
-    <ol type="A">
-  <li> Model performance</li>
-  <li> Variable importance</li>
-  <li> Partial dependence</li>
-  <li> Accumulated local dependence</li>
-  <li> Diagnostic plots</li>
-    </ol>
-  </ol>
-</p>
-</div>
+
 </div>
   </div>
 
