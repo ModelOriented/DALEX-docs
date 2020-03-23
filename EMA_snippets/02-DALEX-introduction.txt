@@ -21,13 +21,16 @@ All functions in DALEX and packages from the DrWhy.AI family can work on explain
 Let's see an example for  this workflow. 
 We'll use the dataset related to the Sinking of the Titanic. This is a popular dataset for the binary classification task. We have seven variables, three qualitative and four quantitative and we need to predict the chances of surviving the Titanic disaster.
 
-In the DALEX package we have a titanic imputed data set with preprocessed data for 2207 people. In this example I will use a random forest implemented in the ranger package. But the tools described and the workflow work for any model. 
+In the DALEX package we have a titanic imputed data set with preprocessed data for 2207 people. In this example we use a random forest implemented in the ranger package. But the tools described and the workflow work for any model. 
 
 
 Let's start with a typical use of explain() function.
 The first argument is the model. This is the only mandatory argument. Useful optional arguments are the data to validate, the corresponding values of the target variable and a label - the name of the model.
 
 Depending on the class of the model, the explain() function extracts the relevant information from the model and creates an adapter with a uniform interface.
+
+It may happen that the explain function will not recognize the model class and will not know how to calculate predictions for it. In such situations, the predict function argument can be used to directly indicate how to calculate predictions for a particular model. 
+
 
 Each explainer has the same fields that can be used by other functions to explore the encapsulated model.
 Model is stored in the slot model.
@@ -39,7 +42,6 @@ These predictions are stored in the y hat slot and the corresponding residuals a
 
 
 
-
 Such adapter can be used in any other function in the DALEX package.
 The general workflow is following.
 Functions transform an explainer object into an explanation object. And then the explanation can be visualised with the plot function.
@@ -47,11 +49,13 @@ These functions are presented in detail in the following episodes.
 
 
 
-The instance specific explanations are described in the first part of this podcast.
-Episodes 3 and 4 are devoted to the decomposition of one prediction into parts that can be assigned to specific variables. This can be done using the predict parts function.
-Episode 5 is devoted to the model response profile for selected variables. This profile can be examined using the predict profile function.
+The instance level explanations are described in the first part of this podcast.
 
-The dataset specific explanations are described in the second part of the podcast.
+Episodes 3 and 4 are devoted to the decomposition of one prediction into parts that can be assigned to specific variables. This can be done using the predict parts function.
+
+Episode 5 is devoted to the model response profile for selected variables calculated with Ceteris Paribus principle. This profile can be examined using the predict profile function.
+
+The dataset level explanations are described in the second part of the podcast.
 
 Episode 6 is devoted to the assessment of predictive power of a model. The model performance function can be used to calculate and plot different performance measures.
 
@@ -65,14 +69,14 @@ Episode 9 is devoted to the residual diagnostics.
 
 The results of each explanation can be drawn with the plot function. You can also use this function to compare explanations for two or more models. This functionality is especially useful when you need to select one model out of few candidate models. 
 
-Let's show it with an example. For the titanic data I build a second model using rms package. This time it is a logistic regression model with splines for age. Using the explain() function we build a wrapper around the model.
+Let's show it with an example. For the titanic data we build a second model using rms package. This time it is a logistic regression model with splines for age. Using the explain() function we build a wrapper around the model.
 
 We can now plot the results for both models in a single chart.
 We use the model performance function to draw ROC curves for both models. Similarly we can draw two LIFT curves. In this case, the random forest model seems to be better on average.
 Now we use the model profile function to draw partial depencence curves for both models. Thanks to this we can compare them in detail by tracking the model's behavior in reaction to selected variables.
 
 
-We can also compare models trained in different languages. Using DALEXtra package we can cross compare a model trained  in R with a model trained in s-k-learn in  python with a model trained in H-2-O.
+We can also compare models trained in different languages. Using DALEXtra package we can cross compare a model trained in R with a model trained in s-k-learn in  python with a model trained in H-2-O. We can also compare models across different frameworks like mlr, caret or parsnip.
 
 
 Adapters built with explain function can be used in any package from DrWhy.AI family, such as ingredients, iBreakdown, auditor or drifter.
