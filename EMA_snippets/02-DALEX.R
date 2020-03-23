@@ -99,6 +99,10 @@ plot(model_performance(titanic_ex) ,
      model_performance(titanic_ex2) ,
      geom = "roc")
 
+plot(model_performance(titanic_ex) ,
+     model_performance(titanic_ex2) ,
+     geom = "lift")
+
 plot(model_profile(titanic_ex)$agr_profiles ,
      model_profile(titanic_ex2)$agr_profiles ,
      variables = c("age", "fare", "parch"))
