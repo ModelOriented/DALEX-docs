@@ -1,0 +1,84 @@
+This is the Explanatory Model Analysis podcast about various techniques for explainable artificial intelligence. I describe methods for visualization, exploration and explanation of machine learning models.
+
+This episode is about the Ceteris Paribus profiles.
+
+
+In this episode, I will show you how to use the Ceteris Paribus profiles implemented in the DALEX package for the R language.
+If you are interested in examples for Python or other XAI methods you can find other episodes at http://tiny.cc/DALEX webpage.
+
+Before we jump into the R code, let me remind you what Ceteris Paribus profiles are for. Like Break Down and Shapley values, it's a ‘model agnostic’ and 'instance-specific' method.  It means that it works for any model without assuming anything of its internal structure. And it explains the result of the model for a single observation. 
+
+Ceteris paribus is a Latin phrase meaning 'other things held constant' or 'all else unchanged'. CP profiles show how model response would change if values for a single selected variable is changed. 
+
+This technique may be used for sensitivity analysis or to what-if model analysis.
+
+In this slide, we have an example for a single passenger, the 8-year-old boy from the first class. The model prediction for him is 0.466. 
+Keeping all other variables unchanged, increasing the age lowers the expected chance of survival. 
+Changing the gender to a woman would increase the predicted chances of survival. 
+For such young age a change of class would not change chances of survival. 
+
+
+It is important to remember that we need causal model to do causal inference for the real-world phenomena. CP profiles are about the behaviour of the model, which may not be transferred to the behaviour of the analysed process.
+
+
+Let's see how to do such ceteris paribus profiles in R.
+
+This video is focused on the software. If you want to learn more about the method find more details on pbiecek.github.io/ema
+
+
+As in other episodes, I will use the titanic data and a classification random forest model trained with the ranger library. 
+Note that the ceteris-paribus method is model agnostic, so you can try same workflow with any other model you wish.
+
+
+Different models have different structures. We use the explain function from the DALEX package to create a model adapter with unified A-P-I. You can find more details about this function in the Episode 2.
+
+
+
+The ceteris paribus profiles work on the instance level. So we need an observation for which we can generate the explanation.
+Here we create a data frame with a single row that corresponds to an eight years old boy from 1st class.
+
+The model prediction for this boy is 0.465.
+
+
+Once we have the model and the instance of interest, we are ready for the ceteris paribus method.
+
+Here we use the `predict_profile` function from the `DALEX` package.
+The name of the function means that we analyse response profiles for a prediction and for selected variables.
+
+In the basic settings, this function expects two arguments. The explainer and one or more observations.
+The result is a data frame with profiles for each variable used in the model. 
+Once can limit number of variables for which profiles are calculated with the optional agrgument `variables`.
+
+
+Plot is easier to read than a table with numbers. You can use the generic plot() function to visualise the model response. Each variable is presented in different panel.
+
+Many variables can obfuscate the plot.  The argument variables can be used to specify which variables shall be presented.
+
+This is the ggplot object so you can use ggplot2 functions to change the plot. For example 'ggtitle' to add a title or `theme` to change the skin.
+
+
+ggplot2 does not allow to draw continuous and categorical variables simultaneously. By default, only continuous variables are drawn. To plot categorical variables, you have to list them directly in the argument variables.
+
+
+By default, the predict_profile function calculates the model response for a small grid of points. If you want a more detailed profile, you may manually specify the grid of points in which the profiles are to be calculated. In this case, you should indicate a list with a grid points using the argument variable_splits.
+For a random forest model, the response is a step function. But you need a very dense grid of points to see these steps.
+
+
+
+The predict_profile function calculates profiles for one or more observations. In this example we calculate and plot profiles for John and Mary. 
+If the model was additive, the ceteris paribus profiles for observations would be parallel. 
+But the random forest is not additive.  
+For John higher age results in lower predictions.
+For Mary, regardless of age change, the prediction of the model is very high.
+
+
+The ceteris paribus profiles can be used to compare different predictive models.
+To show this functionality we will use the lrm function from the rms package to build a logistic regression model with splines. Then we transform this model with the predict profile function and visualise the profile with the plot function.
+We see that the logistic regression model for John gives much higher predictions. The response curve of the model is also much smoother, although in shape similar to a random forest.
+
+
+
+The general workflow with the Ceteris-paribus method is summarised in this sequence diagram. 
+Once you have a model you need to create a model adapter.
+To calculate ceteris paribus profiles  you can use the predict_profile function with the.
+The result can be visualised with the generic plot function.

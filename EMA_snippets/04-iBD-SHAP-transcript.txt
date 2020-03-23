@@ -1,0 +1,60 @@
+This is the Explanatory Model Analysis podcast about various techniques for explainable artificial intelligence. I describe methods for visualization, exploration and explanation of machine learning models.
+
+This episode is about the Shapley values and Break-Down plots with interaction.
+I will show you how to use these methods with the DALEX package for the R language.
+If you are interested in examples for Python or other XAI methods you can find other episodes at http://tiny.cc/DALEX webpage.
+
+Before we jump into the R code, let me summarise how these methods are different from Break Down plots presented in the Episode 3.
+
+
+All these methods are ‘model agnostic’ and 'instance-specific'.  It means that they work for any model without assuming anything of its internal structure. And they explain model result for a single observation. 
+
+The Break Down method is order specific. It means that for different ordering of variables we may get different variable attributions.
+Bu default a greedy heuristic is used to identify the best order.
+
+Shapley values are defined as average of variable attributions across all possible orderings. The number of ordering may be large but we may estimate these values based on some number of random orderings.
+This way differences between ordering will be average out.
+
+
+Another approach is to identify interactions of variables which are source of the differences across ordering. The Break down with interactions seek for pairs of variables that have different attributions depending on the order. Such interactions are then presented in water-fall plots.
+
+
+Let's see how to calculate these different methods in R.
+In this video we are focused on the software. If you want to learn more about these methods go to the pbiecek.github.io/ema ebook.
+
+
+
+As in previous episode I will use the titanic data and a classification random forest model trained with the ranger function. 
+The model is trained to predict the chances of survival based on seven variables. 
+
+
+All three methods work on the instance level. So we need an observation for which we can generate the explanation. Let's use as an example Henry a 15-years old boy from 2nd class.
+
+
+The predict_parts function by default calculates break down attributions. 
+There is an interaction of fare and class variables for Henry.
+Depending on the order one of these variables has positive effect while the other has negative.
+
+If you want to calculate Shapley values, set the argument type to shap. Optionally, set the B argument to specify the number of random orders to average.
+
+
+The result is a data frame with the attributions for different orders. It is best to visualise this result with the generic plot function. For each variable, the Shapley values are shown with coloured bars. Additionally, boxplots show how the attributions for individual variables look for different orderings. In this model we have interactions of fare and class, so the boxplots for this pair are very wide.
+
+If we want to draw Shapley values without boxplots then in plot function we should set show boxplots argument to FALSE.
+
+
+This is the ggplot2 object so you can use other ggplot2 functions to modify the plot. Like 'ggtitle' to add a title or `theme` to change the skin.
+
+
+To identify interactions, the predict parts function must set the type argument for break down interactions.
+
+The result is also a data frame. As in previous cases we can visualise it with the generic plot function.
+
+
+
+
+The general workflow for the predict part function is summarised in this sequence diagram. 
+Depending on the type argument, it determines break down profiles, break down with interaction or Shapley values.
+The result can be further processed with the generic plot function.
+
+Find more examples and mode details in the Exploratory Model Analysis ebook.
