@@ -1,5 +1,3 @@
-Hi
-
 This is the Explanatory Model Analysis podcast about various techniques for explainable artificial intelligence. I describe methods for visualization, exploration and explanation of machine learning models.
 This episode is about the Break-Down method.
 
@@ -54,7 +52,7 @@ The result is a data frame with attributions for each variable in the model.
 
 In most cases, a plot is easier to read than a table with numbers. You can use the generic plot() function to create a waterfall plot that summarises variable attributions.
 
-This is the ggplot2 object so you can use other ggplot2 functions to exchange the plot. Like 'ggtitle' to add a title or `theme` to change the skin of the plot.
+This is the ggplot2 object so you can use other ggplot2 functions to modify the plot. Like 'ggtitle' to add a title or `theme` to change the skin of the plot.
 
 
 In the break-down method, the important element is the order of variables. Bu default a greedy heuristic is used to determine the best order from the most important to the least important variable. But you can specify a fixed order with the `order’ argument.

@@ -16,7 +16,7 @@ Predictive models have been developed for years. So you're surely asking yoursel
 
 Models are getting more complex.
 
-The availability of large data sets and fast computers allows you to train more and more complex models. 
+The availability of large data sets and fast computers allow you to train more and more complex models. 
 So complex that they cannot be analyzed by looking directly at model parameters.  It is common to work with models that have thousands or millions of parameters.
 We need tools to analyze also these huge models.
 
@@ -32,8 +32,8 @@ Ethical issues.
 
 The analysis of machine learning models in several cases has shown that the models lead to biased decisions. 
 Like models for recidivism that discriminate on the basis of skin colour or models for credit scoring that discriminate on the basis of age or gender.
-Usually this bias is learned from historical data. In complex models it is difficult to monitor if the bias occur and how strong it is.
-We need tools identify or correct such biases.
+Usually, this bias is learned from historical data. In complex models, it is difficult to monitor if the bias occurs and how strong it is.
+We need tools to identify or correct such biases.
 
 Model debugging.
 
@@ -42,7 +42,7 @@ We need tools to support analysis of wrong predictions.
 
 Trust and model human interaction.
 
-Machine learning models are often designed to support human decision-making. For human operator it is necessary to trust and understand the reasons behind the model recommendation. 
+Machine learning models are often designed to support human decision-making. For the human operator, it is necessary to trust and understand the reasons behind the model recommendation. 
 We need tools for better communication between the model and the human.
 
 Explanatory Model Analysis for models is what Exploratory Data Analysis for data
@@ -56,22 +56,22 @@ We can distinguish three major approaches to the topic of model explainability.
 
 Interpretable by design.
 
-One approach is to use only models that have simple structure and can be directly understood. For example models with a small number of variables or shallow decision trees or methods based on decision rules. This approach usually is time consuming and requires expert knowledge for selection and engineering of variables. A simple structure of a model allows for direct analysis.
+One approach is to use only models that have a simple structure and can be directly understood. For example models with a small number of variables or shallow decision trees or methods based on decision rules. This approach usually is time-consuming and requires expert knowledge for the selection and engineering of variables. A simple structure of a model allows for direct analysis.
 
-For complex models we cannot analyze individual parameters.  For some types of models special tools have been developed to allow analysis and visualization of their structures. This approach is called model-specific. Their functionality is based on exploring the model structure. Examples of such tools are diagnostic plots for linear models, tree statistics for random forest models or integrated gradients for deep neural networks. 
+For complex models, we cannot analyze individual parameters.  For some types of models, special tools have been developed to allow analysis and visualization of their structures. This approach is called a model-specific. Their functionality is based on exploring the model structure. Examples of such tools are diagnostic plots for linear models, tree statistics for random forest models or integrated gradients for deep neural networks. 
 
-In this podcast we focus on the model-agnostic approach. We do not assume anything about the internal structure of the model. It is analyses on the black box principle. We only explore the relationship between the input and output of the model without caring about its internal structure. Such methods can be applied to any model and also allows to compare different models.
+In this podcast, we focus on the model-agnostic approach. We do not assume anything about the internal structure of the model. It is analyses on the black box principle. We only explore the relationship between the input and output of the model without caring about its internal structure. Such methods can be applied to any model and also allows to compare different models.
 
 
-How EMA may improve the model development?
+How EMA may improve model development?
 
 EMA methods can be applied in any part of the model development cycle.
-A typical process of building a predictive model is based on three step repeated. Deepen the understanding of data, prepare new version of the models and assess the quality of the model. 
+A typical process of building a predictive model is based on these three steps repeated. Deepen the understanding of data, prepare a new version of the models and assess the quality of the model. 
 
-In each of these stages we can use EMA methods. 
+In each of these stages, we can use EMA methods. 
 Pre-modelling applications are aimed at extracting new knowledge from the model. 
-In-modeling applications are used to debug models and fix their mispredictions. 
-Post-modeling applications are used to explain the predictions.
+In-modelling applications are used to debug models and fix their mispredictions. 
+Post-modelling applications are used to explain the predictions.
 
 
 Pyramid for Explanatory Model Analysis
@@ -80,20 +80,20 @@ The methods we will discuss in this podcast are arranged in a pyramid-like ontol
 
 We will discuss two classes of methods. 
 The first one focuses on the analysis of the model result for a single observation. 
-These methods are called instance level explanations or local explanations. 
-For example, for model that estimates odds of default in credit scoring, the instance level analysis focuses on explaining the model's behaviour for one particular customer. 
+These methods are called instance-level explanations or local explanations. 
+For example, for a model that estimates odds of default in credit scoring, the instance level analysis focuses on explaining the model's behaviour for one particular customer. 
 
-The second group of methods is focused on the analysis of the model's behaviour on the whole data set. We are not interested in any particular prediction, but in average  model behaviour.
+The second group of methods is focused on the analysis of the model's behaviour on the whole data set. We are not interested in any particular prediction, but in average model behaviour.
 Such tools are called dataset level explanations or global explanations. 
-For example, for model that estimates odds of default in credit scoring, the model level analysis focuses on explaining the model's behaviour for selected population of customers. 
+For example, for a model that estimates odds of default in credit scoring, the model level analysis focuses on explaining the model's behaviour for a selected population of customers. 
 
 
 
 The explanatory pyramid is composed of levels. In each subsequent one, we explore more and more deeply the behaviour of the model.
 
-In the first level are raw model predictions and model statistics, which can be described by single numbers like  model performance measures.
+In the first level are raw model predictions and model statistics, which can be described by single numbers like model performance measures.
 
-The second level is related to the analysis of model parts. We want to understand which variables have the greatest influence on the model behaviour.
+The second level is related to the analysis of model parts. We want to understand which variables have the greatest influence on model behaviour.
 
 The third level describes the profile of model behaviour depending on the values of individual variables.
 
@@ -101,13 +101,11 @@ The fourth level corresponds to the residual diagnostics. We want to understand 
 
 
 The methods mentioned in this pyramid are described in detail in the ebook Exploratory Model Analysis, available at github.com/pbiecek/ema. 
-You will find there intuitions, methodological details and examples for different classification and regression models.
+You will find their intuitions, methodological details and examples for different classification and regression models.
 
-The following episodes in this podcast show how to perform EMA analysis using the DALEX library for R or Python. Subsequent episodes are divided into two tracks, one implemented in R program and the second in Python. 
+The following episodes in this podcast show how to perform EMA analysis using the DALEX library for R or Python. Subsequent episodes are divided into two tracks, one implemented in the R program and the second in Python. 
 
 The list of all episodes is available on the website http://tiny.cc/DALEX.
 If you have any question or comment related to this topic please let me know. 
-
-
 
 
