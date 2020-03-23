@@ -38,10 +38,10 @@ titanic_ex <- explain(titanic_rf,
 titanic_ex$model
 titanic_ex$model_info
 titanic_ex$data %>% head
+titanic_ex$predict_function
 titanic_ex$y_hat %>% head
 titanic_ex$residuals %>% head
 titanic_ex$label
-titanic_ex$predict_function
 
 
 
@@ -122,3 +122,4 @@ modelDown(titanic_ex, titanic_ex2)
 
 library("modelStudio")
 modelStudio(titanic_ex, single_passanger)
+
