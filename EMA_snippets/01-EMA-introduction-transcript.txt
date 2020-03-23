@@ -22,12 +22,17 @@ We need tools to analyze also these huge models.
 
 Right to explanation.
 
-The increasing automation is increasingly affecting our daily lives.This has led to changes in the law to protect citizens' civil rights.  Many countries are introducing so-called "Right to Explanation" into their systems. This is the right to an explanation for a decision that has been made automatically by an algorithm.
+Predictive models decide which ads we see on social media, which books, films or music are recommended for us.
+Automated models value our insurance premiums and decide who gets and who doesn't get credit.
+The increasing automation is increasingly affecting our daily lives. 
+This has led to changes in the law to protect citizens' civil rights.  Many countries are introducing so-called "Right to Explanation" into their systems. This is the right to an explanation for a decision that has been made automatically by an algorithm.
 We need tools to provide such explanations.
 
 Ethical issues.
 
-The analysis of machine learning models in several cases has shown that the models lead to prejudice on the basis of age, gender or race. Usually this bias is learned from historical data. In complex models it is difficult to monitor if the bias occur and how strong it is.
+The analysis of machine learning models in several cases has shown that the models lead to biased decisions. 
+Like models for recidivism that discriminate on the basis of skin colour or models for credit scoring that discriminate on the basis of age or gender.
+Usually this bias is learned from historical data. In complex models it is difficult to monitor if the bias occur and how strong it is.
 We need tools identify or correct such biases.
 
 Model debugging.
@@ -51,7 +56,7 @@ We can distinguish three major approaches to the topic of model explainability.
 
 Interpretable by design.
 
-One approach is to use only models that have simple structure and can be directly understood. For example models with a small number of variables or shallow decision trees or methods based on decision rules. This approach usually requires expert knowledge for selection and engineering of variables. A simple structure of a model allows for direct analysis.
+One approach is to use only models that have simple structure and can be directly understood. For example models with a small number of variables or shallow decision trees or methods based on decision rules. This approach usually is time consuming and requires expert knowledge for selection and engineering of variables. A simple structure of a model allows for direct analysis.
 
 For complex models we cannot analyze individual parameters.  For some types of models special tools have been developed to allow analysis and visualization of their structures. This approach is called model-specific. Their functionality is based on exploring the model structure. Examples of such tools are diagnostic plots for linear models, tree statistics for random forest models or integrated gradients for deep neural networks. 
 
@@ -84,10 +89,9 @@ For example, for model that estimates odds of default in credit scoring, the mod
 
 
 
-
 The explanatory pyramid is composed of levels. In each subsequent one, we explore more and more deeply the behaviour of the model.
 
-In the first level are statistics, which can be described by single numbers. For example. in this layer we have model performance measures.
+In the first level are raw model predictions and model statistics, which can be described by single numbers like  model performance measures.
 
 The second level is related to the analysis of model parts. We want to understand which variables have the greatest influence on the model behaviour.
 
