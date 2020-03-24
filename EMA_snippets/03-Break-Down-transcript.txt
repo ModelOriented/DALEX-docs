@@ -73,4 +73,5 @@ Once you have a model you need to create a wrapper around the model with the exp
 To calculate break down attributions you can use the predict_parts function with the type = break down.
 The result can be further processed with the generic plot function.
 
-Find more examples and mode details in the Exploratory Model Analysis ebook.
+Find more examples and more details in the Exploratory Model Analysis ebook.
+
