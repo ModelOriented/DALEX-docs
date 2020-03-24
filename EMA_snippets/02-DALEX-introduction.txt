@@ -2,30 +2,30 @@ Welcome to the second episode of Explanatory Model Analysis podcast.
 This podcast is about various techniques for explainable artificial intelligence. 
 In this episode, I will overview the workflow of model exploration with R and introduce the DALEX package.
 
-If you are interested in examples for Python or if you are looking for a specific XAI method you will find other episodes at http://tiny.cc/DALEX webpage.
+If you are interested in examples for Python or if you are looking for a specific XAI method you will find other episodes at tiny.cc/DALEX webpage.
 
 Before we jump into the R code, let's see the overall architecture for the DrWhy.AI family.
 In this podcast, we describe only tools that are model agnostic. This means that we want them to work for models with different structures and even for models created in different programming languages. 
 Such tools work on the principle of black box exploration. They don't have to know the internal structure of the model. They just need a function to calculate predictions for some perturbed data.
 The problem that we need to overcome is the lack of coherence between different libraries in the way they calculate predictions.
-There are many libraries in R and Python to train prediction models. But different libraries have different interfaces.
+There are many libraries in R and Python to train predictive models. But different libraries have different interfaces.
 To handle different models in a uniform way we need a universal adapter that will create a uniform interface around any model. This is the role of the explain function from the DALEX package.
 The result of this function is a new object of the class explainer.
-It doesn't matter what library we used to build the model, the explain function creates a consistent interface for performing predictions on the model.
+It doesn't matter what library we used to build the model. The explain function creates a consistent interface for performing predictions on the model.
 
-All functions in DALEX and packages from the DrWhy.AI family can work on explainer objects without worrying about the original structure of the model.
+All functions in DALEX package and other packages from the DrWhy.AI family can work on explainer objects without worrying about the original structure of the model.
 
 
 
 
 Let's see an example for this workflow. 
-We'll use the dataset related to the Sinking of the Titanic. This is a popular dataset for the binary classification task. We have seven variables, three qualitative and four quantitative and we need to predict the chances of surviving the Titanic disaster.
+We'll use the dataset for the Sinking of the Titanic. This is a popular dataset for the binary classification task. We have seven variables. Three qualitative like class or gener and four quantitative like age and fare. Based on them we want to predict the chances of surviving the Titanic disaster.
 
-In the DALEX package, we have a titanic imputed data set with preprocessed data for 2207 people. In this example, we use a random forest implemented in the ranger package. But the tools described and the workflow work for any model. 
+In the DALEX package, we have a titanic imputed data set with preprocessed data for 2207 people. In this example, we use a random forest model implemented in the ranger package. But the tools described and the workflow work for any model. 
 
 
-Let's start with typical use of explain() function.
-The first argument is the model. This is the only mandatory argument. Useful optional arguments are the data to validate, the corresponding values of the target variable and a label - the name of the model.
+Let's start with typical use of explain function.
+The first argument is the model. This is the only mandatory argument. Useful optional arguments are the data to validate, the corresponding values of the target variable and the label - the name of the model.
 
 Depending on the class of the model, the explain() function extracts the relevant information from the model and creates an adapter with a uniform interface.
 
@@ -34,18 +34,18 @@ It may happen that the explain function will not recognize the model class and w
 
 Each explainer has the same fields that can be used by other functions to explore the encapsulated model.
 Model is stored in the slot model.
-The model_info slot contains information about the name and version of the package in which the model was built.
+The model info slot contains information about the name and version of the package in which the model was built.
 The slot data stores validation data.
-The slot prediction function has a function that turns prediction into a numeric vector of scores.
+The slot prediction function has a function that calculate numeric scores for the embedded model.
 These predictions are stored in the y hat slot and the corresponding residuals are in the residuals slot.
 
 
 
 
-Such an adapter can be used in any other function in the DALEX package.
+Such adapter can be used in any other function in the DALEX package.
 The general workflow is following.
-Functions transform an explainer object into an explanation object. And then the explanation can be visualised with the plot function.
-These functions are presented in detail in the following episodes.
+Each function transforms an explainer object into an explanation object. And then the explanation can be visualised with the generic plot function.
+These functions are discussed in detail in the following episodes.
 
 
 
@@ -69,14 +69,14 @@ Episode 9 is devoted to the residual diagnostics.
 
 The results of each explanation can be drawn with the plot function. You can also use this function to compare explanations for two or more models. This functionality is especially useful when you need to select one model out of a few candidate models. 
 
-Let's show it with an example. For the titanic data, we build a second model using rms package. This time it is a logistic regression model with splines for age. Using the explain() function we build a wrapper around the model.
+Let's show it with an example. For the titanic data, we build a second model using rms package. This time it is a logistic regression model with splines for age. Using the explain function we build a wrapper around the model.
 
 We can now plot the results for both models in a single chart.
 We use the model performance function to draw ROC curves for both models. Similarly, we can draw two LIFT curves. In this case, the random forest model seems to be better on average.
-Now we use the model profile function to draw partial dependence curves for both models. Thanks to this we can compare them in detail by tracking the model's behaviour in reaction to selected variables.
+Now we use the 'model profile' function to draw 'partial dependence curves' for both models. Thanks to this we can compare them in detail by tracking the model's behaviour in reaction to selected variables.
 
 
-We can also compare models trained in different languages. Using DALEXtra package we can cross-compare a model trained in R with a model trained in s-k-learn in Python with a model trained in H-2-O. We can also compare models across different frameworks like mlr, caret or parsnip.
+We can also compare models trained in different languages. Using DALEXtra package we can cross-compare a model trained in R with a model trained in s-k-learn in Python with a model trained in H-2-O. We can also compare models across different frameworks like mlr, caret, keras or parsnip.
 
 
 Adapters built with explain function can be used in any package from DrWhy.AI family, such as ingredients, iBreakdown, auditor or drifter.
@@ -87,8 +87,8 @@ Adapters built with explain function can be used in any package from DrWhy.AI fa
 Let's look at two examples.
 
 The modelDown package automatically creates a static html page for one or more models with essential dataset-level explanations. 
-The page is built automatically and in subsequent sections, it has information such as the importance of variables, description of models performance and model response profiles to individual variables.
-The modelDown package works for models of any structure, because of the uniform interface created by the explain() function.
+The page is built automatically. In subsequent sections, it has information such as the importance of variables, description of models performance and model response profiles to individual variables.
+The modelDown package works for models of any structure, because of the uniform interface created by the explain function.
 Such generated HTML pages can be used to document the models as well as allow for easy model archivisation.
 
 
@@ -98,10 +98,10 @@ With a single command, we can generate an HTML page that turns any model into an
 With this dashboard, we can cross-compare plots for data exploration and model exploration at the level of one observation or the whole data set.
 
 
-The central point of all these solutions is the explain function. To work in a model agnostic way we need to have adapters with a uniform interface regardless of which tool the model was built.
+The central point of all these solutions is the explain function. To work in a model agnostic way we need to have adapters with a uniform interface regardless of which tool was used for model training.
 In the following episodes, we will show in detail how to build individual explanations from such an adapter.
 
-The list of all episodes is available on the website http://tiny.cc/DALEX.
+The list of all episodes is available on the website tiny.cc/DALEX.
 If you have any question or comment related to this topic please let me know. 
 
 
