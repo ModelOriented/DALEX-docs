@@ -1,0 +1,202 @@
+---
+title: "Model performance for Model Level Explanations"
+subtitle: "Code snippets for R "
+author: "Przemysław Biecek"
+date: "for DALEX 1.0"
+output: 
+  tint::tintHtml:
+    toc: true
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tint)
+set.seed(1313)
+```
+
+In this section, we use an `DALEX::model_performance()` function for calculation of various model performance measures.
+
+If you want learn more about mathematical formations of these measures read https://pbiecek.github.io/ema/modelPerformance.html.
+
+Note that there are also other R packages that offer similar functionality, like `mlr`.
+
+# Classification 
+
+# Prepare data
+
+For classification example we will use the titanic data.
+It has few variables that are easy to understand.
+The `titanic_imputed` dataset from `DALEX` package has imputed missing values.
+Find more about the data https://pbiecek.github.io/ema/dataSetsIntro.html#TitanicDataset
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+head(titanic_imputed)
+```
+
+# Train models
+
+Here we use `ranger` library to train a classification random forest model and `rms` model to train a logistic regression model with splines.
+
+```{r, warning=FALSE, message=FALSE}
+library("ranger")
+titanic_rf <- ranger(survived ~ class + gender + age + sibsp + 
+         parch + fare + embarked, data = titanic_imputed,
+         probability = TRUE,
+         classification = TRUE)
+titanic_rf
+
+library("rms")
+titanic_lmr <- lrm(survived ~ gender + rcs(age) + class +
+         sibsp + parch + fare + embarked, titanic_imputed)
+```
+
+# Prepare an explainer
+
+Different models have different structures.
+We use `DALEX::explain()` function to create an uniform interface for the model 
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+titanic_ex <- explain(titanic_rf,
+                data  = titanic_imputed,
+                y     = titanic_imputed$survived,
+                label = "Regression Forest for Titanic",
+                verbose = FALSE)
+
+titanic_ex_lmr <- explain(titanic_lmr, 
+                data  = titanic_imputed,
+                y     = titanic_imputed$survived,
+                label = "Logistic regression with splines",
+                verbose = FALSE)
+titanic_ex_lmr$model_info$type = "classification"
+```
+
+# Model performance for classification models with `model_performance()` 
+
+The `DALEX::model_performance()` function calculates the most popular model measures.  This function expects two arguments
+
+* the model explainer, 
+* `cutoff` with the cutoff for measures that work on binary classifications rather than scores.
+
+ As a result, the function yields an object of the class `model_performance`. It is a data frame with model performance measures
+
+* recall, also known as sensitivity,
+* precision, also called positive predictive value,
+* f1 score is the harmonic mean of precision and recall,
+* accuracy is the fraction of correct responses,
+* auc area under the curve.
+
+```{r, message=FALSE, echo=FALSE}
+(titanic_mp     <- model_performance(titanic_ex))
+(titanic_mp_lmr <- model_performance(titanic_ex_lmr))
+```
+
+Model performance measure may be supplemented with graphical summary, like ROC curve.
+
+```{r, warning=FALSE, message=FALSE}
+plot(titanic_mp, titanic_mp_lmr, geom = "roc")
+```
+
+Or the lift curve.
+
+```{r, warning=FALSE, message=FALSE}
+plot(titanic_mp, titanic_mp_lmr, geom = "lift")
+```
+
+Or the gain curve.
+
+```{r, warning=FALSE, message=FALSE}
+plot(titanic_mp, titanic_mp_lmr, geom = "gain")
+```
+
+Or boxplot
+
+```{r, warning=FALSE, message=FALSE}
+plot(titanic_mp, titanic_mp_lmr, geom = "boxplot")
+```
+
+Or histogram
+
+```{r, warning=FALSE, message=FALSE}
+plot(titanic_mp, titanic_mp_lmr, geom = "histogram")
+```
+
+
+
+# Regression 
+
+# Prepare data
+
+For regression  example we will use the `apartments` data from `DALEX` package.
+It has few variables that are easy to understand.
+Find more about the data https://pbiecek.github.io/ema/dataSetsIntro.html#ApartmentDataset
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+head(apartments)
+```
+
+# Train models
+
+We will use two models in this example. A simple linear model trained with `lm()` function and random forest model trained with `randomForest()` function.
+
+```{r, warning=FALSE, message=FALSE}
+set.seed(13)
+
+apartments_lm <- lm(m2.price ~ ., data = apartments)
+anova(apartments_lm)
+
+library("randomForest")
+apartments_rf <- randomForest(m2.price ~ ., data = apartments)
+apartments_rf
+```
+
+# Prepare explainers
+
+Different models have different structures.
+We use `DALEX::explain()` function to create an uniform interface for the model 
+
+```{r, warning=FALSE, message=FALSE}
+library("DALEX")
+explain_lm <- explain(model = apartments_lm, 
+         data = apartments_test, 
+         y = apartments_test$m2.price,
+         label = "Linear Regression for apartments",
+         verbose = FALSE)
+
+explain_rf <- explain(model = apartments_rf, 
+         data = apartments_test, 
+         y = apartments_test$m2.price,
+         label = "Random Forest for apartments",
+         verbose = FALSE)
+```
+
+# Model performance for regression models with `model_performance()` 
+
+The `DALEX::model_performance()` function calculates the most popular model measures.  The only expected argument is the model explainer. As a result, the function yields an object of the class `model_performance`. 
+
+It is a data frame with selected model performance measures
+
+* mean square error,
+* root mean square error,
+* median absolute deviation,
+* R-square coefficient.
+ 
+```{r, message=FALSE, echo=FALSE}
+(apartments_mp    <- model_performance(explain_lm))
+(apartments_mp_rf <- model_performance(explain_rf))
+```
+
+Both plots can be supplemented with boxplots for residuals. Toward this end, the residuals have got to be computed and added to the explainer object with the help of the `model_performance()` function. Subsequently, the `plot()` can be applied to the resulting object.   
+
+```{r, warning=FALSE, message=FALSE}
+plot(apartments_mp, apartments_mp_rf, geom = "boxplot")
+```
+
+And the histogram.
+
+```{r, warning=FALSE, message=FALSE}
+plot(apartments_mp, apartments_mp_rf, geom = "histogram")
+```
+

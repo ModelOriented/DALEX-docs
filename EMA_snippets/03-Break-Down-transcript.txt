@@ -1,0 +1,77 @@
+This is the Explanatory Model Analysis podcast about various techniques for explainable artificial intelligence. I describe methods for visualization, exploration and explanation of machine learning models.
+This episode is about the Break-Down method.
+
+
+In this episode, I will show you how to use the Break-Down method implemented in the DALEX package for the R language.
+If you are interested in examples for Python or other XAI methods you can find other episodes at http://tiny.cc/DALEX webpage.
+
+Before we jump into the R code, let me remind you what Break Down is for. 
+
+Break Down is the ‘model agnostic’ method. It means that it works for any model without assuming anything of its internal structure. It can be used for neural networks, random forest, tree boosting or linear models.
+
+It is also an 'instance-specific' method. It means that it explains the result of the model for a single observation. For the example related to the sinking of the Titanic, the break-down method explains model results at the level of predictions for individual passengers.
+
+The purpose of this method is to break down the model result in components that can be attributed to individual variables. 
+In this slide, we have an example for a single passenger, the 8-year-old boy from the first class. The model prediction for him is 0.466 and it is higher than the average result of the model, which is 0.322.
+The break-down method analyzed the model and assigned to a young age, i.e. age equal 8, a positive effect of 0.204, to the first class a positive effect of 0.101 and the sex a negative effect of -0.056. Effects of other variables are listed below. The effects of all variables sum up to the prediction for this person, so the sum is equal to 0.466.
+
+Such decomposition is very useful. We can read which variables have the largest contributions to the final prediction of the model, but we also have an assessment of how big these contributions are.
+
+Let's see how to do such break-down in R.
+This episode is focused on the software. If you want to learn more about this method you will find its description on pbiecek.github.io/ema
+
+
+In this example, I will use the titanic data. Probably you have heard about it before. It has only a few variables like age, gender, class and so on. Some continuous some categorical. Each one is easy to understand. 
+I will use the titanic_imputed dataset from the DALEX package because it has already imputed missing values. Find more about this dataset in the EMA ebook.
+
+To explain a model we need to train one.
+Here I use the ranger library for R to train a classification random forest model. Note that the break-down method is model agnostic, so you can try any other model you wish.
+The model is trained to predict the chances of survival based on seven variables. 
+
+
+
+Different models have different structures. So if we want to be model agnostic we need to create a wrapper around the model that has a uniform interface for the model. Here we use the explain function from the DALEX package. 
+The first argument is the model, then optionally we can specify the data and target variable and the label for the model. The label will appear on plots.
+
+
+The break-down method works on the instance level. So we need an observation for which we can generate the explanation.
+Here we create a data frame with a single row that corresponds to an eight years old boy from 1st class.
+
+The model prediction for this boy is 0.465.
+
+
+Once we have the model and the instance of interest, we are ready for the break-down method.
+
+Here we use the `predict_parts` function from the `DALEX` package.
+The name of the function means that we decompose a prediction into parts that can be attributed to specific variables.
+The predict_parts function calculates different types of variable attributions. We will use this function also in the next episodes.
+
+In the basic settings, this function expects three arguments. The explainer, the new observation and the type of attribution. By default, the type is equal to break-down.
+The result is a data frame with attributions for each variable in the model.
+
+
+In most cases, a plot is easier to read than a table with numbers. You can use the generic plot() function to create a waterfall plot that summarises variable attributions.
+
+This is the ggplot2 object so you can use other ggplot2 functions to modify the plot. Like 'ggtitle' to add a title or `theme` to change the skin of the plot.
+
+
+In the break-down method, the important element is the order of variables. Bu default a greedy heuristic is used to determine the best order from the most important to the least important variable. But you can specify a fixed order with the `order’ argument.
+
+In this example we forced the order to be class, age, gender, fare, parch, sibsp, embarked.
+Note that the break-down method is order specific. So for different orders, you may get different attributions. This issue is addressed in the method section in the documentation and also I will address it in the next episodes.
+
+
+
+Other useful argument in the plot() function is the `max_features`. You can specify how many of the most important variables shall be presented in the plot. It is useful for models with dozens or hundreds of variables.
+
+
+
+
+The general workflow with the Break-Down method is summarised in this sequence diagram. 
+Once you have a model you need to create a wrapper around the model with the explain function from the DALEX package. All other functions from this package operate on such objects.
+
+To calculate break down attributions you can use the predict_parts function with the type = break down.
+The result can be further processed with the generic plot function.
+
+Find more examples and more details in the Exploratory Model Analysis ebook.
+
