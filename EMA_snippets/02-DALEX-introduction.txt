@@ -4,7 +4,7 @@ In this episode, I will overview the workflow of model exploration with R and in
 
 If you are interested in examples for Python or if you are looking for a specific XAI method you will find other episodes at tiny.cc/DALEX webpage.
 
-Before we jump into the R code, let's see the overall architecture for the DrWhy.AI family.
+Before we jump into the R code, let's see the overall architecture for the DrWhy AI family.
 In this podcast, we describe only tools that are model agnostic. This means that we want them to work for models with different structures and even for models created in different programming languages. 
 Such tools work on the principle of black box exploration. They don't have to know the internal structure of the model. They just need a function to calculate predictions for some perturbed data.
 The problem that we need to overcome is the lack of coherence between different libraries in the way they calculate predictions.
@@ -13,7 +13,7 @@ To handle different models in a uniform way we need a universal adapter that wil
 The result of this function is a new object of the class explainer.
 It doesn't matter what library we used to build the model. The explain function creates a consistent interface for performing predictions on the model.
 
-All functions in DALEX package and other packages from the DrWhy.AI family can work on explainer objects without worrying about the original structure of the model.
+All functions in DALEX package and other packages from the DrWhy AI family can work on explainer objects without worrying about the original structure of the model.
 
 
 
@@ -79,22 +79,23 @@ Now we use the 'model profile' function to draw 'partial dependence curves' for 
 We can also compare models trained in different languages. Using DALEXtra package we can cross-compare a model trained in R with a model trained in s-k-learn in Python with a model trained in H-2-O. We can also compare models across different frameworks like mlr, caret, keras or parsnip.
 
 
-Adapters built with explain function can be used in any package from DrWhy.AI family, such as ingredients, iBreakdown, auditor or drifter.
+Adapters built with explain function can be used in any package from DrWhy AI family, such as ingredients, iBreakdown, auditor or drifter.
 
 
 
 
 Let's look at two examples.
 
-The modelDown package automatically creates a static html page for one or more models with essential dataset-level explanations. 
+The modelDown package automatically creates a static html page for one or more models with essential dataset level explanations. 
 The page is built automatically. In subsequent sections, it has information such as the importance of variables, description of models performance and model response profiles to individual variables.
 The modelDown package works for models of any structure, because of the uniform interface created by the explain function.
 Such generated HTML pages can be used to document the models as well as allow for easy model archivisation.
 
 
-Another interesting solution from DrWhy family is modelStudio package. 
-It creates an HTML page using the D3 library for interactive model exploration. 
-With a single command, we can generate an HTML page that turns any model into an interactive dashboard.
+Another interesting solution from DrWhy family is the modelStudio package. 
+It automates the Explanatory Analysis of Machine Learning predictive models. 
+Generate advanced interactive and animated model explanations in the form of a serverless HTML site with only one line of code.
+The main function computes various model explanations and produces an interactive, customisable dashboard made with D3 js. It consists of multiple panels for plots with their short descriptions. 
 With this dashboard, we can cross-compare plots for data exploration and model exploration at the level of one observation or the whole data set.
 
 

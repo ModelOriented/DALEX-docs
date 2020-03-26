@@ -17,13 +17,14 @@ Predictive models have been developed for years. So you're surely asking yoursel
 Models are getting more complex.
 
 The availability of large data sets and fast computers allow you to train more and more complex models. 
-So complex that they cannot be analyzed by looking directly at model parameters.  It is common to work with models that have thousands or millions of parameters.
+So complex that they cannot be analyzed by looking directly at model parameters.  
+It is common to work with models that have thousands or millions of parameters.
 We need tools to analyze these huge models.
 
 Right to explanation.
 
 Predictive models decide which ads we see on social media, which books, films or music are recommended for us.
-Automated models price our insurance premiums and decide who gets and who doesn't get credit.
+Automated models win elections, drive cars, diagnose patients and decide who gets and who doesn't get credit.
 The increasing automation is increasingly affecting our daily lives. 
 This has led to changes in the law to protect citizens' civil rights.  Many countries are introducing so-called "Right to Explanation" into their legal systems. This is the right to an explanation for a decision that has been made automatically by an algorithm.
 We need tools to provide such explanations.
