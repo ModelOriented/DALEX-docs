@@ -1,6 +1,6 @@
 # DALEX Stories
 
-Examples and documentation for Descriptive mAchine Learning EXplanations (package [DALEX](https://pbiecek.github.io/DALEX/) ).
+Examples and documentation for moDel Agnostic Language for Exploration and eXplanation (package [DALEX](https://pbiecek.github.io/DALEX/) ).
 
 See the rendered version https://pbiecek.github.io/DALEX_docs/
 
