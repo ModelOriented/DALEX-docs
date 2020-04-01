@@ -7,7 +7,7 @@
 
 library("DALEX")
 head(titanic_imputed)
-
+dim(titanic_imputed)
 
 # Train a model
 
@@ -27,6 +27,7 @@ titanic_ex <- explain(titanic_rf,
                 data  = titanic_imputed,
                 y     = titanic_imputed$survived,
                 label = "Regression Forest for Titanic")
+titanic_ex
 
 # Prepare an instance
 
@@ -46,17 +47,20 @@ johny_d <- data.frame(
                         levels = c("Belfast","Cherbourg",
                            "Queenstown","Southampton")))
 johny_d
-
+# prediction for Johny
 predict(titanic_ex, johny_d)
 
 # Ceteris paribus plots with `predict_profile()`
 
 cp_johny <- predict_profile(titanic_ex,
-                 new_observation = johny_d)
+                 new_observation = johny_d,
+                 variables = ...)
 cp_johny
 
 # simple plot
 plot(cp_johny)
+
+# only selected variables
 plot(cp_johny, variables = c("age", "fare"))
 
 # enhanced ggplot2 object
@@ -77,10 +81,9 @@ variable_splits = list(age = seq(0, 70, 0.1),
                        fare = seq(0, 100, 0.1))
 
 titanic_cp <- predict_profile(titanic_ex, johny_d,
-                              variable_splits = variable_splits)
+                      variable_splits = variable_splits)
 
 # simple plot
-
 plot(titanic_cp, variables = c("age", "fare"))
 
 
@@ -101,9 +104,13 @@ mary_d <- data.frame(
   embarked = factor("Southampton",
                     levels = c("Belfast","Cherbourg",
                                "Queenstown","Southampton")))
+# prediction for Mary
+predict(titanic_ex, mary_d)
+
 
 # profiles for both observations
-cp_both <- predict_profile(titanic_ex, rbind(johny_d, mary_d))
+cp_both <- predict_profile(titanic_ex,
+                           rbind(johny_d, mary_d))
 
 # plot for johny_d and mary_d
 plot(cp_both, variables = c("age", "fare"), color = "_ids_") +
@@ -111,22 +118,24 @@ plot(cp_both, variables = c("age", "fare"), color = "_ids_") +
                      values = c("#4378bf", "#8bdcbe"),
                      labels = c("johny_d" , "mary_d"))
 
+
 # Champion-challenger analysis
 # for two models
 
 # train a logistic regression model
 library("rms")
 titanic_lmr <- lrm(survived ~ gender + rcs(age) + class +
-                     sibsp + parch + fare + embarked, titanic_imputed)
+                   sibsp + parch + fare + embarked,
+                   titanic_imputed)
 
 # build an explainer
 titanic_ex_lmr <- explain(titanic_lmr,
-                          titanic_imputed,
-                          label = "Logistic regression with splines")
+                  titanic_imputed,
+                  label = "Logistic regression with splines")
 
 # create the profile for lmr model
 titanic_cp_lmr <- predict_profile(titanic_ex_lmr, johny_d,
-                                  variable_splits = variable_splits)
+                  variable_splits = variable_splits)
 
 # plot both profiles
 
