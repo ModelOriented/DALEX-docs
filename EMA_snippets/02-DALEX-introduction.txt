@@ -9,12 +9,12 @@ In this podcast, we describe only tools that are model agnostic. This means that
 Such tools work on the principle of black box exploration. They don't have to know the internal structure of the model. They just need a function to calculate predictions for some perturbed data.
 The problem that we need to overcome is the lack of coherence between different libraries in the way they calculate predictions.
 There are many libraries in R and Python to train predictive models. But different libraries have different interfaces.
-To handle different models in a uniform way we need a universal adapter that will create a uniform interface around any model. This is the role of the explain function from the DALEX package.
+To handle different models in a uniform way we need a universal adapter that will create a uniform interface around any model. 
+This is the role of the explain function from the DALEX package.
 The result of this function is a new object of the class explainer.
 It doesn't matter what library we used to build the model. The explain function creates a consistent interface for performing predictions on the model.
 
 All functions in DALEX package and other packages from the DrWhy AI family can work on explainer objects without worrying about the original structure of the model.
-
 
 
 

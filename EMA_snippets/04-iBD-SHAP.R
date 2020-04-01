@@ -7,7 +7,7 @@
 
 library("DALEX")
 head(titanic_imputed)
-
+dim(titanic_imputed)
 
 # Train a model
 
@@ -31,15 +31,16 @@ titanic_ex <- explain(titanic_rf,
 # Prepare an instance
 
 henry <- data.frame(
-  class = factor("2nd", levels = c("1st", "2nd", "3rd", "deck crew",
-                                   "engineering crew", "restaurant staff", "victualling crew")),
+  class = factor("2nd", levels = c("1st", "2nd", "3rd",
+                    "deck crew", "engineering crew",
+                    "restaurant staff", "victualling crew")),
   gender = factor("male", levels = c("female", "male")),
   age = 15,
   sibsp = 0,
   parch = 0,
   fare = 100,
   embarked = factor("Cherbourg", levels = c("Belfast",
-                                            "Cherbourg","Queenstown","Southampton"))
+                  "Cherbourg", "Queenstown", "Southampton"))
 )
 
 henry
@@ -49,21 +50,25 @@ predict(titanic_ex, henry)
 # Different orders in break-down plots
 
 bd_rf_fag <- predict_parts(titanic_ex,
-                           new_observation = henry,
-                           order = c("class", "fare", "gender", "age", "embarked", "sibsp", "parch"))
+             new_observation = henry,
+             order = c("class", "fare", "gender", "age",
+                       "embarked", "sibsp", "parch"))
 bd_rf_afg <- predict_parts(titanic_ex,
-                           new_observation = henry,
-                           order = c("fare", "class", "gender", "age", "embarked", "sibsp", "parch"))
+             new_observation = henry,
+             order = c("fare", "class", "gender", "age",
+                       "embarked", "sibsp", "parch"))
+
+# Two break down plots
 
 library("patchwork")
 plot(bd_rf_afg) / plot(bd_rf_fag)
 
 # Shapley values with `predict_parts()`
 
-shap_henry <- variable_attribution(titanic_ex,
-                                   henry,
-                                   type = "shap",
-                                   B = 25)
+shap_henry <- predict_parts(titanic_ex,
+                         henry,
+                         type = "shap",
+                         B    = 25)
 shap_henry
 
 # simple plot
