@@ -93,11 +93,8 @@ For example, for a model that estimates odds of default in credit scoring, the m
 The explanatory pyramid is composed of levels. In each subsequent one, we explore more and more deeply the behaviour of the model.
 
 In the first level are raw model predictions and model statistics, which can be described by single numbers like model performance measures.
-
 The second level is related to the analysis of model parts. We want to understand which variables have the greatest influence on model behaviour.
-
 The third level describes the profile of model behaviour depending on the values of individual variables.
-
 The fourth level corresponds to the residual diagnostics. We want to understand how good is the model fit to the analyzed data.
 
 

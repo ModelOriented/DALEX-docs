@@ -7,6 +7,9 @@ This episode is about the Break-Down method.
 In this episode, I will show you how to use the Break-Down method implemented in the lately published DALEX package for the Python language.
 If you are interested in examples for R or other XAI methods you can find other episodes at http://tiny.cc/DALEX webpage.
 
+
+
+
 Before we jump into the Python code, let me remind you what Break Down is for. 
 
 Break Down is the ‘model agnostic’ method. It means that it works for any model without assuming anything of its internal structure. It can be used for neural networks, random forest, tree boosting or linear models.
@@ -20,20 +23,25 @@ The break-down method analyzed the model and assigned to a young age, i.e. age e
 Such decomposition is very useful. We can read which variables have the largest contributions to the final prediction of the model, but we also have an assessment of how big these contributions are.
 
 Let's see how to do such break-down in Python.
+
+
 This episode is focused on the software. If you want to learn more about this method you will find its description on pbiecek.github.io/ema
 
-
 In this example, I will use the titanic data. Probably you have heard about it before. It has only a few variables like age, gender, class and so on. Some continuous some categorical. Each one is easy to understand. 
+
 We will drop rows with missing values to simplify the model and encode target variable to 0s and 1s, where 1 is `survived`. Find more about this dataset in the EMA ebook.
 
 To explain a model first we need to have one. Due to categorical variables in the dataset, we need to include some preprocessing in our model. We split preprocessing into two parts, first one hot encode categorical variables, second scale numerical ones. Then we combine this in pipeline with actual model - gradient boosting machine. All used in construction algorithms are taken from the scikit-learn package. Note that the break-down method is model agnostic, so you can try any other model you wish.
 
 The model is trained to predict the chances of survival based on eight variables. 
 
-Different models have different structures. So if we want to be model agnostic we need to create a wrapper around the model that has a uniform interface for the model. Here we construct the Explainer object from dalex package.
-The first argument is the model, then optionally we can specify the data, target variable and the label for the model. The label will appear on plots.
+Different models have different structures. So if we want to be model agnostic we need to create a wrapper around the model that has a uniform interface for the model. 
 
+Here we construct the Explainer object from dalex package.
+
+The first argument is the model, then optionally we can specify the data, target variable and the label for the model. The label will appear on plots.
 The break-down method works on the instance level. So we need an observation for which we can generate the explanation.
+
 Here we create a pandas data frame with a single row that corresponds to an eight years old boy from 1st class. Note that this has to be a pandas data frame, not series or numpy array.
 
 The model prediction for this boy is 0.81.
