@@ -1,0 +1,60 @@
+This is the Explanatory Model Analysis podcast about various techniques for explainable artificial intelligence. I describe methods for visualization, exploration and explanation of machine learning models.
+
+This episode is about the Shapley values and Break-Down with interaction.
+I will show you how to use these methods with the DALEX package for the Python language.
+If you are interested in examples for R or other XAI methods you can find other episodes at http://tiny.cc/DALEX webpage.
+
+Before we jump into the Python code, let me summarise how these methods are different from Break Down method presented in Episode 3.
+
+
+All these methods are ‘model agnostic’ and 'instance-specific'.  It means that they work for any model without assuming anything of its internal structure. And they explain the model result for a single observation. 
+
+The Break-Down method is order specific. It means that for the different ordering of variables we may get different explanations.
+In default settings a greedy heuristic is used to identify the best order.
+
+Shapley values are defined as an average of variable attributions across all possible orderings. The number of orderings may be large but we may estimate these values based on some random orderings.
+This way differences between different orderings will be average out.
+
+
+The method 'Break down with interactions' identifies pairs of variables which are the source of the differences across orderings. It seeks for interactions between pairs of variables.  Such interactions are then presented on waterfall plots. 
+
+
+Let's see how to calculate these different methods in Python.
+In this video, we are focused on the software. If you want to learn more about the methods go to the ebook at pbiecek.github.io/ema.
+
+
+
+As in the previous episode, I will use the data for Singkinf of RMS Titanic and a classification gradient boosting model from scikit-learn package. 
+The model is trained to predict the chances of survival based on avaliable variables like gender, age and class. 
+
+
+All three methods described in this episode work on the instance level. 
+As the instance of interest we use Henry, a 15-years old boy from 2nd class.
+
+
+
+The 'predict parts' function by default calculates break down interactions. 
+There is an interaction of fare and age variables for Henry.
+Depending on the order one of these variables has a positive effect while the other has negative.
+
+
+If you want to calculate Shapley values, set the argument type to 'shap'. Optionally, set the B argument to specify the number of random orderings that shall be used for calculations.
+
+
+The result is a data frame with the attributions for different orderings. It is best to visualise this result with the plot method. For each variable, the Shapley values are shown with coloured bars. You can customize this plot with many parameters, such as `max_vars` to select some number of the most important variables or set the baseline from where to start plotting.
+
+
+This is the plotly object so you can use other plotly functions to modify the plot or download it. If you want to modify it further, set parameter show in plot method to False.
+
+
+
+To identify interactions set the type argument in `predict_parts` to `break_down_interactions` which is default.
+
+
+
+The general workflow for the predict part function is summarised in this sequence diagram. 
+Depending on the type argument, the function calculates break down profiles, break down with interaction or Shapley values.
+The result can be further processed with the generic plot function.
+
+Find more examples and more details in the Exploratory Model Analysis ebook.
+
