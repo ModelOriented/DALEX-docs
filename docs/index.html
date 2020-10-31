@@ -6,6 +6,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>moDel Agnostic Language for Exploration and eXplanation • DALEX</title>
+<script defer src="https://huggingface.co/front/assets/github-buttons.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap" rel="stylesheet">
+
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="dalexverse.css" rel="stylesheet">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="dalexverse-2.css" rel="stylesheet">
@@ -55,140 +58,87 @@
 </head>
 <body>
     <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-
-      <div class="navbar-brand-container">
-        <a class="navbar-brand" href="index.html">DALEX-docs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Learn how to explore and explain ML models</a>
-      </div>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/ModelOriented/DALEX">
-    <span class="fab fa fab fa-github fa-lg"></span>
-  </a>
-</li>
-      </ul>
-</div>
-<!--/.nav-collapse -->
-  </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
-
-      </header><div class="row">
+<div class="row">
   <div class="contents col-md-9">
 <div id="model-agnostic-language-for-exploration-and-explanation-" class="section level1">
 
 <div id="overview" class="section level2">
-<p>The <code>DALEX</code> package xrays predictive ML models and helps to explore and explain its behaviour, helps to understand how complex models are working. </p> 
 </div>
 <div id="why" class="section level2">
 <p>
 
  <div class="div-table">
   <div class="div-table-row" align="center">
-    <b>Episode 1.</b> Introduction to the Explanatory Model Analysis<br/>
-    <a href="https://youtu.be/e83hnzyq6mo">Video <br/>
-      <img width="200" src="misc/r-snip-intro.png">
-    </a>
-   </div>
-   <div class="div-table-row">
-      <div class="div-table-col" align="center"><b>R track</b></div>
-      <div class="div-table-col" align="center"><b>Python track</b></div>
-   </div>
-  <div class="div-table-row" align="center">
-        <div class="div-table-col" align="center">
-          <b>Episode 2.</b> DALEX for R<br/>
-        <a href="https://www.youtube.com/watch?v=_znReP-5j0A">Video</a>, <a href="https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/02-DALEX.R">Snippets</a> <br/>
-        <a href="https://www.youtube.com/watch?v=_znReP-5j0A"><img width="200" src="misc/r-snip-dalex.png"></a><br/>
-        </div>
-        <div class="div-table-col" align="center">
-          <b>Episode 2.</b> dalex for Python
-        </div>
+    <p style="font-size:24px; font-family: 'Fira Sans', sans-serif;">
+    On a mission to build <br>better predictive models<br/>
+    </p>
+      <img width="400" src="misc/rocket.png"><br/><br/>
+    <div class="github-repo">
+    <a 
+      class="github-button"
+      href="https://github.com/ModelOriented/DALEX" data-size="large" data-show-count="true" aria-label="Star DALEX on GitHub">
+      Star
+    </a><br/><br/><br/><br/>
   </div>
-  <div class="div-table-row" align="center">
-    <b>Part I. </b>Instance level explanations<br/>
-    <b>Episode 3.</b> <a href="https://pbiecek.github.io/ema/breakDown.html">Break Down method</a>
    </div>
-  <div class="div-table-row" align="center">
+
+  <div id="installation" class="div-table-row" align="center">
         <div class="div-table-col" align="center">
-        <a href="https://www.youtube.com/watch?v=UcM4UyBPgFc">Video</a>,  <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/06-Break-Down.html">Snippets</a><br/>
-        <a href="https://www.youtube.com/watch?v=UcM4UyBPgFc"><img width="200" src="misc/r-snip-break-down.png"></a><br/>
+          <h2>For R</h2>
+<ul class="list-unstyled">
+<li>Install <a href="https://cloud.r-project.org/package=DALEX">from CRAN</a> <br><pre class="{r}"><code>install.packages("DALEX")
+</code></pre>
+</li>
+<li>Technical documentation <br> <a href="https://modeloriented.github.io/DALEX/">with pkgdown</a> 
+</li>
+</ul>
+<img height="100" src="https://raw.githubusercontent.com/ModelOriented/DALEX/master/man/figures/logo.png">
       </div>
         <div class="div-table-col" align="center">
-        <a href="https://www.youtube.com/watch?v=PuKF2GS4_3Y">Video</a>,  <a href="https://github.com/pbiecek/DALEX_docs/blob/master/jupyter-notebooks/Python%20Titanic.ipynb">Snippets</a><br/>
-        <a href="https://www.youtube.com/watch?v=PuKF2GS4_3Y"><img width="220" src="misc/python-snip-break-down.png"></a><br/>
+<h2>For Python</h2>
+<ul class="list-unstyled">
+<li>Install <a href="https://pypi.org/project/dalex/">with pip</a> <br><pre class="{r}"><code>pip install dalex
+</code></pre>
+</li>
+<li>Technical documentation <br> <a href="https://modeloriented.github.io/DALEX/">with ...</a> 
+</li>
+</ul>
+<img height="100" src="https://miro.medium.com/max/1400/1*J8gbbTzeYkktdCz6Ei1ZiA.png">
       </div>
   </div>
-  <div class="div-table-row" align="center">
-    <b>Episode 4.</b> <a href="https://pbiecek.github.io/ema/shapley.html">Shapley values</a> and <a href="https://pbiecek.github.io/ema/iBreakDown.html">Break Down with interactions</a>
-   </div>
-  <div class="div-table-row" align="center">
-      <div class="div-table-col" align="center">
-        <a href="https://youtu.be/YnjUU5mNdwQ">Video</a>,  <a href="https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/04-iBD-SHAP.R">Snippets</a><br/>
-        <a href="https://www.youtube.com/watch?v=YnjUU5mNdwQ"><img width="200" src="misc/r-snip-shap.png"></a><br/>
-      </div> 
-      <div class="div-table-col" align="center">TBA</div>
-  </div>
-  <div class="div-table-row" align="center">
-    <b>Episode 5.</b> <a href="https://pbiecek.github.io/ema/ceterisParibus.html"> Ceteris Paribus profiles</a>
-   </div>
-  <div class="div-table-row" align="center">
-      <div class="div-table-col" align="center">
-        <a href="https://youtu.be/Vo1IE1pMUr0">Video</a>,  <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/10-Ceteris-paribus-Profiles.html">Snippets</a><br/>
-        <a href="https://www.youtube.com/watch?v=Vo1IE1pMUr0"><img width="200" src="misc/r-snip-ceteris-paribus.png"></a><br/>
-      </div> 
-      <div class="div-table-col" align="center">TBA</div>
-  </div>
-   <div class="div-table-row" align="center">
-    <b>Part II. </b>Dataset level explanations<br/>
-    <b>Episode 6.</b> <a href="https://pbiecek.github.io/ema/modelPerformance.html"> Model Performance</a>
-   </div>
-  <div class="div-table-row" align="center">
-      <div class="div-table-col" align="center">
-        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/pbiecek/DALEX_docs/master/EMA_snippets/15-Model-performance.html">Snippets</a>
-      </div> 
-      <div class="div-table-col" align="center">TBA</div>
-  </div>
-  <div class="div-table-row" align="center">
-    <b>Episode 7.</b> <a href="https://pbiecek.github.io/ema/featureImportance.html">Variable's Importance</a>
-   </div>
-  <div class="div-table-row" align="center">
-      <div class="div-table-col" align="center">TBA</div>
-      <div class="div-table-col" align="center">TBA</div>
-  </div>
-  <div class="div-table-row" align="center">
-    <b>Episode 8.</b> <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html"> Partial Dependence Profile</a>
-   </div>
-  <div class="div-table-row" align="center">
-      <div class="div-table-col" align="center">TBA</div>
-      <div class="div-table-col" align="center">TBA</div>
-  </div>
-  <div class="div-table-row" align="center">
-    <b>Episode 9.</b> <a href="https://pbiecek.github.io/ema/residualDiagnostic.html"> Residual Diagnostics</a>
-   </div>
-  <div class="div-table-row" align="center">
-      <div class="div-table-col" align="center">TBA</div>
-      <div class="div-table-col" align="center">TBA</div>
-  </div>
-</div>
+ </div>
 
 </p>
 </div>
+
+<!-- new section-->
 <hr>
-<div id="show-case-r" class="section level2">
-<h2 class="hasAnchor"><a href="#show-case-r" class="anchor"></a>Show-cases for the R version of DALEX </h2>
-<p>
+<div id="Blog-posts" class="section level2">
+<h2 class="hasAnchor"><a href="#show-case-r" class="anchor"></a>Blog posts </h2>
+  <li><a href="https://medium.com/responsibleml">Responsible ML</a></li>
+  <li><a href="https://medium.com/@ModelOriented/materials-from-explanatory-model-analysis-workshop-erum-2020-278d6295f595">Materials from Explanatory Model Analysis Workshop @ eRum 2020</a></li>
   <li><a href="https://medium.com/@ModelOriented/xai-in-the-jungle-of-competing-frameworks-for-machine-learning-fa6e96a99644" rel="nofollow">XAI in the jungle of competing frameworks for machine learning</a></li>
+  <li><a href="https://medium.com/@ModelOriented/xai-in-python-with-dalex-4b173486aa92" rel="nofollow">XAI in Python with dalex</a></li>
+</div>
+<!-- new section-->
+<hr>
+<div id="introductory-videos" class="section level2">
+<h2 class="hasAnchor"><a href="#show-case-r" class="anchor"></a>Introductory youtube videos </h2>
+<p>The <code>DALEX</code> package xrays predictive ML models and helps to explore and explain its behaviour, helps to understand how complex models are working. </p> 
+<li><a href="https://youtu.be/e83hnzyq6mo" rel="nofollow"> Introduction to the Explanatory Model Analysis</a></li>
+<li><a href="https://www.youtube.com/watch?v=_znReP-5j0A" rel="nofollow"> Introduction to DALEX for R</a></li>
+<li><a href="https://www.youtube.com/watch?v=UcM4UyBPgFc" rel="nofollow"> Break Down with R</a></li>
+<li><a href="https://youtu.be/YnjUU5mNdwQ" rel="nofollow"> Shapley values with R</a></li>
+<li><a href="https://youtu.be/Vo1IE1pMUr0" rel="nofollow"> Ceteris paribus with R</a></li>
+
+<li><a href="https://www.youtube.com/watch?v=PuKF2GS4_3Y" rel="nofollow"> Break Down with Python</a></li>
+</div>
+
+<!-- new section-->
+<hr>
+<div id="vignettes-r" class="section level2">
+<h2 class="hasAnchor"><a href="#show-case-r" class="anchor"></a>Vignettes for R </h2>
+<p>
 <li><a href="https://raw.githack.com/pbiecek/DALEX_docs/master/vignettes/Multilanguages_comparision.html" rel="nofollow">How to compare models created in different languages</a> gbm and CatBoost in R / gbm in h2o / gbm in python</li>
 <li><a href="https://rawgit.com/pbiecek/DALEX_docs/master/vignettes/DALEXverse%20and%20fraud%20detection.html" rel="nofollow">How to use DALEX for fraud detection</a></li>
 <li><a href="https://rawgit.com/pbiecek/DALEX_docs/master/vignettes/DALEX_and_keras.html" rel="nofollow">How to use DALEX with keras</a></li>
@@ -206,32 +156,21 @@
   </div>
 
 <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-<div class="links"><h2>DALEX for R</h2>
+<div class="developers">
+<h2>Jump to ...</h2>
 <ul class="list-unstyled">
-<li>Install <a href="https://cloud.r-project.org/package=DALEX">from CRAN</a> <br><pre class="{r}"><code>install.packages("DALEX")
-</code></pre>
-</li>
-</ul>
-<h2>DALEX for Python</h2>
-<ul class="list-unstyled">
-<li>Install <a href="https://pypi.org/project/dalex/">with pip</a> <br><pre class="{r}"><code>pip install dalex
-</code></pre>
-</li>
+<li><a href="#why">Home</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#Blog-posts">Blog posts</a></li>
+<li><a href="#introductory-videos">Introductory videos</a></li>
+<li><a href="#vignettes-r">Vignettes for R</a></li>
+<li><a href="#introductory-videos">...</a></li>
 </ul>
 </div>
 <div class="citation">
-<h2>Citation</h2>
+<h2>How to cite</h2>
 <ul class="list-unstyled">
-<li><a href="https://modeloriented.github.io/DALEX/authors.html">Citing DALEX</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/pbiecek">Przemyslaw Biecek</a><small class="roles"> R, docs </small> </li>
-<li><a href="https://github.com/maksymiuks">Szymon Maksymiuk </a><small class="roles"> R </small> </li>
-<li><a href="https://github.com/hbaniecki">Hubert Baniecki </a><small class="roles">Python </small> </li>
-<li><a href="https://github.com/WojciechKretowicz">Wojciech Kretowicz </a><small class="roles">Python </small> </li>
+<li><a href="https://modeloriented.github.io/DALEX/authors.html">DALEX (bibtex)</a></li>
 </ul>
 </div>
 </div>
