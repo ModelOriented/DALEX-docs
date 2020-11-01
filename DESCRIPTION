@@ -1,6 +1,0 @@
-Package: placeholder
-Type: Book
-Title: DALEX: Descriptive mAchine Learning EXplanations
-Version: 0.1
-Imports: bookdown
-Remotes: rstudio/bookdown

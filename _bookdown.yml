@@ -1,7 +1,0 @@
-book_filename: "DALEX"
-before_chapter_script: ["init_knitr.R"]
-edit: https://github.com/pbiecek/DALEX/edit/master/%s
-language:
-  ui:
-    chapter_name: "Chapter "
-delete_merged_file: true
