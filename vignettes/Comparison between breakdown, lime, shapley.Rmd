@@ -1,31 +1,35 @@
 ---
-title: "Comparison of breakDown, lime and shapleyR"
-author: "Aleksandra Grudziąż"
-date: "15 czerwca 2018"
+title: "Comparison of Break Down, LIME and Shapley values"
+author:
+  - Aleksandra Grudziąż, Anna Kozak
+date: First created on June 15, 2018. Updated on Nov 04, 2020.
 output: 
   html_document:
     toc: true  
     toc_float: true
     number_sections: true
+    theme: flatly
+    highlight: kate
+    fig_width: 6
+    fig_height: 3
+    fig_caption: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
 ```
 
-<span style="color:red">Please keep in mind, that `breakDown` package is archived and is no under development anymore. We suggests to use [iBreakDown](https://CRAN.R-project.org/package=iBreakDown) instead. In order to compute shapley values in R, You can use [shapper](https://CRAN.R-project.org/package=shapper) or also [iBreakDown](https://CRAN.R-project.org/package=iBreakDown).  </span> 
-
-In the vignette below we will see how methods implemented in three R packages focuses on variables in selected model.
-For our model we consider breakDown, lime and shapleyr.
+In the vignette below we will see how methods implemented in DALEX R packages focuses on variables in selected model.
+For our model we consider Break Down, LIME and Shapley values.
 
 ```{r}
-library(breakDown)
+library(DALEX)
 library(lime)
-library(shapleyR)
 ```
 
 
 # Data
+
 To illustrate the differences in explanation of prediction between methods we will use an artificial dataset created below.
 ```{r}
 set.seed(123)
@@ -51,7 +55,6 @@ df_test <- df[1001:nrow(df),]
 
 library(mlr)
 
-
 regr_task_y1 <- makeRegrTask(id = "df_y1", data = df_train[,-2], target = "y1")
 regr_lrn_rf_y1 <- makeLearner("regr.randomForest")
 regr_rf_y1 <- train(regr_lrn_rf_y1, regr_task_y1)
@@ -64,68 +67,73 @@ regr_rf_y2 <- train(regr_lrn_rf_y2, regr_task_y2)
 
 
 # Methods
-In this vignette we would like to compare three approaches to analysis of a single prediction: [breakDown](https://arxiv.org/abs/1804.01955), [lime](https://arxiv.org/abs/1602.04938) and [shapley values](https://arxiv.org/abs/1705.07874).
 
-##breakDown
-*breakDown* is the methodology delevoped by Przemysław Biecek and Mateusz Staniak. A description of the method can be found [here](https://arxiv.org/abs/1804.01955).
+In this vignette we would like to compare three approaches to analysis of a single prediction: [Break Down](https://pbiecek.github.io/ema/breakDown.html), [LIME](https://pbiecek.github.io/ema/LIME.html) and [Shapley value](https://pbiecek.github.io/ema/shapley.html).
+
+## Break Down
+*Break Down* is the methodology delevoped by Przemysław Biecek and Mateusz Staniak. A description of the method can be found [here](https://arxiv.org/abs/1804.01955).
 
 
-This methodology is implemented by Przemysław Biecek and Mateusz Staniak in the R package [*breakDown*](https://github.com/pbiecek/breakDown).
+This methodology is implemented by Przemysław Biecek and Mateusz Staniak in the R package [*breakDown*](https://github.com/pbiecek/breakDown). Currently available in the R package [DALEX](https://github.com/ModelOriented/DALEX).
 
-The *breakDown* package is a model agnostic tool for decomposition of predictions from black boxes. Break Down Table shows contributions of every variable to a final prediction. Break Down Plot presents variable contributions in a concise graphical way. This package works for binary classifiers and general regression models.
+The *breakDown* package is a model agnostic tool for decomposition of predictions from black boxes. Break Down Table shows contributions of every variable to a final prediction. Break Down Profile presents variable contributions in a concise graphical way. 
 
-##lime
-*lime* is the methodology developed by Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. A description of the method can be found [here](https://arxiv.org/abs/1602.04938).
+## LIME (Local Interpretable Model-agnostic Explanations)
 
-The purpose of *lime* is to explain the predictions of black box classifiers. What this means is that for any given prediction and any given classifier it is able to determine a small set of features in the original data that has driven the outcome of the prediction.
-Using here package [*lime*](https://github.com/thomasp85/lime) is an R port of the Python lime package (https://github.com/marcotcr/lime) developed by the authors of the lime ( approach for black-box model explanations.
+*LIME* is the methodology developed by Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. A description of the method can be found [here](https://arxiv.org/abs/1602.04938).
 
-## shapleyR
+The purpose of *LIME* is to explain the predictions of black box classifiers. What this means is that for any given prediction and any given classifier it is able to determine a small set of features in the original data that has driven the outcome of the prediction.
+Using here package [*lime*](https://github.com/thomasp85/lime) is an R port of the Python lime package (https://github.com/marcotcr/lime) developed by the authors of the lime approach for black-box model explanations.
 
-A methodology based on the use of shapley values known from game theory to explain predictions is developed by Scott Lundberg and Su-In Lee. A description of the method can be found [here](https://arxiv.org/abs/1705.07874).
+## Shapley value
+
+A methodology based on the use of Shapley value known from game theory to explain predictions is developed by Scott Lundberg and Su-In Lee. A description of the method can be found [here](https://arxiv.org/abs/1705.07874).
 
 The Shapley value is a method that gives a solution to the following problem: A coalition of players play a game, for which they get a payout, but it is not clear how to distribute the payout fairly among the players. The Shapley value solves this problem by trying out different coalitions of players to decide how much each player changes the amount of the payout. What does this have to do with machine learning? In machine learning, the features (= players) work together to get the payout (=predicted value). The Shapley value tells us, how much each feature contributed to the prediction. 
 
-This methodology is implemented by Hermann Redich in the R package [*shapleyR*](https://github.com/redichh/ShapleyR).
+We use Shapley value implementation in the R package [*DALEX*](https://github.com/ModelOriented/DALEX).
+
+# Explainer object
+
+We create a explainer which is an object/adapter that wraps the model and creates an uniform structure and interface for operation. We use a DALEXtra R package which is an extension of DALEX and supports models built in mlr.
+
+```{r}
+
+explainer_regr_rf_y1 <- DALEXtra::explain_mlr(regr_rf_y1, data = df_test[,-c(1,2)], y = df_test$y1, label = "randomforest_1")
+
+explainer_regr_rf_y2 <- DALEXtra::explain_mlr(regr_rf_y2, data = df_test[,-c(1,2)], y = df_test$y2, label = "randomforest_2")
+
+```
 
 # Model with additive effect
 
-Now for the three new observations we will compare results of *breakDown*, *lime* and *shapleyR* for model with additive effect between variables x1 and x2.
+Now for the three new observations we will compare results of *Break Down*, *LIME* and *Shapley value* for model with additive effect between variables x1 and x2.
 
 
 ## x1 = -1, x2 = -1
 
 ### Explainers
 ```{r}
-new_observation_1 <- data.frame(x1 = -1,x2 = -1)
-custom_predict <- function(object, newdata) {pred <- predict(object, newdata=newdata)
-                  response <- pred$data$response
-                  return(response)}
+new_observation_1 <- data.frame(x1 = -1, x2 = -1)
 
 df_test <- rbind(df_test, data.frame(y1 = sign(-1) + sign(-1) + rnorm(1) , y2 = sign(-1)*sign(-1) + rnorm(1), x1 = -1, x2 = -1),  data.frame(y1 = sign(-1) + sign(1) + rnorm(1) , y2 = sign(-1)*sign(1) + rnorm(1), x1 = -1, x2 = 1),
                  data.frame(y1 = sign(0) + sign(0) + rnorm(1) , y2 = sign(0)*sign(0) + rnorm(1), x1 = 0, x2 = 0))
 
-br_new_observation_1 <- broken(regr_rf_y1, new_observation_1, data = df_test[,-c(1,2)], predict.function = custom_predict)
+bd_new_observation_1 <- predict_parts(explainer_regr_rf_y1, new_observation_1, type = "break_down")
 
 explainer <- lime(df_train[,-c(1,2)], regr_rf_y1)
-
 lime_new_observation_1 <- lime::explain(new_observation_1, explainer, n_features = 2)
 
-regr.task <- makeRegrTask(id = "df_y1", data = df_test[,-2] , target = "y1")
-
-sh_new_observation_1 <- shapley(row.nr = 9001, task = regr.task, model = regr_rf_y1)
-
-
+sh_new_observation_1 <- predict_parts(explainer_regr_rf_y1, new_observation_1, type = "shap")
 ```
 
 ### Comparison
 
 ```{r}
-plot(br_new_observation_1)
+plot(bd_new_observation_1)
 plot_features(lime_new_observation_1)
 lime_new_observation_1
-shapleyR:::plot.shapley.singleValue(sh_new_observation_1)
-getShapleyValues(sh_new_observation_1)
+plot(sh_new_observation_1)
 ```
 
 We see that in all methods both, x1 and x2 contradicts the predicted value of y1.
@@ -135,23 +143,22 @@ We see that in all methods both, x1 and x2 contradicts the predicted value of y1
 
 ### Explainers
 ```{r}
-new_observation_2 <- data.frame(x1 = -1,x2 = 1)
+new_observation_2 <- data.frame(x1 = -1, x2 = 1)
 
-br_new_observation_2 <- broken(regr_rf_y1, new_observation_2, data = df_test[,-c(1,2)], predict.function = custom_predict)
+bd_new_observation_2 <- predict_parts(explainer_regr_rf_y1, new_observation_2, type = "break_down")
 
 lime_new_observation_2 <- lime::explain(new_observation_2, explainer, n_features = 2)
 
-sh_new_observation_2 <- shapley(row.nr = 9002, task = regr.task, model = regr_rf_y1)
+sh_new_observation_2 <- predict_parts(explainer_regr_rf_y1, new_observation_2, type = "shap")
 ```
 
 ### Comparison
 
 ```{r}
-plot(br_new_observation_2)
+plot(bd_new_observation_2)
 plot_features(lime_new_observation_2)
 lime_new_observation_2
-shapleyR:::plot.shapley.singleValue(sh_new_observation_2)
-getShapleyValues(sh_new_observation_2)
+plot(sh_new_observation_2)
 ```
 
 For all methods we see that variable x1 contradicts the prediction and x2 supports it.
@@ -161,86 +168,79 @@ For all methods we see that variable x1 contradicts the prediction and x2 suppor
 
 ### Explainers
 ```{r}
-new_observation_3 <- data.frame(x1 = 0,x2 = 0)
+new_observation_3 <- data.frame(x1 = 0, x2 = 0)
 
-br_new_observation_3 <- broken(regr_rf_y1, new_observation_3, data = df_test[,-c(1,2)], predict.function = custom_predict)
+bd_new_observation_3 <- predict_parts(explainer_regr_rf_y1, new_observation_3, type = "break_down")
 
-lime_new_observation_3 <- lime::explain(new_observation_3, explainer, n_features = 5)
+lime_new_observation_3 <- lime::explain(new_observation_3, explainer, n_features = 2)
 
-sh_new_observation_3 <- shapley(row.nr = 9003, task = regr.task, model = regr_rf_y1)
+sh_new_observation_3 <- predict_parts(explainer_regr_rf_y1, new_observation_3, type = "shap")
+
 ```
 
 ### Comparison
 
 ```{r}
-plot(br_new_observation_3)
+plot(bd_new_observation_3)
 plot_features(lime_new_observation_3)
 lime_new_observation_3
-shapleyR:::plot.shapley.singleValue(sh_new_observation_3)
-getShapleyValues(sh_new_observation_3)
+plot(sh_new_observation_3)
 ```
 
-For *breakDown* and *shapleyR* we see that both variables contradicts the prediction, but in *lime* method we see that both variables support the value od y1.
+For *Break Down* and *Shapley value* we see that both variables contradicts the prediction, but in *LIME* method we see that both variables support the value od y1.
 
 
 # Model with interaction
 
-Now for the three new observations we will compare results of *breakDown*, *lime* and *shapleyR* for the model with interaction between variables x1 and x2.
+Now for the three new observations we will compare results of *Break Down*, *LIME* and *Shapley value* for the model with interaction between variables x1 and x2.
 
 
 ## x1 = -1, x2 = -1
 
 ### Explainers
 ```{r}
-new_observation_1 <- data.frame(x1 = -1,x2 = -1)
+new_observation_1 <- data.frame(x1 = -1, x2 = -1)
 
-br_new_observation_1 <- broken(regr_rf_y2, new_observation_1, data = df_test[,-c(1,2)], predict.function = custom_predict)
+bd_new_observation_1 <- predict_parts(explainer_regr_rf_y2, new_observation_1, type = "break_down")
 
 explainer <- lime(df_train[,-c(1,2)], regr_rf_y2)
-
 lime_new_observation_1 <- lime::explain(new_observation_1, explainer, n_features = 2)
 
-regr.task <- makeRegrTask(id = "df_y2", data = df_test[,-1] , target = "y2")
-
-sh_new_observation_1 <- shapley(row.nr = 9001, task = regr.task, model = regr_rf_y2)
-
-
+sh_new_observation_1 <- predict_parts(explainer_regr_rf_y2, new_observation_1, type = "shap")
 ```
 
 ### Comparison
 
 ```{r}
-plot(br_new_observation_1)
+plot(bd_new_observation_1)
 plot_features(lime_new_observation_1)
 lime_new_observation_1
-shapleyR:::plot.shapley.singleValue(sh_new_observation_1)
-getShapleyValues(sh_new_observation_1)
+plot(sh_new_observation_1)
 ```
 
-We see that in *lime* and *shapleyR* x1 and x2  support the predicted value of y2. In *breakDown* x1 supports and x2 contradicts prediction.
+We see that in *LIME* and *Shapley value* x1 and x2  support the predicted value of y2. In *Break Down* x1 supports and x2 contradicts prediction.
 
 ## x1 = -1, x2 = 1
 
 
 ### Explainers
 ```{r}
-new_observation_2 <- data.frame(x1 = -1,x2 = 1)
+new_observation_2 <- data.frame(x1 = -1, x2 = 1)
 
-br_new_observation_2 <- broken(regr_rf_y2, new_observation_2, data = df_test[,-c(1,2)], predict.function = custom_predict)
+bd_new_observation_2 <- predict_parts(explainer_regr_rf_y2, new_observation_2, type = "break_down")
 
 lime_new_observation_2 <- lime::explain(new_observation_2, explainer, n_features = 2)
 
-sh_new_observation_2 <- shapley(row.nr = 9002, task = regr.task, model = regr_rf_y2)
+sh_new_observation_2 <- predict_parts(explainer_regr_rf_y2, new_observation_2, type = "shap")
 ```
 
 ### Comparison
 
 ```{r}
-plot(br_new_observation_2)
+plot(bd_new_observation_2)
 plot_features(lime_new_observation_2)
 lime_new_observation_2
-shapleyR:::plot.shapley.singleValue(sh_new_observation_2)
-getShapleyValues(sh_new_observation_2)
+plot(sh_new_observation_2)
 ```
 
 For all methods we see that both variables contradict the prediction.
@@ -250,30 +250,29 @@ For all methods we see that both variables contradict the prediction.
 
 ### Explainers
 ```{r}
-new_observation_3 <- data.frame(x1 = 0,x2 = 0)
+new_observation_3 <- data.frame(x1 = 0, x2 = 0)
 
-br_new_observation_3 <- broken(regr_rf_y2, new_observation_3, data = df_test[,-c(1,2)], predict.function = custom_predict)
+bd_new_observation_3 <- predict_parts(explainer_regr_rf_y2, new_observation_3, type = "break_down")
 
-lime_new_observation_3 <- lime::explain(new_observation_3, explainer, n_features = 5)
+lime_new_observation_3 <- lime::explain(new_observation_3, explainer, n_features = 2)
 
-sh_new_observation_3 <- shapley(row.nr = 9003, task = regr.task, model = regr_rf_y2)
+sh_new_observation_3 <- predict_parts(explainer_regr_rf_y2, new_observation_3, type = "shap")
 ```
 
 ### Comparison
 
 ```{r}
-plot(br_new_observation_3)
+plot(bd_new_observation_3)
 plot_features(lime_new_observation_3)
 lime_new_observation_3
-shapleyR:::plot.shapley.singleValue(sh_new_observation_3)
-getShapleyValues(sh_new_observation_3)
+plot(sh_new_observation_3)
 ```
 
-For *breakDown* and *shapleyR* we see that both variables support the prediction, but in *lime* method we see that both variables contradict the value od y2.
+For *Break Down* and *Shapley values* we see that both variables support the prediction, but in *LIME* method we see that both variables contradict the value od y2.
 
 # Comparison for additive and interaction effect
 
-After plotting the values of explainers for *breakDown*, *lime* and *shapleyr* we see that for model with additive effect all three methods produce similar results (only in the case of observation with x1 = 0 and x2 = 0).
+After plotting the values of explainers for *Break Down*, *LIME* and *Shapley value* we see that for model with additive effect all three methods produce similar results (only in the case of observation with x1 = 0 and x2 = 0).
 On the other hand, when considering the model with interactions, we see that the results for our methods are usually different (only in the case of observation with x1 = -1 and x2 = 1 we have similar results).
 
 # Session info
