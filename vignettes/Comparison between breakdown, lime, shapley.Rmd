@@ -187,7 +187,7 @@ lime_new_observation_3
 plot(sh_new_observation_3)
 ```
 
-For *Break Down* and *Shapley value* we see that both variables contradicts the prediction, but in *LIME* method we see that both variables support the value od y1.
+For *Break Down* and *Shapley value* we see that both variables contradicts the prediction, but in *LIME* method we see that both variables support the value of y1.
 
 
 # Model with interaction
@@ -268,7 +268,7 @@ lime_new_observation_3
 plot(sh_new_observation_3)
 ```
 
-For *Break Down* and *Shapley values* we see that both variables support the prediction, but in *LIME* method we see that both variables contradict the value od y2.
+For *Break Down* and *Shapley values* we see that both variables support the prediction, but in *LIME* method we see that both variables contradict the value of y2.
 
 # Comparison for additive and interaction effect
 
