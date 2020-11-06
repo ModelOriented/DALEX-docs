@@ -68,15 +68,15 @@ data(apartmentsTest)
 
 explainer_regr_rf <- DALEX::explain(regr_rf, label = "rf", 
                                     data = apartmentsTest, y = apartmentsTest$m2.price, 
-                                    colorize = FALSE)
+                                    verbose = FALSE)
 
 explainer_regr_gbm <- DALEX::explain(regr_gbm, label = "gbm", 
                                      data = apartmentsTest, y = apartmentsTest$m2.price,
-                                     colorize = FALSE)
+                                     verbose = FALSE)
 
 explainer_regr_nn <- DALEX::explain(regr_nn, label = "nn", 
                                     data = apartmentsTest, y = apartmentsTest$m2.price,
-                                    colorize = FALSE)
+                                    verbose = FALSE)
 
 ```
 
@@ -218,11 +218,11 @@ wineTest  <- wine[-trainIndex,]
 Next, we use `train()` to fit 3 classification models: random forest, logistic regression and support vector machines. 
 
 ```{r classif_models, results = 'hide'}
-classif_rf <- train(quality~., data = wineTrain, method="rf", ntree = 100, tuneLength = 1)
+classif_rf <- train(quality~., data = wineTrain, method = "rf", ntree = 100, tuneLength = 1)
 
-classif_glm <- train(quality~., data = wineTrain, method="glm", family="binomial")
+classif_glm <- train(quality~., data = wineTrain, method = "glm", family = "binomial")
 
-classif_svm <- train(quality~., data = wineTrain, method="svmRadial", prob.model = TRUE, tuneLength = 1)
+classif_svm <- train(quality~., data = wineTrain, method = "svmRadial", prob.model = TRUE, tuneLength = 1)
 ```
 
 
@@ -238,17 +238,17 @@ yTest <- as.numeric(as.character(wineTest$quality))
 explainer_classif_rf <- DALEX::explain(classif_rf, label = "rf",
                                        data = wineTest, y = yTest,
                                        predict_function = p_fun, 
-                                       colorize = FALSE)
+                                       verbose = FALSE)
 
 explainer_classif_glm <- DALEX::explain(classif_glm, label = "glm", 
                                         data = wineTest, y = yTest,
                                         predict_function = p_fun,
-                                        colorize = FALSE)
+                                        verbose = FALSE)
 
 explainer_classif_svm <- DALEX::explain(classif_svm,  label = "svm", 
                                         data = wineTest, y = yTest,
                                         predict_function = p_fun,
-                                        colorize = FALSE)
+                                        verbose = FALSE)
 ```
 
 
