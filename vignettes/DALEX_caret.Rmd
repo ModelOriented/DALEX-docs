@@ -1,14 +1,18 @@
 ---
 title: "How to use DALEX with caret"
-author: "Alicja Gosiewska"
-date: "2018-04-29"
+author:
+  - Alicja Gosiewska, Anna Kozak
+date: First created on April 29, 2018. Updated on Nov 05, 2020.
 output: 
   html_document:
     toc: true  
     toc_float: true
     number_sections: true
-
+    theme: flatly
+    highlight: kate
+    fig_caption: true
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -43,9 +47,9 @@ Below, we use the *caret* function `train()` to fit 3 models: random forest, gra
 
 ```{r, results = "hide"}
 set.seed(123)
-regr_rf <- train(m2.price~., data = apartments, method="rf", ntree = 100)
+regr_rf <- train(m2.price~., data = apartments, method = "rf", ntree = 100)
 
-regr_gbm <- train(m2.price~. , data = apartments, method="gbm")
+regr_gbm <- train(m2.price~. , data = apartments, method = "gbm")
 
 regr_nn <- train(m2.price~., data = apartments,
                    method = "nnet",
@@ -62,8 +66,8 @@ Validation dataset for the models is `apartmentsTest` data from the *DALEX* pack
 ```{r}
 data(apartmentsTest)
 
-explainer_regr_rf <- DALEX::explain(regr_rf, label="rf", 
-                                    data = apartmentsTest, y = apartmentsTest$m2.price,
+explainer_regr_rf <- DALEX::explain(regr_rf, label = "rf", 
+                                    data = apartmentsTest, y = apartmentsTest$m2.price, 
                                     colorize = FALSE)
 
 explainer_regr_gbm <- DALEX::explain(regr_gbm, label = "gbm", 
@@ -115,12 +119,12 @@ Using he DALEX package we are able to better understand which variables are impo
 
 Model agnostic variable importance is calculated by means of permutations. We simply substract the loss function calculated for validation dataset with permuted values for a single variable from the loss function calculated for validation dataset. 
 
-This method is implemented in the `variable_importance()` function.
+This method is implemented in the `model_parts()` function.
 
 ```{r}
-vi_regr_rf <- variable_importance(explainer_regr_rf, loss_function = loss_root_mean_square)
-vi_regr_gbm <- variable_importance(explainer_regr_gbm, loss_function = loss_root_mean_square)
-vi_regr_nn <- variable_importance(explainer_regr_nn, loss_function = loss_root_mean_square)
+vi_regr_rf <- model_parts(explainer_regr_rf, loss_function = loss_root_mean_square)
+vi_regr_gbm <- model_parts(explainer_regr_gbm, loss_function = loss_root_mean_square)
+vi_regr_nn <- model_parts(explainer_regr_nn, loss_function = loss_root_mean_square)
 
 ```
 
@@ -135,23 +139,25 @@ Left edges of intervals start in full model, as we can see performances for rand
 Length of the interval coresponds to a variable importance. Longer interval means larger loss, so the variable is more important.
 For random forest and gbm the rankings of the important variables are the same.
 
-## Variable response
+## Model profile
 
 Explainers presented in this section are designed to better understand the relation between a variable and model output.
 
-For more details of methods desribed in this section see [Variable response section in DALEX docs](https://pbiecek.github.io/DALEX_docs/3-3-variableResponse.html).
+For more details of methods desribed in this section see 
+- [Partial-dependence Profiles](https://pbiecek.github.io/ema/partialDependenceProfiles.html)
+- [Local-dependence and Accumulated-local Profiles](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html)
 
 
 ### Partial Dependence Plot
 
 Partial Dependence Plots (PDP) are one of the most popular methods for exploration of the relation between a continuous variable and the model outcome.
 
-Function `variable_response()` with the parameter `type = "pdp"` calls `pdp::partial()` function to calculate PDP response.
+Function `model_profile()` with the parameter `type = "partial"` to calculate PDP response.
 
 ```{r}
-pdp_regr_rf  <- variable_response(explainer_regr_rf, variable =  "construction.year", type = "pdp")
-pdp_regr_gbm  <- variable_response(explainer_regr_gbm, variable =  "construction.year", type = "pdp")
-pdp_regr_nn  <- variable_response(explainer_regr_nn, variable =  "construction.year", type = "pdp")
+pdp_regr_rf  <- model_profile(explainer_regr_rf, variable =  "construction.year", type = "partial")
+pdp_regr_gbm  <- model_profile(explainer_regr_gbm, variable =  "construction.year", type = "partial")
+pdp_regr_nn  <- model_profile(explainer_regr_nn, variable =  "construction.year", type = "partial")
 
 plot(pdp_regr_rf, pdp_regr_gbm, pdp_regr_nn)
 ```
@@ -162,33 +168,31 @@ We use PDP plots to compare our 3 models. As we can see above performance of ran
 
 Acumulated Local Effects (ALE) plot is the extension of PDP, that is more suited for highly correlated variables.
 
-Function `variable_response()` with the parameter `type = "ale"` calls `ALEPlot::ALEPlot()` function to calculate the ALE curve for the variable `construction.year`.
+Function `model_profile()` with the parameter `type = "accumulated"` to calculate the ALE curve for the variable `construction.year`.
 
 ```{r}
-ale_regr_rf  <- variable_response(explainer_regr_rf, variable =  "construction.year", type = "ale")
-ale_regr_gbm  <- variable_response(explainer_regr_gbm, variable =  "construction.year", type = "ale")
-ale_regr_nn  <- variable_response(explainer_regr_nn, variable =  "construction.year", type = "ale")
+ale_regr_rf  <- model_profile(explainer_regr_rf, variable =  "construction.year", type = "accumulated")
+ale_regr_gbm  <- model_profile(explainer_regr_gbm, variable =  "construction.year", type = "accumulated")
+ale_regr_nn  <- model_profile(explainer_regr_nn, variable =  "construction.year", type = "accumulated")
 
 plot(ale_regr_rf, ale_regr_gbm, ale_regr_nn)
 ```
 
 
 
-### Merging Path Plots
+### Partial Dependence Profile for categorical variable
 
-Merging Path Plot is a method for exploration of a relation between a categorical variable and model outcome. 
-
-Function `variable_response()` with the parameter `type = "factor"` calls `factorMerger::mergeFactors()` function.
+Function `model_profile()` with the parameter `type = "partial"` for categorical variable.
 
 ```{r, fig.height = 10, fig.width= 7}
-mpp_regr_rf  <- variable_response(explainer_regr_rf, variable =  "district", type = "factor")
-mpp_regr_gbm  <- variable_response(explainer_regr_gbm, variable =  "district", type = "factor")
-mpp_regr_nn  <- variable_response(explainer_regr_nn, variable =  "district", type = "factor")
+mpp_regr_rf  <- model_profile(explainer_regr_rf, variable =  "district", type = "partial")
+mpp_regr_gbm  <- model_profile(explainer_regr_gbm, variable =  "district", type = "partial")
+mpp_regr_nn  <- model_profile(explainer_regr_nn, variable =  "district", type = "partial")
 
 plot(mpp_regr_rf, mpp_regr_gbm, mpp_regr_nn)
 ```
 
-We can note three clusters: the city center (Srodmiescie), districts well communicated with city center (Ochota, Mokotow, Zoliborz) and other districts closer to city boundaries.
+We can note three groups: the city center (Srodmiescie), districts well communicated with city center (Ochota, Mokotow, Zoliborz) and other districts closer to city boundaries.
 
 # Classification use case - wine data
 
@@ -233,7 +237,7 @@ yTest <- as.numeric(as.character(wineTest$quality))
 
 explainer_classif_rf <- DALEX::explain(classif_rf, label = "rf",
                                        data = wineTest, y = yTest,
-                                       predict_function = p_fun,
+                                       predict_function = p_fun, 
                                        colorize = FALSE)
 
 explainer_classif_glm <- DALEX::explain(classif_glm, label = "glm", 
@@ -274,30 +278,26 @@ plot(mp_classif_rf, mp_classif_glm, mp_classif_svm, geom = "boxplot")
 
 ## Variable importance
 
-Function `variable_importance()` computes variable importances which may be plotted.
+Function `model_parts()` computes variable importances which may be plotted.
 
 ```{r}
-vi_classif_rf <- variable_importance(explainer_classif_rf, loss_function = loss_root_mean_square)
-vi_classif_glm <- variable_importance(explainer_classif_glm, loss_function = loss_root_mean_square)
-vi_classif_svm <- variable_importance(explainer_classif_svm, loss_function = loss_root_mean_square)
+vi_classif_rf <- model_parts(explainer_classif_rf, loss_function = loss_root_mean_square)
+vi_classif_glm <- model_parts(explainer_classif_glm, loss_function = loss_root_mean_square)
+vi_classif_svm <- model_parts(explainer_classif_svm, loss_function = loss_root_mean_square)
 
 plot(vi_classif_rf, vi_classif_glm, vi_classif_svm)
 ```
 
 Left edges of intervals start in full model. Length of the interval coresponds to a variable importance. Longer interval means larger loss, so the variable is more important.
 
-
-## Variable response
-
-As previously we create explainers which are designed to better understand the relation between a variable and model output: PDP plots and ALE plots.
-For more details of methods desribed in this section see [Variable response section in DALEX docs](https://pbiecek.github.io/DALEX_docs/3-3-variableResponse.html).
-
 ### Partial Depedence Plot
 
+As previously we create explainers which are designed to better understand the relation between a variable and model output: PDP plots and ALE plots.
+
 ```{r}
-pdp_classif_rf  <- variable_response(explainer_classif_rf, variable = "pH", type = "pdp")
-pdp_classif_glm  <- variable_response(explainer_classif_glm, variable = "pH", type = "pdp")
-pdp_classif_svm  <- variable_response(explainer_classif_svm, variable = "pH", type = "pdp")
+pdp_classif_rf  <- model_profile(explainer_classif_rf, variable = "pH", type = "partial")
+pdp_classif_glm  <- model_profile(explainer_classif_glm, variable = "pH", type = "partial")
+pdp_classif_svm  <- model_profile(explainer_classif_svm, variable = "pH", type = "partial")
 
 plot(pdp_classif_rf, pdp_classif_glm, pdp_classif_svm)
 ```
@@ -305,9 +305,9 @@ plot(pdp_classif_rf, pdp_classif_glm, pdp_classif_svm)
 ### Acumulated Local Effects plot
 
 ```{r}
-ale_classif_rf  <- variable_response(explainer_classif_rf, variable = "alcohol", type = "ale")
-ale_classif_glm  <- variable_response(explainer_classif_glm, variable = "alcohol", type = "ale")
-ale_classif_svm  <- variable_response(explainer_classif_svm, variable = "alcohol", type = "ale")
+ale_classif_rf  <- model_profile(explainer_classif_rf, variable = "alcohol", type = "accumulated")
+ale_classif_glm  <- model_profile(explainer_classif_glm, variable = "alcohol", type = "accumulated")
+ale_classif_svm  <- model_profile(explainer_classif_svm, variable = "alcohol", type = "accumulated")
 
 plot(ale_classif_rf, ale_classif_glm, ale_classif_svm)
 ```
