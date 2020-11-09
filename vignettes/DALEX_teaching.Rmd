@@ -1,13 +1,18 @@
 ---
 title: "What they have learned?"
-author: "Przemyslaw Biecek"
-date: "2018-05-20"
+author: 
+  - Przemyslaw Biecek, Anna Kozak
+date: First created on May 20, 2018. Updated on Nov 08, 2020
 output: 
   html_document:
     toc: true  
     toc_float: true
     number_sections: true
+    theme: flatly
+    highlight: kate
+    fig_caption: true
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 4.5)
@@ -68,11 +73,11 @@ options(datadist="dd")
 ## still a "linear" model because terms are linear combinations (additive)
 model_rms <- ols(y ~ rcs(X1) + rcs(X2) + rcs(X3) + rcs(X4) + rcs(X5), df)
 
-ex_rf <- explain(model_rf)
-ex_svm <- explain(model_svm)
-ex_lm <- explain(model_lm)
-ex_rms <- explain(model_rms, label = "rms", data = df[, -1], y = df$y)
-ex_tr <- explain(model_lm, data = df[,-1], 
+ex_rf <- explain(model_rf, data = df, y = df$y)
+ex_svm <- explain(model_svm, data = df, y = df$y)
+ex_lm <- explain(model_lm, data = df, y = df$y)
+ex_rms <- explain(model_rms, label = "rms", data = df, y = df$y)
+ex_tr <- explain(NULL, data = df[,-1], 
                  predict_function = function(m, x) f(x[,1], x[,2], x[,3], x[,4], x[,5]), 
                  label = "True Model")
 ```
@@ -85,12 +90,13 @@ The linear model cannot guess the relation without prior preprocessing, the rand
 
 ```{r}
 library(ggplot2)
-plot(single_variable(ex_rf, "X1"),
-     single_variable(ex_svm, "X1"),
-     single_variable(ex_lm, "X1"),
-     single_variable(ex_rms, "X1"),
-     single_variable(ex_tr, "X1")) +
+plot(model_profile(ex_rf, "X1"),
+     model_profile(ex_svm, "X1"),
+     model_profile(ex_lm, "X1"),
+     model_profile(ex_rms, "X1"),
+     model_profile(ex_tr, "X1")) +
   ggtitle("Responses for X1. Truth: y ~ (2*x1 - 1)^2")
+
 ```
 
 For `X2` we want to see `sin(10 * x2)`.
@@ -99,11 +105,11 @@ The random forest guesses the shape, svm is not that elastic, the linear model d
 
 
 ```{r}
-plot(single_variable(ex_rf, "X2"),
-     single_variable(ex_svm, "X2"),
-     single_variable(ex_lm, "X2"),
-     single_variable(ex_rms, "X2"),
-     single_variable(ex_tr, "X2")) +
+plot(model_profile(ex_rf, "X2"),
+     model_profile(ex_svm, "X2"),
+     model_profile(ex_lm, "X2"),
+     model_profile(ex_rms, "X2"),
+     model_profile(ex_tr, "X2")) +
   ggtitle("Responses for X2. Truth: y ~ sin(10 * x2)")
 ```
 
@@ -112,11 +118,11 @@ For `X3` we want to see `x3^6`.
 The random forest is still able to guesses the shape, svm and linear are close.
 
 ```{r}
-plot(single_variable(ex_rf, "X3"),
-     single_variable(ex_svm, "X3"),
-     single_variable(ex_lm, "X3"),
-     single_variable(ex_rms, "X3"),
-     single_variable(ex_tr, "X3")) +
+plot(model_profile(ex_rf, "X3"),
+     model_profile(ex_svm, "X3"),
+     model_profile(ex_lm, "X3"),
+     model_profile(ex_rms, "X3"),
+     model_profile(ex_tr, "X3")) +
   ggtitle("Responses for X3. Truth: y ~ x3^6")
 ```
 
@@ -125,11 +131,11 @@ For `X4` we want to see `2 x4 - 1`.
 The linear model is doing the best job (as expected), svm are still pretty good, random forest model is more biased towards the mean.
 
 ```{r}
-plot(single_variable(ex_rf, "X4"),
-     single_variable(ex_svm, "X4"),
-     single_variable(ex_lm, "X4"),
-     single_variable(ex_rms, "X4"),
-     single_variable(ex_tr, "X4")) +
+plot(model_profile(ex_rf, "X4"),
+     model_profile(ex_svm, "X4"),
+     model_profile(ex_lm, "X4"),
+     model_profile(ex_rms, "X4"),
+     model_profile(ex_tr, "X4")) +
   ggtitle("Responses for X4. Truth: y ~ (2 * x4 - 1)")
 ```
 
@@ -138,11 +144,11 @@ For `X5` we want to see `|2 x5 - 1|`.
 All models except the lieanr one are guessing the shape.
 
 ```{r}
-plot(single_variable(ex_rf, "X5"),
-     single_variable(ex_svm, "X5"),
-     single_variable(ex_lm, "X5"),
-     single_variable(ex_rms, "X5"),
-     single_variable(ex_tr, "X5")) +
+plot(model_profile(ex_rf, "X5"),
+     model_profile(ex_svm, "X5"),
+     model_profile(ex_lm, "X5"),
+     model_profile(ex_rms, "X5"),
+     model_profile(ex_tr, "X5")) +
   ggtitle("Responses for X5. Truth: y ~ |2 * x5 - 1|")
 ```
 
