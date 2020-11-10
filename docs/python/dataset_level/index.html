@@ -1,0 +1,2297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>dalex.dataset_level API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dalex.dataset_level</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from ._aggregated_profiles.object import AggregatedProfiles
+from ._model_performance.object import ModelPerformance
+from ._variable_importance.object import VariableImportance
+from ._residual_diagnostics import ResidualDiagnostics
+
+__all__ = [
+    &#34;ModelPerformance&#34;,
+    &#34;VariableImportance&#34;,
+    &#34;AggregatedProfiles&#34;,
+    &#34;ResidualDiagnostics&#34;
+]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="dalex.dataset_level.AggregatedProfiles"><code class="flex name class">
+<span>class <span class="ident">AggregatedProfiles</span></span>
+<span>(</span><span>type='partial', variables=None, variable_type='numerical', groups=None, span=0.25, center=True, random_state=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate dataset level variable profiles as Partial or Accumulated Dependence</p>
+<p>Partial Dependence Profile (average across CP Profiles),
+Individual Conditional Expectation (local weighted average across CP Profiles),
+Accumulated Local Effects (cummulated average local changes in CP Profiles).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'partial', 'accumulated', 'conditional'}</code></dt>
+<dd>Type of model profiles (default is 'partial' for Partial Dependence Profiles).</dd>
+<dt><strong><code>variables</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code>, optional</dt>
+<dd>Variables for which the profiles will be calculated
+(default is None, which means all of the variables).</dd>
+<dt><strong><code>variable_type</code></strong> :&ensp;<code>{'numerical', 'categorical'}</code></dt>
+<dd>Calculate the profiles for numerical or categorical variables
+(default is 'numerical').</dd>
+<dt><strong><code>groups</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code>, optional</dt>
+<dd>Names of categorical variables that will be used for profile grouping
+(default is None, which means no grouping).</dd>
+<dt><strong><code>span</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Smoothing coefficient used as sd for gaussian kernel (default is 0.25).</dd>
+<dt><strong><code>center</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Theoretically Accumulated Profiles start at 0, but are centered to compare
+them with Partial Dependence Profiles (default is True, which means center
+around the average y_hat calculated on the data sample).</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Set seed for random number generator (default is random seed).</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>result</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Main result attribute of an explanation.</dd>
+<dt><strong><code>mean_prediction</code></strong> :&ensp;<code>float</code></dt>
+<dd>Average prediction for sampled <code>data</code> (using <code>N</code>).</dd>
+<dt><strong><code>raw_profiles</code></strong> :&ensp;<code>pd.DataFrame</code> or <code>None</code></dt>
+<dd>Saved CeterisParibus object.
+NOTE: None if more objects were passed to the <code>fit</code> method.</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'partial', 'accumulated', 'conditional'}</code></dt>
+<dd>Type of model profiles.</dd>
+<dt><strong><code>variables</code></strong> :&ensp;<code>array_like</code> of <code>str</code> or <code>None</code></dt>
+<dd>Variables for which the profiles will be calculated</dd>
+<dt><strong><code>variable_type</code></strong> :&ensp;<code>{'numerical', 'categorical'}</code></dt>
+<dd>Calculate the profiles for numerical or categorical variables.</dd>
+<dt><strong><code>groups</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code> or <code>None</code></dt>
+<dd>Names of categorical variables that will be used for profile grouping.</dd>
+<dt><strong><code>span</code></strong> :&ensp;<code>float</code></dt>
+<dd>Smoothing coefficient used as sd for gaussian kernel.</dd>
+<dt><strong><code>center</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Theoretically Accumulated Profiles start at 0, but are centered to compare
+them with Partial Dependence Profiles (default is True, which means center
+around the average y_hat calculated on the data sample).</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int</code> or <code>None</code></dt>
+<dd>Set seed for random number generator.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p><a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">https://pbiecek.github.io/ema/partialDependenceProfiles.html</a>
+<a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">https://pbiecek.github.io/ema/accumulatedLocalProfiles.html</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AggregatedProfiles:
+    &#34;&#34;&#34;Calculate dataset level variable profiles as Partial or Accumulated Dependence
+
+    Partial Dependence Profile (average across CP Profiles),
+    Individual Conditional Expectation (local weighted average across CP Profiles),
+    Accumulated Local Effects (cummulated average local changes in CP Profiles).
+
+    Parameters
+    -----------
+    type : {&#39;partial&#39;, &#39;accumulated&#39;, &#39;conditional&#39;}
+        Type of model profiles (default is &#39;partial&#39; for Partial Dependence Profiles).
+    variables : str or array_like of str, optional
+        Variables for which the profiles will be calculated
+        (default is None, which means all of the variables).
+    variable_type : {&#39;numerical&#39;, &#39;categorical&#39;}
+        Calculate the profiles for numerical or categorical variables
+        (default is &#39;numerical&#39;).
+    groups : str or array_like of str, optional
+        Names of categorical variables that will be used for profile grouping
+        (default is None, which means no grouping).
+    span : float, optional
+        Smoothing coefficient used as sd for gaussian kernel (default is 0.25).
+    center : bool, optional
+        Theoretically Accumulated Profiles start at 0, but are centered to compare
+        them with Partial Dependence Profiles (default is True, which means center
+        around the average y_hat calculated on the data sample).
+    random_state : int, optional
+        Set seed for random number generator (default is random seed).
+
+    Attributes
+    -----------
+    result : pd.DataFrame
+        Main result attribute of an explanation.
+    mean_prediction : float
+        Average prediction for sampled `data` (using `N`).
+    raw_profiles : pd.DataFrame or None
+        Saved CeterisParibus object.
+        NOTE: None if more objects were passed to the `fit` method.
+    type : {&#39;partial&#39;, &#39;accumulated&#39;, &#39;conditional&#39;}
+        Type of model profiles.
+    variables : array_like of str or None
+        Variables for which the profiles will be calculated
+    variable_type : {&#39;numerical&#39;, &#39;categorical&#39;}
+        Calculate the profiles for numerical or categorical variables.
+    groups : str or array_like of str or None
+        Names of categorical variables that will be used for profile grouping.
+    span : float
+        Smoothing coefficient used as sd for gaussian kernel.
+    center : bool
+        Theoretically Accumulated Profiles start at 0, but are centered to compare
+        them with Partial Dependence Profiles (default is True, which means center
+        around the average y_hat calculated on the data sample).
+    random_state : int or None
+        Set seed for random number generator.
+
+    Notes
+    --------
+    https://pbiecek.github.io/ema/partialDependenceProfiles.html
+    https://pbiecek.github.io/ema/accumulatedLocalProfiles.html
+    &#34;&#34;&#34;
+
+    def __init__(self,
+                 type=&#39;partial&#39;,
+                 variables=None,
+                 variable_type=&#39;numerical&#39;,
+                 groups=None,
+                 span=0.25,
+                 center=True,
+                 random_state=None):
+
+        check_variable_type(variable_type)
+        variables_ = check_variables(variables)
+        groups_ = check_groups(groups)
+
+        self.variable_type = variable_type
+        self.groups = groups_
+        self.type = type
+        self.variables = variables_
+        self.span = span
+        self.center = center
+        self.result = None
+        self.mean_prediction = None
+        self.raw_profiles = None
+        self.random_state = random_state
+
+    def _repr_html_(self):
+        return self.result._repr_html_()
+
+    def fit(self,
+            ceteris_paribus,
+            verbose=True):
+        &#34;&#34;&#34;Calculate the result of explanation
+
+        Fit method makes calculations in place and changes the attributes.
+
+        Parameters
+        -----------
+        ceteris_paribus : CeterisParibus object or array_like of CeterisParibus objects
+            Profile objects to aggregate.
+        verbose : bool, optional
+            Print tqdm progress bar (default is True).
+
+        Returns
+        -----------
+        None
+        &#34;&#34;&#34;
+        # are there any other cp?
+        from dalex.instance_level import CeterisParibus
+        if isinstance(ceteris_paribus, CeterisParibus):  # allow for ceteris_paribus to be a single element
+            all_profiles = ceteris_paribus.result.copy()
+            all_observations = ceteris_paribus.new_observation.copy()
+            self.raw_profiles = deepcopy(ceteris_paribus)
+        elif isinstance(ceteris_paribus, (list, tuple)):  # ceteris_paribus as tuple or array
+            all_profiles = None
+            all_observations = None
+            for cp in ceteris_paribus:
+                _global_checks.global_check_class(cp, CeterisParibus)
+                all_profiles = pd.concat([all_profiles, cp.result.copy()])
+                all_observations = pd.concat([all_observations, cp.new_observation.copy()])
+        else:
+            _global_checks.global_raise_objects_class(ceteris_paribus, CeterisParibus)
+
+        all_profiles, vnames = prepare_numerical_categorical(all_profiles, self.variables, self.variable_type)
+
+        # select only suitable variables
+        all_profiles = all_profiles.loc[all_profiles[&#39;_vname_&#39;].isin(vnames), :]
+
+        all_profiles = create_x(all_profiles, self.variable_type)
+
+        self.mean_prediction = all_observations[&#39;_yhat_&#39;].mean()
+
+        self.result = aggregate_profiles(all_profiles, self.mean_prediction, self.type, self.groups, self.center,
+                                         self.span, verbose)
+
+    def plot(self,
+             objects=None,
+             geom=&#39;aggregates&#39;,
+             variables=None,
+             center=True,
+             size=2,
+             alpha=1,
+             facet_ncol=2,
+             title=&#34;Aggregated Profiles&#34;,
+             y_title=&#39;prediction&#39;,
+             horizontal_spacing=0.05,
+             vertical_spacing=None,
+             show=True):
+        &#34;&#34;&#34;Plot the Aggregated Profiles explanation
+
+        Parameters
+        -----------
+        objects : AggregatedProfiles object or array_like of AggregatedProfiles objects
+            Additional objects to plot in subplots (default is None).
+        geom : {&#39;aggregates&#39;, &#39;profiles&#39;}
+            If &#39;profiles&#39; then raw profiles will be plotted in the background
+            (default is &#39;aggregates&#39;, which means plot only aggregated profiles).
+            NOTE: It is useful to use small values of the `N` parameter in object creation
+            before using `profiles`, because of plot performance and clarity (e.g. 100).
+        variables : str or array_like of str, optional
+            Variables for which the profiles will be calculated
+            (default is None, which means all of the variables).
+        center : bool, optional
+            Theoretically Accumulated Profiles start at 0, but are centered to compare
+            them with Partial Dependence Profiles (default is True, which means center
+            around the average y_hat calculated on the data sample).
+        size : float, optional
+            Width of lines in px (default is 2).
+        alpha : float &lt;0, 1&gt;, optional
+            Opacity of lines (default is 1).
+        color : str, optional
+            Variable name used for grouping (default is &#39;_label_&#39;, which groups by models).
+        facet_ncol : int, optional
+            Number of columns on the plot grid (default is 2).
+        title : str, optional
+            Title of the plot (default is &#34;Aggregated Profiles&#34;).
+        y_title : str, optional
+            Title of the x axis (default is &#34;prediction&#34;).
+        horizontal_spacing : float &lt;0, 1&gt;, optional
+            Ratio of horizontal space between the plots (default is 0.05).
+        vertical_spacing : float &lt;0, 1&gt;, optional
+            Ratio of vertical space between the plots (default is 0.3/number of rows).
+        show : bool, optional
+            True shows the plot; False returns the plotly Figure object that can be
+            edited or saved using the `write_image()` method (default is True).
+
+        Returns
+        -----------
+        None or plotly.graph_objects.Figure
+            Return figure that can be edited or saved. See `show` parameter.
+        &#34;&#34;&#34;
+        # TODO: numerical+categorical in one plot https://github.com/plotly/plotly.py/issues/2647
+
+        if geom not in (&#34;aggregates&#34;, &#34;profiles&#34;):
+            raise TypeError(&#34;geom should be &#39;aggregates&#39; or &#39;profiles&#39;&#34;)
+        if isinstance(variables, str):
+            variables = (variables,)
+
+        # are there any other objects to plot?
+        if objects is None:
+            _result_df = self.result.assign(_mp_=self.mean_prediction if center else 0)
+        elif isinstance(objects, self.__class__):  # allow for objects to be a single element
+            _result_df = pd.concat([self.result.assign(_mp_=self.mean_prediction if center else 0),
+                                    objects.result.assign(_mp_=objects.mean_prediction if center else 0)])
+        elif isinstance(objects, (list, tuple)):  # objects as tuple or array
+            _result_df = self.result.assign(_mp_=self.mean_prediction if center else 0)
+            for ob in objects:
+                _global_checks.global_check_object_class(ob, self.__class__)
+                _result_df = pd.concat([_result_df, ob.result.assign(_mp_=ob.mean_prediction if center else 0)])
+        else:
+            _global_checks.global_raise_objects_class(objects, self.__class__)
+
+        # variables to use
+        all_variables = _result_df[&#39;_vname_&#39;].dropna().unique().tolist()
+
+        if variables is not None:
+            all_variables = _global_utils.intersect_unsorted(variables, all_variables)
+            if len(all_variables) == 0:
+                raise TypeError(&#34;variables do not overlap with &#34; + &#39;&#39;.join(variables))
+
+            _result_df = _result_df.loc[_result_df[&#39;_vname_&#39;].isin(all_variables), :]
+
+        #  calculate y axis range to allow for fixedrange True
+        dl = _result_df[&#39;_yhat_&#39;].to_numpy()
+        min_max_margin = dl.ptp() * 0.10
+        min_max = [dl.min() - min_max_margin, dl.max() + min_max_margin]
+
+        is_x_numeric = pd.api.types.is_numeric_dtype(_result_df[&#39;_x_&#39;])
+        n = len(all_variables)
+
+        facet_nrow = int(np.ceil(n / facet_ncol))
+        if vertical_spacing is None:
+            vertical_spacing = 0.3 / facet_nrow
+        plot_height = 78 + 71 + facet_nrow * (280 + 60)
+        hovermode, render_mode = &#39;x unified&#39;, &#39;svg&#39;
+
+        color = &#39;_label_&#39;  # _groups_ doesnt make much sense for multiple AP objects
+        m = len(_result_df[color].dropna().unique())
+
+        if is_x_numeric:
+            if geom == &#39;profiles&#39; and self.raw_profiles is not None:
+                render_mode = &#39;webgl&#39;
+
+            fig = px.line(_result_df,
+                          x=&#34;_x_&#34;, y=&#34;_yhat_&#34;, color=color, facet_col=&#34;_vname_&#34;,
+                          category_orders={&#34;_vname_&#34;: list(all_variables)},
+                          labels={&#39;_yhat_&#39;: &#39;prediction&#39;, &#39;_mp_&#39;: &#39;mean_prediction&#39;},  # , color: &#39;group&#39;},
+                          hover_name=color,
+                          hover_data={&#39;_yhat_&#39;: &#39;:.3f&#39;, &#39;_mp_&#39;: &#39;:.3f&#39;,
+                                      color: False, &#39;_vname_&#39;: False, &#39;_x_&#39;: False},
+                          facet_col_wrap=facet_ncol,
+                          facet_row_spacing=vertical_spacing,
+                          facet_col_spacing=horizontal_spacing,
+                          template=&#34;none&#34;,
+                          render_mode=render_mode,
+                          color_discrete_sequence=_theme.get_default_colors(m, &#39;line&#39;)) \
+                    .update_traces(dict(line_width=size, opacity=alpha)) \
+                    .update_xaxes({&#39;matches&#39;: None, &#39;showticklabels&#39;: True,
+                                   &#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True,
+                                   &#39;ticks&#39;: &#34;outside&#34;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True}) \
+                    .update_yaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True,
+                                   &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True,
+                                   &#39;range&#39;: min_max})
+
+            if geom == &#39;profiles&#39; and self.raw_profiles is not None:
+                fig.update_traces(dict(line_width=2*size, opacity=1))
+                fig_cp = self.raw_profiles.plot(variables=list(all_variables),
+                                                facet_ncol=facet_ncol,
+                                                show_observations=False, show=False) \
+                    .update_traces(dict(line_width=1, opacity=0.5, line_color=&#39;#ceced9&#39;))
+
+                for _, value in enumerate(fig.data):
+                    fig_cp.add_trace(value)
+                hovermode = False
+                fig = fig_cp
+        else:
+            _result_df = _result_df.assign(_diff_=lambda x: x[&#39;_yhat_&#39;] - x[&#39;_mp_&#39;])
+            mp_format = &#39;:.3f&#39;
+            if not center:
+                min_max = [np.min([min_max[0], 0]), np.max([min_max[1], 0])]
+                mp_format = False
+
+            fig = px.bar(_result_df,
+                         x=&#34;_x_&#34;, y=&#34;_diff_&#34;, color=&#34;_label_&#34;, facet_col=&#34;_vname_&#34;,
+                         category_orders={&#34;_vname_&#34;: list(all_variables)},
+                         labels={&#39;_yhat_&#39;: &#39;prediction&#39;, &#39;_mp_&#39;: &#39;mean_prediction&#39;},  # , color: &#39;group&#39;},
+                         hover_name=color,
+                         base=&#34;_mp_&#34;,
+                         hover_data={&#39;_yhat_&#39;: &#39;:.3f&#39;, &#39;_mp_&#39;: mp_format, &#39;_diff_&#39;: False,
+                                     color: False, &#39;_vname_&#39;: False, &#39;_x_&#39;: False},
+                         facet_col_wrap=facet_ncol,
+                         facet_row_spacing=vertical_spacing,
+                         facet_col_spacing=horizontal_spacing,
+                         template=&#34;none&#34;,
+                         color_discrete_sequence=_theme.get_default_colors(m, &#39;line&#39;),  # bar was forgotten
+                         barmode=&#39;group&#39;)  \
+                    .update_xaxes({&#39;matches&#39;: None, &#39;showticklabels&#39;: True,
+                                   &#39;type&#39;: &#39;category&#39;, &#39;gridwidth&#39;: 2, &#39;automargin&#39;: True,  # autorange=&#34;reversed&#34;
+                                   &#39;ticks&#39;: &#34;outside&#34;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True}) \
+                    .update_yaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True,
+                                   &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True,
+                                   &#39;range&#39;: min_max})
+
+            # add hline https://github.com/plotly/plotly.py/issues/2141
+            for i, bar in enumerate(fig.data):
+                fig.add_shape(type=&#39;line&#39;, y0=bar.base[0], y1=bar.base[0], x0=-1, x1=len(bar.x),
+                              xref=bar.xaxis, yref=bar.yaxis, layer=&#39;below&#39;,
+                              line={&#39;color&#39;: &#34;#371ea3&#34;, &#39;width&#39;: 1.5, &#39;dash&#39;: &#39;dot&#39;})
+
+        fig = _theme.fig_update_line_plot(fig, title, y_title, plot_height, hovermode)
+
+        if show:
+            fig.show(config=_theme.get_default_config())
+        else:
+            return fig</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.dataset_level.AggregatedProfiles.fit"><code class="name flex">
+<span>def <span class="ident">fit</span></span>(<span>self, ceteris_paribus, verbose=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate the result of explanation</p>
+<p>Fit method makes calculations in place and changes the attributes.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ceteris_paribus</code></strong> :&ensp;<code>CeterisParibus object</code> or <code>array_like</code> of <code>CeterisParibus objects</code></dt>
+<dd>Profile objects to aggregate.</dd>
+<dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Print tqdm progress bar (default is True).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fit(self,
+        ceteris_paribus,
+        verbose=True):
+    &#34;&#34;&#34;Calculate the result of explanation
+
+    Fit method makes calculations in place and changes the attributes.
+
+    Parameters
+    -----------
+    ceteris_paribus : CeterisParibus object or array_like of CeterisParibus objects
+        Profile objects to aggregate.
+    verbose : bool, optional
+        Print tqdm progress bar (default is True).
+
+    Returns
+    -----------
+    None
+    &#34;&#34;&#34;
+    # are there any other cp?
+    from dalex.instance_level import CeterisParibus
+    if isinstance(ceteris_paribus, CeterisParibus):  # allow for ceteris_paribus to be a single element
+        all_profiles = ceteris_paribus.result.copy()
+        all_observations = ceteris_paribus.new_observation.copy()
+        self.raw_profiles = deepcopy(ceteris_paribus)
+    elif isinstance(ceteris_paribus, (list, tuple)):  # ceteris_paribus as tuple or array
+        all_profiles = None
+        all_observations = None
+        for cp in ceteris_paribus:
+            _global_checks.global_check_class(cp, CeterisParibus)
+            all_profiles = pd.concat([all_profiles, cp.result.copy()])
+            all_observations = pd.concat([all_observations, cp.new_observation.copy()])
+    else:
+        _global_checks.global_raise_objects_class(ceteris_paribus, CeterisParibus)
+
+    all_profiles, vnames = prepare_numerical_categorical(all_profiles, self.variables, self.variable_type)
+
+    # select only suitable variables
+    all_profiles = all_profiles.loc[all_profiles[&#39;_vname_&#39;].isin(vnames), :]
+
+    all_profiles = create_x(all_profiles, self.variable_type)
+
+    self.mean_prediction = all_observations[&#39;_yhat_&#39;].mean()
+
+    self.result = aggregate_profiles(all_profiles, self.mean_prediction, self.type, self.groups, self.center,
+                                     self.span, verbose)</code></pre>
+</details>
+</dd>
+<dt id="dalex.dataset_level.AggregatedProfiles.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>self, objects=None, geom='aggregates', variables=None, center=True, size=2, alpha=1, facet_ncol=2, title='Aggregated Profiles', y_title='prediction', horizontal_spacing=0.05, vertical_spacing=None, show=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the Aggregated Profiles explanation</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>objects</code></strong> :&ensp;<code><a title="dalex.dataset_level.AggregatedProfiles" href="#dalex.dataset_level.AggregatedProfiles">AggregatedProfiles</a> object</code> or <code>array_like</code> of <code><a title="dalex.dataset_level.AggregatedProfiles" href="#dalex.dataset_level.AggregatedProfiles">AggregatedProfiles</a> objects</code></dt>
+<dd>Additional objects to plot in subplots (default is None).</dd>
+<dt><strong><code>geom</code></strong> :&ensp;<code>{'aggregates', 'profiles'}</code></dt>
+<dd>If 'profiles' then raw profiles will be plotted in the background
+(default is 'aggregates', which means plot only aggregated profiles).
+NOTE: It is useful to use small values of the <code>N</code> parameter in object creation
+before using <code>profiles</code>, because of plot performance and clarity (e.g. 100).</dd>
+<dt><strong><code>variables</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code>, optional</dt>
+<dd>Variables for which the profiles will be calculated
+(default is None, which means all of the variables).</dd>
+<dt><strong><code>center</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Theoretically Accumulated Profiles start at 0, but are centered to compare
+them with Partial Dependence Profiles (default is True, which means center
+around the average y_hat calculated on the data sample).</dd>
+<dt><strong><code>size</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Width of lines in px (default is 2).</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float &lt;0, 1&gt;</code>, optional</dt>
+<dd>Opacity of lines (default is 1).</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Variable name used for grouping (default is '<em>label</em>', which groups by models).</dd>
+<dt><strong><code>facet_ncol</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of columns on the plot grid (default is 2).</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Title of the plot (default is "Aggregated Profiles").</dd>
+<dt><strong><code>y_title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Title of the x axis (default is "prediction").</dd>
+<dt><strong><code>horizontal_spacing</code></strong> :&ensp;<code>float &lt;0, 1&gt;</code>, optional</dt>
+<dd>Ratio of horizontal space between the plots (default is 0.05).</dd>
+<dt><strong><code>vertical_spacing</code></strong> :&ensp;<code>float &lt;0, 1&gt;</code>, optional</dt>
+<dd>Ratio of vertical space between the plots (default is 0.3/number of rows).</dd>
+<dt><strong><code>show</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>True shows the plot; False returns the plotly Figure object that can be
+edited or saved using the <code>write_image()</code> method (default is True).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code> or <code>plotly.graph_objects.Figure</code></dt>
+<dd>Return figure that can be edited or saved. See <code>show</code> parameter.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot(self,
+         objects=None,
+         geom=&#39;aggregates&#39;,
+         variables=None,
+         center=True,
+         size=2,
+         alpha=1,
+         facet_ncol=2,
+         title=&#34;Aggregated Profiles&#34;,
+         y_title=&#39;prediction&#39;,
+         horizontal_spacing=0.05,
+         vertical_spacing=None,
+         show=True):
+    &#34;&#34;&#34;Plot the Aggregated Profiles explanation
+
+    Parameters
+    -----------
+    objects : AggregatedProfiles object or array_like of AggregatedProfiles objects
+        Additional objects to plot in subplots (default is None).
+    geom : {&#39;aggregates&#39;, &#39;profiles&#39;}
+        If &#39;profiles&#39; then raw profiles will be plotted in the background
+        (default is &#39;aggregates&#39;, which means plot only aggregated profiles).
+        NOTE: It is useful to use small values of the `N` parameter in object creation
+        before using `profiles`, because of plot performance and clarity (e.g. 100).
+    variables : str or array_like of str, optional
+        Variables for which the profiles will be calculated
+        (default is None, which means all of the variables).
+    center : bool, optional
+        Theoretically Accumulated Profiles start at 0, but are centered to compare
+        them with Partial Dependence Profiles (default is True, which means center
+        around the average y_hat calculated on the data sample).
+    size : float, optional
+        Width of lines in px (default is 2).
+    alpha : float &lt;0, 1&gt;, optional
+        Opacity of lines (default is 1).
+    color : str, optional
+        Variable name used for grouping (default is &#39;_label_&#39;, which groups by models).
+    facet_ncol : int, optional
+        Number of columns on the plot grid (default is 2).
+    title : str, optional
+        Title of the plot (default is &#34;Aggregated Profiles&#34;).
+    y_title : str, optional
+        Title of the x axis (default is &#34;prediction&#34;).
+    horizontal_spacing : float &lt;0, 1&gt;, optional
+        Ratio of horizontal space between the plots (default is 0.05).
+    vertical_spacing : float &lt;0, 1&gt;, optional
+        Ratio of vertical space between the plots (default is 0.3/number of rows).
+    show : bool, optional
+        True shows the plot; False returns the plotly Figure object that can be
+        edited or saved using the `write_image()` method (default is True).
+
+    Returns
+    -----------
+    None or plotly.graph_objects.Figure
+        Return figure that can be edited or saved. See `show` parameter.
+    &#34;&#34;&#34;
+    # TODO: numerical+categorical in one plot https://github.com/plotly/plotly.py/issues/2647
+
+    if geom not in (&#34;aggregates&#34;, &#34;profiles&#34;):
+        raise TypeError(&#34;geom should be &#39;aggregates&#39; or &#39;profiles&#39;&#34;)
+    if isinstance(variables, str):
+        variables = (variables,)
+
+    # are there any other objects to plot?
+    if objects is None:
+        _result_df = self.result.assign(_mp_=self.mean_prediction if center else 0)
+    elif isinstance(objects, self.__class__):  # allow for objects to be a single element
+        _result_df = pd.concat([self.result.assign(_mp_=self.mean_prediction if center else 0),
+                                objects.result.assign(_mp_=objects.mean_prediction if center else 0)])
+    elif isinstance(objects, (list, tuple)):  # objects as tuple or array
+        _result_df = self.result.assign(_mp_=self.mean_prediction if center else 0)
+        for ob in objects:
+            _global_checks.global_check_object_class(ob, self.__class__)
+            _result_df = pd.concat([_result_df, ob.result.assign(_mp_=ob.mean_prediction if center else 0)])
+    else:
+        _global_checks.global_raise_objects_class(objects, self.__class__)
+
+    # variables to use
+    all_variables = _result_df[&#39;_vname_&#39;].dropna().unique().tolist()
+
+    if variables is not None:
+        all_variables = _global_utils.intersect_unsorted(variables, all_variables)
+        if len(all_variables) == 0:
+            raise TypeError(&#34;variables do not overlap with &#34; + &#39;&#39;.join(variables))
+
+        _result_df = _result_df.loc[_result_df[&#39;_vname_&#39;].isin(all_variables), :]
+
+    #  calculate y axis range to allow for fixedrange True
+    dl = _result_df[&#39;_yhat_&#39;].to_numpy()
+    min_max_margin = dl.ptp() * 0.10
+    min_max = [dl.min() - min_max_margin, dl.max() + min_max_margin]
+
+    is_x_numeric = pd.api.types.is_numeric_dtype(_result_df[&#39;_x_&#39;])
+    n = len(all_variables)
+
+    facet_nrow = int(np.ceil(n / facet_ncol))
+    if vertical_spacing is None:
+        vertical_spacing = 0.3 / facet_nrow
+    plot_height = 78 + 71 + facet_nrow * (280 + 60)
+    hovermode, render_mode = &#39;x unified&#39;, &#39;svg&#39;
+
+    color = &#39;_label_&#39;  # _groups_ doesnt make much sense for multiple AP objects
+    m = len(_result_df[color].dropna().unique())
+
+    if is_x_numeric:
+        if geom == &#39;profiles&#39; and self.raw_profiles is not None:
+            render_mode = &#39;webgl&#39;
+
+        fig = px.line(_result_df,
+                      x=&#34;_x_&#34;, y=&#34;_yhat_&#34;, color=color, facet_col=&#34;_vname_&#34;,
+                      category_orders={&#34;_vname_&#34;: list(all_variables)},
+                      labels={&#39;_yhat_&#39;: &#39;prediction&#39;, &#39;_mp_&#39;: &#39;mean_prediction&#39;},  # , color: &#39;group&#39;},
+                      hover_name=color,
+                      hover_data={&#39;_yhat_&#39;: &#39;:.3f&#39;, &#39;_mp_&#39;: &#39;:.3f&#39;,
+                                  color: False, &#39;_vname_&#39;: False, &#39;_x_&#39;: False},
+                      facet_col_wrap=facet_ncol,
+                      facet_row_spacing=vertical_spacing,
+                      facet_col_spacing=horizontal_spacing,
+                      template=&#34;none&#34;,
+                      render_mode=render_mode,
+                      color_discrete_sequence=_theme.get_default_colors(m, &#39;line&#39;)) \
+                .update_traces(dict(line_width=size, opacity=alpha)) \
+                .update_xaxes({&#39;matches&#39;: None, &#39;showticklabels&#39;: True,
+                               &#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True,
+                               &#39;ticks&#39;: &#34;outside&#34;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True}) \
+                .update_yaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True,
+                               &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True,
+                               &#39;range&#39;: min_max})
+
+        if geom == &#39;profiles&#39; and self.raw_profiles is not None:
+            fig.update_traces(dict(line_width=2*size, opacity=1))
+            fig_cp = self.raw_profiles.plot(variables=list(all_variables),
+                                            facet_ncol=facet_ncol,
+                                            show_observations=False, show=False) \
+                .update_traces(dict(line_width=1, opacity=0.5, line_color=&#39;#ceced9&#39;))
+
+            for _, value in enumerate(fig.data):
+                fig_cp.add_trace(value)
+            hovermode = False
+            fig = fig_cp
+    else:
+        _result_df = _result_df.assign(_diff_=lambda x: x[&#39;_yhat_&#39;] - x[&#39;_mp_&#39;])
+        mp_format = &#39;:.3f&#39;
+        if not center:
+            min_max = [np.min([min_max[0], 0]), np.max([min_max[1], 0])]
+            mp_format = False
+
+        fig = px.bar(_result_df,
+                     x=&#34;_x_&#34;, y=&#34;_diff_&#34;, color=&#34;_label_&#34;, facet_col=&#34;_vname_&#34;,
+                     category_orders={&#34;_vname_&#34;: list(all_variables)},
+                     labels={&#39;_yhat_&#39;: &#39;prediction&#39;, &#39;_mp_&#39;: &#39;mean_prediction&#39;},  # , color: &#39;group&#39;},
+                     hover_name=color,
+                     base=&#34;_mp_&#34;,
+                     hover_data={&#39;_yhat_&#39;: &#39;:.3f&#39;, &#39;_mp_&#39;: mp_format, &#39;_diff_&#39;: False,
+                                 color: False, &#39;_vname_&#39;: False, &#39;_x_&#39;: False},
+                     facet_col_wrap=facet_ncol,
+                     facet_row_spacing=vertical_spacing,
+                     facet_col_spacing=horizontal_spacing,
+                     template=&#34;none&#34;,
+                     color_discrete_sequence=_theme.get_default_colors(m, &#39;line&#39;),  # bar was forgotten
+                     barmode=&#39;group&#39;)  \
+                .update_xaxes({&#39;matches&#39;: None, &#39;showticklabels&#39;: True,
+                               &#39;type&#39;: &#39;category&#39;, &#39;gridwidth&#39;: 2, &#39;automargin&#39;: True,  # autorange=&#34;reversed&#34;
+                               &#39;ticks&#39;: &#34;outside&#34;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True}) \
+                .update_yaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True,
+                               &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True,
+                               &#39;range&#39;: min_max})
+
+        # add hline https://github.com/plotly/plotly.py/issues/2141
+        for i, bar in enumerate(fig.data):
+            fig.add_shape(type=&#39;line&#39;, y0=bar.base[0], y1=bar.base[0], x0=-1, x1=len(bar.x),
+                          xref=bar.xaxis, yref=bar.yaxis, layer=&#39;below&#39;,
+                          line={&#39;color&#39;: &#34;#371ea3&#34;, &#39;width&#39;: 1.5, &#39;dash&#39;: &#39;dot&#39;})
+
+    fig = _theme.fig_update_line_plot(fig, title, y_title, plot_height, hovermode)
+
+    if show:
+        fig.show(config=_theme.get_default_config())
+    else:
+        return fig</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.dataset_level.ModelPerformance"><code class="flex name class">
+<span>class <span class="ident">ModelPerformance</span></span>
+<span>(</span><span>model_type, cutoff=0.5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate dataset level model performance measures</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>model_type</code></strong> :&ensp;<code>{'regression', 'classification'}</code></dt>
+<dd>Model task type that is used to choose the proper performance measures.</dd>
+<dt><strong><code>cutoff</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Cutoff for predictions in classification models. Needed for measures like
+recall, precision, acc, f1 (default is 0.5).</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>result</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Main result attribute of an explanation.</dd>
+<dt><strong><code>residuals</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Residuals for <code>data</code>.</dd>
+<dt><strong><code>model_type</code></strong> :&ensp;<code>{'regression', 'classification'}</code></dt>
+<dd>Model task type that is used to choose the proper performance measures.</dd>
+<dt><strong><code>cutoff</code></strong> :&ensp;<code>float</code></dt>
+<dd>Cutoff for predictions in classification models.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p><a href="https://pbiecek.github.io/ema/modelPerformance.html">https://pbiecek.github.io/ema/modelPerformance.html</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModelPerformance:
+    &#34;&#34;&#34;Calculate dataset level model performance measures
+
+    Parameters
+    -----------
+    model_type : {&#39;regression&#39;, &#39;classification&#39;}
+        Model task type that is used to choose the proper performance measures.
+    cutoff : float, optional
+        Cutoff for predictions in classification models. Needed for measures like
+        recall, precision, acc, f1 (default is 0.5).
+
+    Attributes
+    -----------
+    result : pd.DataFrame
+        Main result attribute of an explanation.
+    residuals : pd.DataFrame
+        Residuals for `data`.
+    model_type : {&#39;regression&#39;, &#39;classification&#39;}
+        Model task type that is used to choose the proper performance measures.
+    cutoff : float
+        Cutoff for predictions in classification models.
+
+    Notes
+    --------
+    https://pbiecek.github.io/ema/modelPerformance.html
+    &#34;&#34;&#34;
+    def __init__(self,
+                 model_type,
+                 cutoff=0.5):
+
+        self.cutoff = cutoff
+        self.model_type = model_type
+        self.result = None
+        self.residuals = None
+
+    def _repr_html_(self):
+        return self.result._repr_html_()
+
+    def fit(self, explainer):
+        &#34;&#34;&#34;Calculate the result of explanation
+
+        Fit method makes calculations in place and changes the attributes.
+
+        Parameters
+        -----------
+        explainer : Explainer object
+            Model wrapper created using the Explainer class.
+
+        Returns
+        -----------
+        None
+        &#34;&#34;&#34;
+
+        if explainer.y_hat is not None:
+            y_pred = explainer.y_hat
+        else:
+            y_pred = explainer.predict(explainer.data)
+
+        if explainer.residuals is not None:
+            _residuals = explainer.residuals
+        else:
+            _residuals = explainer.residual(explainer.data, explainer.y)
+
+        y_true = explainer.y
+
+        if self.model_type == &#39;regression&#39;:
+            mse_ = mse(y_pred, y_true)
+            rmse_ = rmse(y_pred, y_true)
+            r2_ = r2(y_pred, y_true)
+            mae_ = mae(y_pred, y_true)
+            mad_ = mad(y_pred, y_true)
+
+            self.result = pd.DataFrame(
+                {
+                    &#39;mse&#39;: [mse_],
+                    &#39;rmse&#39;: [rmse_],
+                    &#39;r2&#39;: [r2_],
+                    &#39;mae&#39;: [mae_],
+                    &#39;mad&#39;: [mad_]
+                }, index=[explainer.label])
+        elif self.model_type == &#39;classification&#39;:
+            tp = ((y_true == 1) * (y_pred &gt;= self.cutoff)).sum()
+            fp = ((y_true == 0) * (y_pred &gt;= self.cutoff)).sum()
+            tn = ((y_true == 0) * (y_pred &lt; self.cutoff)).sum()
+            fn = ((y_true == 1) * (y_pred &lt; self.cutoff)).sum()
+
+            recall_ = recall(tp, fp, tn, fn)
+            precision_ = precision(tp, fp, tn, fn)
+            f1_ = f1(tp, fp, tn, fn)
+            accuracy_ = accuracy(tp, fp, tn, fn)
+            auc_ = auc(y_pred, y_true)
+
+            self.result = pd.DataFrame({
+                &#39;recall&#39;: [recall_],
+                &#39;precision&#39;: [precision_],
+                &#39;f1&#39;: [f1_],
+                &#39;accuracy&#39;: [accuracy_],
+                &#39;auc&#39;: [auc_]
+            }, index=[explainer.label])
+        else:
+            raise ValueError(&#34;&#39;model_type&#39; must be &#39;regression&#39; or &#39;classification&#39;&#34;)
+
+        _residuals = pd.DataFrame({
+            &#39;y_hat&#39;: y_pred,
+            &#39;y&#39;: y_true,
+            &#39;residuals&#39;: _residuals,
+            &#39;label&#39;: explainer.label
+        })
+
+        self.residuals = _residuals
+
+    def plot(self,
+             objects=None,
+             title=&#34;Reverse cumulative distribution of |residual|&#34;,
+             show=False):
+        &#34;&#34;&#34;Plot the Model Performance explanation
+
+        Parameters
+        -----------
+        objects : ModelPerformance object or array_like of ModelPerformance objects
+            Additional objects to plot (default is None).
+        title : str, optional
+            Title of the plot (default depends on the `type` attribute).
+        show : bool, optional
+            True shows the plot; False returns the plotly Figure object that can be
+            edited or saved using the `write_image()` method (default is True).
+
+        Returns
+        -----------
+        None or plotly.graph_objects.Figure
+            Return figure that can be edited or saved. See `show` parameter.
+        &#34;&#34;&#34;
+
+        # are there any other objects to plot?
+        if objects is None:
+            _df_list = [self.residuals.copy()]
+        elif isinstance(objects, self.__class__):  # allow for objects to be a single element
+            _df_list = [self.residuals.copy(), objects.residuals.copy()]
+        elif isinstance(objects, (list, tuple)):  # objects as tuple or array
+            _df_list = [self.residuals.copy()]
+            for ob in objects:
+                _global_checks.global_check_object_class(ob, self.__class__)
+                _df_list += [ob.residuals.copy()]
+        else:
+            _global_checks.global_raise_objects_class(objects, self.__class__)
+
+        colors = _theme.get_default_colors(len(_df_list), &#39;line&#39;)
+        fig = go.Figure()
+
+        for i, _df in enumerate(_df_list):
+            _abs_residuals = np.abs(_df[&#39;residuals&#39;])
+            _unique_abs_residuals = np.unique(_abs_residuals)
+
+            fig.add_scatter(
+                x=_unique_abs_residuals,
+                y=1 - ecdf(_abs_residuals)(_unique_abs_residuals),
+                line_shape=&#39;hv&#39;,
+                name=_df.iloc[0, _df.columns.get_loc(&#39;label&#39;)],
+                marker=dict(color=colors[i])
+            )
+
+        fig.update_yaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#39;outside&#39;,
+                          &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True, &#39;tickformat&#39;: &#39;,.0%&#39;})
+
+        fig.update_xaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#34;outside&#34;,
+                          &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True, &#39;title_text&#39;: &#39;|residual|&#39;})
+
+        fig.update_layout(title_text=title, title_x=0.15, font={&#39;color&#39;: &#34;#371ea3&#34;}, template=&#34;none&#34;,
+                          margin={&#39;t&#39;: 78, &#39;b&#39;: 71, &#39;r&#39;: 30})
+
+        if show:
+            fig.show(config=_theme.get_default_config())
+        else:
+            return fig</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.dataset_level.ModelPerformance.fit"><code class="name flex">
+<span>def <span class="ident">fit</span></span>(<span>self, explainer)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate the result of explanation</p>
+<p>Fit method makes calculations in place and changes the attributes.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>explainer</code></strong> :&ensp;<code>Explainer object</code></dt>
+<dd>Model wrapper created using the Explainer class.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fit(self, explainer):
+    &#34;&#34;&#34;Calculate the result of explanation
+
+    Fit method makes calculations in place and changes the attributes.
+
+    Parameters
+    -----------
+    explainer : Explainer object
+        Model wrapper created using the Explainer class.
+
+    Returns
+    -----------
+    None
+    &#34;&#34;&#34;
+
+    if explainer.y_hat is not None:
+        y_pred = explainer.y_hat
+    else:
+        y_pred = explainer.predict(explainer.data)
+
+    if explainer.residuals is not None:
+        _residuals = explainer.residuals
+    else:
+        _residuals = explainer.residual(explainer.data, explainer.y)
+
+    y_true = explainer.y
+
+    if self.model_type == &#39;regression&#39;:
+        mse_ = mse(y_pred, y_true)
+        rmse_ = rmse(y_pred, y_true)
+        r2_ = r2(y_pred, y_true)
+        mae_ = mae(y_pred, y_true)
+        mad_ = mad(y_pred, y_true)
+
+        self.result = pd.DataFrame(
+            {
+                &#39;mse&#39;: [mse_],
+                &#39;rmse&#39;: [rmse_],
+                &#39;r2&#39;: [r2_],
+                &#39;mae&#39;: [mae_],
+                &#39;mad&#39;: [mad_]
+            }, index=[explainer.label])
+    elif self.model_type == &#39;classification&#39;:
+        tp = ((y_true == 1) * (y_pred &gt;= self.cutoff)).sum()
+        fp = ((y_true == 0) * (y_pred &gt;= self.cutoff)).sum()
+        tn = ((y_true == 0) * (y_pred &lt; self.cutoff)).sum()
+        fn = ((y_true == 1) * (y_pred &lt; self.cutoff)).sum()
+
+        recall_ = recall(tp, fp, tn, fn)
+        precision_ = precision(tp, fp, tn, fn)
+        f1_ = f1(tp, fp, tn, fn)
+        accuracy_ = accuracy(tp, fp, tn, fn)
+        auc_ = auc(y_pred, y_true)
+
+        self.result = pd.DataFrame({
+            &#39;recall&#39;: [recall_],
+            &#39;precision&#39;: [precision_],
+            &#39;f1&#39;: [f1_],
+            &#39;accuracy&#39;: [accuracy_],
+            &#39;auc&#39;: [auc_]
+        }, index=[explainer.label])
+    else:
+        raise ValueError(&#34;&#39;model_type&#39; must be &#39;regression&#39; or &#39;classification&#39;&#34;)
+
+    _residuals = pd.DataFrame({
+        &#39;y_hat&#39;: y_pred,
+        &#39;y&#39;: y_true,
+        &#39;residuals&#39;: _residuals,
+        &#39;label&#39;: explainer.label
+    })
+
+    self.residuals = _residuals</code></pre>
+</details>
+</dd>
+<dt id="dalex.dataset_level.ModelPerformance.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>self, objects=None, title='Reverse cumulative distribution of |residual|', show=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the Model Performance explanation</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>objects</code></strong> :&ensp;<code><a title="dalex.dataset_level.ModelPerformance" href="#dalex.dataset_level.ModelPerformance">ModelPerformance</a> object</code> or <code>array_like</code> of <code><a title="dalex.dataset_level.ModelPerformance" href="#dalex.dataset_level.ModelPerformance">ModelPerformance</a> objects</code></dt>
+<dd>Additional objects to plot (default is None).</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Title of the plot (default depends on the <code>type</code> attribute).</dd>
+<dt><strong><code>show</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>True shows the plot; False returns the plotly Figure object that can be
+edited or saved using the <code>write_image()</code> method (default is True).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code> or <code>plotly.graph_objects.Figure</code></dt>
+<dd>Return figure that can be edited or saved. See <code>show</code> parameter.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot(self,
+         objects=None,
+         title=&#34;Reverse cumulative distribution of |residual|&#34;,
+         show=False):
+    &#34;&#34;&#34;Plot the Model Performance explanation
+
+    Parameters
+    -----------
+    objects : ModelPerformance object or array_like of ModelPerformance objects
+        Additional objects to plot (default is None).
+    title : str, optional
+        Title of the plot (default depends on the `type` attribute).
+    show : bool, optional
+        True shows the plot; False returns the plotly Figure object that can be
+        edited or saved using the `write_image()` method (default is True).
+
+    Returns
+    -----------
+    None or plotly.graph_objects.Figure
+        Return figure that can be edited or saved. See `show` parameter.
+    &#34;&#34;&#34;
+
+    # are there any other objects to plot?
+    if objects is None:
+        _df_list = [self.residuals.copy()]
+    elif isinstance(objects, self.__class__):  # allow for objects to be a single element
+        _df_list = [self.residuals.copy(), objects.residuals.copy()]
+    elif isinstance(objects, (list, tuple)):  # objects as tuple or array
+        _df_list = [self.residuals.copy()]
+        for ob in objects:
+            _global_checks.global_check_object_class(ob, self.__class__)
+            _df_list += [ob.residuals.copy()]
+    else:
+        _global_checks.global_raise_objects_class(objects, self.__class__)
+
+    colors = _theme.get_default_colors(len(_df_list), &#39;line&#39;)
+    fig = go.Figure()
+
+    for i, _df in enumerate(_df_list):
+        _abs_residuals = np.abs(_df[&#39;residuals&#39;])
+        _unique_abs_residuals = np.unique(_abs_residuals)
+
+        fig.add_scatter(
+            x=_unique_abs_residuals,
+            y=1 - ecdf(_abs_residuals)(_unique_abs_residuals),
+            line_shape=&#39;hv&#39;,
+            name=_df.iloc[0, _df.columns.get_loc(&#39;label&#39;)],
+            marker=dict(color=colors[i])
+        )
+
+    fig.update_yaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#39;outside&#39;,
+                      &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True, &#39;tickformat&#39;: &#39;,.0%&#39;})
+
+    fig.update_xaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#34;outside&#34;,
+                      &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True, &#39;title_text&#39;: &#39;|residual|&#39;})
+
+    fig.update_layout(title_text=title, title_x=0.15, font={&#39;color&#39;: &#34;#371ea3&#34;}, template=&#34;none&#34;,
+                      margin={&#39;t&#39;: 78, &#39;b&#39;: 71, &#39;r&#39;: 30})
+
+    if show:
+        fig.show(config=_theme.get_default_config())
+    else:
+        return fig</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.dataset_level.ResidualDiagnostics"><code class="flex name class">
+<span>class <span class="ident">ResidualDiagnostics</span></span>
+<span>(</span><span>variables=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate dataset level residuals diagnostics</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>variables</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code>, optional</dt>
+<dd>Variables for which the profiles will be calculated
+(default is None, which means all of the variables).</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>result</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Main result attribute of an explanation.</dd>
+<dt><strong><code>variables</code></strong> :&ensp;<code>array_like</code> of <code>str</code> or <code>None</code></dt>
+<dd>Variables for which the profiles will be calculated</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p><a href="https://pbiecek.github.io/ema/residualDiagnostic.html">https://pbiecek.github.io/ema/residualDiagnostic.html</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ResidualDiagnostics:
+    &#34;&#34;&#34;Calculate dataset level residuals diagnostics
+
+    Parameters
+    -----------
+    variables : str or array_like of str, optional
+        Variables for which the profiles will be calculated
+        (default is None, which means all of the variables).
+
+    Attributes
+    -----------
+    result : pd.DataFrame
+        Main result attribute of an explanation.
+    variables : array_like of str or None
+        Variables for which the profiles will be calculated
+
+    Notes
+    --------
+    https://pbiecek.github.io/ema/residualDiagnostic.html
+    &#34;&#34;&#34;
+    def __init__(self,
+                 variables=None):
+
+        variables_ = check_variables(variables)
+
+        self.result = None
+        self.variables = variables_
+
+    def _repr_html_(self):
+        return self.result._repr_html_()
+
+    def fit(self, explainer):
+        &#34;&#34;&#34;Calculate the result of explanation
+
+        Fit method makes calculations in place and changes the attributes.
+
+        Parameters
+        -----------
+        explainer : Explainer object
+            Model wrapper created using the Explainer class.
+
+        Returns
+        -----------
+        None
+        &#34;&#34;&#34;
+        result = explainer.data.copy()
+
+        # if variables = NULL then all variables are added
+        # otherwise only selected
+        if self.variables is not None:
+            result = result.loc[:, _global_utils.intersect_unsorted(self.variables, result.columns)]
+        # is there target
+        if explainer.y is not None:
+            result = result.assign(y=explainer.y)
+        # are there predictions - add y_hat to the Explainer for the future
+        if explainer.y_hat is None:
+            explainer.y_hat = explainer.predict(explainer.data)
+        # are there residuals - add residuals to the Explainer for the future
+        if explainer.residuals is None:
+            explainer.residuals = explainer.residual(explainer.data, explainer.y)
+
+        self.result = result.assign(
+            y_hat=explainer.y_hat,
+            residuals=explainer.residuals,
+            abs_residuals=np.abs(explainer.residuals),
+            label=explainer.label,
+            ids=np.arange(result.shape[0])+1
+        )
+
+    def plot(self,
+             objects=None,
+             variable=&#34;y_hat&#34;,
+             yvariable=&#34;residuals&#34;,
+             smooth=True,
+             line_width=2,
+             marker_size=3,
+             title=&#34;Residual Diagnostics&#34;,
+             N=50000,
+             show=True):
+        &#34;&#34;&#34;Plot the Residual Diagnostics explanation
+
+        Parameters
+        ----------
+        objects : ResidualDiagnostics object or array_like of ResidualDiagnostics objects
+            Additional objects to plot (default is None).
+        variable : str, optional
+            Name of the variable from the `result` attribute to appear on the OX axis
+            (default is &#39;y_hat&#39;).
+        yvariable : str, optional
+            Name of the variable from the `result` attribute to appear on the OY axis
+            (default is &#39;residuals&#39;).
+        smooth : bool, optional
+            Add the smooth line (default is True).
+        line_width : float, optional
+            Width of lines in px (default is 2).
+        marker_size : float, optional
+            Size of points (default is 3).
+        title : str, optional
+            Title of the plot (default depends on the `type` attribute).
+        N : int, optional
+            Number of observations that will be sampled from the `result` attribute before
+            calculating the smooth line. This is for performance issues with large data.
+            None means all `result` (default is 50 000).
+        show : bool, optional
+            True shows the plot; False returns the plotly Figure object that can be
+            edited or saved using the `write_image()` method (default is True).
+
+        Returns
+        -----------
+        None or plotly.graph_objects.Figure
+            Return figure that can be edited or saved. See `show` parameter.
+        &#34;&#34;&#34;
+
+        _global_checks.global_check_import(&#39;statsmodels&#39;, &#39;smoothing line&#39;)
+
+        # are there any other objects to plot?
+        if objects is None:
+            _df_list = [self.result.copy()]
+        elif isinstance(objects, self.__class__):  # allow for objects to be a single element
+            _df_list = [self.result.copy(), objects.result.copy()]
+        elif isinstance(objects, (list, tuple)):  # objects as tuple or array
+            _df_list = [self.result.copy()]
+            for ob in objects:
+                _global_checks.global_check_object_class(ob, self.__class__)
+                _df_list += [ob.result.copy()]
+        else:
+            _global_checks.global_raise_objects_class(objects, self.__class__)
+
+        _df = pd.concat(_df_list)
+
+        if N and smooth:
+            if N &lt; _df.shape[0]:
+                _df = _df.sample(N, random_state=0, replace=False)
+
+        fig = px.scatter(_df,
+                         x=variable,
+                         y=yvariable,
+                         hover_name=&#39;ids&#39;,
+                         color=&#34;label&#34;,
+                         trendline=&#34;lowess&#34; if smooth else None,
+                         color_discrete_sequence=_theme.get_default_colors(len(_df_list), &#39;line&#39;)) \
+                .update_traces(dict(marker_size=marker_size, line_width=line_width))
+
+        # wait for https://github.com/plotly/plotly.py/pull/2558 to add hline to the plot
+
+        fig.update_yaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#39;outside&#39;,
+                          &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True, &#39;title_text&#39;: yvariable})
+
+        fig.update_xaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#34;outside&#34;,
+                          &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True, &#39;title_text&#39;: variable})
+
+        fig.update_layout(title_text=title, title_x=0.15, font={&#39;color&#39;: &#34;#371ea3&#34;}, template=&#34;none&#34;,
+                          margin={&#39;t&#39;: 78, &#39;b&#39;: 71, &#39;r&#39;: 30})
+
+        if show:
+            fig.show(config=_theme.get_default_config())
+        else:
+            return fig</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.dataset_level.ResidualDiagnostics.fit"><code class="name flex">
+<span>def <span class="ident">fit</span></span>(<span>self, explainer)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate the result of explanation</p>
+<p>Fit method makes calculations in place and changes the attributes.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>explainer</code></strong> :&ensp;<code>Explainer object</code></dt>
+<dd>Model wrapper created using the Explainer class.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fit(self, explainer):
+    &#34;&#34;&#34;Calculate the result of explanation
+
+    Fit method makes calculations in place and changes the attributes.
+
+    Parameters
+    -----------
+    explainer : Explainer object
+        Model wrapper created using the Explainer class.
+
+    Returns
+    -----------
+    None
+    &#34;&#34;&#34;
+    result = explainer.data.copy()
+
+    # if variables = NULL then all variables are added
+    # otherwise only selected
+    if self.variables is not None:
+        result = result.loc[:, _global_utils.intersect_unsorted(self.variables, result.columns)]
+    # is there target
+    if explainer.y is not None:
+        result = result.assign(y=explainer.y)
+    # are there predictions - add y_hat to the Explainer for the future
+    if explainer.y_hat is None:
+        explainer.y_hat = explainer.predict(explainer.data)
+    # are there residuals - add residuals to the Explainer for the future
+    if explainer.residuals is None:
+        explainer.residuals = explainer.residual(explainer.data, explainer.y)
+
+    self.result = result.assign(
+        y_hat=explainer.y_hat,
+        residuals=explainer.residuals,
+        abs_residuals=np.abs(explainer.residuals),
+        label=explainer.label,
+        ids=np.arange(result.shape[0])+1
+    )</code></pre>
+</details>
+</dd>
+<dt id="dalex.dataset_level.ResidualDiagnostics.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>self, objects=None, variable='y_hat', yvariable='residuals', smooth=True, line_width=2, marker_size=3, title='Residual Diagnostics', N=50000, show=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the Residual Diagnostics explanation</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>objects</code></strong> :&ensp;<code><a title="dalex.dataset_level.ResidualDiagnostics" href="#dalex.dataset_level.ResidualDiagnostics">ResidualDiagnostics</a> object</code> or <code>array_like</code> of <code><a title="dalex.dataset_level.ResidualDiagnostics" href="#dalex.dataset_level.ResidualDiagnostics">ResidualDiagnostics</a> objects</code></dt>
+<dd>Additional objects to plot (default is None).</dd>
+<dt><strong><code>variable</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name of the variable from the <code>result</code> attribute to appear on the OX axis
+(default is 'y_hat').</dd>
+<dt><strong><code>yvariable</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name of the variable from the <code>result</code> attribute to appear on the OY axis
+(default is 'residuals').</dd>
+<dt><strong><code>smooth</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Add the smooth line (default is True).</dd>
+<dt><strong><code>line_width</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Width of lines in px (default is 2).</dd>
+<dt><strong><code>marker_size</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Size of points (default is 3).</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Title of the plot (default depends on the <code>type</code> attribute).</dd>
+<dt><strong><code>N</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of observations that will be sampled from the <code>result</code> attribute before
+calculating the smooth line. This is for performance issues with large data.
+None means all <code>result</code> (default is 50 000).</dd>
+<dt><strong><code>show</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>True shows the plot; False returns the plotly Figure object that can be
+edited or saved using the <code>write_image()</code> method (default is True).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code> or <code>plotly.graph_objects.Figure</code></dt>
+<dd>Return figure that can be edited or saved. See <code>show</code> parameter.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot(self,
+         objects=None,
+         variable=&#34;y_hat&#34;,
+         yvariable=&#34;residuals&#34;,
+         smooth=True,
+         line_width=2,
+         marker_size=3,
+         title=&#34;Residual Diagnostics&#34;,
+         N=50000,
+         show=True):
+    &#34;&#34;&#34;Plot the Residual Diagnostics explanation
+
+    Parameters
+    ----------
+    objects : ResidualDiagnostics object or array_like of ResidualDiagnostics objects
+        Additional objects to plot (default is None).
+    variable : str, optional
+        Name of the variable from the `result` attribute to appear on the OX axis
+        (default is &#39;y_hat&#39;).
+    yvariable : str, optional
+        Name of the variable from the `result` attribute to appear on the OY axis
+        (default is &#39;residuals&#39;).
+    smooth : bool, optional
+        Add the smooth line (default is True).
+    line_width : float, optional
+        Width of lines in px (default is 2).
+    marker_size : float, optional
+        Size of points (default is 3).
+    title : str, optional
+        Title of the plot (default depends on the `type` attribute).
+    N : int, optional
+        Number of observations that will be sampled from the `result` attribute before
+        calculating the smooth line. This is for performance issues with large data.
+        None means all `result` (default is 50 000).
+    show : bool, optional
+        True shows the plot; False returns the plotly Figure object that can be
+        edited or saved using the `write_image()` method (default is True).
+
+    Returns
+    -----------
+    None or plotly.graph_objects.Figure
+        Return figure that can be edited or saved. See `show` parameter.
+    &#34;&#34;&#34;
+
+    _global_checks.global_check_import(&#39;statsmodels&#39;, &#39;smoothing line&#39;)
+
+    # are there any other objects to plot?
+    if objects is None:
+        _df_list = [self.result.copy()]
+    elif isinstance(objects, self.__class__):  # allow for objects to be a single element
+        _df_list = [self.result.copy(), objects.result.copy()]
+    elif isinstance(objects, (list, tuple)):  # objects as tuple or array
+        _df_list = [self.result.copy()]
+        for ob in objects:
+            _global_checks.global_check_object_class(ob, self.__class__)
+            _df_list += [ob.result.copy()]
+    else:
+        _global_checks.global_raise_objects_class(objects, self.__class__)
+
+    _df = pd.concat(_df_list)
+
+    if N and smooth:
+        if N &lt; _df.shape[0]:
+            _df = _df.sample(N, random_state=0, replace=False)
+
+    fig = px.scatter(_df,
+                     x=variable,
+                     y=yvariable,
+                     hover_name=&#39;ids&#39;,
+                     color=&#34;label&#34;,
+                     trendline=&#34;lowess&#34; if smooth else None,
+                     color_discrete_sequence=_theme.get_default_colors(len(_df_list), &#39;line&#39;)) \
+            .update_traces(dict(marker_size=marker_size, line_width=line_width))
+
+    # wait for https://github.com/plotly/plotly.py/pull/2558 to add hline to the plot
+
+    fig.update_yaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#39;outside&#39;,
+                      &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True, &#39;title_text&#39;: yvariable})
+
+    fig.update_xaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#34;outside&#34;,
+                      &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True, &#39;title_text&#39;: variable})
+
+    fig.update_layout(title_text=title, title_x=0.15, font={&#39;color&#39;: &#34;#371ea3&#34;}, template=&#34;none&#34;,
+                      margin={&#39;t&#39;: 78, &#39;b&#39;: 71, &#39;r&#39;: 30})
+
+    if show:
+        fig.show(config=_theme.get_default_config())
+    else:
+        return fig</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.dataset_level.VariableImportance"><code class="flex name class">
+<span>class <span class="ident">VariableImportance</span></span>
+<span>(</span><span>loss_function='rmse', type='variable_importance', N=1000, B=10, variables=None, variable_groups=None, keep_raw_permutations=True, processes=1, random_state=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate dataset level variable importance</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>loss_function</code></strong> :&ensp;<code>{'rmse', '1-auc', 'mse', 'mae', 'mad'}</code> or <code>function</code>, optional</dt>
+<dd>If string, then such loss function will be used to assess variable importance
+(default is 'rmse' or <code>1-auc</code>, depends on <code>model_type</code> attribute).</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'variable_importance', 'ratio', 'difference'}</code>, optional</dt>
+<dd>Type of transformation that will be applied to dropout loss.</dd>
+<dt><strong><code>N</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of observations that will be sampled from the <code>data</code> attribute before
+the calculation of variable importance. None means all <code>data</code> (default is 1000).</dd>
+<dt><strong><code>B</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of permutation rounds to perform on each variable (default is 10).</dd>
+<dt><strong><code>variables</code></strong> :&ensp;<code>array_like</code> of <code>str</code>, optional</dt>
+<dd>Variables for which the importance will be calculated
+(default is None, which means all of the variables).
+NOTE: Ignored if <code>variable_groups</code> is not None.</dd>
+<dt><strong><code>variable_groups</code></strong> :&ensp;<code>dict</code> of <code>lists</code>, optional</dt>
+<dd>Group the variables to calculate their joint variable importance
+e.g. {'X': ['x1', 'x2'], 'Y': ['y1', 'y2']} (default is None).</dd>
+<dt><strong><code>keep_raw_permutations</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Save results for all permutation rounds (default is True).</dd>
+<dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of parallel processes to use in calculations. Iterated over <code>B</code>
+(default is 1, which means no parallel computation).</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Set seed for random number generator (default is random seed).</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>result</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Main result attribute of an explanation.</dd>
+<dt><strong><code>loss_function</code></strong> :&ensp;<code>function</code></dt>
+<dd>Loss function used to assess the variable importance.</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'variable_importance', 'ratio', 'difference'}</code></dt>
+<dd>Type of transformation that will be applied to dropout loss.</dd>
+<dt><strong><code>N</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of observations that will be sampled from the <code>data</code> attribute before
+the calculation of variable importance.</dd>
+<dt><strong><code>B</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of permutation rounds to perform on each variable.</dd>
+<dt><strong><code>variables</code></strong> :&ensp;<code>array_like</code> of <code>str</code> or <code>None</code></dt>
+<dd>Variables for which the importance will be calculated</dd>
+<dt><strong><code>variable_groups</code></strong> :&ensp;<code>dict</code> of <code>lists</code> or <code>None</code></dt>
+<dd>Grouped variables to calculate their joint variable importance.</dd>
+<dt><strong><code>keep_raw_permutations</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Save the results for all permutation rounds.</dd>
+<dt><strong><code>permutation</code></strong> :&ensp;<code>pd.DataFrame</code> or <code>None</code></dt>
+<dd>The results for all permutation rounds.</dd>
+<dt><strong><code>processes</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of parallel processes to use in calculations. Iterated over <code>B</code>.</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int</code> or <code>None</code></dt>
+<dd>Set seed for random number generator.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p><a href="https://pbiecek.github.io/ema/featureImportance.html">https://pbiecek.github.io/ema/featureImportance.html</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VariableImportance:
+    &#34;&#34;&#34;Calculate dataset level variable importance
+
+    Parameters
+    -----------
+    loss_function : {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
+        If string, then such loss function will be used to assess variable importance
+        (default is &#39;rmse&#39; or `1-auc`, depends on `model_type` attribute).
+    type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;}, optional
+        Type of transformation that will be applied to dropout loss.
+    N : int, optional
+        Number of observations that will be sampled from the `data` attribute before
+        the calculation of variable importance. None means all `data` (default is 1000).
+    B : int, optional
+        Number of permutation rounds to perform on each variable (default is 10).
+    variables : array_like of str, optional
+        Variables for which the importance will be calculated
+        (default is None, which means all of the variables).
+        NOTE: Ignored if `variable_groups` is not None.
+    variable_groups : dict of lists, optional
+        Group the variables to calculate their joint variable importance
+        e.g. {&#39;X&#39;: [&#39;x1&#39;, &#39;x2&#39;], &#39;Y&#39;: [&#39;y1&#39;, &#39;y2&#39;]} (default is None).
+    keep_raw_permutations: bool, optional
+        Save results for all permutation rounds (default is True).
+    processes : int, optional
+        Number of parallel processes to use in calculations. Iterated over `B`
+        (default is 1, which means no parallel computation).
+    random_state : int, optional
+        Set seed for random number generator (default is random seed).
+
+    Attributes
+    -----------
+    result : pd.DataFrame
+        Main result attribute of an explanation.
+    loss_function : function
+        Loss function used to assess the variable importance.
+    type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;}
+        Type of transformation that will be applied to dropout loss.
+    N : int
+        Number of observations that will be sampled from the `data` attribute before
+        the calculation of variable importance.
+    B : int
+        Number of permutation rounds to perform on each variable.
+    variables : array_like of str or None
+        Variables for which the importance will be calculated
+    variable_groups : dict of lists or None
+        Grouped variables to calculate their joint variable importance.
+    keep_raw_permutations: bool
+        Save the results for all permutation rounds.
+    permutation : pd.DataFrame or None
+        The results for all permutation rounds.
+    processes : int
+        Number of parallel processes to use in calculations. Iterated over `B`.
+    random_state : int or None
+        Set seed for random number generator.
+
+    Notes
+    --------
+    https://pbiecek.github.io/ema/featureImportance.html
+    &#34;&#34;&#34;
+
+    def __init__(self,
+                 loss_function=&#39;rmse&#39;,
+                 type=&#39;variable_importance&#39;,
+                 N=1000,
+                 B=10,
+                 variables=None,
+                 variable_groups=None,
+                 keep_raw_permutations=True,
+                 processes=1,
+                 random_state=None):
+
+        loss_function = check_loss_function(loss_function)
+        B = check_B(B)
+        type = check_type(type)
+        random_state = check_random_state(random_state)
+        keep_raw_permutations = check_keep_raw_permutations(keep_raw_permutations, B)
+
+        processes_ = check_processes(processes)
+
+        self.loss_function = loss_function
+        self.type = type
+        self.N = N
+        self.B = B
+        self.variables = variables
+        self.variable_groups = variable_groups
+        self.random_state = random_state
+        self.keep_raw_permutations = keep_raw_permutations
+        self.result = None
+        self.permutation = None
+        self.processes = processes_
+
+    def _repr_html_(self):
+        return self.result._repr_html_()
+
+    def fit(self, explainer):
+        &#34;&#34;&#34;Calculate the result of explanation
+
+        Fit method makes calculations in place and changes the attributes.
+
+        Parameters
+        -----------
+        explainer : Explainer object
+            Model wrapper created using the Explainer class.
+
+        Returns
+        -----------
+        None
+        &#34;&#34;&#34;
+
+        # if `variable_groups` are not specified, then extract from `variables`
+        self.variable_groups = check_variable_groups(self.variable_groups, explainer)
+        self.variables = check_variables(self.variables, self.variable_groups, explainer)
+        self.result, self.permutation = calculate_variable_importance(explainer,
+                                                                      self.type,
+                                                                      self.loss_function,
+                                                                      self.variables,
+                                                                      self.N,
+                                                                      self.B,
+                                                                      explainer.label,
+                                                                      self.processes,
+                                                                      self.keep_raw_permutations)
+
+    def plot(self,
+             objects=None,
+             max_vars=10,
+             digits=3,
+             rounding_function=np.around,
+             bar_width=16,
+             split=(&#34;model&#34;, &#34;variable&#34;),
+             title=&#34;Variable Importance&#34;,
+             vertical_spacing=None,
+             show=True):
+        &#34;&#34;&#34;Plot the Variable Importance explanation
+
+        Parameters
+        -----------
+        objects : VariableImportance object or array_like of VariableImportance objects
+            Additional objects to plot in subplots (default is None).
+        max_vars : int, optional
+            Maximum number of variables that will be presented for for each subplot
+            (default is 10).
+        digits : int, optional
+            Number of decimal places (np.around) to round contributions.
+            See `rounding_function` parameter (default is 3).
+        rounding_function : function, optional
+            A funciton that will be used for rounding numbers (default is np.around).
+        bar_width : float, optional
+            Width of bars in px (default is 16).
+        split : {&#39;model&#39;, &#39;variable&#39;}, optional
+            Split the subplots by model or variable (default is &#39;model&#39;).
+        title : str, optional
+            Title of the plot (default is &#34;Variable Importance&#34;).
+        vertical_spacing : float &lt;0, 1&gt;, optional
+            Ratio of vertical space between the plots (default is 0.2/number of rows).
+        show : bool, optional
+            True shows the plot; False returns the plotly Figure object that can be
+            edited or saved using the `write_image()` method (default is True).
+
+        Returns
+        -----------
+        None or plotly.graph_objects.Figure
+            Return figure that can be edited or saved. See `show` parameter.
+        &#34;&#34;&#34;
+
+        if isinstance(split, tuple):
+            split = split[0]
+
+        if split not in (&#34;model&#34;, &#34;variable&#34;):
+            raise TypeError(&#34;split should be &#39;model&#39; or &#39;variable&#39;&#34;)
+
+        # are there any other objects to plot?
+        if objects is None:
+            n = 1
+            _result_df = self.result.copy()
+            if split == &#39;variable&#39;:  # force split by model if only one explainer
+                split = &#39;model&#39;
+        elif isinstance(objects, self.__class__):  # allow for objects to be a single element
+            n = 2
+            _result_df = pd.concat([self.result.copy(), objects.result.copy()])
+        elif isinstance(objects, (list, tuple)):  # objects as tuple or array
+            n = len(objects) + 1
+            _result_df = self.result.copy()
+            for ob in objects:
+                _global_checks.global_check_object_class(ob, self.__class__)
+                _result_df = pd.concat([_result_df, ob.result.copy()])
+        else:
+            _global_checks.global_raise_objects_class(objects, self.__class__)
+
+        dl = _result_df.loc[_result_df.variable != &#39;_baseline_&#39;, &#39;dropout_loss&#39;].to_numpy()
+        min_max_margin = dl.ptp() * 0.15
+        min_max = [dl.min() - min_max_margin, dl.max() + min_max_margin]
+
+        # take out full model
+        best_fits = _result_df[_result_df.variable == &#39;_full_model_&#39;]
+
+        # this produces dropout_loss_x and dropout_loss_y columns
+        _result_df = _result_df.merge(best_fits[[&#39;label&#39;, &#39;dropout_loss&#39;]], how=&#34;left&#34;, on=&#34;label&#34;)
+        _result_df = _result_df[[&#39;label&#39;, &#39;variable&#39;, &#39;dropout_loss_x&#39;, &#39;dropout_loss_y&#39;]].rename(
+            columns={&#39;dropout_loss_x&#39;: &#39;dropout_loss&#39;, &#39;dropout_loss_y&#39;: &#39;full_model&#39;})
+
+        # remove full_model and baseline
+        _result_df = _result_df[(_result_df.variable != &#39;_full_model_&#39;) &amp; (_result_df.variable != &#39;_baseline_&#39;)]
+
+        # calculate order of bars or variable plots (split = &#39;variable&#39;)
+        # get variable permutation
+        perm = _result_df[[&#39;variable&#39;, &#39;dropout_loss&#39;]].groupby(&#39;variable&#39;).mean().reset_index(). \
+            sort_values(&#39;dropout_loss&#39;, ascending=False).variable.values
+
+        plot_height = 78 + 71
+
+        colors = _theme.get_default_colors(n, &#39;bar&#39;)
+
+        if vertical_spacing is None:
+            vertical_spacing = 0.2 / n
+
+        model_names = _result_df[&#39;label&#39;].unique().tolist()
+
+        if len(model_names) != n:
+            raise ValueError(&#39;label must be unique for each model&#39;)
+
+        if split == &#34;model&#34;:
+            # init plot
+            fig = make_subplots(rows=n, cols=1, shared_xaxes=True, vertical_spacing=vertical_spacing,
+                                x_title=&#39;drop-out loss&#39;,
+                                subplot_titles=model_names)
+
+            # split df by model
+            df_list = [v for k, v in _result_df.groupby(&#39;label&#39;, sort=False)]
+
+            for i, df in enumerate(df_list):
+                m = df.shape[0]
+                if max_vars is not None and max_vars &lt; m:
+                    m = max_vars
+
+                # take only m variables (for max_vars)
+                # sort rows of df by variable permutation and drop unused variables
+                df = df.sort_values(&#39;dropout_loss&#39;).tail(m) \
+                    .set_index(&#39;variable&#39;).reindex(perm).dropna().reset_index()
+
+                baseline = df.iloc[0, df.columns.get_loc(&#39;full_model&#39;)]
+
+                df = df.assign(difference=lambda x: x[&#39;dropout_loss&#39;] - baseline)
+
+                lt = df.difference.apply(lambda val:
+                                         &#34;+&#34;+str(rounding_function(np.abs(val), digits)) if val &gt; 0
+                                         else str(rounding_function(np.abs(val), digits)))
+                tt = df.apply(lambda row: tooltip_text(row, rounding_function, digits), axis=1)
+                df = df.assign(label_text=lt,
+                               tooltip_text=tt)
+
+                fig.add_shape(type=&#39;line&#39;, x0=baseline, x1=baseline, y0=-1, y1=m, yref=&#34;paper&#34;, xref=&#34;x&#34;,
+                              line={&#39;color&#39;: &#34;#371ea3&#34;, &#39;width&#39;: 1.5, &#39;dash&#39;: &#39;dot&#39;}, row=i + 1, col=1)
+
+                fig.add_bar(
+                    orientation=&#34;h&#34;,
+                    y=df[&#39;variable&#39;].tolist(),
+                    x=df[&#39;difference&#39;].tolist(),
+                    textposition=&#34;outside&#34;,
+                    text=df[&#39;label_text&#39;].tolist(),
+                    marker_color=colors[i],
+                    base=baseline,
+                    hovertext=df[&#39;tooltip_text&#39;].tolist(),
+                    hoverinfo=&#39;text&#39;,
+                    hoverlabel={&#39;bgcolor&#39;: &#39;rgba(0,0,0,0.8)&#39;},
+                    showlegend=False,
+                    row=i + 1, col=1
+                )
+
+                fig.update_yaxes({&#39;type&#39;: &#39;category&#39;, &#39;autorange&#39;: &#39;reversed&#39;, &#39;gridwidth&#39;: 2, &#39;automargin&#39;: True,
+                                  &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True},
+                                 row=i + 1, col=1)
+
+                fig.update_xaxes(
+                    {&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#34;outside&#34;,
+                     &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True},
+                    row=i + 1, col=1)
+
+                plot_height += m * bar_width + (m + 1) * bar_width / 4 + 30
+        else:
+            # split df by variable
+            df_list = [v for k, v in _result_df.groupby(&#39;variable&#39;, sort=False)]
+
+            n = len(df_list)
+            if max_vars is not None and max_vars &lt; n:
+                n = max_vars
+            
+            if vertical_spacing is None:
+                vertical_spacing = 0.2 / n
+            
+            # init plot
+            variable_names = perm[0:n]
+            fig = make_subplots(rows=n, cols=1, shared_xaxes=True, vertical_spacing=vertical_spacing, x_title=&#39;drop-out loss&#39;,
+                                subplot_titles=variable_names)
+
+            df_dict = {e.variable.array[0]: e for e in df_list}
+
+            # take only n=max_vars elements from df_dict
+            for i in range(n):
+                df = df_dict[perm[i]]
+                m = df.shape[0]
+
+                baseline = 0
+
+                df = df.assign(difference=lambda x: x[&#39;dropout_loss&#39;] - x[&#39;full_model&#39;])
+
+                lt = df.difference.apply(lambda val:
+                                         &#34;+&#34;+str(rounding_function(np.abs(val), digits)) if val &gt; 0
+                                         else str(rounding_function(np.abs(val), digits)))
+                tt = df.apply(lambda row: tooltip_text(row, rounding_function, digits), axis=1)
+                df = df.assign(label_text=lt,
+                               tooltip_text=tt)
+
+                fig.add_shape(type=&#39;line&#39;, x0=baseline, x1=baseline, y0=-1, y1=m, yref=&#34;paper&#34;, xref=&#34;x&#34;,
+                              line={&#39;color&#39;: &#34;#371ea3&#34;, &#39;width&#39;: 1.5, &#39;dash&#39;: &#39;dot&#39;}, row=i + 1, col=1)
+
+                fig.add_bar(
+                    orientation=&#34;h&#34;,
+                    y=df[&#39;label&#39;].tolist(),
+                    x=df[&#39;dropout_loss&#39;].tolist(),
+                    # textposition=&#34;outside&#34;,
+                    # text=df[&#39;label_text&#39;].tolist(),
+                    marker_color=colors,
+                    base=baseline,
+                    hovertext=df[&#39;tooltip_text&#39;].tolist(),
+                    hoverinfo=&#39;text&#39;,
+                    hoverlabel={&#39;bgcolor&#39;: &#39;rgba(0,0,0,0.8)&#39;},
+                    showlegend=False,
+                    row=i + 1, col=1)
+
+                fig.update_yaxes({&#39;type&#39;: &#39;category&#39;, &#39;autorange&#39;: &#39;reversed&#39;, &#39;gridwidth&#39;: 2, &#39;automargin&#39;: True,
+                                  &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True},
+                                 row=i + 1, col=1)
+
+                fig.update_xaxes(
+                    {&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#34;outside&#34;,
+                     &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True},
+                    row=i + 1, col=1)
+
+                plot_height += m * bar_width + (m + 1) * bar_width / 4
+
+        plot_height += (n - 1) * 70
+
+        fig.update_xaxes({&#39;range&#39;: min_max})
+        fig.update_layout(title_text=title, title_x=0.15, font={&#39;color&#39;: &#34;#371ea3&#34;}, template=&#34;none&#34;,
+                          height=plot_height, margin={&#39;t&#39;: 78, &#39;b&#39;: 71, &#39;r&#39;: 30})
+
+        if show:
+            fig.show(config=_theme.get_default_config())
+        else:
+            return fig</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.dataset_level.VariableImportance.fit"><code class="name flex">
+<span>def <span class="ident">fit</span></span>(<span>self, explainer)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate the result of explanation</p>
+<p>Fit method makes calculations in place and changes the attributes.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>explainer</code></strong> :&ensp;<code>Explainer object</code></dt>
+<dd>Model wrapper created using the Explainer class.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fit(self, explainer):
+    &#34;&#34;&#34;Calculate the result of explanation
+
+    Fit method makes calculations in place and changes the attributes.
+
+    Parameters
+    -----------
+    explainer : Explainer object
+        Model wrapper created using the Explainer class.
+
+    Returns
+    -----------
+    None
+    &#34;&#34;&#34;
+
+    # if `variable_groups` are not specified, then extract from `variables`
+    self.variable_groups = check_variable_groups(self.variable_groups, explainer)
+    self.variables = check_variables(self.variables, self.variable_groups, explainer)
+    self.result, self.permutation = calculate_variable_importance(explainer,
+                                                                  self.type,
+                                                                  self.loss_function,
+                                                                  self.variables,
+                                                                  self.N,
+                                                                  self.B,
+                                                                  explainer.label,
+                                                                  self.processes,
+                                                                  self.keep_raw_permutations)</code></pre>
+</details>
+</dd>
+<dt id="dalex.dataset_level.VariableImportance.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>self, objects=None, max_vars=10, digits=3, rounding_function=&lt;function around&gt;, bar_width=16, split=('model', 'variable'), title='Variable Importance', vertical_spacing=None, show=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the Variable Importance explanation</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>objects</code></strong> :&ensp;<code><a title="dalex.dataset_level.VariableImportance" href="#dalex.dataset_level.VariableImportance">VariableImportance</a> object</code> or <code>array_like</code> of <code><a title="dalex.dataset_level.VariableImportance" href="#dalex.dataset_level.VariableImportance">VariableImportance</a> objects</code></dt>
+<dd>Additional objects to plot in subplots (default is None).</dd>
+<dt><strong><code>max_vars</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Maximum number of variables that will be presented for for each subplot
+(default is 10).</dd>
+<dt><strong><code>digits</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of decimal places (np.around) to round contributions.
+See <code>rounding_function</code> parameter (default is 3).</dd>
+<dt><strong><code>rounding_function</code></strong> :&ensp;<code>function</code>, optional</dt>
+<dd>A funciton that will be used for rounding numbers (default is np.around).</dd>
+<dt><strong><code>bar_width</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Width of bars in px (default is 16).</dd>
+<dt><strong><code>split</code></strong> :&ensp;<code>{'model', 'variable'}</code>, optional</dt>
+<dd>Split the subplots by model or variable (default is 'model').</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Title of the plot (default is "Variable Importance").</dd>
+<dt><strong><code>vertical_spacing</code></strong> :&ensp;<code>float &lt;0, 1&gt;</code>, optional</dt>
+<dd>Ratio of vertical space between the plots (default is 0.2/number of rows).</dd>
+<dt><strong><code>show</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>True shows the plot; False returns the plotly Figure object that can be
+edited or saved using the <code>write_image()</code> method (default is True).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code> or <code>plotly.graph_objects.Figure</code></dt>
+<dd>Return figure that can be edited or saved. See <code>show</code> parameter.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot(self,
+         objects=None,
+         max_vars=10,
+         digits=3,
+         rounding_function=np.around,
+         bar_width=16,
+         split=(&#34;model&#34;, &#34;variable&#34;),
+         title=&#34;Variable Importance&#34;,
+         vertical_spacing=None,
+         show=True):
+    &#34;&#34;&#34;Plot the Variable Importance explanation
+
+    Parameters
+    -----------
+    objects : VariableImportance object or array_like of VariableImportance objects
+        Additional objects to plot in subplots (default is None).
+    max_vars : int, optional
+        Maximum number of variables that will be presented for for each subplot
+        (default is 10).
+    digits : int, optional
+        Number of decimal places (np.around) to round contributions.
+        See `rounding_function` parameter (default is 3).
+    rounding_function : function, optional
+        A funciton that will be used for rounding numbers (default is np.around).
+    bar_width : float, optional
+        Width of bars in px (default is 16).
+    split : {&#39;model&#39;, &#39;variable&#39;}, optional
+        Split the subplots by model or variable (default is &#39;model&#39;).
+    title : str, optional
+        Title of the plot (default is &#34;Variable Importance&#34;).
+    vertical_spacing : float &lt;0, 1&gt;, optional
+        Ratio of vertical space between the plots (default is 0.2/number of rows).
+    show : bool, optional
+        True shows the plot; False returns the plotly Figure object that can be
+        edited or saved using the `write_image()` method (default is True).
+
+    Returns
+    -----------
+    None or plotly.graph_objects.Figure
+        Return figure that can be edited or saved. See `show` parameter.
+    &#34;&#34;&#34;
+
+    if isinstance(split, tuple):
+        split = split[0]
+
+    if split not in (&#34;model&#34;, &#34;variable&#34;):
+        raise TypeError(&#34;split should be &#39;model&#39; or &#39;variable&#39;&#34;)
+
+    # are there any other objects to plot?
+    if objects is None:
+        n = 1
+        _result_df = self.result.copy()
+        if split == &#39;variable&#39;:  # force split by model if only one explainer
+            split = &#39;model&#39;
+    elif isinstance(objects, self.__class__):  # allow for objects to be a single element
+        n = 2
+        _result_df = pd.concat([self.result.copy(), objects.result.copy()])
+    elif isinstance(objects, (list, tuple)):  # objects as tuple or array
+        n = len(objects) + 1
+        _result_df = self.result.copy()
+        for ob in objects:
+            _global_checks.global_check_object_class(ob, self.__class__)
+            _result_df = pd.concat([_result_df, ob.result.copy()])
+    else:
+        _global_checks.global_raise_objects_class(objects, self.__class__)
+
+    dl = _result_df.loc[_result_df.variable != &#39;_baseline_&#39;, &#39;dropout_loss&#39;].to_numpy()
+    min_max_margin = dl.ptp() * 0.15
+    min_max = [dl.min() - min_max_margin, dl.max() + min_max_margin]
+
+    # take out full model
+    best_fits = _result_df[_result_df.variable == &#39;_full_model_&#39;]
+
+    # this produces dropout_loss_x and dropout_loss_y columns
+    _result_df = _result_df.merge(best_fits[[&#39;label&#39;, &#39;dropout_loss&#39;]], how=&#34;left&#34;, on=&#34;label&#34;)
+    _result_df = _result_df[[&#39;label&#39;, &#39;variable&#39;, &#39;dropout_loss_x&#39;, &#39;dropout_loss_y&#39;]].rename(
+        columns={&#39;dropout_loss_x&#39;: &#39;dropout_loss&#39;, &#39;dropout_loss_y&#39;: &#39;full_model&#39;})
+
+    # remove full_model and baseline
+    _result_df = _result_df[(_result_df.variable != &#39;_full_model_&#39;) &amp; (_result_df.variable != &#39;_baseline_&#39;)]
+
+    # calculate order of bars or variable plots (split = &#39;variable&#39;)
+    # get variable permutation
+    perm = _result_df[[&#39;variable&#39;, &#39;dropout_loss&#39;]].groupby(&#39;variable&#39;).mean().reset_index(). \
+        sort_values(&#39;dropout_loss&#39;, ascending=False).variable.values
+
+    plot_height = 78 + 71
+
+    colors = _theme.get_default_colors(n, &#39;bar&#39;)
+
+    if vertical_spacing is None:
+        vertical_spacing = 0.2 / n
+
+    model_names = _result_df[&#39;label&#39;].unique().tolist()
+
+    if len(model_names) != n:
+        raise ValueError(&#39;label must be unique for each model&#39;)
+
+    if split == &#34;model&#34;:
+        # init plot
+        fig = make_subplots(rows=n, cols=1, shared_xaxes=True, vertical_spacing=vertical_spacing,
+                            x_title=&#39;drop-out loss&#39;,
+                            subplot_titles=model_names)
+
+        # split df by model
+        df_list = [v for k, v in _result_df.groupby(&#39;label&#39;, sort=False)]
+
+        for i, df in enumerate(df_list):
+            m = df.shape[0]
+            if max_vars is not None and max_vars &lt; m:
+                m = max_vars
+
+            # take only m variables (for max_vars)
+            # sort rows of df by variable permutation and drop unused variables
+            df = df.sort_values(&#39;dropout_loss&#39;).tail(m) \
+                .set_index(&#39;variable&#39;).reindex(perm).dropna().reset_index()
+
+            baseline = df.iloc[0, df.columns.get_loc(&#39;full_model&#39;)]
+
+            df = df.assign(difference=lambda x: x[&#39;dropout_loss&#39;] - baseline)
+
+            lt = df.difference.apply(lambda val:
+                                     &#34;+&#34;+str(rounding_function(np.abs(val), digits)) if val &gt; 0
+                                     else str(rounding_function(np.abs(val), digits)))
+            tt = df.apply(lambda row: tooltip_text(row, rounding_function, digits), axis=1)
+            df = df.assign(label_text=lt,
+                           tooltip_text=tt)
+
+            fig.add_shape(type=&#39;line&#39;, x0=baseline, x1=baseline, y0=-1, y1=m, yref=&#34;paper&#34;, xref=&#34;x&#34;,
+                          line={&#39;color&#39;: &#34;#371ea3&#34;, &#39;width&#39;: 1.5, &#39;dash&#39;: &#39;dot&#39;}, row=i + 1, col=1)
+
+            fig.add_bar(
+                orientation=&#34;h&#34;,
+                y=df[&#39;variable&#39;].tolist(),
+                x=df[&#39;difference&#39;].tolist(),
+                textposition=&#34;outside&#34;,
+                text=df[&#39;label_text&#39;].tolist(),
+                marker_color=colors[i],
+                base=baseline,
+                hovertext=df[&#39;tooltip_text&#39;].tolist(),
+                hoverinfo=&#39;text&#39;,
+                hoverlabel={&#39;bgcolor&#39;: &#39;rgba(0,0,0,0.8)&#39;},
+                showlegend=False,
+                row=i + 1, col=1
+            )
+
+            fig.update_yaxes({&#39;type&#39;: &#39;category&#39;, &#39;autorange&#39;: &#39;reversed&#39;, &#39;gridwidth&#39;: 2, &#39;automargin&#39;: True,
+                              &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True},
+                             row=i + 1, col=1)
+
+            fig.update_xaxes(
+                {&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#34;outside&#34;,
+                 &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True},
+                row=i + 1, col=1)
+
+            plot_height += m * bar_width + (m + 1) * bar_width / 4 + 30
+    else:
+        # split df by variable
+        df_list = [v for k, v in _result_df.groupby(&#39;variable&#39;, sort=False)]
+
+        n = len(df_list)
+        if max_vars is not None and max_vars &lt; n:
+            n = max_vars
+        
+        if vertical_spacing is None:
+            vertical_spacing = 0.2 / n
+        
+        # init plot
+        variable_names = perm[0:n]
+        fig = make_subplots(rows=n, cols=1, shared_xaxes=True, vertical_spacing=vertical_spacing, x_title=&#39;drop-out loss&#39;,
+                            subplot_titles=variable_names)
+
+        df_dict = {e.variable.array[0]: e for e in df_list}
+
+        # take only n=max_vars elements from df_dict
+        for i in range(n):
+            df = df_dict[perm[i]]
+            m = df.shape[0]
+
+            baseline = 0
+
+            df = df.assign(difference=lambda x: x[&#39;dropout_loss&#39;] - x[&#39;full_model&#39;])
+
+            lt = df.difference.apply(lambda val:
+                                     &#34;+&#34;+str(rounding_function(np.abs(val), digits)) if val &gt; 0
+                                     else str(rounding_function(np.abs(val), digits)))
+            tt = df.apply(lambda row: tooltip_text(row, rounding_function, digits), axis=1)
+            df = df.assign(label_text=lt,
+                           tooltip_text=tt)
+
+            fig.add_shape(type=&#39;line&#39;, x0=baseline, x1=baseline, y0=-1, y1=m, yref=&#34;paper&#34;, xref=&#34;x&#34;,
+                          line={&#39;color&#39;: &#34;#371ea3&#34;, &#39;width&#39;: 1.5, &#39;dash&#39;: &#39;dot&#39;}, row=i + 1, col=1)
+
+            fig.add_bar(
+                orientation=&#34;h&#34;,
+                y=df[&#39;label&#39;].tolist(),
+                x=df[&#39;dropout_loss&#39;].tolist(),
+                # textposition=&#34;outside&#34;,
+                # text=df[&#39;label_text&#39;].tolist(),
+                marker_color=colors,
+                base=baseline,
+                hovertext=df[&#39;tooltip_text&#39;].tolist(),
+                hoverinfo=&#39;text&#39;,
+                hoverlabel={&#39;bgcolor&#39;: &#39;rgba(0,0,0,0.8)&#39;},
+                showlegend=False,
+                row=i + 1, col=1)
+
+            fig.update_yaxes({&#39;type&#39;: &#39;category&#39;, &#39;autorange&#39;: &#39;reversed&#39;, &#39;gridwidth&#39;: 2, &#39;automargin&#39;: True,
+                              &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True},
+                             row=i + 1, col=1)
+
+            fig.update_xaxes(
+                {&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True, &#39;ticks&#39;: &#34;outside&#34;,
+                 &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True},
+                row=i + 1, col=1)
+
+            plot_height += m * bar_width + (m + 1) * bar_width / 4
+
+    plot_height += (n - 1) * 70
+
+    fig.update_xaxes({&#39;range&#39;: min_max})
+    fig.update_layout(title_text=title, title_x=0.15, font={&#39;color&#39;: &#34;#371ea3&#34;}, template=&#34;none&#34;,
+                      height=plot_height, margin={&#39;t&#39;: 78, &#39;b&#39;: 71, &#39;r&#39;: 30})
+
+    if show:
+        fig.show(config=_theme.get_default_config())
+    else:
+        return fig</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dalex" href="../index.html">dalex</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dalex.dataset_level.AggregatedProfiles" href="#dalex.dataset_level.AggregatedProfiles">AggregatedProfiles</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.dataset_level.AggregatedProfiles.fit" href="#dalex.dataset_level.AggregatedProfiles.fit">fit</a></code></li>
+<li><code><a title="dalex.dataset_level.AggregatedProfiles.plot" href="#dalex.dataset_level.AggregatedProfiles.plot">plot</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.dataset_level.ModelPerformance" href="#dalex.dataset_level.ModelPerformance">ModelPerformance</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.dataset_level.ModelPerformance.fit" href="#dalex.dataset_level.ModelPerformance.fit">fit</a></code></li>
+<li><code><a title="dalex.dataset_level.ModelPerformance.plot" href="#dalex.dataset_level.ModelPerformance.plot">plot</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.dataset_level.ResidualDiagnostics" href="#dalex.dataset_level.ResidualDiagnostics">ResidualDiagnostics</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.dataset_level.ResidualDiagnostics.fit" href="#dalex.dataset_level.ResidualDiagnostics.fit">fit</a></code></li>
+<li><code><a title="dalex.dataset_level.ResidualDiagnostics.plot" href="#dalex.dataset_level.ResidualDiagnostics.plot">plot</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.dataset_level.VariableImportance" href="#dalex.dataset_level.VariableImportance">VariableImportance</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.dataset_level.VariableImportance.fit" href="#dalex.dataset_level.VariableImportance.fit">fit</a></code></li>
+<li><code><a title="dalex.dataset_level.VariableImportance.plot" href="#dalex.dataset_level.VariableImportance.plot">plot</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>
