@@ -17,7 +17,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
 ```
 
-In the vignette below we will see how four selected models of predicting the price of flats find relationships between dependent variables and variables from the model.
+In the vignette below we will see how a four selected models that predict the price of flats find relationships between dependent variables and variables from the model.
 
 ```{r libs}
 library(DALEX)
@@ -27,8 +27,8 @@ library(e1071)
 ```
 
 
-#Data set and model
-To illustrate applications of *DALEX* to finding differences between variables we will use an artificial dataset `apartments` available in the DALEX package. Our goal is to predict the price per square meter of an apartment based on selected features such as construction year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one. Prices are given in Euro.
+# Data set and model
+To illustrate applications of *DALEX* to find differences between variables we will use an artificial dataset `apartments` available in the DALEX package. Our goal is to predict the price per square meter of an apartment based on selected features such as construction year, surface, floor, number of rooms, district. It should be noted that four of these variables are continuous while the fifth one is a categorical one. Prices are given in Euro.
 
 ```{r, include=FALSE}
 data("apartments")
@@ -40,7 +40,7 @@ data("apartmentsTest")
 head(apartments)
 ```
 
-##True relation in data
+## True relation in data
 
 Our simulated response variable `m2.price` is the function of 5 features:
 
@@ -50,7 +50,7 @@ $$
 where instead of variable `construction.year` we have the logical variable telling us whether the flat was built before 1934 or after 1996 (then it has value 1) or between 1935 and 1995 (then it has value 0). 
 
 
-#Creating models
+# Creating models
 We will consider four models: random forest, support vector machine, linear regression and gradient boosting model.
 ```{r models}
 
@@ -68,7 +68,7 @@ regr_xgb <- xgb.train(data = data_train, nrounds = 50)
 ```
 
 
-#Explainers
+# Explainers
 To create an explainer for these models it is enough to use `explain()` function with the model, data and y parameters. Validation dataset for the models is `apartmentsTest` data from the *DALEX* package.
 
 ```{r explainers, results="hide"}
@@ -92,7 +92,7 @@ explainer_tr <- explain(NULL, data = apartmentsTest[,2:6], y = apartmentsTest$m2
 
 ```
 
-#Variable importance
+# Variable importance
 Firstly, we use the `model_parts()` function to find out which variables are important in each model.
 ```{r var_importance}
 vi_rf <- model_parts(explainer_rf)
@@ -108,10 +108,11 @@ plot(vi_lm, vi_svm, vi_svm_e1071, vi_xgb, vi_rf)
 In the plot above we see that the variables `surface`, `floor` and `district` are important in all considered models (in xgboost model we have to divide qualitative variable `district` into ten binary variables corresponding to each district in our previous data frame).
 In linear model and a svm model created by `caret` package we see that the `construction.year` isn't an important variable.
 
-#Variables
+# Variables
 Now we can focus on each variable and consider their impact on the `m2.price`. We we will see how a change in the value of a given variable affects the response of each model.
 for the analysis of the quantitative variables we will use the `model_profile()`function with the `partial` type.
-##Construction year
+
+## Construction year
 ```{r var_constr_y}
 sv_rf  <- model_profile(explainer_rf, variable =  "construction.year", type = "partial")
 sv_lm  <- model_profile(explainer_lm, variable =  "construction.year", type = "partial")
@@ -126,7 +127,7 @@ plot(sv_lm, sv_rf, sv_svm, sv_svm_e1071, sv_xgb, sv_tr)
 For the variable `construction_year`, which was important in three of four models we see that the linear regression model and svm model didn't capture the non-linear relationship between the considred variable and the mean `m2.price`. 
 The xgboost model best guesses the real relationship in our data.
 
-##Surface
+## Surface
 ```{r var_surface}
 sv_rf  <- model_profile(explainer_rf, variable =  "surface", type = "partial")
 sv_lm  <- model_profile(explainer_lm, variable =  "surface", type = "partial")
@@ -141,7 +142,7 @@ plot(sv_lm, sv_rf, sv_svm, sv_svm_e1071, sv_xgb, sv_tr)
 
 For the variable `surface` we see that all of the models have nearly the same performance and for this variable we see that the apartments with larger surface have the smaller mean price per square meter, than flats with the smaller surface.
 
-##Floor
+## Floor
 ```{r var_floor}
 sv_rf  <- model_profile(explainer_rf, variable =  "floor", type = "partial")
 sv_lm  <- model_profile(explainer_lm, variable =  "floor", type = "partial")
@@ -158,7 +159,7 @@ plot(sv_lm, sv_rf, sv_svm, sv_svm_e1071, sv_xgb, sv_tr)
 For the variable `floor` we see that all of the models have nearly the same performance and for this variable we see that the apartments which are on the higher floor have the smaller mean price per square meter, than flats on the lower floors. As in the case with the variable `surface` we see that the svm model gives us the smallest mean price than other models.
 
 
-##District
+## District
 ```{r var_district}
 sv_rf  <- model_profile(explainer_rf, variable =  "district", type = "partial")
 sv_lm  <- model_profile(explainer_lm, variable =  "district", type = "partial")
@@ -171,9 +172,9 @@ plot(sv_lm, sv_rf, sv_svm, sv_svm_e1071, sv_tr)
 
 ```
 
-For the variable `district` we see that all of the models have nearly the same performance. We see on the plots three clusters: the city center (Srodmiescie), districts well communicated with city center (Ochota, Mokotow, Zoliborz) and other districts closer to city boundaries.
+For the variable `district` we see that all of the models have nearly the same performance. We can see three clusters in the plots above: the city center (Srodmiescie), districts well communicated with city center (Ochota, Mokotow, Zoliborz) and other districts closer to city boundaries.
 
-#Session info
+# Session info
 ```{r session info}
 sessionInfo()
 ```

@@ -141,7 +141,7 @@ plot(model_profile(ex_rf, "X4"),
 
 For `X5` we want to see `|2 x5 - 1|`.
 
-All models except the lieanr one are guessing the shape.
+All models except the linear one are guessing the shape.
 
 ```{r}
 plot(model_profile(ex_rf, "X5"),
