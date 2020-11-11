@@ -59,7 +59,8 @@ library("DALEX")
 explainer_xgb <- explain(wine_xgb_model, 
                          data = model_martix_train, 
                          y = wine$quality, 
-                         label = "xgboost")
+                         label = "xgboost",
+                         colorize = FALSE)
 explainer_xgb
 ```
 
@@ -71,7 +72,6 @@ For continouse variable
 sv_xgb_satisfaction_level  <- model_profile(explainer_xgb, 
                                             variable = "alcohol", 
                                             type = "partial")
-head(sv_xgb_satisfaction_level)
 
 plot(sv_xgb_satisfaction_level)
 ```
@@ -141,7 +141,8 @@ explainer_xgb <- explain(HR_xgb_model,
                          y = HR_data$left, 
                          predict_function = predict_logit,
                          link = logit,
-                         label = "xgboost")
+                         label = "xgboost",
+                         colorize = FALSE)
 explainer_xgb
 ```
 
@@ -153,7 +154,6 @@ For continouse variable
 sv_xgb_satisfaction_level  <- model_profile(explainer_xgb, 
                           variable = "satisfaction_level",
                           type = "partial")
-head(sv_xgb_satisfaction_level)
 
 plot(sv_xgb_satisfaction_level)
 ```
