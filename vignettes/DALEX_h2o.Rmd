@@ -1,19 +1,21 @@
 ---
 title: "How to use DALEX with H2O"
-author: "Alicja Gosiewska"
-date: "2018-06-16"
+author: 
+  - Alicja Gosiewska, Anna Kozak
+date: First created on July 6, 2018. Updated on Nov 21, 2020
 output: 
   html_document:
     toc: true  
     toc_float: true
     number_sections: true
+    theme: flatly
+    highlight: kate
+    fig_caption: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warnings = FALSE, message = FALSE)
 ```
-
-<span style="color:red">Please keep in mind, that [DALEXtra](https://CRAN.R-project.org/package=DALEXtra) now support usage of mlr with dedicated `explain_h2o` function. It is recommended to use it.</span> 
 
 # Introduction
 
@@ -56,41 +58,36 @@ model_h2o_gbm <- h2o.gbm(y = "m2.price", training_frame = apartments_hf)
 
 We also create third model by an H2O AutoML.
 
-```{r}
+```{r, message=FALSE, error=FALSE, warning=FALSE, eval=FALSE}
+model_h2o_automl <- h2o.automl(y = "m2.price", training_frame = apartments_hf, max_models = 10)
+```
+
+```{r, message=FALSE, error=FALSE, warning=FALSE, include=FALSE}
 model_h2o_automl <- h2o.automl(y = "m2.price", training_frame = apartments_hf, max_models = 10)
 ```
 
 
 # The explain() function
-The first step of using the DALEX package is to wrap-up the black-box model with meta-data that unifies model interfacing.
+The first step of using the DALEX package is to wrap-up the black-box model with meta-data that unifies model interfacing. For model built in `h2o` we can use DALEXtra, the extension of DALEX package.
 
-To create an explainer we use `explain()` function. Validation dataset for the models is `apartmentsTest` data from the `DALEX` package. For the models created by h2o package we have to provide custom predict function which takes two arguments: `model` and `newdata` and returns a numeric vector with predictions.
+To create an explainer we use `explain_h2o()` function. Validation dataset for the models is `apartmentsTest` data from the `DALEX` package. For the models created by h2o package we have to provide custom predict function which takes two arguments: `model` and `newdata` and returns a numeric vector with predictions.
 
 ```{r}
-custom_predict <- function(model, newdata)  {
-                              newdata_h2o <- as.h2o(newdata)
-                              res <- as.data.frame(h2o.predict(model, newdata_h2o))
-                              return(as.numeric(res$predict))
-     }
-
-explainer_h2o_glm <- explain(model = model_h2o_glm, 
+explainer_h2o_glm <- DALEXtra::explain_h2o(model = model_h2o_glm, 
                              data = apartmentsTest[,2:6],  
                              y = apartmentsTest$m2.price,
-                             predict_function = custom_predict,
                              label = "h2o glm",
                              colorize = FALSE)
 
-explainer_h2o_gbm <- explain(model = model_h2o_gbm, 
+explainer_h2o_gbm <- DALEXtra::explain_h2o(model = model_h2o_gbm, 
                              data = apartmentsTest[,2:6],  
                              y = apartmentsTest$m2.price,
-                             predict_function = custom_predict,
                              label = "h2o gbm",
                              colorize = FALSE)
 
-explainer_h2o_automl <- explain(model = model_h2o_automl, 
+explainer_h2o_automl <- DALEXtra::explain_h2o(model = model_h2o_automl, 
                              data = apartmentsTest[,2:6],  
                              y = apartmentsTest$m2.price,
-                             predict_function = custom_predict,
                              label = "h2o automl",
                              colorize = FALSE)
 ```
@@ -129,18 +126,18 @@ Using he DALEX package we are able to better understand which variables are impo
 
 Model agnostic variable importance is calculated by means of permutations. We simply substract the loss function calculated for validation dataset with permuted values for a single variable from the loss function calculated for validation dataset.
 
-This method is implemented in the `variable_importance()` function.
+This method is implemented in the `model_parts()` function.
 
 ```{r}
-vi_h2o_glm <- variable_importance(explainer_h2o_glm)
-vi_h2o_gbm <- variable_importance(explainer_h2o_gbm)
-vi_h2o_automl <- variable_importance(explainer_h2o_automl)
+vi_h2o_glm <- model_parts(explainer_h2o_glm)
+vi_h2o_gbm <- model_parts(explainer_h2o_gbm)
+vi_h2o_automl <- model_parts(explainer_h2o_automl)
 ```
 
 We can compare all models using the generic `plot()` function.
 
 ```{r}
-plot(vi_h2o_glm, vi_h2o_gbm, vi_h2o_automl)
+plot(vi_h2o_automl, vi_h2o_gbm, vi_h2o_glm)
 ```
 
 Length of the interval coresponds to a variable importance. Longer interval means larger loss, so the variable is more important.
@@ -148,28 +145,28 @@ Length of the interval coresponds to a variable importance. Longer interval mean
 For better comparison of the models we can hook the variabe importance at 0 using the `type="difference"`.
 
 ```{r}
-vi_h2o_glm <- variable_importance(explainer_h2o_glm, type="difference")
-vi_h2o_gbm <- variable_importance(explainer_h2o_gbm, type="difference")
-vi_h2o_automl <- variable_importance(explainer_h2o_automl, type="difference")
-plot(vi_h2o_glm, vi_h2o_gbm, vi_h2o_automl)
+vi_h2o_glm <- model_parts(explainer_h2o_glm, type="difference")
+vi_h2o_gbm <- model_parts(explainer_h2o_gbm, type="difference")
+vi_h2o_automl <- model_parts(explainer_h2o_automl, type="difference")
+plot(vi_h2o_automl, vi_h2o_gbm, vi_h2o_glm)
 ```
 
 # Variable response
 
 Explainers presented in this section are designed to better understand the relation between a variable and model output.
 
-For more details of methods desribed in this section see [Variable response section in DALEX docs](https://pbiecek.github.io/DALEX_docs/3-3-variableResponse.html).
+For more details of methods desribed in this section see [Partial-dependence Profiles](https://pbiecek.github.io/ema/partialDependenceProfiles.html) and [Local-dependence and Accumulated-local Profiles](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html)
 
 ## Partial Dependence Plot
 
 Partial Dependence Plots (PDP) are one of the most popular methods for exploration of the relation between a continuous variable and the model outcome.
 
-Function `variable_response()` with the parameter `type = "pdp"` calls `pdp::partial()` function to calculate PDP response.
+Function `model_profile()` with the parameter `type = "partial"` calculate PDP response.
 
 ```{r}
-pdp_h2o_glm <- variable_response(explainer_h2o_glm, variable = "construction.year")
-pdp_h2o_gbm <- variable_response(explainer_h2o_gbm, variable = "construction.year")
-pdp_h2o_automl <- variable_response(explainer_h2o_automl, variable = "construction.year")
+pdp_h2o_glm <- model_profile(explainer_h2o_glm, variable = "construction.year", type = "partial")
+pdp_h2o_gbm <- model_profile(explainer_h2o_gbm, variable = "construction.year", type = "partial")
+pdp_h2o_automl <- model_profile(explainer_h2o_automl, variable = "construction.year", type = "partial")
 
 plot(pdp_h2o_glm, pdp_h2o_gbm, pdp_h2o_automl)
 ```
@@ -178,44 +175,32 @@ plot(pdp_h2o_glm, pdp_h2o_gbm, pdp_h2o_automl)
 
 Acumulated Local Effects (ALE) plot is the extension of PDP, that is more suited for highly correlated variables.
 
-Function `variable_response()` with the parameter `type = "ale"` calls `ALEPlot::ALEPlot()` function to calculate the ALE curve for the variable `construction.year`.
+Function `model_profile()` with the parameter `type = "accumulated"` calculate the ALE curve for the variable `construction.year`.
 
 ```{r}
-ale_h2o_glm <- variable_response(explainer_h2o_glm, variable = "construction.year", type = "ale")
-ale_h2o_gbm <- variable_response(explainer_h2o_gbm, variable = "construction.year", type = "ale")
-ale_h2o_automl <- variable_response(explainer_h2o_automl, variable = "construction.year", type = "ale")
+ale_h2o_glm <- model_profile(explainer_h2o_glm, variable = "construction.year", type = "accumulated")
+ale_h2o_gbm <- model_profile(explainer_h2o_gbm, variable = "construction.year", type = "accumulated")
+ale_h2o_automl <- model_profile(explainer_h2o_automl, variable = "construction.year", type = "accumulated")
 
 plot(ale_h2o_glm, ale_h2o_gbm, ale_h2o_automl)
 ```
 
-## Merging Path Plots
-
-Merging Path Plot is a method for exploration of a relation between a categorical variable and model outcome.
-
-Function `variable_response()` with the parameter `type = "factor"` calls `factorMerger::mergeFactors()` function.
-
-```{r fig.height=12}
-mpp_h2o_glm <- variable_response(explainer_h2o_glm, variable = "district", type = "factor")
-mpp_h2o_gbm <- variable_response(explainer_h2o_gbm, variable = "district", type = "factor")
-mpp_h2o_automl <- variable_response(explainer_h2o_automl, variable = "district", type = "factor")
-
-plot(mpp_h2o_glm, mpp_h2o_gbm, mpp_h2o_automl)
-```
 
 # Prediction understanding
 
-The function `prediction_breakdown()` is a wrapper around a [breakDown](https://CRAN.R-project.org/package=breakDown) package.
 Model prediction is visualized with Break Down Plots, which show the contribution of every variable present in the model.
-Function `prediction_breakdown()` generates variable attributions for selected prediction. The generic `plot()` function shows these attributions.
+Function `predict_parts()` with `type = "break_down"` generates variable attributions for selected prediction. The generic `plot()` function shows these attributions.
 
 
 ```{r}
 new_apartment <- apartmentsTest[1,]
-pb_h2o_glm <- prediction_breakdown(explainer_h2o_glm, observation = new_apartment)
-pb_h2o_gbm <- prediction_breakdown(explainer_h2o_gbm, observation = new_apartment)
-pb_h2o_automl <- prediction_breakdown(explainer_h2o_automl, observation = new_apartment)
+pb_h2o_glm <- predict_parts(explainer_h2o_glm, new_observation = new_apartment, type = "break_down")
+pb_h2o_gbm <- predict_parts(explainer_h2o_gbm, new_observation = new_apartment, type = "break_down")
+pb_h2o_automl <- predict_parts(explainer_h2o_automl, new_observation = new_apartment, type = "break_down")
 
-plot(pb_h2o_glm, pb_h2o_gbm, pb_h2o_automl)
+plot(pb_h2o_automl)
+plot(pb_h2o_gbm)
+plot(pb_h2o_glm)
 ```
 
 
