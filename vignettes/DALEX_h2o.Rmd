@@ -155,13 +155,13 @@ plot(vi_h2o_automl, vi_h2o_gbm, vi_h2o_glm)
 
 Explainers presented in this section are designed to better understand the relation between a variable and model output.
 
-For more details of methods desribed in this section see [Partial-dependence Profiles](https://pbiecek.github.io/ema/partialDependenceProfiles.html) and [Local-dependence and Accumulated-local Profiles](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html)
+For more details of methods described in this section see [Partial-dependence Profiles](https://pbiecek.github.io/ema/partialDependenceProfiles.html) and [Local-dependence and Accumulated-local Profiles](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html)
 
 ## Partial Dependence Plot
 
 Partial Dependence Plots (PDP) are one of the most popular methods for exploration of the relation between a continuous variable and the model outcome.
 
-Function `model_profile()` with the parameter `type = "partial"` calculate PDP response.
+Function `model_profile()` with the parameter `type = "partial"` calculates PDP response.
 
 ```{r}
 pdp_h2o_glm <- model_profile(explainer_h2o_glm, variable = "construction.year", type = "partial")
