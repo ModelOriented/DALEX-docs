@@ -14,6 +14,7 @@
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
 </head>
 <body>
 <main>
@@ -1000,6 +1001,8 @@ eg. if there is not enough unique values for a given variable.</dd>
             if len(_result_df[&#39;_ids_&#39;].unique()) &gt; 1 and len(_result_df[&#39;_label_&#39;].unique()) == 1:
                 color = &#39;_ids_&#39;
                 m = len(_result_df[color].dropna().unique())
+            elif len(_result_df[&#39;_ids_&#39;].unique()) == len(_result_df[&#39;_label_&#39;].unique()):
+                m = len(_result_df[color].dropna().unique())
             elif len(_result_df[&#39;_ids_&#39;].unique()) &gt; 1:  # https://github.com/plotly/plotly.py/issues/2657
                 raise TypeError(&#34;Please pick one observation per label.&#34;)
 
@@ -1358,6 +1361,8 @@ edited or saved using the <code>write_image()</code> method (default is True).</
     else:
         if len(_result_df[&#39;_ids_&#39;].unique()) &gt; 1 and len(_result_df[&#39;_label_&#39;].unique()) == 1:
             color = &#39;_ids_&#39;
+            m = len(_result_df[color].dropna().unique())
+        elif len(_result_df[&#39;_ids_&#39;].unique()) == len(_result_df[&#39;_label_&#39;].unique()):
             m = len(_result_df[color].dropna().unique())
         elif len(_result_df[&#39;_ids_&#39;].unique()) &gt; 1:  # https://github.com/plotly/plotly.py/issues/2657
             raise TypeError(&#34;Please pick one observation per label.&#34;)
@@ -1986,6 +1991,11 @@ edited or saved using the <code>write_image()</code> method (default is True).</
 </section>
 </article>
 <nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+</a>
+</header>
 <h1>Index</h1>
 <div class="toc">
 <ul></ul>

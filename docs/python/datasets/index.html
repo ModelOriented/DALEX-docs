@@ -14,6 +14,7 @@
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
 </head>
 <body>
 <main>
@@ -53,11 +54,11 @@ __all__ = [
 <span>def <span class="ident">load_apartments</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Loads the apartments data set</p>
-<p>Datasets apartments and apartments_test are artificial,
-generated from the same model. Structure of the dataset is copied
-from real dataset from PBImisc package, but they were generated
-in a way to mimic effect of Anscombe quartet for complex black box models.</p>
+<div class="desc"><p>Loads the artificial 'apartments' dataset</p>
+<p>Datasets 'apartments' and 'apartments_test' are artificial, generated
+from the same model. Structure of the dataset is copied from the real
+dataset from the PBImisc R package, but they were generated in a way
+to mimic the effect of Anscombe quartet for complex black-box models.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>pd.DataFrame</code></dt>
@@ -68,12 +69,12 @@ in a way to mimic effect of Anscombe quartet for complex black box models.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_apartments():
-    &#34;&#34;&#34;Loads the apartments data set
+    &#34;&#34;&#34;Loads the artificial &#39;apartments&#39; dataset
 
-    Datasets apartments and apartments_test are artificial,
-    generated from the same model. Structure of the dataset is copied
-    from real dataset from PBImisc package, but they were generated
-    in a way to mimic effect of Anscombe quartet for complex black box models.
+    Datasets &#39;apartments&#39; and &#39;apartments_test&#39; are artificial, generated
+    from the same model. Structure of the dataset is copied from the real
+    dataset from the PBImisc R package, but they were generated in a way
+    to mimic the effect of Anscombe quartet for complex black-box models.
 
     Returns
     -----------
@@ -83,7 +84,7 @@ in a way to mimic effect of Anscombe quartet for complex black box models.</p>
     abs_dir_path = os.path.dirname(os.path.abspath(__file__))
     abs_datasets_path = os.path.join(abs_dir_path, &#39;data&#39;, &#39;apartments.csv&#39;)
 
-    dataset = pd.read_csv(abs_datasets_path, index_col=0, sep=&#39;;&#39;)
+    dataset = pd.read_csv(abs_datasets_path, index_col=0)  # use 1:1000 as index
 
     return dataset</code></pre>
 </details>
@@ -92,11 +93,11 @@ in a way to mimic effect of Anscombe quartet for complex black box models.</p>
 <span>def <span class="ident">load_apartments_test</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Loads the apartments test data set</p>
-<p>Datasets apartments and apartments_test are artificial,
-generated from the same model. Structure of the dataset is copied
-from real dataset from PBImisc package, but they were generated
-in a way to mimic effect of Anscombe quartet for complex black box models.</p>
+<div class="desc"><p>Loads the artificial 'apartments_test' dataset</p>
+<p>Datasets 'apartments' and 'apartments_test' are artificial, generated
+from the same model. Structure of the dataset is copied from the real
+dataset from the PBImisc R package, but they were generated in a way
+to mimic the effect of Anscombe quartet for complex black-box models.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>pd.DataFrame</code></dt>
@@ -107,12 +108,12 @@ in a way to mimic effect of Anscombe quartet for complex black box models.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_apartments_test():
-    &#34;&#34;&#34;Loads the apartments test data set
+    &#34;&#34;&#34;Loads the artificial &#39;apartments_test&#39; dataset
 
-    Datasets apartments and apartments_test are artificial,
-    generated from the same model. Structure of the dataset is copied
-    from real dataset from PBImisc package, but they were generated
-    in a way to mimic effect of Anscombe quartet for complex black box models.
+    Datasets &#39;apartments&#39; and &#39;apartments_test&#39; are artificial, generated
+    from the same model. Structure of the dataset is copied from the real
+    dataset from the PBImisc R package, but they were generated in a way
+    to mimic the effect of Anscombe quartet for complex black-box models.
 
     Returns
     -----------
@@ -122,7 +123,7 @@ in a way to mimic effect of Anscombe quartet for complex black box models.</p>
     abs_dir_path = os.path.dirname(os.path.abspath(__file__))
     abs_datasets_path = os.path.join(abs_dir_path, &#39;data&#39;, &#39;apartments_test.csv&#39;)
 
-    dataset = pd.read_csv(abs_datasets_path, index_col=0, sep=&#39;;&#39;)
+    dataset = pd.read_csv(abs_datasets_path, index_col=0)  # use 1001:9000 as index
 
     return dataset</code></pre>
 </details>
@@ -131,8 +132,8 @@ in a way to mimic effect of Anscombe quartet for complex black box models.</p>
 <span>def <span class="ident">load_dragons</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Load the dragons data set</p>
-<p>Data sets dragons and dragons_test are artificial,
+<div class="desc"><p>Load the artificial 'dragons' dataset</p>
+<p>Datasets 'dragons' and 'dragons_test' are artificial,
 generated from the same ground truth model,
 but with sometimes different data distridution.</p>
 <h2 id="returns">Returns</h2>
@@ -145,9 +146,9 @@ but with sometimes different data distridution.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_dragons():
-    &#34;&#34;&#34;Load the dragons data set
+    &#34;&#34;&#34;Load the artificial &#39;dragons&#39; dataset
 
-    Data sets dragons and dragons_test are artificial,
+    Datasets &#39;dragons&#39; and &#39;dragons_test&#39; are artificial,
     generated from the same ground truth model,
     but with sometimes different data distridution.
 
@@ -159,7 +160,7 @@ but with sometimes different data distridution.</p>
     abs_dir_path = os.path.dirname(os.path.abspath(__file__))
     abs_datasets_path = os.path.join(abs_dir_path, &#39;data&#39;, &#39;dragons.csv&#39;)
 
-    dataset = pd.read_csv(abs_datasets_path, index_col=0, sep=&#39;;&#39;)
+    dataset = pd.read_csv(abs_datasets_path, index_col=0)  # use 1:n as index
 
     return dataset</code></pre>
 </details>
@@ -168,8 +169,8 @@ but with sometimes different data distridution.</p>
 <span>def <span class="ident">load_dragons_test</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Load the dragons test data set</p>
-<p>Data sets dragons and dragons_test are artificial,
+<div class="desc"><p>Load the artificial 'dragons_test' dataset</p>
+<p>Datasets 'dragons' and 'dragons_test' are artificial,
 generated from the same ground truth model,
 but with sometimes different data distridution.</p>
 <h2 id="returns">Returns</h2>
@@ -182,9 +183,9 @@ but with sometimes different data distridution.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_dragons_test():
-    &#34;&#34;&#34;Load the dragons test data set
+    &#34;&#34;&#34;Load the artificial &#39;dragons_test&#39; dataset
 
-    Data sets dragons and dragons_test are artificial,
+    Datasets &#39;dragons&#39; and &#39;dragons_test&#39; are artificial,
     generated from the same ground truth model,
     but with sometimes different data distridution.
 
@@ -196,7 +197,7 @@ but with sometimes different data distridution.</p>
     abs_dir_path = os.path.dirname(os.path.abspath(__file__))
     abs_datasets_path = os.path.join(abs_dir_path, &#39;data&#39;, &#39;dragons_test.csv&#39;)
 
-    dataset = pd.read_csv(abs_datasets_path, index_col=0, sep=&#39;;&#39;)
+    dataset = pd.read_csv(abs_datasets_path, index_col=0)  # use 1:n as index
 
     return dataset</code></pre>
 </details>
@@ -258,11 +259,11 @@ Source: <a href="https://www.kaggle.com/stefanoleone992/fifa-20-complete-player-
 <span>def <span class="ident">load_german</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Load the German Credit data</p>
-<p>Dataset german contains information about people and their credit risk.
+<div class="desc"><p>Load the preprocessed 'German Credit' dataset</p>
+<p>Dataset 'german' contains information about people and their credit risk.
 On the base of age, purpose, credit amount, job, sex, etc. the model should
-predict the target - Risk. Risk tells if the credit rate will be good (1) or bad (0).
-This data contains some bias and it can be detected using the fairness module.</p>
+predict the target - risk. risk tells if the credit rate will be good (1) or bad (0).
+This data contains some bias and it can be detected using the dalex.fairness module.</p>
 <p>Format: pd.DataFrame with 1000 rows and 10 columns</p>
 <p>Source: <a href="https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data).">https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data).</a>
 Kaggle: <a href="https://www.kaggle.com/kabure/german-credit-data-with-risk/">https://www.kaggle.com/kabure/german-credit-data-with-risk/</a></p>
@@ -276,12 +277,12 @@ Kaggle: <a href="https://www.kaggle.com/kabure/german-credit-data-with-risk/">ht
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_german():
-    &#34;&#34;&#34;Load the German Credit data
+    &#34;&#34;&#34;Load the preprocessed &#39;German Credit&#39; dataset
 
-    Dataset german contains information about people and their credit risk.
+    Dataset &#39;german&#39; contains information about people and their credit risk.
     On the base of age, purpose, credit amount, job, sex, etc. the model should
-    predict the target - Risk. Risk tells if the credit rate will be good (1) or bad (0).
-    This data contains some bias and it can be detected using the fairness module.
+    predict the target - risk. risk tells if the credit rate will be good (1) or bad (0).
+    This data contains some bias and it can be detected using the dalex.fairness module.
 
     Format: pd.DataFrame with 1000 rows and 10 columns
 
@@ -305,10 +306,10 @@ Kaggle: <a href="https://www.kaggle.com/kabure/german-credit-data-with-risk/">ht
 <span>def <span class="ident">load_hr</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Load the HR data set</p>
-<p>Datasets HR and HR_test are artificial, generated from the same model.
-Structure of the dataset is based on a real data, from Human Resources department
-with information which employees were promoted, which were fired.</p>
+<div class="desc"><p>Load the artificial 'HR' dataset</p>
+<p>Datasets 'HR' and 'HR_test' are artificial, generated from the same model.
+Structure of the dataset is based on the real data from the Human Resources
+department containing information about which employees were promoted or fired.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>pd.DataFrame</code></dt>
@@ -319,11 +320,11 @@ with information which employees were promoted, which were fired.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_hr():
-    &#34;&#34;&#34;Load the HR data set
+    &#34;&#34;&#34;Load the artificial &#39;HR&#39; dataset
 
-    Datasets HR and HR_test are artificial, generated from the same model.
-    Structure of the dataset is based on a real data, from Human Resources department
-    with information which employees were promoted, which were fired.
+    Datasets &#39;HR&#39; and &#39;HR_test&#39; are artificial, generated from the same model.
+    Structure of the dataset is based on the real data from the Human Resources
+    department containing information about which employees were promoted or fired.
 
     Returns
     -----------
@@ -333,7 +334,7 @@ with information which employees were promoted, which were fired.</p>
     abs_dir_path = os.path.dirname(os.path.abspath(__file__))
     abs_datasets_path = os.path.join(abs_dir_path, &#39;data&#39;, &#39;hr.csv&#39;)
 
-    dataset = pd.read_csv(abs_datasets_path, index_col=0, sep=&#39;;&#39;)
+    dataset = pd.read_csv(abs_datasets_path, index_col=0)  # use 7847 numbers from 1:n as index
 
     return dataset</code></pre>
 </details>
@@ -342,10 +343,10 @@ with information which employees were promoted, which were fired.</p>
 <span>def <span class="ident">load_hr_test</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Load the HR test data set</p>
-<p>Datasets HR and HR_test are artificial, generated from the same model.
-Structure of the dataset is based on a real data, from Human Resources department
-with information which employees were promoted, which were fired.</p>
+<div class="desc"><p>Load the artificial 'HR_test' dataset</p>
+<p>Datasets 'HR' and 'HR_test' are artificial, generated from the same model.
+Structure of the dataset is based on the real data from the Human Resources
+department containing information about which employees were promoted or fired.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>pd.DataFrame</code></dt>
@@ -356,11 +357,11 @@ with information which employees were promoted, which were fired.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_hr_test():
-    &#34;&#34;&#34;Load the HR test data set
+    &#34;&#34;&#34;Load the artificial &#39;HR_test&#39; dataset
 
-    Datasets HR and HR_test are artificial, generated from the same model.
-    Structure of the dataset is based on a real data, from Human Resources department
-    with information which employees were promoted, which were fired.
+    Datasets &#39;HR&#39; and &#39;HR_test&#39; are artificial, generated from the same model.
+    Structure of the dataset is based on the real data from the Human Resources
+    department containing information about which employees were promoted or fired.
 
     Returns
     -----------
@@ -370,7 +371,7 @@ with information which employees were promoted, which were fired.</p>
     abs_dir_path = os.path.dirname(os.path.abspath(__file__))
     abs_datasets_path = os.path.join(abs_dir_path, &#39;data&#39;, &#39;hr_test.csv&#39;)
 
-    dataset = pd.read_csv(abs_datasets_path, index_col=0, sep=&#39;;&#39;)
+    dataset = pd.read_csv(abs_datasets_path, index_col=0)  # use 7847 numbers from 1:n as index
 
     return dataset</code></pre>
 </details>
@@ -411,6 +412,11 @@ with information which employees were promoted, which were fired.</p>
 </section>
 </article>
 <nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+</a>
+</header>
 <h1>Index</h1>
 <div class="toc">
 <ul></ul>
@@ -422,7 +428,7 @@ with information which employees were promoted, which were fired.</p>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="dalex.datasets.load_apartments" href="#dalex.datasets.load_apartments">load_apartments</a></code></li>
 <li><code><a title="dalex.datasets.load_apartments_test" href="#dalex.datasets.load_apartments_test">load_apartments_test</a></code></li>
 <li><code><a title="dalex.datasets.load_dragons" href="#dalex.datasets.load_dragons">load_dragons</a></code></li>
