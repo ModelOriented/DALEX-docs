@@ -95,6 +95,7 @@ figure {
   margin: 1em 40px; }
 
 hr {
+  clear: both;
   box-sizing: content-box;
   height: 0; }
 
