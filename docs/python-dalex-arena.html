@@ -13097,7 +13097,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">dalex</span> <span class="k">as</span> <span class="nn">dx</span>
@@ -13112,10 +13112,30 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;1.0.0&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">dx</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_apartments</span><span class="p">()</span>
@@ -13142,7 +13162,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
@@ -13184,7 +13204,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNet</span>
@@ -13209,6 +13229,35 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Pipeline(steps=[(&#39;preprocessor&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  Index([&#39;construction_year&#39;, &#39;surface&#39;, &#39;floor&#39;, &#39;no_rooms&#39;], dtype=&#39;object&#39;)),
+                                                 (&#39;cat&#39;,
+                                                  Pipeline(steps=[(&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;ignore&#39;))]),
+                                                  Index([&#39;district&#39;], dtype=&#39;object&#39;))])),
+                (&#39;model&#39;, DecisionTreeRegressor())])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13219,7 +13268,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">exp_elastic_net</span> <span class="o">=</span> <span class="n">dx</span><span class="o">.</span><span class="n">Explainer</span><span class="p">(</span><span class="n">model_elastic_net</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_test</span><span class="p">)</span>
@@ -13227,6 +13276,55 @@ div#notebook {
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Preparation of a new explainer is initiated
+
+  -&gt; data              : 9000 rows 5 cols
+  -&gt; target variable   : Parameter &#39;y&#39; was a pandas.Series. Converted to a numpy.ndarray.
+  -&gt; target variable   : 9000 values
+  -&gt; model_class       : sklearn.linear_model._coordinate_descent.ElasticNet (default)
+  -&gt; label             : Not specified, model&#39;s class short name will be used. (default)
+  -&gt; predict function  : &lt;function yhat_default at 0x0000020F1A5043A0&gt; will be used (default)
+  -&gt; predict function  : Accepts only pandas.DataFrame, numpy.ndarray causes problems.
+  -&gt; predicted values  : min = 2.46e+03, mean = 3.5e+03, max = 4.66e+03
+  -&gt; model type        : regression will be used (default)
+  -&gt; residual function : difference between y and yhat (default)
+  -&gt; residuals         : min = -9.47e+02, mean = 11.4, max = 2.16e+03
+  -&gt; model_info        : package sklearn
+
+A new explainer has been created!
+Preparation of a new explainer is initiated
+
+  -&gt; data              : 9000 rows 5 cols
+  -&gt; target variable   : Parameter &#39;y&#39; was a pandas.Series. Converted to a numpy.ndarray.
+  -&gt; target variable   : 9000 values
+  -&gt; model_class       : sklearn.tree._classes.DecisionTreeRegressor (default)
+  -&gt; label             : Not specified, model&#39;s class short name will be used. (default)
+  -&gt; predict function  : &lt;function yhat_default at 0x0000020F1A5043A0&gt; will be used (default)
+  -&gt; predict function  : Accepts only pandas.DataFrame, numpy.ndarray causes problems.
+  -&gt; predicted values  : min = 1.61e+03, mean = 3.51e+03, max = 6.6e+03
+  -&gt; model type        : regression will be used (default)
+  -&gt; residual function : difference between y and yhat (default)
+  -&gt; residuals         : min = -1.19e+03, mean = 3.23, max = 1e+03
+  -&gt; model_info        : package sklearn
+
+A new explainer has been created!
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13240,7 +13338,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create empty Arena</span>
@@ -13257,6 +13355,24 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>https://arena.drwhy.ai/?data=http://127.0.0.1:9294/
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13268,7 +13384,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">arena</span><span class="o">.</span><span class="n">push_model</span><span class="p">(</span><span class="n">exp_decision_tree</span><span class="p">)</span>
@@ -13289,7 +13405,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">arena</span><span class="o">.</span><span class="n">stop_server</span><span class="p">()</span>
@@ -13310,7 +13426,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create empty Arena</span>
@@ -13366,7 +13482,7 @@ Short description are available using <code>print_options</code> method.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">arena</span><span class="o">=</span><span class="n">dx</span><span class="o">.</span><span class="n">Arena</span><span class="p">()</span>
@@ -13381,6 +13497,60 @@ Short description are available using <code>print_options</code> method.</p>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>https://arena.drwhy.ai/?data=http://127.0.0.1:9294/
+
+<span class="ansi-bold">SHAPValues</span>
+---------------------------------
+B: 10   #Number of random paths
+
+<span class="ansi-bold">FeatureImportance</span>
+---------------------------------
+N: None   #Number of observations to use. None for all.
+B: 10   #Number of permutation rounds to perform each variable
+
+<span class="ansi-bold">PartialDependence</span>
+---------------------------------
+grid_type: quantile   #grid type &#34;quantile&#34; or &#34;uniform&#34;
+grid_points: 101   #Maximum number of points for profile
+N: 500   #Number of observations to use. None for all.
+
+<span class="ansi-bold">AccumulatedDependence</span>
+---------------------------------
+grid_type: quantile   #grid type &#34;quantile&#34; or &#34;uniform&#34;
+grid_points: 101   #Maximum number of points for profile
+N: 500   #Number of observations to use. None for all.
+
+<span class="ansi-bold">CeterisParibus</span>
+---------------------------------
+grid_points: 101   #Maximum number of points for profile
+grid_type: quantile   #grid type &#34;quantile&#34; or &#34;uniform&#34;
+
+<span class="ansi-bold">Breakdown</span>
+---------------------------------
+
+<span class="ansi-bold">Metrics</span>
+---------------------------------
+
+<span class="ansi-bold">ROC</span>
+---------------------------------
+grid_points: 101   #Maximum number of points for ROC curve
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13392,7 +13562,7 @@ Short description are available using <code>print_options</code> method.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Chart-specific</span>
@@ -13408,13 +13578,66 @@ Short description are available using <code>print_options</code> method.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">arena</span><span class="o">.</span><span class="n">print_options</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<span class="ansi-bold">SHAPValues</span>
+---------------------------------
+B: 10   #Number of random paths
+
+<span class="ansi-bold">FeatureImportance</span>
+---------------------------------
+N: None   #Number of observations to use. None for all.
+B: 10   #Number of permutation rounds to perform each variable
+
+<span class="ansi-bold">PartialDependence</span>
+---------------------------------
+grid_type: quantile   #grid type &#34;quantile&#34; or &#34;uniform&#34;
+grid_points: 200   #Maximum number of points for profile
+N: 500   #Number of observations to use. None for all.
+
+<span class="ansi-bold">AccumulatedDependence</span>
+---------------------------------
+grid_type: quantile   #grid type &#34;quantile&#34; or &#34;uniform&#34;
+grid_points: 200   #Maximum number of points for profile
+N: 500   #Number of observations to use. None for all.
+
+<span class="ansi-bold">CeterisParibus</span>
+---------------------------------
+grid_points: 200   #Maximum number of points for profile
+grid_type: uniform   #grid type &#34;quantile&#34; or &#34;uniform&#34;
+
+<span class="ansi-bold">Breakdown</span>
+---------------------------------
+
+<span class="ansi-bold">Metrics</span>
+---------------------------------
+
+<span class="ansi-bold">ROC</span>
+---------------------------------
+grid_points: 200   #Maximum number of points for ROC curve
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13430,7 +13653,7 @@ In static mode cache contains all charts if precalculate=True or save method was
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># default way with precalculate=False</span>
@@ -13445,10 +13668,29 @@ In static mode cache contains all charts if precalculate=True or save method was
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+12
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># default way with precalculate=True</span>
@@ -13463,6 +13705,25 @@ In static mode cache contains all charts if precalculate=True or save method was
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>12
+24
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13473,7 +13734,7 @@ In static mode cache contains all charts if precalculate=True or save method was
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arena</span><span class="o">.</span><span class="n">cache</span><span class="p">))</span>
@@ -13489,6 +13750,26 @@ In static mode cache contains all charts if precalculate=True or save method was
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>24
+0
+24
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13500,7 +13781,7 @@ In static mode cache contains all charts if precalculate=True or save method was
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># precalculate is enabled</span>
@@ -13513,10 +13794,29 @@ In static mode cache contains all charts if precalculate=True or save method was
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>24
+24
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">arena</span><span class="o">.</span><span class="n">precalculate</span> <span class="o">=</span> <span class="kc">False</span>
@@ -13526,6 +13826,25 @@ In static mode cache contains all charts if precalculate=True or save method was
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>24
+22
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13549,7 +13868,7 @@ In static mode cache contains all charts if precalculate=True or save method was
 <h1 id="Resources">Resources<a class="anchor-link" href="#Resources">&#182;</a></h1><ul>
 <li>Introduction to the <code>dalex</code> package: <a href="http://dalex.drwhy.ai/python-dalex-titanic.html">Titanic: tutorial and examples</a></li>
 <li>Key features explained: <a href="http://dalex.drwhy.ai/python-dalex-fifa.html">FIFA20: explain default vs tuned model with dalex</a></li>
-<li>How to use dalex with: <a href="http://dalex.drwhy.ai/python-dalex-xgboost.html">xgboost</a>, <a href="http://dalex.drwhy.ai/python-dalex-tensorflow.html">tensorflow</a></li>
+<li>How to use dalex with: <a href="http://dalex.drwhy.ai/python-dalex-xgboost.html">xgboost</a>, <a href="http://dalex.drwhy.ai/python-dalex-tensorflow.html">tensorflow</a>, <a href="http://dalex.drwhy.ai/python-dalex-h2o.html">h2o (feat. autokeras, catboost, lightgbm)</a></li>
 <li>More explanations: <a href="http://dalex.drwhy.ai/python-dalex-new.html">residuals, shap, lime</a></li>
 <li>Introduction to the <a href="http://dalex.drwhy.ai/python-dalex-fairness.html">Fairness module in dalex</a></li>
 <li>Introduction to the <a href="http://dalex.drwhy.ai/python-dalex-arena.html">Arena: interactive dashboard for model exploration</a></li>
@@ -13558,7 +13877,7 @@ In static mode cache contains all charts if precalculate=True or save method was
 <li>Code in the form of <a href="https://github.com/ModelOriented/DALEX-docs/tree/master/jupyter-notebooks">jupyter notebook</a></li>
 <li><a href="https://www.youtube.com/watch?v=PuKF2GS4_3Y">YouTube video</a> showing how to do <a href="https://pbiecek.github.io/ema/breakDown.html">Break Down</a> analysis</li>
 <li>Changelog: <a href="https://github.com/ModelOriented/DALEX/blob/master/python/dalex/NEWS.md">NEWS</a></li>
-<li>Theoretical introduction to the plots: <a href="https://pbiecek.github.io/ema">Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></li>
+<li>Theoretical introduction to the plots: <a href="https://pbiecek.github.io/ema">Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models</a></li>
 </ul>
 
 </div>
