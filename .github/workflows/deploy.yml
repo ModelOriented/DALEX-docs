@@ -24,6 +24,9 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Change directory
+        run: cd homepage
+
       - name: Cache node_modules 📦
         uses: actions/cache@v2
         with:
