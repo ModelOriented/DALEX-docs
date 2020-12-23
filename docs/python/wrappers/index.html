@@ -48,21 +48,20 @@ __all__ = [
 <span>(</span><span>type)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Explanation wrapper for the 'shap' package</p>
+<div class="desc"><p>Explanation wrapper for the <code>shap</code> package</p>
 <p>This object uses the shap package to create the model explanation.
 See ttps://github.com/slundberg/shap</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>type</code></strong> :&ensp;<code>{'predict_parts', 'model_parts'}</code></dt>
-<dd>&nbsp;</dd>
+<dd>Method type for calculations.</dd>
 </dl>
 <h2 id="attributes">Attributes</h2>
 <dl>
 <dt><strong><code>result</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
 <dd>Calculated shap values for <code>new_observation</code> data.</dd>
-<dt><strong><code>shap_explainer</code></strong> :&ensp;<code>{shap.TreeExplainer, shap.DeepExplainer,</code></dt>
-<dd>shap.GradientExplainer, shap.LinearExplainer, shap.KernelExplainer}
-Explainer object from the 'shap' package.</dd>
+<dt><strong><code>shap_explainer</code></strong> :&ensp;<code>{shap.TreeExplainer, shap.DeepExplainer, shap.GradientExplainer, shap.LinearExplainer, shap.KernelExplainer}</code></dt>
+<dd>Explainer object from the <code>shap</code> package.</dd>
 <dt><strong><code>shap_explainer_type</code></strong> :&ensp;<code>{'TreeExplainer', 'DeepExplainer',</code></dt>
 <dd>'GradientExplainer', 'LinearExplainer', 'KernelExplainer'}
 String name of the Explainer class.</dd>
@@ -70,16 +69,18 @@ String name of the Explainer class.</dd>
 <dd>Observations for which the shap values will be calculated
 (later stored in <code>result</code>).</dd>
 <dt><strong><code>type</code></strong> :&ensp;<code>{'predict_parts', 'model_parts'}</code></dt>
-<dd>&nbsp;</dd>
+<dd>Method type for calculations.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></p></div>
+<ul>
+<li><a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ShapWrapper:
-    &#34;&#34;&#34;Explanation wrapper for the &#39;shap&#39; package
+    &#34;&#34;&#34;Explanation wrapper for the `shap` package
 
     This object uses the shap package to create the model explanation.
     See ttps://github.com/slundberg/shap
@@ -87,15 +88,14 @@ String name of the Explainer class.</dd>
     Parameters
     ----------
     type : {&#39;predict_parts&#39;, &#39;model_parts&#39;}
-
+        Method type for calculations.
 
     Attributes
     ----------
     result : list or numpy.ndarray
         Calculated shap values for `new_observation` data.
-    shap_explainer : {shap.TreeExplainer, shap.DeepExplainer,
-        shap.GradientExplainer, shap.LinearExplainer, shap.KernelExplainer}
-        Explainer object from the &#39;shap&#39; package.
+    shap_explainer : {shap.TreeExplainer, shap.DeepExplainer, shap.GradientExplainer, shap.LinearExplainer, shap.KernelExplainer}
+        Explainer object from the `shap` package.
     shap_explainer_type : {&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;,
         &#39;GradientExplainer&#39;, &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}
         String name of the Explainer class.
@@ -103,11 +103,11 @@ String name of the Explainer class.</dd>
         Observations for which the shap values will be calculated
         (later stored in `result`).
     type : {&#39;predict_parts&#39;, &#39;model_parts&#39;}
-
+        Method type for calculations.
 
     Notes
     ----------
-    https://github.com/slundberg/shap
+    - https://github.com/slundberg/shap
     &#34;&#34;&#34;
 
     def __init__(self, type):
@@ -132,9 +132,8 @@ String name of the Explainer class.</dd>
             Model wrapper created using the Explainer class.
         new_observation : pd.Series or np.ndarray
             An observation for which a prediction needs to be explained.
-        shap_explainer_type : {&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;,
-            &#39;GradientExplainer&#39;, &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}
-            String name of the Explainer class (default is None, which automatically
+        shap_explainer_type : {&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;, &#39;GradientExplainer&#39;, &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}
+            String name of the Explainer class (default is `None`, which automatically
             chooses an Explainer to use).
 
         Returns
@@ -170,13 +169,12 @@ String name of the Explainer class.</dd>
 
         Parameters
         ----------
-        kwargs :
+        kwargs : dict
             Keyword arguments passed to one of the:
-                - shap.force_plot when type is &#39;predict_parts&#39;
-                - shap.summary_plot when type is &#39;model_parts&#39;
+                - shap.force_plot when type is `&#39;predict_parts&#39;`
+                - shap.summary_plot when type is `&#39;model_parts&#39;`
             Exceptions are: `base_value`, `shap_values`,
             `features` and `feature_names`.
-            Other parameters: https://github.com/slundberg/shap
 
         Returns
         -----------
@@ -184,7 +182,7 @@ String name of the Explainer class.</dd>
 
         Notes
         --------
-        https://github.com/slundberg/shap
+        - https://github.com/slundberg/shap
         &#34;&#34;&#34;
         from shap import force_plot, summary_plot
         
@@ -220,9 +218,8 @@ String name of the Explainer class.</dd>
 <dd>Model wrapper created using the Explainer class.</dd>
 <dt><strong><code>new_observation</code></strong> :&ensp;<code>pd.Series</code> or <code>np.ndarray</code></dt>
 <dd>An observation for which a prediction needs to be explained.</dd>
-<dt><strong><code>shap_explainer_type</code></strong> :&ensp;<code>{'TreeExplainer', 'DeepExplainer',</code></dt>
-<dd>'GradientExplainer', 'LinearExplainer', 'KernelExplainer'}
-String name of the Explainer class (default is None, which automatically
+<dt><strong><code>shap_explainer_type</code></strong> :&ensp;<code>{'TreeExplainer', 'DeepExplainer', 'GradientExplainer', 'LinearExplainer', 'KernelExplainer'}</code></dt>
+<dd>String name of the Explainer class (default is <code>None</code>, which automatically
 chooses an Explainer to use).</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -249,9 +246,8 @@ chooses an Explainer to use).</dd>
         Model wrapper created using the Explainer class.
     new_observation : pd.Series or np.ndarray
         An observation for which a prediction needs to be explained.
-    shap_explainer_type : {&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;,
-        &#39;GradientExplainer&#39;, &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}
-        String name of the Explainer class (default is None, which automatically
+    shap_explainer_type : {&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;, &#39;GradientExplainer&#39;, &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}
+        String name of the Explainer class (default is `None`, which automatically
         chooses an Explainer to use).
 
     Returns
@@ -289,20 +285,23 @@ chooses an Explainer to use).</dd>
 <dd>
 <div class="desc"><p>Plot the Shap Wrapper</p>
 <h2 id="parameters">Parameters</h2>
-<p>kwargs :
-Keyword arguments passed to one of the:
-- shap.force_plot when type is 'predict_parts'
-- shap.summary_plot when type is 'model_parts'
+<dl>
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword arguments passed to one of the:
+- shap.force_plot when type is <code>'predict_parts'</code>
+- shap.summary_plot when type is <code>'model_parts'</code>
 Exceptions are: <code>base_value</code>, <code>shap_values</code>,
-<code>features</code> and <code>feature_names</code>.
-Other parameters: <a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></p>
+<code>features</code> and <code>feature_names</code>.</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>None</code></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></p></div>
+<ul>
+<li><a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -312,13 +311,12 @@ Other parameters: <a href="https://github.com/slundberg/shap">https://github.com
 
     Parameters
     ----------
-    kwargs :
+    kwargs : dict
         Keyword arguments passed to one of the:
-            - shap.force_plot when type is &#39;predict_parts&#39;
-            - shap.summary_plot when type is &#39;model_parts&#39;
+            - shap.force_plot when type is `&#39;predict_parts&#39;`
+            - shap.summary_plot when type is `&#39;model_parts&#39;`
         Exceptions are: `base_value`, `shap_values`,
         `features` and `feature_names`.
-        Other parameters: https://github.com/slundberg/shap
 
     Returns
     -----------
@@ -326,7 +324,7 @@ Other parameters: <a href="https://github.com/slundberg/shap">https://github.com
 
     Notes
     --------
-    https://github.com/slundberg/shap
+    - https://github.com/slundberg/shap
     &#34;&#34;&#34;
     from shap import force_plot, summary_plot
     

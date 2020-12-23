@@ -215,8 +215,9 @@ It contains 5000 'overall' best players and 43 variables. These are:
 - overall, potential, value_eur, wage_eur (4 potential target variables)
 - age, height, weight, attacking skills, defending skills, goalkeeping skills (37 variables)</p>
 <p>It is advised to leave only one target variable for modeling.</p>
-<p>Format: pd.DataFrame with 5000 rows, 42 columns and index
-Source: <a href="https://www.kaggle.com/stefanoleone992/fifa-20-complete-player-dataset#players_20.csv">https://www.kaggle.com/stefanoleone992/fifa-20-complete-player-dataset#players_20.csv</a> January 1, 2020</p>
+<p>Format: pd.DataFrame with 5000 rows, 42 columns and index</p>
+<p>Source: <a href="https://www.kaggle.com/stefanoleone992/fifa-20-complete-player-dataset#players_20.csv">https://www.kaggle.com/stefanoleone992/fifa-20-complete-player-dataset#players_20.csv</a> January 1, 2020</p>
+<p>License: see file ./data/LICENSE-DATA.txt</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>pd.DataFrame</code></dt>
@@ -240,7 +241,10 @@ Source: <a href="https://www.kaggle.com/stefanoleone992/fifa-20-complete-player-
     It is advised to leave only one target variable for modeling.
 
     Format: pd.DataFrame with 5000 rows, 42 columns and index
+    
     Source: https://www.kaggle.com/stefanoleone992/fifa-20-complete-player-dataset#players_20.csv January 1, 2020
+    
+    License: see file ./data/LICENSE-DATA.txt
 
     Returns
     -----------
@@ -265,8 +269,9 @@ On the base of age, purpose, credit amount, job, sex, etc. the model should
 predict the target - risk. risk tells if the credit rate will be good (1) or bad (0).
 This data contains some bias and it can be detected using the dalex.fairness module.</p>
 <p>Format: pd.DataFrame with 1000 rows and 10 columns</p>
-<p>Source: <a href="https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data).">https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data).</a>
-Kaggle: <a href="https://www.kaggle.com/kabure/german-credit-data-with-risk/">https://www.kaggle.com/kabure/german-credit-data-with-risk/</a></p>
+<p>Source: <a href="https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)">https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)</a></p>
+<p>Kaggle: <a href="https://www.kaggle.com/kabure/german-credit-data-with-risk/">https://www.kaggle.com/kabure/german-credit-data-with-risk/</a></p>
+<p>License: see file ./data/LICENSE-DATA.txt</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>pd.DataFrame</code></dt>
@@ -286,9 +291,12 @@ Kaggle: <a href="https://www.kaggle.com/kabure/german-credit-data-with-risk/">ht
 
     Format: pd.DataFrame with 1000 rows and 10 columns
 
-    Source: https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data).
+    Source: https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)
+    
     Kaggle: https://www.kaggle.com/kabure/german-credit-data-with-risk/
-
+    
+    License: see file ./data/LICENSE-DATA.txt
+    
     Returns
     -----------
     pd.DataFrame
@@ -381,6 +389,7 @@ department containing information about which employees were promoted or fired.<
 </code></dt>
 <dd>
 <div class="desc"><p>Load the preprocessed 'titanic' dataset</p>
+<p>Details: <a href="https://modeloriented.github.io/DALEX/reference/titanic.html">https://modeloriented.github.io/DALEX/reference/titanic.html</a></p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>pd.DataFrame</code></dt>
@@ -392,6 +401,8 @@ department containing information about which employees were promoted or fired.<
 </summary>
 <pre><code class="python">def load_titanic():
     &#34;&#34;&#34;Load the preprocessed &#39;titanic&#39; dataset
+    
+    Details: https://modeloriented.github.io/DALEX/reference/titanic.html
 
     Returns
     -----------

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
 <title>dalex API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="[dalex: Responsible Machine Learning in Python](http://dalex.drwhy.ai/) …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -23,32 +23,79 @@
 <h1 class="title">Package <code>dalex</code></h1>
 </header>
 <section id="section-intro">
+<p><a href="http://dalex.drwhy.ai/">dalex: Responsible Machine Learning in Python</a></p>
+<p><a href="https://github.com/ModelOriented/DALEX/actions?query=workflow%3APython-check"><img alt="Python-check" src="https://github.com/ModelOriented/DALEX/workflows/Python-check/badge.svg"></a>
+<a href="https://pypi.org/project/dalex/"><img alt="Supported Python
+versions" src="https://img.shields.io/pypi/pyversions/dalex.svg"></a>
+<a href="https://badge.fury.io/py/dalex"><img alt="PyPI version" src="https://badge.fury.io/py/dalex.svg"></a>
+<a href="https://pepy.tech/project/dalex"><img alt="Downloads" src="https://pepy.tech/badge/dalex"></a></p>
+<h2 id="overview">Overview</h2>
+<p>Unverified black box model is the path to the failure. Opaqueness leads to distrust. Distrust leads to ignoration. Ignoration leads to rejection.</p>
+<p>The <code><a title="dalex" href="#dalex">dalex</a></code> package xrays any model and helps to explore and explain its behaviour, helps to understand how complex models are working.
+The main <code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a></code> object creates a wrapper around a predictive model. Wrapped models may then be explored and compared with a collection of model-level and predict-level explanations. Moreover, there are fairness methods and interactive explainability dashboards available to the user.</p>
+<p>The philosophy behind <code><a title="dalex" href="#dalex">dalex</a></code> explanations is described in the <a href="https://pbiecek.github.io/ema/">Explanatory Model Analysis</a> e-book.</p>
+<p><img alt="" src="https://raw.githubusercontent.com/ModelOriented/DALEX/master/misc/DALEXpiramide.png"></p>
+<p>The <code><a title="dalex" href="#dalex">dalex</a></code> package is a part of <a href="http://DrWhy.AI">DrWhy.AI</a> universe.</p>
+<h2 id="installation">Installation</h2>
+<p>The <code><a title="dalex" href="#dalex">dalex</a></code> package is available <a href="https://pypi.org/project/dalex/">on PyPI</a></p>
+<pre><code class="language-console">pip install dalex -U
+</code></pre>
+<h2 id="examples">Examples</h2>
+<ul>
+<li>Introduction to the <code><a title="dalex" href="#dalex">dalex</a></code> package: <a href="https://dalex.drwhy.ai/python-dalex-titanic.html">Titanic: tutorial and examples</a></li>
+<li>Key features explained: <a href="https://dalex.drwhy.ai/python-dalex-fifa.html">FIFA20: explain default vs tuned model with dalex</a></li>
+<li>How to use dalex with: <a href="https://dalex.drwhy.ai/python-dalex-xgboost.html">xgboost</a>, <a href="https://dalex.drwhy.ai/python-dalex-tensorflow.html">tensorflow</a>, <a href="https://dalex.drwhy.ai/python-dalex-h2o.html">h2o (feat. autokeras, catboost, lightgbm)</a></li>
+<li>More explanations: <a href="https://dalex.drwhy.ai/python-dalex-new.html">residuals, shap, lime</a></li>
+<li>Introduction to the <a href="https://dalex.drwhy.ai/python-dalex-fairness.html">Fairness module in dalex</a></li>
+<li>Introduction to the <a href="https://dalex.drwhy.ai/python-dalex-arena.html">Arena module in dalex</a></li>
+<li>Arena documentation: <a href="https://arena.drwhy.ai/docs/guide/basic-concepts/">Getting Started &amp; Demos</a></li>
+<li>Code in the form of <a href="https://github.com/ModelOriented/DALEX-docs/tree/master/jupyter-notebooks">jupyter notebook</a></li>
+</ul>
+<h2 id="plots">Plots</h2>
+<p>This package uses <a href="https://plotly.com/python/">plotly</a> to render the plots:</p>
+<ul>
+<li>Install extensions to use <code>plotly</code> in <strong>JupyterLab</strong>:&emsp;<a href="https://plot.ly/python/getting-started/#jupyterlab-support-python-35">Getting Started</a>&emsp;<a href="https://plot.ly/python/troubleshooting/#jupyterlab-problems">Troubleshooting</a></li>
+<li>Use <code>show=False</code> parameter in <code>plot</code> method to return <code>plotly Figure</code> object</li>
+<li>It is possible to <a href="https://plotly.com/python/#fundamentals">edit the figures</a> and <a href="https://plotly.com/python/static-image-export/">save them</a></li>
+</ul>
+<hr>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python"># dx.Explainer
-# from dalex.datasets import load_*
+<pre><code class="python">&#34;&#34;&#34;
+.. include:: ./documentation.md
+&#34;&#34;&#34;
+
+
 from . import datasets
 from ._explainer.object import Explainer
-from ._arena.object import Arena
+from .arena.object import Arena
 
-__version__ = &#39;0.4.1&#39;
+__version__ = &#39;1.0.0&#39;
 
 __all__ = [
-    &#34;Explainer&#34;,
-    &#34;dataset_level&#34;,
-    &#34;instance_level&#34;,
-    &#34;fairness&#34;,
+    &#34;Arena&#34;,
     &#34;datasets&#34;,
-    &#34;Arena&#34;
-]</code></pre>
+    &#34;Explainer&#34;,
+    &#34;fairness&#34;
+]
+
+# specify autocompletion in IPython
+# see comment: https://github.com/ska-telescope/katpoint/commit/ed7e8b9e389ee035073c62c2394975fe71031f88
+# __dir__ docs (Python 3.7!): https://docs.python.org/3.7/library/functions.html#dir 
+
+def __dir__():
+    &#34;&#34;&#34;IPython tab completion seems to respect this.&#34;&#34;&#34;
+    return __all__ +  [&#39;__all__&#39;, &#39;__builtins__&#39;, &#39;__cached__&#39;, &#39;__doc__&#39;, &#39;__file__&#39;,
+                       &#39;__loader__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;__path__&#39;, &#39;__spec__&#39;,
+                       &#39;__version__&#39;]</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="dalex.dataset_level" href="dataset_level/index.html">dalex.dataset_level</a></code></dt>
+<dt><code class="name"><a title="dalex.arena" href="arena/index.html">dalex.arena</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -60,7 +107,11 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="dalex.instance_level" href="instance_level/index.html">dalex.instance_level</a></code></dt>
+<dt><code class="name"><a title="dalex.model_explanations" href="model_explanations/index.html">dalex.model_explanations</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="dalex.predict_explanations" href="predict_explanations/index.html">dalex.predict_explanations</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2005,7 +2056,7 @@ then function uses OAuth to open GitHub authorization page.</p>
 </dd>
 <dt id="dalex.Explainer"><code class="flex name class">
 <span>class <span class="ident">Explainer</span></span>
-<span>(</span><span>model, data=None, y=None, predict_function=None, residual_function=None, weights=None, label=None, model_class=None, verbose=True, precalculate=True, model_type=None, model_info=None, colorize=True)</span>
+<span>(</span><span>model, data=None, y=None, predict_function=None, residual_function=None, weights=None, label=None, model_class=None, verbose=True, precalculate=True, model_type=None, model_info=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create Model Explainer</p>
@@ -2044,18 +2095,16 @@ with model residuals (default is a function constructed from <code>predict_funct
 (default is the class attribute extracted from the model).
 NOTE: Use if your model is wrapped with Pipeline.</dd>
 <dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Print diagnostic messages during the Explainer initialization (default is True).</dd>
+<dd>Print diagnostic messages during the Explainer initialization (default is <code>True</code>).</dd>
 <dt><strong><code>precalculate</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Calculate y_hat (predicted values) and residuals during the Explainer
-initialization (default is True).</dd>
+initialization (default is <code>True</code>).</dd>
 <dt><strong><code>model_type</code></strong> :&ensp;<code>{'regression', 'classification', None}</code></dt>
 <dd>Model task type that is used e.g. in <code>model_performance()</code> and <code>model_parts()</code>
 (default is try to extract the information from the model, else <code>None</code>).</dd>
 <dt><strong><code>model_info</code></strong> :&ensp;<code>dict</code>, optional</dt>
 <dd>Dict <code>{'model_package', 'model_package_version', ...}</code> containing additional
 information to be stored.</dd>
-<dt><strong><code>colorize</code></strong> :&ensp;<code>TODO</code></dt>
-<dd>&nbsp;</dd>
 </dl>
 <h2 id="attributes">Attributes</h2>
 <dl>
@@ -2088,7 +2137,9 @@ with model residuals.</dd>
 information.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://pbiecek.github.io/ema/dataSetsIntro.html#ExplainersTitanicPythonCode">https://pbiecek.github.io/ema/dataSetsIntro.html#ExplainersTitanicPythonCode</a></p></div>
+<ul>
+<li><a href="https://pbiecek.github.io/ema/dataSetsIntro.html#ExplainersTitanicPythonCode">https://pbiecek.github.io/ema/dataSetsIntro.html#ExplainersTitanicPythonCode</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2133,17 +2184,16 @@ information.</dd>
         (default is the class attribute extracted from the model).
         NOTE: Use if your model is wrapped with Pipeline.
     verbose : bool
-        Print diagnostic messages during the Explainer initialization (default is True).
+        Print diagnostic messages during the Explainer initialization (default is `True`).
     precalculate : bool
         Calculate y_hat (predicted values) and residuals during the Explainer
-        initialization (default is True).
+        initialization (default is `True`).
     model_type : {&#39;regression&#39;, &#39;classification&#39;, None}
         Model task type that is used e.g. in `model_performance()` and `model_parts()`
         (default is try to extract the information from the model, else `None`).
     model_info: dict, optional
         Dict `{&#39;model_package&#39;, &#39;model_package_version&#39;, ...}` containing additional
         information to be stored.
-    colorize : TODO
 
     Attributes
     --------
@@ -2177,7 +2227,7 @@ information.</dd>
 
     Notes
     --------
-    https://pbiecek.github.io/ema/dataSetsIntro.html#ExplainersTitanicPythonCode
+    - https://pbiecek.github.io/ema/dataSetsIntro.html#ExplainersTitanicPythonCode
 
     &#34;&#34;&#34;
 
@@ -2193,21 +2243,11 @@ information.</dd>
                  verbose=True,
                  precalculate=True,
                  model_type=None,
-                 model_info=None,
-                 colorize=True):
+                 model_info=None):
 
+        # TODO: colorize
+        
         helper.verbose_cat(&#34;Preparation of a new explainer is initiated\n&#34;, verbose=verbose)
-
-        # if requested, remove colors
-        if not colorize:
-            color_codes = {
-                &#39;yellow_start&#39;: &#34;&#34;,
-                &#39;yellow_end&#39;: &#34;&#34;,
-                &#39;red_start&#39;: &#34;&#34;,
-                &#39;red_end&#39;: &#34;&#34;,
-                &#39;green_start&#39;: &#34;&#34;,
-                &#39;green_end&#39;: &#34;&#34;
-            }
 
         # REPORT: checks for data
         data, model = checks.check_data(data, model, verbose)
@@ -2219,40 +2259,40 @@ information.</dd>
         weights = checks.check_weights(weights, data, verbose)
 
         # REPORT: checks for model_class
-        model_class, model_info_ = checks.check_model_class(model_class, model, verbose)
+        model_class, _model_info = checks.check_model_class(model_class, model, verbose)
 
         # REPORT: checks for label
-        label, model_info_ = checks.check_label(label, model_class, model_info_, verbose)
+        label, _model_info = checks.check_label(label, model_class, _model_info, verbose)
 
         # REPORT: checks for predict_function and model_type
         # these two are together only because of `yhat_exception_dict`
-        predict_function, model_type, y_hat_, model_info_ = \
+        predict_function, model_type, y_hat, _model_info = \
             checks.check_predict_function_and_model_type(predict_function, model_type,
-                                                         model, data, model_class, model_info_,
+                                                         model, data, model_class, _model_info,
                                                          precalculate, verbose)
 
         # if data is specified then we may test predict_function
         # at this moment we have predict function
 
         # REPORT: checks for residual_function
-        residual_function, residuals, model_info_ = checks.check_residual_function(
-            residual_function, predict_function, model, data, y, model_info_, precalculate, verbose
-            )
+        residual_function, residuals, _model_info = checks.check_residual_function(
+            residual_function, predict_function, model, data, y, _model_info, precalculate, verbose
+        )
 
         # REPORT: checks for model_info
-        model_info = checks.check_model_info(model_info, model_info_, verbose)
+        _model_info = checks.check_model_info(model_info, _model_info, verbose)
 
         # READY to create an explainer
         self.model = model
         self.data = data
         self.y = y
         self.predict_function = predict_function
-        self.y_hat = y_hat_
+        self.y_hat = y_hat
         self.residual_function = residual_function
         self.residuals = residuals
         self.model_class = model_class
         self.label = label
-        self.model_info = model_info
+        self.model_info = _model_info
         self.weights = weights
         self.model_type = model_type
 
@@ -2265,7 +2305,7 @@ information.</dd>
 
         Parameters
         ----------
-        data : pd.DataFrame, np.ndarray 2d
+        data : pd.DataFrame, np.ndarray (2d)
             Data which will be used to make a prediction.
 
         Returns
@@ -2312,14 +2352,14 @@ information.</dd>
                       processes=1,
                       random_state=None,
                       **kwargs):
-        &#34;&#34;&#34;Calculate instance level variable attributions as Break Down, Shapley Values or Shap Values
+        &#34;&#34;&#34;Calculate predict-level variable attributions as Break Down, Shapley Values or Shap Values
 
         Parameters
         -----------
         new_observation : pd.Series or np.ndarray (1d) or pd.DataFrame (1,p)
             An observation for which a prediction needs to be explained.
-        type : {&#39;break_down_interactions&#39;, &#39;break_down&#39;, &#39;shap&#39;, &#39;shap_wrapper}
-            Type of variable attributions (default is &#39;break_down_interactions&#39;).
+        type : {&#39;break_down_interactions&#39;, &#39;break_down&#39;, &#39;shap&#39;, &#39;shap_wrapper&#39;}
+            Type of variable attributions (default is `&#39;break_down_interactions&#39;`).
         order : list of int or str, optional
             Parameter specific for `break_down_interactions` and `break_down`. Use a fixed
             order of variables for attribution calculation. Use integer values  or string
@@ -2327,31 +2367,31 @@ information.</dd>
         interaction_preference : int, optional
             Parameter specific for `break_down_interactions` type. Specify which interactions
             will be present in an explanation. The larger the integer, the more frequently
-            interactions will be presented (default is 1).
+            interactions will be presented (default is `1`).
         path : list of int, optional
             Parameter specific for `shap`. If specified, then attributions for this path
-            will be plotted (default is &#39;average&#39;, which plots attribution means for
+            will be plotted (default is `&#39;average&#39;`, which plots attribution means for
             `B` random paths).
         B : int, optional
             Parameter specific for `shap`. Number of random paths to calculate
-            variable attributions (default is 25).
+            variable attributions (default is `25`).
         keep_distributions :  bool, optional
-            Save the distribution of partial predictions (default is False).
+            Save the distribution of partial predictions (default is `False`).
         label : str, optional
             Name to appear in result and plots. Overrides default.
         processes : int, optional
             Parameter specific for `shap`. Number of parallel processes to use in calculations.
-            Iterated over `B` (default is 1, which means no parallel computation).
+            Iterated over `B` (default is `1`, which means no parallel computation).
         random_state : int, optional
             Set seed for random number generator (default is random seed).
-        kwargs : ...
-            Used only for &#39;shap_wrapper&#39;. Pass `shap_explainer_type` to specify, which
+        kwargs : dict
+            Used only for `&#39;shap_wrapper&#39;`. Pass `shap_explainer_type` to specify, which
             Explainer shall be used: `{&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;, &#39;GradientExplainer&#39;,
             &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}` (default is `None`, which automatically
             chooses an Explainer to use).
-            Also keyword arguments passed to one of the: shap.TreeExplainer.shap_values,
+            Also keyword arguments passed to one of the: `shap.TreeExplainer.shap_values,
             shap.DeepExplainer.shap_values, shap.GradientExplainer.shap_values,
-            shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values.
+            shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values`.
             See https://github.com/slundberg/shap
 
         Returns
@@ -2362,10 +2402,10 @@ information.</dd>
 
         Notes
         --------
-        https://pbiecek.github.io/ema/breakDown.html
-        https://pbiecek.github.io/ema/iBreakDown.html
-        https://pbiecek.github.io/ema/shapley.html
-        https://github.com/slundberg/shap
+        - https://pbiecek.github.io/ema/breakDown.html
+        - https://pbiecek.github.io/ema/iBreakDown.html
+        - https://pbiecek.github.io/ema/shapley.html
+        - https://github.com/slundberg/shap
         &#34;&#34;&#34;
 
         checks.check_data_again(self.data)
@@ -2374,14 +2414,14 @@ information.</dd>
         _type = checks.check_method_type(type, types)
 
         if _type == &#39;break_down_interactions&#39; or _type == &#39;break_down&#39;:
-            predict_parts_ = BreakDown(
+            _predict_parts = BreakDown(
                 type=_type,
                 keep_distributions=keep_distributions,
                 order=order,
                 interaction_preference=interaction_preference
             )
         elif _type == &#39;shap&#39;:
-            predict_parts_ = Shap(
+            _predict_parts = Shap(
                 keep_distributions=keep_distributions,
                 path=path,
                 B=B,
@@ -2390,14 +2430,16 @@ information.</dd>
             )
         elif _type == &#39;shap_wrapper&#39;:
             _global_checks.global_check_import(&#39;shap&#39;, &#39;SHAP explanations&#39;)
-            predict_parts_ = ShapWrapper(&#39;predict_parts&#39;)
+            _predict_parts = ShapWrapper(&#39;predict_parts&#39;)
+        else:
+            raise TypeError(&#34;Wrong type parameter.&#34;)
 
-        predict_parts_.fit(self, new_observation, **kwargs)
+        _predict_parts.fit(self, new_observation, **kwargs)
         
         if label:
-            predict_parts_.result[&#39;label&#39;] = label
+            _predict_parts.result[&#39;label&#39;] = label
 
-        return predict_parts_
+        return _predict_parts
 
     def predict_profile(self,
                         new_observation,
@@ -2411,21 +2453,21 @@ information.</dd>
                         processes=1,
                         label=None,
                         verbose=True):
-        &#34;&#34;&#34;Calculate instance level variable profiles as Ceteris Paribus
+        &#34;&#34;&#34;Calculate predict-level variable profiles as Ceteris Paribus
 
         Parameters
         -----------
         new_observation : pd.DataFrame or np.ndarray or pd.Series
             Observations for which predictions need to be explained.
         type : {&#39;ceteris_paribus&#39;, TODO: &#39;oscilations&#39;}
-            Type of variable profiles (default is &#39;ceteris_paribus&#39;).
+            Type of variable profiles (default is `&#39;ceteris_paribus&#39;`).
         y : pd.Series or np.ndarray (1d), optional
             Target variable with the same length as `new_observation`.
         variables : str or array_like of str, optional
             Variables for which the profiles will be calculated
             (default is `None`, which means all of the variables).
         grid_points : int, optional
-            Maximum number of points for profile calculations (default is 101).
+            Maximum number of points for profile calculations (default is `101`).
             NOTE: The final number of points may be lower than `grid_points`,
             eg. if there is not enough unique values for a given variable.
         variable_splits : dict of lists, optional
@@ -2433,18 +2475,18 @@ information.</dd>
             (default is `None`, which means that they will be calculated using one of
             `variable_splits_type` and the `data` attribute).
         variable_splits_type : {&#39;uniform&#39;, &#39;quantiles&#39;}, optional
-            Way of calculating `variable_splits`. Set &#39;quantiles&#39; for percentiles.
-            (default is &#39;uniform&#39;, which means uniform grid of points).
+            Way of calculating `variable_splits`. Set `&#39;quantiles&#39;` for percentiles.
+            (default is `&#39;uniform&#39;`, which means uniform grid of points).
         variable_splits_with_obs: bool, optional
             Add variable values of `new_observation` data to the `variable_splits`
-            (default is True).
+            (default is `True`).
         label : str, optional
             Name to appear in result and plots. Overrides default.
         processes : int, optional
             Number of parallel processes to use in calculations. Iterated over `variables`
-            (default is 1, which means no parallel computation).
+            (default is `1`, which means no parallel computation).
         verbose : bool, optional
-            Print tqdm progress bar (default is True).
+            Print tqdm progress bar (default is `True`).
 
         Returns
         -----------
@@ -2453,7 +2495,7 @@ information.</dd>
 
         Notes
         --------
-        https://pbiecek.github.io/ema/ceterisParibus.html
+        - https://pbiecek.github.io/ema/ceterisParibus.html
         &#34;&#34;&#34;
 
         checks.check_data_again(self.data)
@@ -2462,7 +2504,7 @@ information.</dd>
         _type = checks.check_method_type(type, types)
 
         if _type == &#39;ceteris_paribus&#39;:
-            predict_profile_ = CeterisParibus(
+            _predict_profile = CeterisParibus(
                 variables=variables,
                 grid_points=grid_points,
                 variable_splits=variable_splits,
@@ -2470,13 +2512,15 @@ information.</dd>
                 variable_splits_with_obs=variable_splits_with_obs,
                 processes=processes
             )
+        else:
+            raise TypeError(&#34;Wrong type parameter.&#34;)
 
-        predict_profile_.fit(self, new_observation, y, verbose)
+        _predict_profile.fit(self, new_observation, y, verbose)
 
         if label:
-            predict_profile_.result[&#39;_label_&#39;] = label
+            _predict_profile.result[&#39;_label_&#39;] = label
             
-        return predict_profile_
+        return _predict_profile
 
     def predict_surrogate(self,
                           new_observation,
@@ -2493,8 +2537,8 @@ information.</dd>
             An observation for which a prediction needs to be explained.
         type : {&#39;lime&#39;}
             Type of explanation method
-            (default is &#39;lime&#39;, which uses the lime package to create an explanation).
-        kwargs : ...
+            (default is `&#39;lime&#39;`, which uses the lime package to create an explanation).
+        kwargs : dict
             Keyword arguments passed to the lime.lime_tabular.LimeTabularExplainer object
             and the LimeTabularExplainer.explain_instance method. Exceptions are:
             `training_data`, `mode`, `data_row` and `predict_fn`. Other parameters:
@@ -2507,27 +2551,25 @@ information.</dd>
 
         Notes
         -----------
-        https://github.com/marcotcr/lime
+        - https://github.com/marcotcr/lime
         &#34;&#34;&#34;
 
         checks.check_data_again(self.data)
 
         if type == &#39;lime&#39;:
             _global_checks.global_check_import(&#39;lime&#39;, &#39;LIME explanations&#39;)
-            from lime.lime_tabular import LimeTabularExplainer
-            new_observation = checks.check_new_observation_lime(new_observation)
+            _new_observation = checks.check_new_observation_lime(new_observation)
+            _explanation = utils.create_lime_explanation(self, _new_observation, **kwargs)
+        else:
+            raise TypeError(&#34;Wrong &#39;type&#39; parameter.&#34;)
 
-            explainer_dict, explanation_dict = utils.unpack_kwargs_lime(self, new_observation, **kwargs)
-            lime_tabular_explainer = LimeTabularExplainer(**explainer_dict)
-            explanation = lime_tabular_explainer.explain_instance(**explanation_dict)
-
-            return explanation
+        return _explanation
 
     def model_performance(self,
                           model_type=None,
                           cutoff=0.5,
                           label=None):
-        &#34;&#34;&#34;Calculate dataset level model performance measures
+        &#34;&#34;&#34;Calculate model-level model performance measures
 
         Parameters
         -----------
@@ -2536,7 +2578,7 @@ information.</dd>
             (default is `None`, which means try to extract from the `model_type` attribute).
         cutoff : float, optional
             Cutoff for predictions in classification models. Needed for measures like
-            recall, precision, acc, f1 (default is 0.5).
+            recall, precision, acc, f1 (default is `0.5`).
         label : str, optional
             Name to appear in result and plots. Overrides default.
 
@@ -2547,7 +2589,7 @@ information.</dd>
 
         Notes
         --------
-        https://pbiecek.github.io/ema/modelPerformance.html
+        - https://pbiecek.github.io/ema/modelPerformance.html
         &#34;&#34;&#34;
 
         checks.check_data_again(self.data)
@@ -2558,16 +2600,16 @@ information.</dd>
         elif model_type is None:
             model_type = self.model_type
 
-        model_performance_ = ModelPerformance(
+        _model_performance = ModelPerformance(
             model_type=model_type,
             cutoff=cutoff
         )
-        model_performance_.fit(self)
+        _model_performance.fit(self)
         
         if label:
-            model_performance_.result[&#39;label&#39;] = label
+            _model_performance.result[&#39;label&#39;] = label
 
-        return model_performance_
+        return _model_performance
 
     def model_parts(self,
                     loss_function=None,
@@ -2582,21 +2624,21 @@ information.</dd>
                     random_state=None,
                     **kwargs):
 
-        &#34;&#34;&#34;Calculate dataset level variable importance
+        &#34;&#34;&#34;Calculate model-level variable importance
 
         Parameters
         -----------
         loss_function : {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
             If string, then such loss function will be used to assess variable importance
-            (default is &#39;rmse&#39; or `1-auc`, depends on `model_type` attribute).
-        type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;, &#39;shap_wrapper&#39;}, optional
+            (default is `&#39;rmse&#39;` or `&#39;1-auc&#39;`, depends on `model_type` attribute).
+        type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;, &#39;shap_wrapper&#39;}
             Type of transformation that will be applied to dropout loss.
-            (default is &#39;variable_importance&#39;, which is Permutational Variable Importance).
+            (default is `&#39;variable_importance&#39;`, which is Permutational Variable Importance).
         N : int, optional
             Number of observations that will be sampled from the `data` attribute before
-            the calculation of variable importance. `None` means all `data` (default is 1000).
+            the calculation of variable importance. `None` means all `data` (default is `1000`).
         B : int, optional
-            Number of permutation rounds to perform on each variable (default is 10).
+            Number of permutation rounds to perform on each variable (default is `10`).
         variables : array_like of str, optional
             Variables for which the importance will be calculated
             (default is `None`, which means all of the variables).
@@ -2605,21 +2647,21 @@ information.</dd>
             Group the variables to calculate their joint variable importance
             e.g. `{&#39;X&#39;: [&#39;x1&#39;, &#39;x2&#39;], &#39;Y&#39;: [&#39;y1&#39;, &#39;y2&#39;]}` (default is `None`).
         keep_raw_permutations: bool, optional
-            Save results for all permutation rounds (default is True).
+            Save results for all permutation rounds (default is `True`).
         label : str, optional
             Name to appear in result and plots. Overrides default.
         processes : int, optional
             Number of parallel processes to use in calculations. Iterated over `B`
-            (default is 1, which means no parallel computation).
+            (default is `1`, which means no parallel computation).
         random_state : int, optional
             Set seed for random number generator (default is random seed).
-        kwargs : ...
+        kwargs : dict
             Used only for &#39;shap_wrapper&#39;. Pass `shap_explainer_type` to specify, which
             Explainer shall be used: `{&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;, &#39;GradientExplainer&#39;,
             &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}`.
-            Also keyword arguments passed to one of the: shap.TreeExplainer.shap_values,
+            Also keyword arguments passed to one of the: `shap.TreeExplainer.shap_values,
             shap.DeepExplainer.shap_values, shap.GradientExplainer.shap_values,
-            shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values.
+            shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values`.
             See https://github.com/slundberg/shap
 
         Returns
@@ -2630,8 +2672,8 @@ information.</dd>
 
         Notes
         --------
-        https://pbiecek.github.io/ema/featureImportance.html
-        https://github.com/slundberg/shap
+        - https://pbiecek.github.io/ema/featureImportance.html
+        - https://github.com/slundberg/shap
         &#34;&#34;&#34;
 
         checks.check_data_again(self.data)
@@ -2645,7 +2687,7 @@ information.</dd>
         if _type != &#39;shap_wrapper&#39;:
             checks.check_y_again(self.y)
 
-            model_parts_ = VariableImportance(
+            _model_parts = VariableImportance(
                 loss_function=loss_function,
                 type=_type,
                 N=N,
@@ -2656,14 +2698,14 @@ information.</dd>
                 random_state=random_state,
                 keep_raw_permutations=keep_raw_permutations,
             )
-            model_parts_.fit(self)
+            _model_parts.fit(self)
             
             if label:
-                model_parts_.result[&#39;label&#39;] = label
-            
+                _model_parts.result[&#39;label&#39;] = label
+                 
         elif _type == &#39;shap_wrapper&#39;:
             _global_checks.global_check_import(&#39;shap&#39;, &#39;SHAP explanations&#39;)
-            model_parts_ = ShapWrapper(&#39;model_parts&#39;)
+            _model_parts = ShapWrapper(&#39;model_parts&#39;)
             if N is None:
                 N = self.data.shape[0]
             else:
@@ -2672,9 +2714,11 @@ information.</dd>
             sampled_rows = np.random.choice(np.arange(N), N, replace=False)
             sampled_data = self.data.iloc[sampled_rows, :]
 
-            model_parts_.fit(self, sampled_data, **kwargs)
+            _model_parts.fit(self, sampled_data, **kwargs)
+        else:
+            raise TypeError(&#34;Wrong type parameter&#34;);
 
-        return model_parts_
+        return _model_parts
 
     def model_profile(self,
                       type=(&#39;partial&#39;, &#39;accumulated&#39;, &#39;conditional&#39;),
@@ -2692,49 +2736,50 @@ information.</dd>
                       random_state=None,
                       verbose=True):
 
-        &#34;&#34;&#34;Calculate dataset level variable profiles as Partial or Accumulated Dependence
+        &#34;&#34;&#34;Calculate model-level variable profiles as Partial or Accumulated Dependence
 
         Parameters
         -----------
         type : {&#39;partial&#39;, &#39;accumulated&#39;, &#39;conditional&#39;}
-            Type of model profiles (default is &#39;partial&#39; for Partial Dependence Profiles).
+            Type of model profiles
+            (default is `&#39;partial&#39;` for Partial Dependence Profiles).
         N : int, optional
             Number of observations that will be sampled from the `data` attribute before
-            the calculation of variable profiles. `None` means all `data` (default is 300).
+            the calculation of variable profiles. `None` means all `data` (default is `300`).
         variables : str or array_like of str, optional
             Variables for which the profiles will be calculated
             (default is `None`, which means all of the variables).
         variable_type : {&#39;numerical&#39;, &#39;categorical&#39;}
             Calculate the profiles for numerical or categorical variables
-            (default is &#39;numerical&#39;).
+            (default is `&#39;numerical&#39;`).
         groups : str or array_like of str, optional
             Names of categorical variables that will be used for profile grouping
             (default is `None`, which means no grouping).
         span : float, optional
-            Smoothing coefficient used as sd for gaussian kernel (default is 0.25).
+            Smoothing coefficient used as sd for gaussian kernel (default is `0.25`).
         grid_points : int, optional
-            Maximum number of points for profile calculations (default is 101).
+            Maximum number of points for profile calculations (default is `101`).
             NOTE: The final number of points may be lower than `grid_points`,
-            eg. if there is not enough unique values for a given variable.
+            e.g. if there is not enough unique values for a given variable.
         variable_splits : dict of lists, optional
             Split points for variables e.g. `{&#39;x&#39;: [0, 0.2, 0.5, 0.8, 1], &#39;y&#39;: [&#39;a&#39;, &#39;b&#39;]}`
             (default is `None`, which means that they will be distributed uniformly).
         variable_splits_type : {&#39;uniform&#39;, &#39;quantiles&#39;}, optional
             Way of calculating `variable_splits`. Set &#39;quantiles&#39; for percentiles.
-            (default is &#39;uniform&#39;, which means uniform grid of points).
+            (default is `&#39;uniform&#39;`, which means uniform grid of points).
         center : bool, optional
-            Theoretically Accumulated Profiles start at 0, but are centered to compare
-            them with Partial Dependence Profiles (default is True, which means center
-            around the average y_hat calculated on the data sample).
+            Theoretically Accumulated Profiles start at `0`, but are centered to compare
+            them with Partial Dependence Profiles (default is `True`, which means center
+            around the average `y_hat` calculated on the data sample).
         label : str, optional
             Name to appear in result and plots. Overrides default.
         processes : int, optional
             Number of parallel processes to use in calculations. Iterated over `variables`
-            (default is 1, which means no parallel computation).
+            (default is `1`, which means no parallel computation).
         random_state : int, optional
             Set seed for random number generator (default is random seed).
         verbose : bool, optional
-            Print tqdm progress bar (default is True).
+            Print tqdm progress bar (default is `True`).
 
         Returns
         -----------
@@ -2743,8 +2788,8 @@ information.</dd>
 
         Notes
         --------
-        https://pbiecek.github.io/ema/partialDependenceProfiles.html
-        https://pbiecek.github.io/ema/accumulatedLocalProfiles.html
+        - https://pbiecek.github.io/ema/partialDependenceProfiles.html
+        - https://pbiecek.github.io/ema/accumulatedLocalProfiles.html
         &#34;&#34;&#34;
 
         checks.check_data_again(self.data)
@@ -2763,15 +2808,15 @@ information.</dd>
 
         I = np.random.choice(np.arange(N), N, replace=False)
 
-        ceteris_paribus = CeterisParibus(grid_points=grid_points,
+        _ceteris_paribus = CeterisParibus(grid_points=grid_points,
                                          variables=variables,
                                          variable_splits=variable_splits,
                                          variable_splits_type=variable_splits_type,
                                          processes=processes)
         _y = self.y[I] if self.y is not None else self.y
-        ceteris_paribus.fit(self, self.data.iloc[I, :], y=_y, verbose=verbose)
+        _ceteris_paribus.fit(self, self.data.iloc[I, :], y=_y, verbose=verbose)
 
-        model_profile_ = AggregatedProfiles(
+        _model_profile = AggregatedProfiles(
             type=_type,
             variables=variables,
             variable_type=variable_type,
@@ -2781,17 +2826,17 @@ information.</dd>
             random_state=random_state
         )
 
-        model_profile_.fit(ceteris_paribus, verbose)
+        _model_profile.fit(_ceteris_paribus, verbose)
 
         if label:
-            model_profile_.result[&#39;_label_&#39;] = label
+            _model_profile.result[&#39;_label_&#39;] = label
                 
-        return model_profile_
+        return _model_profile
 
     def model_diagnostics(self,
                           variables=None,
                           label=None):
-        &#34;&#34;&#34;Calculate dataset level residuals diagnostics
+        &#34;&#34;&#34;Calculate model-level residuals diagnostics
 
         Parameters
         -----------
@@ -2808,21 +2853,21 @@ information.</dd>
 
         Notes
         --------
-        https://pbiecek.github.io/ema/residualDiagnostic.html
+        - https://pbiecek.github.io/ema/residualDiagnostic.html
         &#34;&#34;&#34;
 
         checks.check_data_again(self.data)
         checks.check_y_again(self.y)
 
-        residual_diagnostics_ = ResidualDiagnostics(
+        _residual_diagnostics = ResidualDiagnostics(
             variables=variables
         )
-        residual_diagnostics_.fit(self)
+        _residual_diagnostics.fit(self)
 
         if label:
-            residual_diagnostics_.result[&#39;label&#39;] = label
+            _residual_diagnostics.result[&#39;label&#39;] = label
             
-        return residual_diagnostics_
+        return _residual_diagnostics
 
     def model_surrogate(self,
                         type=(&#39;tree&#39;, &#39;linear&#39;),
@@ -2841,29 +2886,28 @@ information.</dd>
         -----------
         type : {&#39;tree&#39;, &#39;linear&#39;}
             Type of a surrogate model. This can be a decision tree or a linear model
-            (default is &#39;tree&#39;).
+            (default is `&#39;tree&#39;`).
         max_vars : int, optional
             Maximum number of variables that will be used in surrogate model training.
-            These are the most important variables to the black-box model (default is 5).
+            These are the most important variables to the black-box model (default is `5`).
         max_depth : int, optional
             The maximum depth of the tree. If `None`, then nodes are expanded until all
             leaves are pure or until all leaves contain less than min_samples_split
-            samples (default is 3 for interpretable plot).
-        kwargs : ...
-            Keyword arguments passed to one of the: sklearn.tree.DecisionTreeClassifier,
+            samples (default is `3` for interpretable plot).
+        kwargs : dict
+            Keyword arguments passed to one of the: `sklearn.tree.DecisionTreeClassifier,
             sklearn.tree.DecisionTreeRegressor, sklearn.linear_model.LogisticRegression,
-            sklearn.linear_model.LinearRegression
+            sklearn.linear_model.LinearRegression`
 
 
         Returns
         -----------
-        sklearn.tree.DecisionTreeClassifier, sklearn.tree.DecisionTreeRegressor,
-        sklearn.linear_model.LogisticRegression, sklearn.linear_model.LinearRegression
-            A surrogate model with additional:
-                - `plot` method
-                - `performance` attribute
-                - `feature_names` attribute
-                - `class_names` attribute
+        One of: sklearn.tree.DecisionTreeClassifier, sklearn.tree.DecisionTreeRegressor, sklearn.linear_model.LogisticRegression, sklearn.linear_model.LinearRegression
+        A surrogate model with additional:
+            - `plot` method
+            - `performance` attribute
+            - `feature_names` attribute
+            - `class_names` attribute
 
         Notes
         -----------
@@ -2891,14 +2935,14 @@ information.</dd>
                        cutoff=0.5,
                        label=None,
                        **kwargs):
-        &#34;&#34;&#34;Creates a dataset level fairness explanation that enables bias detection
+        &#34;&#34;&#34;Creates a model-level fairness explanation that enables bias detection
 
         This method returns a GroupFairnessClassification object that for now
         supports only classification models. GroupFairnessClassification object
         works as a wrapper of the protected attribute and the Explainer from which
         `y` and `y_hat` attributes were extracted. Along with an information about
         privileged subgroup (value in the `protected` parameter), those 3 vectors
-        create triplet (y, y_hat, protected) which is a base for all further
+        create triplet `(y, y_hat, protected)` which is a base for all further
         fairness calculations and visualizations.
 
         Parameters
@@ -2915,38 +2959,38 @@ information.</dd>
             It needs to be a string present in `protected`.
         cutoff : float or dict, optional
             Threshold for probabilistic output of a classifier.
-            It might be:
-                float - same for all subgroups from `protected`
-                dict - individually adjusted for each subgroup
-                       (must have values from `protected` as keys).
+            It might be: a `float` - same for all subgroups from `protected`,
+            or a `dict` - individually adjusted for each subgroup
+            (must have values from `protected` as keys).
         label : str, optional
             Name to appear in result and plots. Overrides default.
-        kwargs : ...
+        kwargs : dict
             Keyword arguments. It supports `verbose`, which is a boolean
             value telling if additional output should be printed
-            (True) or not (False, default).
+            (`True`) or not (`False`, default).
 
         Returns
         -----------
         GroupFairnessClassification class object (a subclass of _FairnessObject)
             Explanation object containing the main result attribute and the plot method.
-            It has the following main attributes:
-                result : pd.DataFrame
-                    Scaled `metric_scores`. The scaling is performed by
-                    dividing all metric scores by scores of the privileged subgroup.
-                metric_scores : pd.DataFrame
-                    Raw metric scores for each subgroup.
-                parity_loss : pd.Series
-                    It is a summarised `result`. From each metric (column) a logarithm
-                    is calculated, then the absolute value is taken and summarised.
-                    Therefore, for metric M:
-                        `parity_loss` is sum(abs(log(M_i / M_privileged)))
-                         where M_i is the metric score for subgroup i.
-                label : str
-                    `label` attribute from the Explainer object.
-                     Labels must be unique when plotting.
-                cutoff : dict
-                    A float value for each subgroup (key in dict).
+            
+        It has the following main attributes:
+            - result : `pd.DataFrame`
+                Scaled `metric_scores`. The scaling is performed by
+                dividing all metric scores by scores of the privileged subgroup.
+            - metric_scores : `pd.DataFrame`
+                Raw metric scores for each subgroup.
+            - parity_loss : `pd.Series`
+                It is a summarised `result`. From each metric (column) a logarithm
+                is calculated, then the absolute value is taken and summarised.
+                Therefore, for metric M:
+                    `parity_loss` is a `sum(abs(log(M_i / M_privileged)))`
+                        where `M_i` is the metric score for subgroup `i`.
+            - label : `str`
+                `label` attribute from the Explainer object.
+                    Labels must be unique when plotting.
+            - cutoff : `dict`
+                A float value for each subgroup (key in dict).
 
         Notes
         -----------
@@ -2957,7 +3001,7 @@ information.</dd>
 
         if self.model_type != &#39;classification&#39;:
             raise ValueError(
-                &#34;model_fairness for now supports only classification models.&#34;
+                &#34;fairness module for now supports only classification models.&#34;
                 &#34;Explainer attribute &#39;model_type&#39; must be &#39;classification&#39;&#34;)
 
         fobject = GroupFairnessClassification(y=self.y,
@@ -2985,9 +3029,9 @@ information.</dd>
 
         Parameters
         -----------
-        args : ...
+        args : dict
             Positional arguments passed to the pickle.dumps function.
-        kwargs : ...
+        kwargs : dict
             Keyword arguments passed to the pickle.dumps function.
 
         Returns
@@ -3016,9 +3060,9 @@ information.</dd>
         -----------
         file : ...
             A file object opened for binary writing, or an io.BytesIO instance.
-        args : ...
+        args : dict
             Positional arguments passed to the pickle.dump function.
-        kwargs : ...
+        kwargs : dict
             Keyword arguments passed to the pickle.dump function.
         &#34;&#34;&#34;
 
@@ -3046,9 +3090,9 @@ information.</dd>
         use_defaults : bool
             Replace empty `predict_function` and `residual_function` with default
             values like in Explainer initialization (default is `True`).
-        args : ...
+        args : dict
             Positional arguments passed to the pickle.loads function.
-        kwargs : ...
+        kwargs : dict
             Keyword arguments passed to the pickle.loads function.
 
         Returns
@@ -3081,9 +3125,9 @@ information.</dd>
         use_defaults : bool
             Replace empty `predict_function` and `residual_function` with default
             values like in Explainer initialization (default is `True`).
-        args : ...
+        args : dict
             Positional arguments passed to the pickle.load function.
-        kwargs : ...
+        kwargs : dict
             Keyword arguments passed to the pickle.load function.
 
         Returns
@@ -3117,11 +3161,11 @@ If <code>use_defaults</code> is set to <code>True</code>, then dropped functions
 <dt><strong><code>use_defaults</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Replace empty <code>predict_function</code> and <code>residual_function</code> with default
 values like in Explainer initialization (default is <code>True</code>).</dd>
+<dt><strong><code>args</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Positional arguments passed to the pickle.load function.</dd>
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword arguments passed to the pickle.load function.</dd>
 </dl>
-<p>args : &hellip;
-Positional arguments passed to the pickle.load function.
-kwargs : &hellip;
-Keyword arguments passed to the pickle.load function.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a> object</code></dt>
@@ -3148,9 +3192,9 @@ def load(file, use_defaults=True, *args, **kwargs):
     use_defaults : bool
         Replace empty `predict_function` and `residual_function` with default
         values like in Explainer initialization (default is `True`).
-    args : ...
+    args : dict
         Positional arguments passed to the pickle.load function.
-    kwargs : ...
+    kwargs : dict
         Keyword arguments passed to the pickle.load function.
 
     Returns
@@ -3183,11 +3227,11 @@ If <code>use_defaults</code> is set to <code>True</code>, then dropped functions
 <dt><strong><code>use_defaults</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Replace empty <code>predict_function</code> and <code>residual_function</code> with default
 values like in Explainer initialization (default is <code>True</code>).</dd>
+<dt><strong><code>args</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Positional arguments passed to the pickle.loads function.</dd>
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword arguments passed to the pickle.loads function.</dd>
 </dl>
-<p>args : &hellip;
-Positional arguments passed to the pickle.loads function.
-kwargs : &hellip;
-Keyword arguments passed to the pickle.loads function.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a> object</code></dt>
@@ -3214,9 +3258,9 @@ def loads(data, use_defaults=True, *args, **kwargs):
     use_defaults : bool
         Replace empty `predict_function` and `residual_function` with default
         values like in Explainer initialization (default is `True`).
-    args : ...
+    args : dict
         Positional arguments passed to the pickle.loads function.
-    kwargs : ...
+    kwargs : dict
         Keyword arguments passed to the pickle.loads function.
 
     Returns
@@ -3247,12 +3291,14 @@ def loads(data, use_defaults=True, *args, **kwargs):
 Attribute <code>residual_function</code> by default contains lambda; thus,
 if not provided by the user, it will be dropped before the dump.</p>
 <h2 id="parameters">Parameters</h2>
-<p>file : &hellip;
-A file object opened for binary writing, or an io.BytesIO instance.
-args : &hellip;
-Positional arguments passed to the pickle.dump function.
-kwargs : &hellip;
-Keyword arguments passed to the pickle.dump function.</p></div>
+<dl>
+<dt>file : &hellip;</dt>
+<dt>A file object opened for binary writing, or an io.BytesIO instance.</dt>
+<dt><strong><code>args</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Positional arguments passed to the pickle.dump function.</dd>
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword arguments passed to the pickle.dump function.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3271,9 +3317,9 @@ Keyword arguments passed to the pickle.dump function.</p></div>
     -----------
     file : ...
         A file object opened for binary writing, or an io.BytesIO instance.
-    args : ...
+    args : dict
         Positional arguments passed to the pickle.dump function.
-    kwargs : ...
+    kwargs : dict
         Keyword arguments passed to the pickle.dump function.
     &#34;&#34;&#34;
 
@@ -3296,10 +3342,12 @@ Keyword arguments passed to the pickle.dump function.</p></div>
 Attribute <code>residual_function</code> by default contains lambda; thus,
 if not provided by the user, it will be dropped before the dump.</p>
 <h2 id="parameters">Parameters</h2>
-<p>args : &hellip;
-Positional arguments passed to the pickle.dumps function.
-kwargs : &hellip;
-Keyword arguments passed to the pickle.dumps function.</p>
+<dl>
+<dt><strong><code>args</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Positional arguments passed to the pickle.dumps function.</dd>
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword arguments passed to the pickle.dumps function.</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bytes object</code></dt>
@@ -3321,9 +3369,9 @@ Keyword arguments passed to the pickle.dumps function.</p>
 
     Parameters
     -----------
-    args : ...
+    args : dict
         Positional arguments passed to the pickle.dumps function.
-    kwargs : ...
+    kwargs : dict
         Keyword arguments passed to the pickle.dumps function.
 
     Returns
@@ -3343,7 +3391,7 @@ Keyword arguments passed to the pickle.dumps function.</p>
 <span>def <span class="ident">model_diagnostics</span></span>(<span>self, variables=None, label=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculate dataset level residuals diagnostics</p>
+<div class="desc"><p>Calculate model-level residuals diagnostics</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>variables</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code>, optional</dt>
@@ -3358,7 +3406,9 @@ Keyword arguments passed to the pickle.dumps function.</p>
 <dd>Explanation object containing the main result attribute and the plot method.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://pbiecek.github.io/ema/residualDiagnostic.html">https://pbiecek.github.io/ema/residualDiagnostic.html</a></p></div>
+<ul>
+<li><a href="https://pbiecek.github.io/ema/residualDiagnostic.html">https://pbiecek.github.io/ema/residualDiagnostic.html</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3366,7 +3416,7 @@ Keyword arguments passed to the pickle.dumps function.</p>
 <pre><code class="python">def model_diagnostics(self,
                       variables=None,
                       label=None):
-    &#34;&#34;&#34;Calculate dataset level residuals diagnostics
+    &#34;&#34;&#34;Calculate model-level residuals diagnostics
 
     Parameters
     -----------
@@ -3383,34 +3433,34 @@ Keyword arguments passed to the pickle.dumps function.</p>
 
     Notes
     --------
-    https://pbiecek.github.io/ema/residualDiagnostic.html
+    - https://pbiecek.github.io/ema/residualDiagnostic.html
     &#34;&#34;&#34;
 
     checks.check_data_again(self.data)
     checks.check_y_again(self.y)
 
-    residual_diagnostics_ = ResidualDiagnostics(
+    _residual_diagnostics = ResidualDiagnostics(
         variables=variables
     )
-    residual_diagnostics_.fit(self)
+    _residual_diagnostics.fit(self)
 
     if label:
-        residual_diagnostics_.result[&#39;label&#39;] = label
+        _residual_diagnostics.result[&#39;label&#39;] = label
         
-    return residual_diagnostics_</code></pre>
+    return _residual_diagnostics</code></pre>
 </details>
 </dd>
 <dt id="dalex.Explainer.model_fairness"><code class="name flex">
 <span>def <span class="ident">model_fairness</span></span>(<span>self, protected, privileged, cutoff=0.5, label=None, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Creates a dataset level fairness explanation that enables bias detection</p>
+<div class="desc"><p>Creates a model-level fairness explanation that enables bias detection</p>
 <p>This method returns a GroupFairnessClassification object that for now
 supports only classification models. GroupFairnessClassification object
 works as a wrapper of the protected attribute and the Explainer from which
 <code>y</code> and <code>y_hat</code> attributes were extracted. Along with an information about
 privileged subgroup (value in the <code>protected</code> parameter), those 3 vectors
-create triplet (y, y_hat, protected) which is a base for all further
+create triplet <code>(y, y_hat, protected)</code> which is a base for all further
 fairness calculations and visualizations.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3426,38 +3476,41 @@ they will be transformed into a (1d) np.ndarray with dtype 'U'.</dd>
 It needs to be a string present in <code>protected</code>.</dd>
 <dt><strong><code>cutoff</code></strong> :&ensp;<code>float</code> or <code>dict</code>, optional</dt>
 <dd>Threshold for probabilistic output of a classifier.
-It might be:
-float - same for all subgroups from <code>protected</code>
-dict - individually adjusted for each subgroup
+It might be: a <code>float</code> - same for all subgroups from <code>protected</code>,
+or a <code>dict</code> - individually adjusted for each subgroup
 (must have values from <code>protected</code> as keys).</dd>
 <dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Name to appear in result and plots. Overrides default.</dd>
-</dl>
-<p>kwargs : &hellip;
-Keyword arguments. It supports <code>verbose</code>, which is a boolean
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword arguments. It supports <code>verbose</code>, which is a boolean
 value telling if additional output should be printed
-(True) or not (False, default).</p>
+(<code>True</code>) or not (<code>False</code>, default).</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>GroupFairnessClassification class object (a subclass</code> of <code>_FairnessObject)</code></dt>
-<dd>Explanation object containing the main result attribute and the plot method.
-It has the following main attributes:
-result : pd.DataFrame
+<dd>Explanation object containing the main result attribute and the plot method.</dd>
+<dt><code>It has the following main attributes:</code></dt>
+<dd>
+<ul>
+<li>result : <code>pd.DataFrame</code>
 Scaled <code>metric_scores</code>. The scaling is performed by
-dividing all metric scores by scores of the privileged subgroup.
-metric_scores : pd.DataFrame
-Raw metric scores for each subgroup.
-parity_loss : pd.Series
+dividing all metric scores by scores of the privileged subgroup.</li>
+<li>metric_scores : <code>pd.DataFrame</code>
+Raw metric scores for each subgroup.</li>
+<li>parity_loss : <code>pd.Series</code>
 It is a summarised <code>result</code>. From each metric (column) a logarithm
 is calculated, then the absolute value is taken and summarised.
 Therefore, for metric M:
-<code>parity_loss</code> is sum(abs(log(M_i / M_privileged)))
-where M_i is the metric score for subgroup i.
-label : str
+<code>parity_loss</code> is a <code>sum(abs(log(M_i / M_privileged)))</code>
+where <code>M_i</code> is the metric score for subgroup <code>i</code>.</li>
+<li>label : <code>str</code>
 <code>label</code> attribute from the Explainer object.
-Labels must be unique when plotting.
-cutoff : dict
-A float value for each subgroup (key in dict).</dd>
+Labels must be unique when plotting.</li>
+<li>cutoff : <code>dict</code>
+A float value for each subgroup (key in dict).</li>
+</ul>
+</dd>
 </dl>
 <h2 id="notes">Notes</h2>
 <ul>
@@ -3475,14 +3528,14 @@ A float value for each subgroup (key in dict).</dd>
                    cutoff=0.5,
                    label=None,
                    **kwargs):
-    &#34;&#34;&#34;Creates a dataset level fairness explanation that enables bias detection
+    &#34;&#34;&#34;Creates a model-level fairness explanation that enables bias detection
 
     This method returns a GroupFairnessClassification object that for now
     supports only classification models. GroupFairnessClassification object
     works as a wrapper of the protected attribute and the Explainer from which
     `y` and `y_hat` attributes were extracted. Along with an information about
     privileged subgroup (value in the `protected` parameter), those 3 vectors
-    create triplet (y, y_hat, protected) which is a base for all further
+    create triplet `(y, y_hat, protected)` which is a base for all further
     fairness calculations and visualizations.
 
     Parameters
@@ -3499,38 +3552,38 @@ A float value for each subgroup (key in dict).</dd>
         It needs to be a string present in `protected`.
     cutoff : float or dict, optional
         Threshold for probabilistic output of a classifier.
-        It might be:
-            float - same for all subgroups from `protected`
-            dict - individually adjusted for each subgroup
-                   (must have values from `protected` as keys).
+        It might be: a `float` - same for all subgroups from `protected`,
+        or a `dict` - individually adjusted for each subgroup
+        (must have values from `protected` as keys).
     label : str, optional
         Name to appear in result and plots. Overrides default.
-    kwargs : ...
+    kwargs : dict
         Keyword arguments. It supports `verbose`, which is a boolean
         value telling if additional output should be printed
-        (True) or not (False, default).
+        (`True`) or not (`False`, default).
 
     Returns
     -----------
     GroupFairnessClassification class object (a subclass of _FairnessObject)
         Explanation object containing the main result attribute and the plot method.
-        It has the following main attributes:
-            result : pd.DataFrame
-                Scaled `metric_scores`. The scaling is performed by
-                dividing all metric scores by scores of the privileged subgroup.
-            metric_scores : pd.DataFrame
-                Raw metric scores for each subgroup.
-            parity_loss : pd.Series
-                It is a summarised `result`. From each metric (column) a logarithm
-                is calculated, then the absolute value is taken and summarised.
-                Therefore, for metric M:
-                    `parity_loss` is sum(abs(log(M_i / M_privileged)))
-                     where M_i is the metric score for subgroup i.
-            label : str
-                `label` attribute from the Explainer object.
-                 Labels must be unique when plotting.
-            cutoff : dict
-                A float value for each subgroup (key in dict).
+        
+    It has the following main attributes:
+        - result : `pd.DataFrame`
+            Scaled `metric_scores`. The scaling is performed by
+            dividing all metric scores by scores of the privileged subgroup.
+        - metric_scores : `pd.DataFrame`
+            Raw metric scores for each subgroup.
+        - parity_loss : `pd.Series`
+            It is a summarised `result`. From each metric (column) a logarithm
+            is calculated, then the absolute value is taken and summarised.
+            Therefore, for metric M:
+                `parity_loss` is a `sum(abs(log(M_i / M_privileged)))`
+                    where `M_i` is the metric score for subgroup `i`.
+        - label : `str`
+            `label` attribute from the Explainer object.
+                Labels must be unique when plotting.
+        - cutoff : `dict`
+            A float value for each subgroup (key in dict).
 
     Notes
     -----------
@@ -3541,7 +3594,7 @@ A float value for each subgroup (key in dict).</dd>
 
     if self.model_type != &#39;classification&#39;:
         raise ValueError(
-            &#34;model_fairness for now supports only classification models.&#34;
+            &#34;fairness module for now supports only classification models.&#34;
             &#34;Explainer attribute &#39;model_type&#39; must be &#39;classification&#39;&#34;)
 
     fobject = GroupFairnessClassification(y=self.y,
@@ -3562,20 +3615,20 @@ A float value for each subgroup (key in dict).</dd>
 <span>def <span class="ident">model_parts</span></span>(<span>self, loss_function=None, type=('variable_importance', 'ratio', 'difference', 'shap_wrapper'), N=1000, B=10, variables=None, variable_groups=None, keep_raw_permutations=True, label=None, processes=1, random_state=None, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculate dataset level variable importance</p>
+<div class="desc"><p>Calculate model-level variable importance</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>loss_function</code></strong> :&ensp;<code>{'rmse', '1-auc', 'mse', 'mae', 'mad'}</code> or <code>function</code>, optional</dt>
 <dd>If string, then such loss function will be used to assess variable importance
-(default is 'rmse' or <code>1-auc</code>, depends on <code>model_type</code> attribute).</dd>
-<dt><strong><code>type</code></strong> :&ensp;<code>{'variable_importance', 'ratio', 'difference', 'shap_wrapper'}</code>, optional</dt>
+(default is <code>'rmse'</code> or <code>'1-auc'</code>, depends on <code>model_type</code> attribute).</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'variable_importance', 'ratio', 'difference', 'shap_wrapper'}</code></dt>
 <dd>Type of transformation that will be applied to dropout loss.
-(default is 'variable_importance', which is Permutational Variable Importance).</dd>
+(default is <code>'variable_importance'</code>, which is Permutational Variable Importance).</dd>
 <dt><strong><code>N</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Number of observations that will be sampled from the <code>data</code> attribute before
-the calculation of variable importance. <code>None</code> means all <code>data</code> (default is 1000).</dd>
+the calculation of variable importance. <code>None</code> means all <code>data</code> (default is <code>1000</code>).</dd>
 <dt><strong><code>B</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>Number of permutation rounds to perform on each variable (default is 10).</dd>
+<dd>Number of permutation rounds to perform on each variable (default is <code>10</code>).</dd>
 <dt><strong><code>variables</code></strong> :&ensp;<code>array_like</code> of <code>str</code>, optional</dt>
 <dd>Variables for which the importance will be calculated
 (default is <code>None</code>, which means all of the variables).
@@ -3584,23 +3637,23 @@ NOTE: Ignored if <code>variable_groups</code> is not <code>None</code>.</dd>
 <dd>Group the variables to calculate their joint variable importance
 e.g. <code>{'X': ['x1', 'x2'], 'Y': ['y1', 'y2']}</code> (default is <code>None</code>).</dd>
 <dt><strong><code>keep_raw_permutations</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Save results for all permutation rounds (default is True).</dd>
+<dd>Save results for all permutation rounds (default is <code>True</code>).</dd>
 <dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Name to appear in result and plots. Overrides default.</dd>
 <dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Number of parallel processes to use in calculations. Iterated over <code>B</code>
-(default is 1, which means no parallel computation).</dd>
+(default is <code>1</code>, which means no parallel computation).</dd>
 <dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Set seed for random number generator (default is random seed).</dd>
-</dl>
-<p>kwargs : &hellip;
-Used only for 'shap_wrapper'. Pass <code>shap_explainer_type</code> to specify, which
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Used only for 'shap_wrapper'. Pass <code>shap_explainer_type</code> to specify, which
 Explainer shall be used: <code>{'TreeExplainer', 'DeepExplainer', 'GradientExplainer',
 'LinearExplainer', 'KernelExplainer'}</code>.
-Also keyword arguments passed to one of the: shap.TreeExplainer.shap_values,
+Also keyword arguments passed to one of the: <code>shap.TreeExplainer.shap_values,
 shap.DeepExplainer.shap_values, shap.GradientExplainer.shap_values,
-shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values.
-See <a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></p>
+shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values</code>.
+See <a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>VariableImportance</code> or <code>ShapWrapper class object</code></dt>
@@ -3608,8 +3661,10 @@ See <a href="https://github.com/slundberg/shap">https://github.com/slundberg/sha
 Object class, its attributes, and the plot method depend on the <code>type</code> parameter.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://pbiecek.github.io/ema/featureImportance.html">https://pbiecek.github.io/ema/featureImportance.html</a>
-<a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></p></div>
+<ul>
+<li><a href="https://pbiecek.github.io/ema/featureImportance.html">https://pbiecek.github.io/ema/featureImportance.html</a></li>
+<li><a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3627,21 +3682,21 @@ Object class, its attributes, and the plot method depend on the <code>type</code
                 random_state=None,
                 **kwargs):
 
-    &#34;&#34;&#34;Calculate dataset level variable importance
+    &#34;&#34;&#34;Calculate model-level variable importance
 
     Parameters
     -----------
     loss_function : {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
         If string, then such loss function will be used to assess variable importance
-        (default is &#39;rmse&#39; or `1-auc`, depends on `model_type` attribute).
-    type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;, &#39;shap_wrapper&#39;}, optional
+        (default is `&#39;rmse&#39;` or `&#39;1-auc&#39;`, depends on `model_type` attribute).
+    type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;, &#39;shap_wrapper&#39;}
         Type of transformation that will be applied to dropout loss.
-        (default is &#39;variable_importance&#39;, which is Permutational Variable Importance).
+        (default is `&#39;variable_importance&#39;`, which is Permutational Variable Importance).
     N : int, optional
         Number of observations that will be sampled from the `data` attribute before
-        the calculation of variable importance. `None` means all `data` (default is 1000).
+        the calculation of variable importance. `None` means all `data` (default is `1000`).
     B : int, optional
-        Number of permutation rounds to perform on each variable (default is 10).
+        Number of permutation rounds to perform on each variable (default is `10`).
     variables : array_like of str, optional
         Variables for which the importance will be calculated
         (default is `None`, which means all of the variables).
@@ -3650,21 +3705,21 @@ Object class, its attributes, and the plot method depend on the <code>type</code
         Group the variables to calculate their joint variable importance
         e.g. `{&#39;X&#39;: [&#39;x1&#39;, &#39;x2&#39;], &#39;Y&#39;: [&#39;y1&#39;, &#39;y2&#39;]}` (default is `None`).
     keep_raw_permutations: bool, optional
-        Save results for all permutation rounds (default is True).
+        Save results for all permutation rounds (default is `True`).
     label : str, optional
         Name to appear in result and plots. Overrides default.
     processes : int, optional
         Number of parallel processes to use in calculations. Iterated over `B`
-        (default is 1, which means no parallel computation).
+        (default is `1`, which means no parallel computation).
     random_state : int, optional
         Set seed for random number generator (default is random seed).
-    kwargs : ...
+    kwargs : dict
         Used only for &#39;shap_wrapper&#39;. Pass `shap_explainer_type` to specify, which
         Explainer shall be used: `{&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;, &#39;GradientExplainer&#39;,
         &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}`.
-        Also keyword arguments passed to one of the: shap.TreeExplainer.shap_values,
+        Also keyword arguments passed to one of the: `shap.TreeExplainer.shap_values,
         shap.DeepExplainer.shap_values, shap.GradientExplainer.shap_values,
-        shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values.
+        shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values`.
         See https://github.com/slundberg/shap
 
     Returns
@@ -3675,8 +3730,8 @@ Object class, its attributes, and the plot method depend on the <code>type</code
 
     Notes
     --------
-    https://pbiecek.github.io/ema/featureImportance.html
-    https://github.com/slundberg/shap
+    - https://pbiecek.github.io/ema/featureImportance.html
+    - https://github.com/slundberg/shap
     &#34;&#34;&#34;
 
     checks.check_data_again(self.data)
@@ -3690,7 +3745,7 @@ Object class, its attributes, and the plot method depend on the <code>type</code
     if _type != &#39;shap_wrapper&#39;:
         checks.check_y_again(self.y)
 
-        model_parts_ = VariableImportance(
+        _model_parts = VariableImportance(
             loss_function=loss_function,
             type=_type,
             N=N,
@@ -3701,14 +3756,14 @@ Object class, its attributes, and the plot method depend on the <code>type</code
             random_state=random_state,
             keep_raw_permutations=keep_raw_permutations,
         )
-        model_parts_.fit(self)
+        _model_parts.fit(self)
         
         if label:
-            model_parts_.result[&#39;label&#39;] = label
-        
+            _model_parts.result[&#39;label&#39;] = label
+             
     elif _type == &#39;shap_wrapper&#39;:
         _global_checks.global_check_import(&#39;shap&#39;, &#39;SHAP explanations&#39;)
-        model_parts_ = ShapWrapper(&#39;model_parts&#39;)
+        _model_parts = ShapWrapper(&#39;model_parts&#39;)
         if N is None:
             N = self.data.shape[0]
         else:
@@ -3717,16 +3772,18 @@ Object class, its attributes, and the plot method depend on the <code>type</code
         sampled_rows = np.random.choice(np.arange(N), N, replace=False)
         sampled_data = self.data.iloc[sampled_rows, :]
 
-        model_parts_.fit(self, sampled_data, **kwargs)
+        _model_parts.fit(self, sampled_data, **kwargs)
+    else:
+        raise TypeError(&#34;Wrong type parameter&#34;);
 
-    return model_parts_</code></pre>
+    return _model_parts</code></pre>
 </details>
 </dd>
 <dt id="dalex.Explainer.model_performance"><code class="name flex">
 <span>def <span class="ident">model_performance</span></span>(<span>self, model_type=None, cutoff=0.5, label=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculate dataset level model performance measures</p>
+<div class="desc"><p>Calculate model-level model performance measures</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>model_type</code></strong> :&ensp;<code>{'regression', 'classification', None}</code></dt>
@@ -3734,7 +3791,7 @@ Object class, its attributes, and the plot method depend on the <code>type</code
 (default is <code>None</code>, which means try to extract from the <code>model_type</code> attribute).</dd>
 <dt><strong><code>cutoff</code></strong> :&ensp;<code>float</code>, optional</dt>
 <dd>Cutoff for predictions in classification models. Needed for measures like
-recall, precision, acc, f1 (default is 0.5).</dd>
+recall, precision, acc, f1 (default is <code>0.5</code>).</dd>
 <dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Name to appear in result and plots. Overrides default.</dd>
 </dl>
@@ -3744,7 +3801,9 @@ recall, precision, acc, f1 (default is 0.5).</dd>
 <dd>Explanation object containing the main result attribute and the plot method.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://pbiecek.github.io/ema/modelPerformance.html">https://pbiecek.github.io/ema/modelPerformance.html</a></p></div>
+<ul>
+<li><a href="https://pbiecek.github.io/ema/modelPerformance.html">https://pbiecek.github.io/ema/modelPerformance.html</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3753,7 +3812,7 @@ recall, precision, acc, f1 (default is 0.5).</dd>
                       model_type=None,
                       cutoff=0.5,
                       label=None):
-    &#34;&#34;&#34;Calculate dataset level model performance measures
+    &#34;&#34;&#34;Calculate model-level model performance measures
 
     Parameters
     -----------
@@ -3762,7 +3821,7 @@ recall, precision, acc, f1 (default is 0.5).</dd>
         (default is `None`, which means try to extract from the `model_type` attribute).
     cutoff : float, optional
         Cutoff for predictions in classification models. Needed for measures like
-        recall, precision, acc, f1 (default is 0.5).
+        recall, precision, acc, f1 (default is `0.5`).
     label : str, optional
         Name to appear in result and plots. Overrides default.
 
@@ -3773,7 +3832,7 @@ recall, precision, acc, f1 (default is 0.5).</dd>
 
     Notes
     --------
-    https://pbiecek.github.io/ema/modelPerformance.html
+    - https://pbiecek.github.io/ema/modelPerformance.html
     &#34;&#34;&#34;
 
     checks.check_data_again(self.data)
@@ -3784,64 +3843,65 @@ recall, precision, acc, f1 (default is 0.5).</dd>
     elif model_type is None:
         model_type = self.model_type
 
-    model_performance_ = ModelPerformance(
+    _model_performance = ModelPerformance(
         model_type=model_type,
         cutoff=cutoff
     )
-    model_performance_.fit(self)
+    _model_performance.fit(self)
     
     if label:
-        model_performance_.result[&#39;label&#39;] = label
+        _model_performance.result[&#39;label&#39;] = label
 
-    return model_performance_</code></pre>
+    return _model_performance</code></pre>
 </details>
 </dd>
 <dt id="dalex.Explainer.model_profile"><code class="name flex">
 <span>def <span class="ident">model_profile</span></span>(<span>self, type=('partial', 'accumulated', 'conditional'), N=300, variables=None, variable_type='numerical', groups=None, span=0.25, grid_points=101, variable_splits=None, variable_splits_type='uniform', center=True, label=None, processes=1, random_state=None, verbose=True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculate dataset level variable profiles as Partial or Accumulated Dependence</p>
+<div class="desc"><p>Calculate model-level variable profiles as Partial or Accumulated Dependence</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>type</code></strong> :&ensp;<code>{'partial', 'accumulated', 'conditional'}</code></dt>
-<dd>Type of model profiles (default is 'partial' for Partial Dependence Profiles).</dd>
+<dd>Type of model profiles
+(default is <code>'partial'</code> for Partial Dependence Profiles).</dd>
 <dt><strong><code>N</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Number of observations that will be sampled from the <code>data</code> attribute before
-the calculation of variable profiles. <code>None</code> means all <code>data</code> (default is 300).</dd>
+the calculation of variable profiles. <code>None</code> means all <code>data</code> (default is <code>300</code>).</dd>
 <dt><strong><code>variables</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code>, optional</dt>
 <dd>Variables for which the profiles will be calculated
 (default is <code>None</code>, which means all of the variables).</dd>
 <dt><strong><code>variable_type</code></strong> :&ensp;<code>{'numerical', 'categorical'}</code></dt>
 <dd>Calculate the profiles for numerical or categorical variables
-(default is 'numerical').</dd>
+(default is <code>'numerical'</code>).</dd>
 <dt><strong><code>groups</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code>, optional</dt>
 <dd>Names of categorical variables that will be used for profile grouping
 (default is <code>None</code>, which means no grouping).</dd>
 <dt><strong><code>span</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Smoothing coefficient used as sd for gaussian kernel (default is 0.25).</dd>
+<dd>Smoothing coefficient used as sd for gaussian kernel (default is <code>0.25</code>).</dd>
 <dt><strong><code>grid_points</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>Maximum number of points for profile calculations (default is 101).
+<dd>Maximum number of points for profile calculations (default is <code>101</code>).
 NOTE: The final number of points may be lower than <code>grid_points</code>,
-eg. if there is not enough unique values for a given variable.</dd>
+e.g. if there is not enough unique values for a given variable.</dd>
 <dt><strong><code>variable_splits</code></strong> :&ensp;<code>dict</code> of <code>lists</code>, optional</dt>
 <dd>Split points for variables e.g. <code>{'x': [0, 0.2, 0.5, 0.8, 1], 'y': ['a', 'b']}</code>
 (default is <code>None</code>, which means that they will be distributed uniformly).</dd>
 <dt><strong><code>variable_splits_type</code></strong> :&ensp;<code>{'uniform', 'quantiles'}</code>, optional</dt>
 <dd>Way of calculating <code>variable_splits</code>. Set 'quantiles' for percentiles.
-(default is 'uniform', which means uniform grid of points).</dd>
+(default is <code>'uniform'</code>, which means uniform grid of points).</dd>
 <dt><strong><code>center</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Theoretically Accumulated Profiles start at 0, but are centered to compare
-them with Partial Dependence Profiles (default is True, which means center
-around the average y_hat calculated on the data sample).</dd>
+<dd>Theoretically Accumulated Profiles start at <code>0</code>, but are centered to compare
+them with Partial Dependence Profiles (default is <code>True</code>, which means center
+around the average <code>y_hat</code> calculated on the data sample).</dd>
 <dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Name to appear in result and plots. Overrides default.</dd>
 <dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Number of parallel processes to use in calculations. Iterated over <code>variables</code>
-(default is 1, which means no parallel computation).</dd>
+(default is <code>1</code>, which means no parallel computation).</dd>
 <dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Set seed for random number generator (default is random seed).</dd>
 <dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Print tqdm progress bar (default is True).</dd>
+<dd>Print tqdm progress bar (default is <code>True</code>).</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3849,8 +3909,10 @@ around the average y_hat calculated on the data sample).</dd>
 <dd>Explanation object containing the main result attribute and the plot method.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">https://pbiecek.github.io/ema/partialDependenceProfiles.html</a>
-<a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">https://pbiecek.github.io/ema/accumulatedLocalProfiles.html</a></p></div>
+<ul>
+<li><a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">https://pbiecek.github.io/ema/partialDependenceProfiles.html</a></li>
+<li><a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">https://pbiecek.github.io/ema/accumulatedLocalProfiles.html</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3871,49 +3933,50 @@ around the average y_hat calculated on the data sample).</dd>
                   random_state=None,
                   verbose=True):
 
-    &#34;&#34;&#34;Calculate dataset level variable profiles as Partial or Accumulated Dependence
+    &#34;&#34;&#34;Calculate model-level variable profiles as Partial or Accumulated Dependence
 
     Parameters
     -----------
     type : {&#39;partial&#39;, &#39;accumulated&#39;, &#39;conditional&#39;}
-        Type of model profiles (default is &#39;partial&#39; for Partial Dependence Profiles).
+        Type of model profiles
+        (default is `&#39;partial&#39;` for Partial Dependence Profiles).
     N : int, optional
         Number of observations that will be sampled from the `data` attribute before
-        the calculation of variable profiles. `None` means all `data` (default is 300).
+        the calculation of variable profiles. `None` means all `data` (default is `300`).
     variables : str or array_like of str, optional
         Variables for which the profiles will be calculated
         (default is `None`, which means all of the variables).
     variable_type : {&#39;numerical&#39;, &#39;categorical&#39;}
         Calculate the profiles for numerical or categorical variables
-        (default is &#39;numerical&#39;).
+        (default is `&#39;numerical&#39;`).
     groups : str or array_like of str, optional
         Names of categorical variables that will be used for profile grouping
         (default is `None`, which means no grouping).
     span : float, optional
-        Smoothing coefficient used as sd for gaussian kernel (default is 0.25).
+        Smoothing coefficient used as sd for gaussian kernel (default is `0.25`).
     grid_points : int, optional
-        Maximum number of points for profile calculations (default is 101).
+        Maximum number of points for profile calculations (default is `101`).
         NOTE: The final number of points may be lower than `grid_points`,
-        eg. if there is not enough unique values for a given variable.
+        e.g. if there is not enough unique values for a given variable.
     variable_splits : dict of lists, optional
         Split points for variables e.g. `{&#39;x&#39;: [0, 0.2, 0.5, 0.8, 1], &#39;y&#39;: [&#39;a&#39;, &#39;b&#39;]}`
         (default is `None`, which means that they will be distributed uniformly).
     variable_splits_type : {&#39;uniform&#39;, &#39;quantiles&#39;}, optional
         Way of calculating `variable_splits`. Set &#39;quantiles&#39; for percentiles.
-        (default is &#39;uniform&#39;, which means uniform grid of points).
+        (default is `&#39;uniform&#39;`, which means uniform grid of points).
     center : bool, optional
-        Theoretically Accumulated Profiles start at 0, but are centered to compare
-        them with Partial Dependence Profiles (default is True, which means center
-        around the average y_hat calculated on the data sample).
+        Theoretically Accumulated Profiles start at `0`, but are centered to compare
+        them with Partial Dependence Profiles (default is `True`, which means center
+        around the average `y_hat` calculated on the data sample).
     label : str, optional
         Name to appear in result and plots. Overrides default.
     processes : int, optional
         Number of parallel processes to use in calculations. Iterated over `variables`
-        (default is 1, which means no parallel computation).
+        (default is `1`, which means no parallel computation).
     random_state : int, optional
         Set seed for random number generator (default is random seed).
     verbose : bool, optional
-        Print tqdm progress bar (default is True).
+        Print tqdm progress bar (default is `True`).
 
     Returns
     -----------
@@ -3922,8 +3985,8 @@ around the average y_hat calculated on the data sample).</dd>
 
     Notes
     --------
-    https://pbiecek.github.io/ema/partialDependenceProfiles.html
-    https://pbiecek.github.io/ema/accumulatedLocalProfiles.html
+    - https://pbiecek.github.io/ema/partialDependenceProfiles.html
+    - https://pbiecek.github.io/ema/accumulatedLocalProfiles.html
     &#34;&#34;&#34;
 
     checks.check_data_again(self.data)
@@ -3942,15 +4005,15 @@ around the average y_hat calculated on the data sample).</dd>
 
     I = np.random.choice(np.arange(N), N, replace=False)
 
-    ceteris_paribus = CeterisParibus(grid_points=grid_points,
+    _ceteris_paribus = CeterisParibus(grid_points=grid_points,
                                      variables=variables,
                                      variable_splits=variable_splits,
                                      variable_splits_type=variable_splits_type,
                                      processes=processes)
     _y = self.y[I] if self.y is not None else self.y
-    ceteris_paribus.fit(self, self.data.iloc[I, :], y=_y, verbose=verbose)
+    _ceteris_paribus.fit(self, self.data.iloc[I, :], y=_y, verbose=verbose)
 
-    model_profile_ = AggregatedProfiles(
+    _model_profile = AggregatedProfiles(
         type=_type,
         variables=variables,
         variable_type=variable_type,
@@ -3960,12 +4023,12 @@ around the average y_hat calculated on the data sample).</dd>
         random_state=random_state
     )
 
-    model_profile_.fit(ceteris_paribus, verbose)
+    _model_profile.fit(_ceteris_paribus, verbose)
 
     if label:
-        model_profile_.result[&#39;_label_&#39;] = label
+        _model_profile.result[&#39;_label_&#39;] = label
             
-    return model_profile_</code></pre>
+    return _model_profile</code></pre>
 </details>
 </dd>
 <dt id="dalex.Explainer.model_surrogate"><code class="name flex">
@@ -3982,29 +4045,32 @@ for references.</p>
 <dl>
 <dt><strong><code>type</code></strong> :&ensp;<code>{'tree', 'linear'}</code></dt>
 <dd>Type of a surrogate model. This can be a decision tree or a linear model
-(default is 'tree').</dd>
+(default is <code>'tree'</code>).</dd>
 <dt><strong><code>max_vars</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Maximum number of variables that will be used in surrogate model training.
-These are the most important variables to the black-box model (default is 5).</dd>
+These are the most important variables to the black-box model (default is <code>5</code>).</dd>
 <dt><strong><code>max_depth</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>The maximum depth of the tree. If <code>None</code>, then nodes are expanded until all
 leaves are pure or until all leaves contain less than min_samples_split
-samples (default is 3 for interpretable plot).</dd>
-</dl>
-<p>kwargs : &hellip;
-Keyword arguments passed to one of the: sklearn.tree.DecisionTreeClassifier,
+samples (default is <code>3</code> for interpretable plot).</dd>
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword arguments passed to one of the: <code>sklearn.tree.DecisionTreeClassifier,
 sklearn.tree.DecisionTreeRegressor, sklearn.linear_model.LogisticRegression,
-sklearn.linear_model.LinearRegression</p>
+sklearn.linear_model.LinearRegression</code></dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>sklearn.tree.DecisionTreeClassifier, sklearn.tree.DecisionTreeRegressor,</code></dt>
+<dt><code>One of: sklearn.tree.DecisionTreeClassifier, sklearn.tree.DecisionTreeRegressor, sklearn.linear_model.LogisticRegression, sklearn.linear_model.LinearRegression</code></dt>
 <dd>&nbsp;</dd>
-<dt><code>sklearn.linear_model.LogisticRegression, sklearn.linear_model.LinearRegression</code></dt>
-<dd>A surrogate model with additional:
-- <code>plot</code> method
-- <code>performance</code> attribute
-- <code>feature_names</code> attribute
-- <code>class_names</code> attribute</dd>
+<dt><code>A surrogate model with additional:</code></dt>
+<dd>
+<ul>
+<li><code>plot</code> method</li>
+<li><code>performance</code> attribute</li>
+<li><code>feature_names</code> attribute</li>
+<li><code>class_names</code> attribute</li>
+</ul>
+</dd>
 </dl>
 <h2 id="notes">Notes</h2>
 <ul>
@@ -4032,29 +4098,28 @@ sklearn.linear_model.LinearRegression</p>
     -----------
     type : {&#39;tree&#39;, &#39;linear&#39;}
         Type of a surrogate model. This can be a decision tree or a linear model
-        (default is &#39;tree&#39;).
+        (default is `&#39;tree&#39;`).
     max_vars : int, optional
         Maximum number of variables that will be used in surrogate model training.
-        These are the most important variables to the black-box model (default is 5).
+        These are the most important variables to the black-box model (default is `5`).
     max_depth : int, optional
         The maximum depth of the tree. If `None`, then nodes are expanded until all
         leaves are pure or until all leaves contain less than min_samples_split
-        samples (default is 3 for interpretable plot).
-    kwargs : ...
-        Keyword arguments passed to one of the: sklearn.tree.DecisionTreeClassifier,
+        samples (default is `3` for interpretable plot).
+    kwargs : dict
+        Keyword arguments passed to one of the: `sklearn.tree.DecisionTreeClassifier,
         sklearn.tree.DecisionTreeRegressor, sklearn.linear_model.LogisticRegression,
-        sklearn.linear_model.LinearRegression
+        sklearn.linear_model.LinearRegression`
 
 
     Returns
     -----------
-    sklearn.tree.DecisionTreeClassifier, sklearn.tree.DecisionTreeRegressor,
-    sklearn.linear_model.LogisticRegression, sklearn.linear_model.LinearRegression
-        A surrogate model with additional:
-            - `plot` method
-            - `performance` attribute
-            - `feature_names` attribute
-            - `class_names` attribute
+    One of: sklearn.tree.DecisionTreeClassifier, sklearn.tree.DecisionTreeRegressor, sklearn.linear_model.LogisticRegression, sklearn.linear_model.LinearRegression
+    A surrogate model with additional:
+        - `plot` method
+        - `performance` attribute
+        - `feature_names` attribute
+        - `class_names` attribute
 
     Notes
     -----------
@@ -4085,7 +4150,7 @@ sklearn.linear_model.LinearRegression</p>
 <p>This function uses the <code>predict_function</code> attribute.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>data</code></strong> :&ensp;<code>pd.DataFrame, np.ndarray 2d</code></dt>
+<dt><strong><code>data</code></strong> :&ensp;<code>pd.DataFrame, np.ndarray (2d)</code></dt>
 <dd>Data which will be used to make a prediction.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -4104,7 +4169,7 @@ sklearn.linear_model.LinearRegression</p>
 
     Parameters
     ----------
-    data : pd.DataFrame, np.ndarray 2d
+    data : pd.DataFrame, np.ndarray (2d)
         Data which will be used to make a prediction.
 
     Returns
@@ -4122,13 +4187,13 @@ sklearn.linear_model.LinearRegression</p>
 <span>def <span class="ident">predict_parts</span></span>(<span>self, new_observation, type=('break_down_interactions', 'break_down', 'shap', 'shap_wrapper'), order=None, interaction_preference=1, path='average', B=25, keep_distributions=False, label=None, processes=1, random_state=None, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculate instance level variable attributions as Break Down, Shapley Values or Shap Values</p>
+<div class="desc"><p>Calculate predict-level variable attributions as Break Down, Shapley Values or Shap Values</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>new_observation</code></strong> :&ensp;<code>pd.Series</code> or <code>np.ndarray (1d)</code> or <code>pd.DataFrame (1,p)</code></dt>
 <dd>An observation for which a prediction needs to be explained.</dd>
-<dt><strong><code>type</code></strong> :&ensp;<code>{'break_down_interactions', 'break_down', 'shap', 'shap_wrapper}</code></dt>
-<dd>Type of variable attributions (default is 'break_down_interactions').</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'break_down_interactions', 'break_down', 'shap', 'shap_wrapper'}</code></dt>
+<dd>Type of variable attributions (default is <code>'break_down_interactions'</code>).</dd>
 <dt><strong><code>order</code></strong> :&ensp;<code>list</code> of <code>int</code> or <code>str</code>, optional</dt>
 <dd>Parameter specific for <code>break_down_interactions</code> and <code>break_down</code>. Use a fixed
 order of variables for attribution calculation. Use integer values
@@ -4137,33 +4202,33 @@ variable names (default is <code>None</code>, which means order by importance).<
 <dt><strong><code>interaction_preference</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Parameter specific for <code>break_down_interactions</code> type. Specify which interactions
 will be present in an explanation. The larger the integer, the more frequently
-interactions will be presented (default is 1).</dd>
+interactions will be presented (default is <code>1</code>).</dd>
 <dt><strong><code>path</code></strong> :&ensp;<code>list</code> of <code>int</code>, optional</dt>
 <dd>Parameter specific for <code>shap</code>. If specified, then attributions for this path
-will be plotted (default is 'average', which plots attribution means for
+will be plotted (default is <code>'average'</code>, which plots attribution means for
 <code>B</code> random paths).</dd>
 <dt><strong><code>B</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Parameter specific for <code>shap</code>. Number of random paths to calculate
-variable attributions (default is 25).</dd>
+variable attributions (default is <code>25</code>).</dd>
 <dt><strong><code>keep_distributions</code></strong> :&ensp;<code> bool</code>, optional</dt>
-<dd>Save the distribution of partial predictions (default is False).</dd>
+<dd>Save the distribution of partial predictions (default is <code>False</code>).</dd>
 <dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Name to appear in result and plots. Overrides default.</dd>
 <dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Parameter specific for <code>shap</code>. Number of parallel processes to use in calculations.
-Iterated over <code>B</code> (default is 1, which means no parallel computation).</dd>
+Iterated over <code>B</code> (default is <code>1</code>, which means no parallel computation).</dd>
 <dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Set seed for random number generator (default is random seed).</dd>
-</dl>
-<p>kwargs : &hellip;
-Used only for 'shap_wrapper'. Pass <code>shap_explainer_type</code> to specify, which
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Used only for <code>'shap_wrapper'</code>. Pass <code>shap_explainer_type</code> to specify, which
 Explainer shall be used: <code>{'TreeExplainer', 'DeepExplainer', 'GradientExplainer',
 'LinearExplainer', 'KernelExplainer'}&lt;code&gt; (default is &lt;/code&gt;None</code>, which automatically
 chooses an Explainer to use).
-Also keyword arguments passed to one of the: shap.TreeExplainer.shap_values,
+Also keyword arguments passed to one of the: <code>shap.TreeExplainer.shap_values,
 shap.DeepExplainer.shap_values, shap.GradientExplainer.shap_values,
-shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values.
-See <a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></p>
+shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values</code>.
+See <a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>BreakDown, Shap</code> or <code>ShapWrapper class object</code></dt>
@@ -4171,10 +4236,12 @@ See <a href="https://github.com/slundberg/shap">https://github.com/slundberg/sha
 Object class, its attributes, and the plot method depend on the <code>type</code> parameter.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://pbiecek.github.io/ema/breakDown.html">https://pbiecek.github.io/ema/breakDown.html</a>
-<a href="https://pbiecek.github.io/ema/iBreakDown.html">https://pbiecek.github.io/ema/iBreakDown.html</a>
-<a href="https://pbiecek.github.io/ema/shapley.html">https://pbiecek.github.io/ema/shapley.html</a>
-<a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></p></div>
+<ul>
+<li><a href="https://pbiecek.github.io/ema/breakDown.html">https://pbiecek.github.io/ema/breakDown.html</a></li>
+<li><a href="https://pbiecek.github.io/ema/iBreakDown.html">https://pbiecek.github.io/ema/iBreakDown.html</a></li>
+<li><a href="https://pbiecek.github.io/ema/shapley.html">https://pbiecek.github.io/ema/shapley.html</a></li>
+<li><a href="https://github.com/slundberg/shap">https://github.com/slundberg/shap</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4191,14 +4258,14 @@ Object class, its attributes, and the plot method depend on the <code>type</code
                   processes=1,
                   random_state=None,
                   **kwargs):
-    &#34;&#34;&#34;Calculate instance level variable attributions as Break Down, Shapley Values or Shap Values
+    &#34;&#34;&#34;Calculate predict-level variable attributions as Break Down, Shapley Values or Shap Values
 
     Parameters
     -----------
     new_observation : pd.Series or np.ndarray (1d) or pd.DataFrame (1,p)
         An observation for which a prediction needs to be explained.
-    type : {&#39;break_down_interactions&#39;, &#39;break_down&#39;, &#39;shap&#39;, &#39;shap_wrapper}
-        Type of variable attributions (default is &#39;break_down_interactions&#39;).
+    type : {&#39;break_down_interactions&#39;, &#39;break_down&#39;, &#39;shap&#39;, &#39;shap_wrapper&#39;}
+        Type of variable attributions (default is `&#39;break_down_interactions&#39;`).
     order : list of int or str, optional
         Parameter specific for `break_down_interactions` and `break_down`. Use a fixed
         order of variables for attribution calculation. Use integer values  or string
@@ -4206,31 +4273,31 @@ Object class, its attributes, and the plot method depend on the <code>type</code
     interaction_preference : int, optional
         Parameter specific for `break_down_interactions` type. Specify which interactions
         will be present in an explanation. The larger the integer, the more frequently
-        interactions will be presented (default is 1).
+        interactions will be presented (default is `1`).
     path : list of int, optional
         Parameter specific for `shap`. If specified, then attributions for this path
-        will be plotted (default is &#39;average&#39;, which plots attribution means for
+        will be plotted (default is `&#39;average&#39;`, which plots attribution means for
         `B` random paths).
     B : int, optional
         Parameter specific for `shap`. Number of random paths to calculate
-        variable attributions (default is 25).
+        variable attributions (default is `25`).
     keep_distributions :  bool, optional
-        Save the distribution of partial predictions (default is False).
+        Save the distribution of partial predictions (default is `False`).
     label : str, optional
         Name to appear in result and plots. Overrides default.
     processes : int, optional
         Parameter specific for `shap`. Number of parallel processes to use in calculations.
-        Iterated over `B` (default is 1, which means no parallel computation).
+        Iterated over `B` (default is `1`, which means no parallel computation).
     random_state : int, optional
         Set seed for random number generator (default is random seed).
-    kwargs : ...
-        Used only for &#39;shap_wrapper&#39;. Pass `shap_explainer_type` to specify, which
+    kwargs : dict
+        Used only for `&#39;shap_wrapper&#39;`. Pass `shap_explainer_type` to specify, which
         Explainer shall be used: `{&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;, &#39;GradientExplainer&#39;,
         &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}` (default is `None`, which automatically
         chooses an Explainer to use).
-        Also keyword arguments passed to one of the: shap.TreeExplainer.shap_values,
+        Also keyword arguments passed to one of the: `shap.TreeExplainer.shap_values,
         shap.DeepExplainer.shap_values, shap.GradientExplainer.shap_values,
-        shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values.
+        shap.LinearExplainer.shap_values, shap.KernelExplainer.shap_values`.
         See https://github.com/slundberg/shap
 
     Returns
@@ -4241,10 +4308,10 @@ Object class, its attributes, and the plot method depend on the <code>type</code
 
     Notes
     --------
-    https://pbiecek.github.io/ema/breakDown.html
-    https://pbiecek.github.io/ema/iBreakDown.html
-    https://pbiecek.github.io/ema/shapley.html
-    https://github.com/slundberg/shap
+    - https://pbiecek.github.io/ema/breakDown.html
+    - https://pbiecek.github.io/ema/iBreakDown.html
+    - https://pbiecek.github.io/ema/shapley.html
+    - https://github.com/slundberg/shap
     &#34;&#34;&#34;
 
     checks.check_data_again(self.data)
@@ -4253,14 +4320,14 @@ Object class, its attributes, and the plot method depend on the <code>type</code
     _type = checks.check_method_type(type, types)
 
     if _type == &#39;break_down_interactions&#39; or _type == &#39;break_down&#39;:
-        predict_parts_ = BreakDown(
+        _predict_parts = BreakDown(
             type=_type,
             keep_distributions=keep_distributions,
             order=order,
             interaction_preference=interaction_preference
         )
     elif _type == &#39;shap&#39;:
-        predict_parts_ = Shap(
+        _predict_parts = Shap(
             keep_distributions=keep_distributions,
             path=path,
             B=B,
@@ -4269,34 +4336,36 @@ Object class, its attributes, and the plot method depend on the <code>type</code
         )
     elif _type == &#39;shap_wrapper&#39;:
         _global_checks.global_check_import(&#39;shap&#39;, &#39;SHAP explanations&#39;)
-        predict_parts_ = ShapWrapper(&#39;predict_parts&#39;)
+        _predict_parts = ShapWrapper(&#39;predict_parts&#39;)
+    else:
+        raise TypeError(&#34;Wrong type parameter.&#34;)
 
-    predict_parts_.fit(self, new_observation, **kwargs)
+    _predict_parts.fit(self, new_observation, **kwargs)
     
     if label:
-        predict_parts_.result[&#39;label&#39;] = label
+        _predict_parts.result[&#39;label&#39;] = label
 
-    return predict_parts_</code></pre>
+    return _predict_parts</code></pre>
 </details>
 </dd>
 <dt id="dalex.Explainer.predict_profile"><code class="name flex">
 <span>def <span class="ident">predict_profile</span></span>(<span>self, new_observation, type=('ceteris_paribus',), y=None, variables=None, grid_points=101, variable_splits=None, variable_splits_type='uniform', variable_splits_with_obs=True, processes=1, label=None, verbose=True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculate instance level variable profiles as Ceteris Paribus</p>
+<div class="desc"><p>Calculate predict-level variable profiles as Ceteris Paribus</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>new_observation</code></strong> :&ensp;<code>pd.DataFrame</code> or <code>np.ndarray</code> or <code>pd.Series</code></dt>
 <dd>Observations for which predictions need to be explained.</dd>
 <dt><strong><code>type</code></strong> :&ensp;<code>{'ceteris_paribus', TODO: 'oscilations'}</code></dt>
-<dd>Type of variable profiles (default is 'ceteris_paribus').</dd>
+<dd>Type of variable profiles (default is <code>'ceteris_paribus'</code>).</dd>
 <dt><strong><code>y</code></strong> :&ensp;<code>pd.Series</code> or <code>np.ndarray (1d)</code>, optional</dt>
 <dd>Target variable with the same length as <code>new_observation</code>.</dd>
 <dt><strong><code>variables</code></strong> :&ensp;<code>str</code> or <code>array_like</code> of <code>str</code>, optional</dt>
 <dd>Variables for which the profiles will be calculated
 (default is <code>None</code>, which means all of the variables).</dd>
 <dt><strong><code>grid_points</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>Maximum number of points for profile calculations (default is 101).
+<dd>Maximum number of points for profile calculations (default is <code>101</code>).
 NOTE: The final number of points may be lower than <code>grid_points</code>,
 eg. if there is not enough unique values for a given variable.</dd>
 <dt><strong><code>variable_splits</code></strong> :&ensp;<code>dict</code> of <code>lists</code>, optional</dt>
@@ -4304,18 +4373,18 @@ eg. if there is not enough unique values for a given variable.</dd>
 (default is <code>None</code>, which means that they will be calculated using one of
 <code>variable_splits_type</code> and the <code>data</code> attribute).</dd>
 <dt><strong><code>variable_splits_type</code></strong> :&ensp;<code>{'uniform', 'quantiles'}</code>, optional</dt>
-<dd>Way of calculating <code>variable_splits</code>. Set 'quantiles' for percentiles.
-(default is 'uniform', which means uniform grid of points).</dd>
+<dd>Way of calculating <code>variable_splits</code>. Set <code>'quantiles'</code> for percentiles.
+(default is <code>'uniform'</code>, which means uniform grid of points).</dd>
 <dt><strong><code>variable_splits_with_obs</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>Add variable values of <code>new_observation</code> data to the <code>variable_splits</code>
-(default is True).</dd>
+(default is <code>True</code>).</dd>
 <dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Name to appear in result and plots. Overrides default.</dd>
 <dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Number of parallel processes to use in calculations. Iterated over <code>variables</code>
-(default is 1, which means no parallel computation).</dd>
+(default is <code>1</code>, which means no parallel computation).</dd>
 <dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Print tqdm progress bar (default is True).</dd>
+<dd>Print tqdm progress bar (default is <code>True</code>).</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -4323,7 +4392,9 @@ eg. if there is not enough unique values for a given variable.</dd>
 <dd>Explanation object containing the main result attribute and the plot method.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://pbiecek.github.io/ema/ceterisParibus.html">https://pbiecek.github.io/ema/ceterisParibus.html</a></p></div>
+<ul>
+<li><a href="https://pbiecek.github.io/ema/ceterisParibus.html">https://pbiecek.github.io/ema/ceterisParibus.html</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4340,21 +4411,21 @@ eg. if there is not enough unique values for a given variable.</dd>
                     processes=1,
                     label=None,
                     verbose=True):
-    &#34;&#34;&#34;Calculate instance level variable profiles as Ceteris Paribus
+    &#34;&#34;&#34;Calculate predict-level variable profiles as Ceteris Paribus
 
     Parameters
     -----------
     new_observation : pd.DataFrame or np.ndarray or pd.Series
         Observations for which predictions need to be explained.
     type : {&#39;ceteris_paribus&#39;, TODO: &#39;oscilations&#39;}
-        Type of variable profiles (default is &#39;ceteris_paribus&#39;).
+        Type of variable profiles (default is `&#39;ceteris_paribus&#39;`).
     y : pd.Series or np.ndarray (1d), optional
         Target variable with the same length as `new_observation`.
     variables : str or array_like of str, optional
         Variables for which the profiles will be calculated
         (default is `None`, which means all of the variables).
     grid_points : int, optional
-        Maximum number of points for profile calculations (default is 101).
+        Maximum number of points for profile calculations (default is `101`).
         NOTE: The final number of points may be lower than `grid_points`,
         eg. if there is not enough unique values for a given variable.
     variable_splits : dict of lists, optional
@@ -4362,18 +4433,18 @@ eg. if there is not enough unique values for a given variable.</dd>
         (default is `None`, which means that they will be calculated using one of
         `variable_splits_type` and the `data` attribute).
     variable_splits_type : {&#39;uniform&#39;, &#39;quantiles&#39;}, optional
-        Way of calculating `variable_splits`. Set &#39;quantiles&#39; for percentiles.
-        (default is &#39;uniform&#39;, which means uniform grid of points).
+        Way of calculating `variable_splits`. Set `&#39;quantiles&#39;` for percentiles.
+        (default is `&#39;uniform&#39;`, which means uniform grid of points).
     variable_splits_with_obs: bool, optional
         Add variable values of `new_observation` data to the `variable_splits`
-        (default is True).
+        (default is `True`).
     label : str, optional
         Name to appear in result and plots. Overrides default.
     processes : int, optional
         Number of parallel processes to use in calculations. Iterated over `variables`
-        (default is 1, which means no parallel computation).
+        (default is `1`, which means no parallel computation).
     verbose : bool, optional
-        Print tqdm progress bar (default is True).
+        Print tqdm progress bar (default is `True`).
 
     Returns
     -----------
@@ -4382,7 +4453,7 @@ eg. if there is not enough unique values for a given variable.</dd>
 
     Notes
     --------
-    https://pbiecek.github.io/ema/ceterisParibus.html
+    - https://pbiecek.github.io/ema/ceterisParibus.html
     &#34;&#34;&#34;
 
     checks.check_data_again(self.data)
@@ -4391,7 +4462,7 @@ eg. if there is not enough unique values for a given variable.</dd>
     _type = checks.check_method_type(type, types)
 
     if _type == &#39;ceteris_paribus&#39;:
-        predict_profile_ = CeterisParibus(
+        _predict_profile = CeterisParibus(
             variables=variables,
             grid_points=grid_points,
             variable_splits=variable_splits,
@@ -4399,13 +4470,15 @@ eg. if there is not enough unique values for a given variable.</dd>
             variable_splits_with_obs=variable_splits_with_obs,
             processes=processes
         )
+    else:
+        raise TypeError(&#34;Wrong type parameter.&#34;)
 
-    predict_profile_.fit(self, new_observation, y, verbose)
+    _predict_profile.fit(self, new_observation, y, verbose)
 
     if label:
-        predict_profile_.result[&#39;_label_&#39;] = label
+        _predict_profile.result[&#39;_label_&#39;] = label
         
-    return predict_profile_</code></pre>
+    return _predict_profile</code></pre>
 </details>
 </dd>
 <dt id="dalex.Explainer.predict_surrogate"><code class="name flex">
@@ -4421,20 +4494,22 @@ See <a href="https://lime-ml.readthedocs.io/en/latest/lime.html#module-lime.lime
 <dd>An observation for which a prediction needs to be explained.</dd>
 <dt><strong><code>type</code></strong> :&ensp;<code>{'lime'}</code></dt>
 <dd>Type of explanation method
-(default is 'lime', which uses the lime package to create an explanation).</dd>
-</dl>
-<p>kwargs : &hellip;
-Keyword arguments passed to the lime.lime_tabular.LimeTabularExplainer object
+(default is <code>'lime'</code>, which uses the lime package to create an explanation).</dd>
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword arguments passed to the lime.lime_tabular.LimeTabularExplainer object
 and the LimeTabularExplainer.explain_instance method. Exceptions are:
 <code>training_data</code>, <code>mode</code>, <code>data_row</code> and <code>predict_fn</code>. Other parameters:
-<a href="https://lime-ml.readthedocs.io/en/latest/lime.html#module-lime.lime_tabular">https://lime-ml.readthedocs.io/en/latest/lime.html#module-lime.lime_tabular</a></p>
+<a href="https://lime-ml.readthedocs.io/en/latest/lime.html#module-lime.lime_tabular">https://lime-ml.readthedocs.io/en/latest/lime.html#module-lime.lime_tabular</a></dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>lime.explanation.Explanation</code></dt>
 <dd>Explanation object.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p><a href="https://github.com/marcotcr/lime">https://github.com/marcotcr/lime</a></p></div>
+<ul>
+<li><a href="https://github.com/marcotcr/lime">https://github.com/marcotcr/lime</a></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4454,8 +4529,8 @@ and the LimeTabularExplainer.explain_instance method. Exceptions are:
         An observation for which a prediction needs to be explained.
     type : {&#39;lime&#39;}
         Type of explanation method
-        (default is &#39;lime&#39;, which uses the lime package to create an explanation).
-    kwargs : ...
+        (default is `&#39;lime&#39;`, which uses the lime package to create an explanation).
+    kwargs : dict
         Keyword arguments passed to the lime.lime_tabular.LimeTabularExplainer object
         and the LimeTabularExplainer.explain_instance method. Exceptions are:
         `training_data`, `mode`, `data_row` and `predict_fn`. Other parameters:
@@ -4468,21 +4543,19 @@ and the LimeTabularExplainer.explain_instance method. Exceptions are:
 
     Notes
     -----------
-    https://github.com/marcotcr/lime
+    - https://github.com/marcotcr/lime
     &#34;&#34;&#34;
 
     checks.check_data_again(self.data)
 
     if type == &#39;lime&#39;:
         _global_checks.global_check_import(&#39;lime&#39;, &#39;LIME explanations&#39;)
-        from lime.lime_tabular import LimeTabularExplainer
-        new_observation = checks.check_new_observation_lime(new_observation)
+        _new_observation = checks.check_new_observation_lime(new_observation)
+        _explanation = utils.create_lime_explanation(self, _new_observation, **kwargs)
+    else:
+        raise TypeError(&#34;Wrong &#39;type&#39; parameter.&#34;)
 
-        explainer_dict, explanation_dict = utils.unpack_kwargs_lime(self, new_observation, **kwargs)
-        lime_tabular_explainer = LimeTabularExplainer(**explainer_dict)
-        explanation = lime_tabular_explainer.explain_instance(**explanation_dict)
-
-        return explanation</code></pre>
+    return _explanation</code></pre>
 </details>
 </dd>
 <dt id="dalex.Explainer.residual"><code class="name flex">
@@ -4543,15 +4616,21 @@ and the LimeTabularExplainer.explain_instance method. Exceptions are:
 </header>
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#plots">Plots</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="dalex.dataset_level" href="dataset_level/index.html">dalex.dataset_level</a></code></li>
+<li><code><a title="dalex.arena" href="arena/index.html">dalex.arena</a></code></li>
 <li><code><a title="dalex.datasets" href="datasets/index.html">dalex.datasets</a></code></li>
 <li><code><a title="dalex.fairness" href="fairness/index.html">dalex.fairness</a></code></li>
-<li><code><a title="dalex.instance_level" href="instance_level/index.html">dalex.instance_level</a></code></li>
+<li><code><a title="dalex.model_explanations" href="model_explanations/index.html">dalex.model_explanations</a></code></li>
+<li><code><a title="dalex.predict_explanations" href="predict_explanations/index.html">dalex.predict_explanations</a></code></li>
 <li><code><a title="dalex.wrappers" href="wrappers/index.html">dalex.wrappers</a></code></li>
 </ul>
 </li>
