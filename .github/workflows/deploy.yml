@@ -9,6 +9,9 @@ on:
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: homepage
 
     strategy:
       matrix:

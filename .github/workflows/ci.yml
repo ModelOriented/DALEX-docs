@@ -13,6 +13,9 @@ on:
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: homepage
 
     strategy:
       matrix:
@@ -27,9 +30,6 @@ jobs:
         uses: actions/setup-node@v2.1.2
         with:
           node-version: ${{ matrix.node }}
-
-      - name: Change directory
-        run: cd homepage
 
       - name: Cache node_modules 📦
         uses: actions/cache@v2
