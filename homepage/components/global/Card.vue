@@ -54,6 +54,8 @@ export default {
   vertical-align: middle;
   cursor: pointer;
   background: white;
+  color: unset !important;
+  text-decoration: none !important;
 }
 .card > .preview {
   height: 10rem;

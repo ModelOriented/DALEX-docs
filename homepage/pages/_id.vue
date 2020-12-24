@@ -1,7 +1,5 @@
 <template>
   <div class="content-page">
-    Title: {{ page.title }}
-    [TODO] Header
     <nuxt-content :document="page" />
   </div>
 </template>
@@ -24,8 +22,32 @@ export default {
 .content-page {
   background: #f5f5f5;
 }
+.content-page h1, .content-page h2, .content-page h3, .content-page h4, .content-page h5, .content-page h6 {
+  padding-left: 2rem;
+}
 .content-page h1 {
   font-size: 2rem;
-  padding: 1.5rem 0 0rem 2rem;
+  padding-top: 1.5rem;
+}
+.content-page h3 {
+  font-size: 1.2rem;
+  padding-top: 1.5rem;
+}
+.content-page pre {
+  background: #eee;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0 0.5rem 2rem;
+  display: inline-block;
+  border: 1px solid #aaa;
+}
+.content-page pre[data-line*="expand"] {
+  display: block;
+}
+.content-page p {
+  padding-left: 2rem;
+}
+.content-page a {
+  color: #371ea3;
+  text-decoration: underline;
 }
 </style>

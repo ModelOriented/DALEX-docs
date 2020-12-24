@@ -3,6 +3,24 @@ title: Python
 description: Learn how to use @nuxt/content.
 ---
 
+<div class="flex">
+  <img src="https://miro.medium.com/max/1400/1*J8gbbTzeYkktdCz6Ei1ZiA.png" class="flex-1 max-w-xs">
+  <div class="flex-1">
+   <h1 style="padding-top: 0.5rem;">Dalex for Python</h1>
+   <p>
+     <a href="https://github.com/ModelOriented/DALEX/actions?query=workflow%3APython-check"><img src="https://github.com/ModelOriented/DALEX/workflows/Python-check/badge.svg" class="inline"></a>
+     <a href="https://pypi.org/project/dalex/"><img src="https://img.shields.io/pypi/pyversions/dalex.svg" alt="Supported Python versions" class="inline"></a>
+     <a href="https://badge.fury.io/py/dalex"><img src="https://badge.fury.io/py/dalex.svg" alt="PyPI version" class="inline"></a>
+     <a href="https://pepy.tech/project/dalex"><img src="https://pepy.tech/badge/dalex" alt="Downloads" class="inline"></a>
+   </p>
+   <h3>Install from <a href="https://pypi.org/project/dalex/">PyPi</a></h3>
+
+```
+pip install dalex
+```
+  </div>
+</div>
+
 # Explainability
 <card-collection>
 <card image="https://www.h2o.ai/wp-content/uploads/2018/07/xgboost-narrow.png" title="How to use dalex with XGBoost" desc="Jupyter notebook with Titanic example" url="http://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
