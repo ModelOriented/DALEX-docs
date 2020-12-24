@@ -3,10 +3,10 @@ title: Python
 description: Learn how to use @nuxt/content.
 ---
 
-<div class="flex">
+<div class="flex bg-white shadow-md p-4 flex-wrap">
   <img src="https://miro.medium.com/max/1400/1*J8gbbTzeYkktdCz6Ei1ZiA.png" class="flex-1 max-w-xs">
   <div class="flex-1">
-   <h1 style="padding-top: 0.5rem;">Dalex for Python</h1>
+   <h1 style="padding-top: 0;">Dalex for Python</h1>
    <p>
      <a href="https://github.com/ModelOriented/DALEX/actions?query=workflow%3APython-check"><img src="https://github.com/ModelOriented/DALEX/workflows/Python-check/badge.svg" class="inline"></a>
      <a href="https://pypi.org/project/dalex/"><img src="https://img.shields.io/pypi/pyversions/dalex.svg" alt="Supported Python versions" class="inline"></a>
