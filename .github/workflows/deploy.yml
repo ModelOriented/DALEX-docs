@@ -47,6 +47,9 @@ jobs:
       - name: Copy docs
         run: cp -n -R ../docs/* dist/
 
+      - name: Overwrite index
+        run: cp ../docs/index.html dist/index.html
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
