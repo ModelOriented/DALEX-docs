@@ -4,16 +4,21 @@ description: Learn how to use @nuxt/content.
 ---
 
 <div class="flex bg-white shadow-md p-4 flex-wrap">
-  <img src="https://miro.medium.com/max/1400/1*J8gbbTzeYkktdCz6Ei1ZiA.png" class="flex-1 max-w-xs">
+  <img src="https://miro.medium.com/max/1400/1*J8gbbTzeYkktdCz6Ei1ZiA.png" class="flex-1 max-w-xs" style="transform: scaleX(-1)">
   <div class="flex-1">
-   <h1 style="padding-top: 0;">Dalex for Python</h1>
-   <p>
-     <a href="https://github.com/ModelOriented/DALEX/actions?query=workflow%3APython-check"><img src="https://github.com/ModelOriented/DALEX/workflows/Python-check/badge.svg" class="inline"></a>
-     <a href="https://pypi.org/project/dalex/"><img src="https://img.shields.io/pypi/pyversions/dalex.svg" alt="Supported Python versions" class="inline"></a>
-     <a href="https://badge.fury.io/py/dalex"><img src="https://badge.fury.io/py/dalex.svg" alt="PyPI version" class="inline"></a>
-     <a href="https://pepy.tech/project/dalex"><img src="https://pepy.tech/badge/dalex" alt="Downloads" class="inline"></a>
-   </p>
-   <h3>Install from <a href="https://pypi.org/project/dalex/">PyPi</a></h3>
+    <h1 style="padding-top: 0;">
+      Dalex for Python
+      <github-button href="https://github.com/ModelOriented/DALEX" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ModelOriented/DALEX on GitHub" style="vertical-align: middle; margin-left: 10px;">
+        Star
+      </github-button>
+    </h1>
+    <p>
+      <a href="https://github.com/ModelOriented/DALEX/actions?query=workflow%3APython-check"><img src="https://github.com/ModelOriented/DALEX/workflows/Python-check/badge.svg" class="inline"></a>
+      <a href="https://pypi.org/project/dalex/"><img src="https://img.shields.io/pypi/pyversions/dalex.svg" alt="Supported Python versions" class="inline"></a>
+      <a href="https://badge.fury.io/py/dalex"><img src="https://badge.fury.io/py/dalex.svg" alt="PyPI version" class="inline"></a>
+      <a href="https://pepy.tech/project/dalex"><img src="https://pepy.tech/badge/dalex" alt="Downloads" class="inline"></a>
+    </p>
+    <h3>Install from <a href="https://pypi.org/project/dalex/">PyPi</a></h3>
 
 ```
 pip install dalex
@@ -33,11 +38,11 @@ pip install dalex
 
 # Tutorial: Basic XAI
 <card-collection>
-<card image="https://miro.medium.com/max/700/1*ev465wdai6WrrecyG9-qoA.png" title="Basic XAI: Introduction" desc="description" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-1-introduction-e68f65fa2889"></card>
+<card image="https://miro.medium.com/max/700/1*ev465wdai6WrrecyG9-qoA.png" title="Basic XAI: Introduction" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-1-introduction-e68f65fa2889"></card>
 <card image="https://miro.medium.com/max/700/1*2VQsQFGTE-EvMP0Q3_vpMw.png" title="Variable importance" desc="Using permutation-based method" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-2-permutation-based-variable-importance-1516c2924a14"></card>
-<card image="https://miro.medium.com/max/700/1*A6tRQ3-YMTrzP_2Mc-o5oA.png" title="Partial Dependence Profile" desc="description" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-3-partial-dependence-profile-caf8b2ad1c9d"></card>
-<card image="https://miro.medium.com/max/700/1*xhkHBfwuiY2bBpZGFgFhmQ.png" title="Break Down method" desc="description" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-4-break-down-method-2cd4de43abdd"></card>
-<card image="https://miro.medium.com/max/700/1*lKu_urWnJb8xzWxin2IvPA.png" title="Shapley values" desc="description" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-5-shapley-values-85ceb4b58c99"></card>
+<card image="https://miro.medium.com/max/700/1*A6tRQ3-YMTrzP_2Mc-o5oA.png" title="Partial Dependence Profile" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-3-partial-dependence-profile-caf8b2ad1c9d"></card>
+<card image="https://miro.medium.com/max/700/1*xhkHBfwuiY2bBpZGFgFhmQ.png" title="Break Down method" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-4-break-down-method-2cd4de43abdd"></card>
+<card image="https://miro.medium.com/max/700/1*lKu_urWnJb8xzWxin2IvPA.png" title="Shapley values" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-5-shapley-values-85ceb4b58c99"></card>
 </card-collection>
 
 # Fairness

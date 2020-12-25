@@ -22,7 +22,8 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '@/plugins/font-awesome.js'
+    '@/plugins/font-awesome.js',
+    { src: '@/plugins/vue-github-button.js', mode: 'client' }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
