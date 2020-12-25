@@ -4,14 +4,18 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'dalex_docs',
+    title: 'dalex.drwhy.ai',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content: '' },
+      { propery: 'og:title', content: 'dalex.drwhy.ai' },
+      { property: 'og:description', content: 'On a mission to responsibly build machine learning predictive models' },
+      { property: 'og:image', content: 'http://dalex.drwhy.ai/misc/dalex_even.png' }
+
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
     ]
   },
 
