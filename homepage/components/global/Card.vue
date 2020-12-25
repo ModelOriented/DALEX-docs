@@ -30,7 +30,7 @@ export default {
       if (this.image) {
         return this.image
       } else if (this.youtube) {
-        return 'http://i3.ytimg.com/vi/' + this.youtube + '/hqdefault.jpg'
+        return 'https://i3.ytimg.com/vi/' + this.youtube + '/hqdefault.jpg'
       }
       return ''
     },
