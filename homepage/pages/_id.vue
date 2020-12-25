@@ -29,6 +29,10 @@ export default {
   font-size: 2rem;
   padding-top: 1.5rem;
 }
+.content-page h2 {
+  font-size: 1.6rem;
+  padding-top: 1.5rem;
+}
 .content-page h3 {
   font-size: 1.2rem;
   padding-top: 1.5rem;

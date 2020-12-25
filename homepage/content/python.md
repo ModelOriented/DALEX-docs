@@ -30,7 +30,7 @@ pip install dalex
 
 # Explainability
 <card-collection>
-<card image="https://www.h2o.ai/wp-content/uploads/2018/07/xgboost-narrow.png" title="How to use dalex with XGBoost" desc="Jupyter notebook with Titanic example" url="http://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
+<card image="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" title="How to use dalex with XGBoost" desc="Jupyter notebook with Titanic example" url="http://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
 <card image="https://camo.githubusercontent.com/aeb4f612bd9b40d81c62fcbebd6db44a5d4344b8b962be0138817e18c9c06963/68747470733a2f2f7777772e74656e736f72666c6f772e6f72672f696d616765732f74665f6c6f676f5f686f72697a6f6e74616c2e706e67" title="How to use dalex with TensorFlow" desc="Jupyter notebook with happiness example" url="http://dalex.drwhy.ai/python-dalex-tensorflow.html"></card>
 <card image="https://i.ibb.co/5sPLq1W/Screenshot-from-2020-12-23-16-16-53.png" title="Titanic: tutorial and examples" desc="Introduction to the dalex package" url="http://dalex.drwhy.ai/python-dalex-titanic.html"></card>
 <card image="https://i.ibb.co/7XWQbGJ/Screenshot-from-2020-12-23-16-19-10.png" title="FIFA 20" desc="Key features explained" url="http://dalex.drwhy.ai/python-dalex-fifa.html"></card>
@@ -78,3 +78,7 @@ pip install dalex
 <card image="https://i.ibb.co/5hv67qg/Screenshot-from-2020-12-23-14-59-24.png" title="API Reference" desc="Python documentation with pdoc" url="https://dalex.drwhy.ai/python"></card>
 <card image="https://i.ibb.co/hDyxtn6/Screenshot-from-2020-12-23-14-48-16.png" title="Citation" desc="BibTeX format"></card>
 </card-collection>
+
+## Attributions
+TensorFlow, the TensorFlow logo and any related marks are trademarks of Google Inc.  
+XGBoost logo are treademarks of Distributed (Deep) Machine Learning Community.  
