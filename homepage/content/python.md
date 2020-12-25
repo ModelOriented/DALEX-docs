@@ -30,11 +30,11 @@ pip install dalex
 
 # Explainability
 <card-collection>
-<card image="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" title="How to use dalex with XGBoost" desc="Jupyter notebook with Titanic example" url="http://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
-<card image="https://camo.githubusercontent.com/aeb4f612bd9b40d81c62fcbebd6db44a5d4344b8b962be0138817e18c9c06963/68747470733a2f2f7777772e74656e736f72666c6f772e6f72672f696d616765732f74665f6c6f676f5f686f72697a6f6e74616c2e706e67" title="How to use dalex with TensorFlow" desc="Jupyter notebook with happiness example" url="http://dalex.drwhy.ai/python-dalex-tensorflow.html"></card>
-<card image="https://i.ibb.co/5sPLq1W/Screenshot-from-2020-12-23-16-16-53.png" title="Titanic: tutorial and examples" desc="Introduction to the dalex package" url="http://dalex.drwhy.ai/python-dalex-titanic.html"></card>
-<card image="https://i.ibb.co/7XWQbGJ/Screenshot-from-2020-12-23-16-19-10.png" title="FIFA 20" desc="Key features explained" url="http://dalex.drwhy.ai/python-dalex-fifa.html"></card>
-<card image="https://i.ibb.co/5nHnMKt/Screenshot-from-2020-12-23-16-22-23.png" title="More explanations" desc="residuals, shap, lime" url="http://dalex.drwhy.ai/python-dalex-new.html"></card>
+<card image="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" title="How to use dalex with XGBoost" desc="Jupyter notebook with Titanic example" url="https://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
+<card image="https://camo.githubusercontent.com/aeb4f612bd9b40d81c62fcbebd6db44a5d4344b8b962be0138817e18c9c06963/68747470733a2f2f7777772e74656e736f72666c6f772e6f72672f696d616765732f74665f6c6f676f5f686f72697a6f6e74616c2e706e67" title="How to use dalex with TensorFlow" desc="Jupyter notebook with happiness example" url="https://dalex.drwhy.ai/python-dalex-tensorflow.html"></card>
+<card image="https://i.ibb.co/5sPLq1W/Screenshot-from-2020-12-23-16-16-53.png" title="Titanic: tutorial and examples" desc="Introduction to the dalex package" url="https://dalex.drwhy.ai/python-dalex-titanic.html"></card>
+<card image="https://i.ibb.co/7XWQbGJ/Screenshot-from-2020-12-23-16-19-10.png" title="FIFA 20" desc="Key features explained" url="https://dalex.drwhy.ai/python-dalex-fifa.html"></card>
+<card image="https://i.ibb.co/5nHnMKt/Screenshot-from-2020-12-23-16-22-23.png" title="More explanations" desc="residuals, shap, lime" url="https://dalex.drwhy.ai/python-dalex-new.html"></card>
 <card image="https://i.ibb.co/ySbgGdR/Screenshot-from-2020-12-23-16-24-20.png" title="Jupyter notebooks" desc="" url="https://github.com/ModelOriented/DALEX-docs/tree/master/jupyter-notebooks"></card>
 </card-collection>
 
@@ -49,12 +49,12 @@ pip install dalex
 
 # Fairness
 <card-collection>
-<card image="https://repository-images.githubusercontent.com/250897484/9466ef80-cb69-11ea-9bc7-404fd8b3bddc" title="Fairness module in dalex" desc="Jupyter notebook with introduction to Fairness module" url="http://dalex.drwhy.ai/python-dalex-fairness.html"></card>
+<card image="https://repository-images.githubusercontent.com/250897484/9466ef80-cb69-11ea-9bc7-404fd8b3bddc" title="Fairness module in dalex" desc="Jupyter notebook with introduction to Fairness module" url="https://dalex.drwhy.ai/python-dalex-fairness.html"></card>
 </card-collection>
 
 # Interactive exploration
 <card-collection>
-<card image="https://miro.medium.com/max/1200/1*GjdouIWShHbbcOFkBfZE8Q.png" title="Arena module in dalex" desc="Jupyter notebook with introduction to Arena module" url="http://dalex.drwhy.ai/python-dalex-arena.html"></card>
+<card image="https://miro.medium.com/max/1200/1*GjdouIWShHbbcOFkBfZE8Q.png" title="Arena module in dalex" desc="Jupyter notebook with introduction to Arena module" url="https://dalex.drwhy.ai/python-dalex-arena.html"></card>
 <card image="https://i.ibb.co/tDKm43p/Screenshot-from-2020-12-23-16-29-07.png" title="Getting Started & Demos" desc="Arena documentation" url="https://arena.drwhy.ai/docs/guide/basic-concepts"></card>
 </card-collection>
 
