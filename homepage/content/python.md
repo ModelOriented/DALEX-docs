@@ -75,7 +75,7 @@ pip install dalex
 
 # Developers
 <card-collection>
-<card image="https://i.ibb.co/5hv67qg/Screenshot-from-2020-12-23-14-59-24.png" title="API Reference" desc="Python documentation with pdoc" url="https://dalex.drwhy.ai/python"></card>
+<card image="https://i.ibb.co/5hv67qg/Screenshot-from-2020-12-23-14-59-24.png" title="API Reference" desc="Python documentation with pdoc" url="https://dalex.drwhy.ai/python/api"></card>
 <card image="https://i.ibb.co/hDyxtn6/Screenshot-from-2020-12-23-14-48-16.png" title="Citation" desc="BibTeX format"></card>
 </card-collection>
 
