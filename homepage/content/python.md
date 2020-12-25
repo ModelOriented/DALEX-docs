@@ -8,9 +8,11 @@ description: Learn how to use @nuxt/content.
   <div class="flex-1">
     <h1 style="padding-top: 0;">
       Dalex for Python
-      <github-button href="https://github.com/ModelOriented/DALEX" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ModelOriented/DALEX on GitHub" style="vertical-align: middle; margin-left: 10px;">
-        Star
-      </github-button>
+      <client-only>
+        <github-button href="https://github.com/ModelOriented/DALEX" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ModelOriented/DALEX on GitHub" style="vertical-align: middle; margin-left: 10px;">
+          Star
+        </github-button>
+      </client-only>
     </h1>
     <p>
       <a href="https://github.com/ModelOriented/DALEX/actions?query=workflow%3APython-check"><img src="https://github.com/ModelOriented/DALEX/workflows/Python-check/badge.svg" class="inline"></a>
