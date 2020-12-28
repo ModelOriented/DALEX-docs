@@ -30,11 +30,11 @@ pip install dalex
 
 # Explainability
 <card-collection>
-<card image="https://i.ibb.co/5sPLq1W/Screenshot-from-2020-12-23-16-16-53.png" title="Introduction to the dalex package" desc="Titanic: tutorial and examples" url="https://dalex.drwhy.ai/python-dalex-titanic.html"></card>
+<card image="https://i.ibb.co/5sPLq1W/Screenshot-from-2020-12-23-16-16-53.png" title="Introduction to dalex" desc="Titanic: tutorial and examples" url="https://dalex.drwhy.ai/python-dalex-titanic.html"></card>
 <card image="https://i.ibb.co/7XWQbGJ/Screenshot-from-2020-12-23-16-19-10.png" title="Key features explained" desc="FIFA 20: explain default vs tuned model with dalex" url="https://dalex.drwhy.ai/python-dalex-fifa.html"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" title="How to use dalex with XGBoost" desc="Titanic classification example" url="https://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
 <card image="https://camo.githubusercontent.com/aeb4f612bd9b40d81c62fcbebd6db44a5d4344b8b962be0138817e18c9c06963/68747470733a2f2f7777772e74656e736f72666c6f772e6f72672f696d616765732f74665f6c6f676f5f686f72697a6f6e74616c2e706e67" title="How to use dalex with TensorFlow" desc="Happiness regression example" url="https://dalex.drwhy.ai/python-dalex-tensorflow.html"></card>
-<card image="https://miro.medium.com/max/700/1*J8gbbTzeYkktdCz6Ei1ZiA.png" title="Compare various models with dalex" desc="ft. h2o, autokeras, catboost, lightgbm" url="https://dalex.drwhy.ai/python-dalex-h2o.html"></card>
+<card image="https://miro.medium.com/max/700/1*J8gbbTzeYkktdCz6Ei1ZiA.png" title="Compare various models" desc="ft. h2o, autokeras, catboost, lightgbm" url="https://dalex.drwhy.ai/python-dalex-h2o.html"></card>
 <card image="https://i.ibb.co/5nHnMKt/Screenshot-from-2020-12-23-16-22-23.png" title="More explanations" desc="residuals, shap, lime" url="https://dalex.drwhy.ai/python-dalex-new.html"></card>
 </card-collection>
 
@@ -49,8 +49,8 @@ pip install dalex
 
 # Fairness
 <card-collection>
-<card image="https://repository-images.githubusercontent.com/250897484/9466ef80-cb69-11ea-9bc7-404fd8b3bddc" title="Fairness module in dalex" desc="Case study - German Credit data" url="https://dalex.drwhy.ai/python-dalex-fairness.html"></card>
-<card image="https://repository-images.githubusercontent.com/250897484/9466ef80-cb69-11ea-9bc7-404fd8b3bddc" title="Advanced tutorial on bias detection" desc="Case study - COMPAS Recidivism data" url="https://dalex.drwhy.ai/python-dalex-fairness2.html"></card>
+<card image="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/fairness_card.png" title="Fairness module in dalex" desc="Case study - German Credit data" url="https://dalex.drwhy.ai/python-dalex-fairness.html"></card>
+<card image="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/fairness_card.png" title="Tutorial on bias detection" desc="Case study - COMPAS Recidivism data" url="https://dalex.drwhy.ai/python-dalex-fairness2.html"></card>
 </card-collection>
 
 # Interactive exploration
@@ -63,7 +63,7 @@ pip install dalex
 <card-collection>
 <card image="https://i.ibb.co/ySbgGdR/Screenshot-from-2020-12-23-16-24-20.png" title="Jupyter Notebooks" desc="" url="https://github.com/ModelOriented/DALEX-docs/tree/master/jupyter-notebooks"></card>
 <card image="https://miro.medium.com/max/700/0*gBUkot-iflqCLMNW.png" title="EMA Workshop" desc="Materials from Explanatory Model Analysis Workshop @ eRum 2020" url="https://medium.com/@ModelOriented/materials-from-explanatory-model-analysis-workshop-erum-2020-278d6295f595"></card>
-<card youtube="EcDfSjR2lIw" title="Tools for Explainable AI" desc="Talk at X-Europe Webinars 2020"></card>
+<card youtube="EcDfSjR2lIw" title="Tools for Explainable AI" desc="Talk about dalex @ X-Europe Webinars 2020"></card>
 <card image="https://i.ibb.co/q0XsnxM/Screenshot-from-2020-12-23-16-04-26.png" title="Hey, ML engineer! Is your model fair?" desc="Poster on fairness @ MLinPL 2020" url="https://github.com/ModelOriented/DALEX-docs/blob/master/workshops/poster-fairness.pdf"></card>
 <card image="https://miro.medium.com/max/700/1*J8gbbTzeYkktdCz6Ei1ZiA.png" title="XAI in Python with dalex" desc="Introduction to the dalex package" url="https://medium.com/@ModelOriented/xai-in-python-with-dalex-4b173486aa92">
 </card-collection>
