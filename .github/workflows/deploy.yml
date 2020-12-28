@@ -1,0 +1,57 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: homepage
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci
+
+      - name: Run linter 👀
+        run: npm run lint
+
+      - name: Build
+        run: npm run generate
+
+      - name: Copy docs
+        run: cp -n -R ../docs/* dist/
+
+      - name: Overwrite index
+        run: cp ../docs/index.html dist/index.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./homepage/dist
