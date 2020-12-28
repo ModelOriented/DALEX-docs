@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
 <title>dalex API documentation</title>
-<meta name="description" content="[dalex: Responsible Machine Learning in Python](http://dalex.drwhy.ai/) …" />
+<meta name="description" content="[dalex: Responsible Machine Learning in Python](http://dalex.drwhy.ai/python) …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -23,7 +23,7 @@
 <h1 class="title">Package <code>dalex</code></h1>
 </header>
 <section id="section-intro">
-<p><a href="http://dalex.drwhy.ai/">dalex: Responsible Machine Learning in Python</a></p>
+<p><a href="http://dalex.drwhy.ai/python">dalex: Responsible Machine Learning in Python</a></p>
 <p><a href="https://github.com/ModelOriented/DALEX/actions?query=workflow%3APython-check"><img alt="Python-check" src="https://github.com/ModelOriented/DALEX/workflows/Python-check/badge.svg"></a>
 <a href="https://pypi.org/project/dalex/"><img alt="Supported Python
 versions" src="https://img.shields.io/pypi/pyversions/dalex.svg"></a>
@@ -32,10 +32,9 @@ versions" src="https://img.shields.io/pypi/pyversions/dalex.svg"></a>
 <h2 id="overview">Overview</h2>
 <p>Unverified black box model is the path to the failure. Opaqueness leads to distrust. Distrust leads to ignoration. Ignoration leads to rejection.</p>
 <p>The <code><a title="dalex" href="#dalex">dalex</a></code> package xrays any model and helps to explore and explain its behaviour, helps to understand how complex models are working.
-The main <code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a></code> object creates a wrapper around a predictive model. Wrapped models may then be explored and compared with a collection of model-level and predict-level explanations. Moreover, there are fairness methods and interactive explainability dashboards available to the user.</p>
+The main <code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a></code> object creates a wrapper around a predictive model. Wrapped models may then be explored and compared with a collection of model-level and predict-level explanations. Moreover, there are fairness methods and interactive exploration dashboards available to the user.</p>
 <p>The philosophy behind <code><a title="dalex" href="#dalex">dalex</a></code> explanations is described in the <a href="https://pbiecek.github.io/ema/">Explanatory Model Analysis</a> e-book.</p>
-<p><img alt="" src="https://raw.githubusercontent.com/ModelOriented/DALEX/master/misc/DALEXpiramide.png"></p>
-<p>The <code><a title="dalex" href="#dalex">dalex</a></code> package is a part of <a href="http://DrWhy.AI">DrWhy.AI</a> universe.</p>
+<p><img alt="" src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/dalex/dalex-diagram.png"></p>
 <h2 id="installation">Installation</h2>
 <p>The <code><a title="dalex" href="#dalex">dalex</a></code> package is available <a href="https://pypi.org/project/dalex/">on PyPI</a></p>
 <pre><code class="language-console">pip install dalex -U
@@ -47,6 +46,7 @@ The main <code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a><
 <li>How to use dalex with: <a href="https://dalex.drwhy.ai/python-dalex-xgboost.html">xgboost</a>, <a href="https://dalex.drwhy.ai/python-dalex-tensorflow.html">tensorflow</a>, <a href="https://dalex.drwhy.ai/python-dalex-h2o.html">h2o (feat. autokeras, catboost, lightgbm)</a></li>
 <li>More explanations: <a href="https://dalex.drwhy.ai/python-dalex-new.html">residuals, shap, lime</a></li>
 <li>Introduction to the <a href="https://dalex.drwhy.ai/python-dalex-fairness.html">Fairness module in dalex</a></li>
+<li>Tutorial <a href="https://dalex.drwhy.ai/python-dalex-fairness2.html">on bias detection with dalex</a></li>
 <li>Introduction to the <a href="https://dalex.drwhy.ai/python-dalex-arena.html">Arena module in dalex</a></li>
 <li>Arena documentation: <a href="https://arena.drwhy.ai/docs/guide/basic-concepts/">Getting Started &amp; Demos</a></li>
 <li>Code in the form of <a href="https://github.com/ModelOriented/DALEX-docs/tree/master/jupyter-notebooks">jupyter notebook</a></li>
@@ -58,6 +58,11 @@ The main <code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a><
 <li>Use <code>show=False</code> parameter in <code>plot</code> method to return <code>plotly Figure</code> object</li>
 <li>It is possible to <a href="https://plotly.com/python/#fundamentals">edit the figures</a> and <a href="https://plotly.com/python/static-image-export/">save them</a></li>
 </ul>
+<h2 id="developer">Developer</h2>
+<h3 id="class-diagram">Class diagram</h3>
+<p><img alt="" src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/dalex/dalex-class.png"></p>
+<h3 id="folder-structure">Folder structure</h3>
+<p><img alt="" src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/dalex/dalex-tree.png" width="70%"></p>
 <hr>
 <details class="source">
 <summary>
@@ -257,7 +262,8 @@ only in live version.</dd>
             CeterisParibusContainer,
             BreakDownContainer,
             MetricsContainer,
-            ROCContainer
+            ROCContainer,
+            FairnessCheckContainer
         ]
         self.options = {}
         for plot in self.plots:
@@ -4621,6 +4627,11 @@ and the LimeTabularExplainer.explain_instance method. Exceptions are:
 <li><a href="#installation">Installation</a></li>
 <li><a href="#examples">Examples</a></li>
 <li><a href="#plots">Plots</a></li>
+<li><a href="#developer">Developer</a><ul>
+<li><a href="#class-diagram">Class diagram</a></li>
+<li><a href="#folder-structure">Folder structure</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <ul id="index">

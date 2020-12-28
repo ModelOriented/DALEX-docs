@@ -79,7 +79,7 @@ String name of the Explainer class.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ShapWrapper:
+<pre><code class="python">class ShapWrapper(Explanation):
     &#34;&#34;&#34;Explanation wrapper for the `shap` package
 
     This object uses the shap package to create the model explanation.
@@ -135,6 +135,8 @@ String name of the Explainer class.</dd>
         shap_explainer_type : {&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;, &#39;GradientExplainer&#39;, &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}
             String name of the Explainer class (default is `None`, which automatically
             chooses an Explainer to use).
+        kwargs: dict
+            Keyword parameters passed to the `shapley_values` method.
 
         Returns
         -----------
@@ -149,7 +151,10 @@ String name of the Explainer class.</dd>
             new_observation = checks.check_new_observation_predict_parts(new_observation, explainer)
 
         if shap_explainer_type == &#34;TreeExplainer&#34;:
-            self.shap_explainer = TreeExplainer(explainer.model, explainer.data.values)
+            try:
+                self.shap_explainer = TreeExplainer(explainer.model, explainer.data.values)
+            except: # https://github.com/ModelOriented/DALEX/issues/371
+                self.shap_explainer = TreeExplainer(explainer.model)
         elif shap_explainer_type == &#34;DeepExplainer&#34;:
             self.shap_explainer = DeepExplainer(explainer.model, explainer.data.values)
         elif shap_explainer_type == &#34;GradientExplainer&#34;:
@@ -158,7 +163,8 @@ String name of the Explainer class.</dd>
             self.shap_explainer = LinearExplainer(explainer.model, explainer.data.values)
         elif shap_explainer_type == &#34;KernelExplainer&#34;:
             self.shap_explainer = KernelExplainer(
-                lambda x: explainer.predict(x), explainer.data.values)
+                lambda x: explainer.predict(x), explainer.data.values
+            )
 
         self.result = self.shap_explainer.shap_values(new_observation.values, **kwargs)
         self.new_observation = new_observation
@@ -204,6 +210,11 @@ String name of the Explainer class.</dd>
                          features=self.new_observation,
                          **kwargs)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex._explanation.Explanation</li>
+<li>abc.ABC</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="dalex.wrappers.ShapWrapper.fit"><code class="name flex">
@@ -221,6 +232,8 @@ String name of the Explainer class.</dd>
 <dt><strong><code>shap_explainer_type</code></strong> :&ensp;<code>{'TreeExplainer', 'DeepExplainer', 'GradientExplainer', 'LinearExplainer', 'KernelExplainer'}</code></dt>
 <dd>String name of the Explainer class (default is <code>None</code>, which automatically
 chooses an Explainer to use).</dd>
+<dt><strong><code>kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keyword parameters passed to the <code>shapley_values</code> method.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -249,6 +262,8 @@ chooses an Explainer to use).</dd>
     shap_explainer_type : {&#39;TreeExplainer&#39;, &#39;DeepExplainer&#39;, &#39;GradientExplainer&#39;, &#39;LinearExplainer&#39;, &#39;KernelExplainer&#39;}
         String name of the Explainer class (default is `None`, which automatically
         chooses an Explainer to use).
+    kwargs: dict
+        Keyword parameters passed to the `shapley_values` method.
 
     Returns
     -----------
@@ -263,7 +278,10 @@ chooses an Explainer to use).</dd>
         new_observation = checks.check_new_observation_predict_parts(new_observation, explainer)
 
     if shap_explainer_type == &#34;TreeExplainer&#34;:
-        self.shap_explainer = TreeExplainer(explainer.model, explainer.data.values)
+        try:
+            self.shap_explainer = TreeExplainer(explainer.model, explainer.data.values)
+        except: # https://github.com/ModelOriented/DALEX/issues/371
+            self.shap_explainer = TreeExplainer(explainer.model)
     elif shap_explainer_type == &#34;DeepExplainer&#34;:
         self.shap_explainer = DeepExplainer(explainer.model, explainer.data.values)
     elif shap_explainer_type == &#34;GradientExplainer&#34;:
@@ -272,7 +290,8 @@ chooses an Explainer to use).</dd>
         self.shap_explainer = LinearExplainer(explainer.model, explainer.data.values)
     elif shap_explainer_type == &#34;KernelExplainer&#34;:
         self.shap_explainer = KernelExplainer(
-            lambda x: explainer.predict(x), explainer.data.values)
+            lambda x: explainer.predict(x), explainer.data.values
+        )
 
     self.result = self.shap_explainer.shap_values(new_observation.values, **kwargs)
     self.new_observation = new_observation

@@ -35,6 +35,7 @@ from ._accumulated_dependence_container import AccumulatedDependenceContainer
 from ._ceteris_paribus_container import CeterisParibusContainer
 from ._metrics_container import MetricsContainer
 from ._roc_container import ROCContainer
+from ._fairness_check_container import FairnessCheckContainer
 
 __all__ = [
     &#39;ShapleyValuesContainer&#39;,
@@ -44,7 +45,8 @@ __all__ = [
     &#39;CeterisParibusContainer&#39;,
     &#39;BreakDownContainer&#39;,
     &#39;MetricsContainer&#39;,
-    &#39;ROCContainer&#39;
+    &#39;ROCContainer&#39;,
+    &#39;FairnessCheckContainer&#39;
 ]</code></pre>
 </details>
 </section>
@@ -232,6 +234,109 @@ __all__ = [
 <dt id="dalex.arena.plots.CeterisParibusContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.FairnessCheckContainer"><code class="flex name class">
+<span>class <span class="ident">FairnessCheckContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FairnessCheckContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#39;Fairness&#39;,
+        &#39;plotType&#39;: &#39;Fairness&#39;,
+        &#39;plotCategory&#39;: &#39;Dataset Level&#39;,
+        &#39;requiredParams&#39;: [&#39;model&#39;, &#39;variable&#39;]
+    }
+    options = {
+        &#39;cutoffs&#39;: { &#39;default&#39;: [x / 100 for x in range(5, 100, 5)], &#39;desc&#39;: &#39;List of tested cutoff levels&#39; },
+    }
+    def _fit(self, model, variable):
+        if not variable.variable in model.variables:
+            raise Exception(&#39;Variable is not a column of explainer&#39;)
+        exp = model.explainer
+        y_hat = exp.predict(exp.data) if exp.y_hat is None else exp.y_hat
+        protected = exp.data[variable.variable]
+        if exp.model_type != &#39;classification&#39;:
+            self.set_message(&#39;Fairness plot is only available for classificators&#39;)
+            return
+        if not is_object_dtype(protected):
+            self.set_message(&#39;Select categorical variable to check fairness&#39;)
+            return
+
+        output_df = None
+        for cutoff in self.arena.get_option(self.plot_type, &#39;cutoffs&#39;):
+            cutoff_dict = checks.check_cutoff(protected, cutoff, False)
+            sub_confusion_matrix = utils.SubgroupConfusionMatrix(exp.y, y_hat, protected, cutoff_dict)
+            sub_confusion_matrix_metrics = utils.SubgroupConfusionMatrixMetrics(sub_confusion_matrix)
+            df = sub_confusion_matrix_metrics.to_vertical_DataFrame()
+            df[&#39;cutoff&#39;] = cutoff
+            output_df = df if output_df is None else output_df.append(df)
+
+        output = {}
+        for (subgroup, x) in output_df.set_index(&#39;metric&#39;).groupby(&#39;subgroup&#39;):
+            output[subgroup] = {}
+            for (cutoff, y) in x.groupby(&#39;cutoff&#39;):
+                output[subgroup][cutoff] = rm_nan(y[&#39;score&#39;].to_dict())
+
+        self.data = { &#39;subgroups&#39;: output }
+
+    def test_arena(arena):
+        if type(arena).__name__ != &#39;Arena&#39; or type(arena).__module__ != &#39;dalex.arena.object&#39;:
+            raise Exception(&#39;Invalid Arena argument&#39;)
+        return next((True for model in arena.get_params(&#39;model&#39;) if model.explainer.model_type == &#39;classification&#39;), False)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.FairnessCheckContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.FairnessCheckContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.arena.plots.FairnessCheckContainer.test_arena"><code class="name flex">
+<span>def <span class="ident">test_arena</span></span>(<span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tests if plot can be created for at least one combination of params</p>
+<p>This method searches for params, that can produce valid chart. Displaying
+error messages are not counted as valid. One example of usage are charts for
+classification models. Such charts should override this method and check if
+there is at least one classification model in arena.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Object of class dalex.Arena</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_arena(arena):
+    if type(arena).__name__ != &#39;Arena&#39; or type(arena).__module__ != &#39;dalex.arena.object&#39;:
+        raise Exception(&#39;Invalid Arena argument&#39;)
+    return next((True for model in arena.get_params(&#39;model&#39;) if model.explainer.model_type == &#39;classification&#39;), False)</code></pre>
+</details>
 </dd>
 </dl>
 </dd>
@@ -606,6 +711,14 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.CeterisParibusContainer.info" href="#dalex.arena.plots.CeterisParibusContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.CeterisParibusContainer.options" href="#dalex.arena.plots.CeterisParibusContainer.options">options</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.FairnessCheckContainer" href="#dalex.arena.plots.FairnessCheckContainer">FairnessCheckContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.FairnessCheckContainer.info" href="#dalex.arena.plots.FairnessCheckContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.FairnessCheckContainer.options" href="#dalex.arena.plots.FairnessCheckContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.FairnessCheckContainer.test_arena" href="#dalex.arena.plots.FairnessCheckContainer.test_arena">test_arena</a></code></li>
 </ul>
 </li>
 <li>
