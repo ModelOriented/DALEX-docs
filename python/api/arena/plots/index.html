@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>dalex.arena.plots API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dalex.arena.plots</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from ._break_down_container import BreakDownContainer
+from ._shapley_values_container import ShapleyValuesContainer
+from ._feature_importance_container import FeatureImportanceContainer
+from ._partial_dependence_container import PartialDependenceContainer
+from ._accumulated_dependence_container import AccumulatedDependenceContainer
+from ._ceteris_paribus_container import CeterisParibusContainer
+from ._metrics_container import MetricsContainer
+from ._roc_container import ROCContainer
+
+__all__ = [
+    &#39;ShapleyValuesContainer&#39;,
+    &#39;FeatureImportanceContainer&#39;,
+    &#39;PartialDependenceContainer&#39;,
+    &#39;AccumulatedDependenceContainer&#39;,
+    &#39;CeterisParibusContainer&#39;,
+    &#39;BreakDownContainer&#39;,
+    &#39;MetricsContainer&#39;,
+    &#39;ROCContainer&#39;
+]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="dalex.arena.plots.AccumulatedDependenceContainer"><code class="flex name class">
+<span>class <span class="ident">AccumulatedDependenceContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AccumulatedDependenceContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#34;Accumulated Dependence&#34;,
+        &#39;plotType&#39;: &#39;AccumulatedDependence&#39;,
+        &#39;plotCategory&#39;: &#39;Dataset Level&#39;,
+        &#39;requiredParams&#39;: [&#39;model&#39;, &#39;variable&#39;]
+    }
+    options = {
+        &#39;grid_type&#39;: { &#39;default&#39;: &#39;quantile&#39;, &#39;desc&#39;: &#39;grid type &#34;quantile&#34; or &#34;uniform&#34;&#39;},
+        &#39;grid_points&#39;: { &#39;default&#39;: 101, &#39;desc&#39;: &#39;Maximum number of points for profile&#39; },
+        &#39;N&#39;: { &#39;default&#39;: 500, &#39;desc&#39;: &#39;Number of observations to use. None for all.&#39; }
+    }
+    def _fit(self, model, variable):
+        if not variable.variable in model.variables:
+            raise Exception(&#39;Variable is not a column of explainer&#39;)
+        if is_numeric_dtype(model.explainer.data[variable.variable]):
+            self.plot_component = &#39;LinearDependence&#39;
+            variable_type = &#39;numerical&#39;
+        else:
+            self.plot_component = &#39;CategoricalDependence&#39;
+            variable_type = &#39;categorical&#39;
+        profile = model.explainer.model_profile(
+            type=&#39;accumulated&#39;,
+            variables=variable.variable,
+            variable_type=variable_type,
+            center=False,
+            grid_points=self.arena.get_option(self.plot_type, &#39;grid_points&#39;),
+            variable_splits_type=self.arena.get_option(self.plot_type, &#39;grid_type&#39;),
+            N=self.arena.get_option(self.plot_type, &#39;N&#39;),
+            verbose=False
+        )
+        self.data = {
+            &#39;x&#39;: profile.result[&#39;_x_&#39;].tolist(),
+            &#39;y&#39;: profile.result[&#39;_yhat_&#39;].tolist(),
+            &#39;variable&#39;: variable.variable,
+            &#39;base&#39;: 0
+        }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.AccumulatedDependenceContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.AccumulatedDependenceContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.BreakDownContainer"><code class="flex name class">
+<span>class <span class="ident">BreakDownContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BreakDownContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#34;Break Down&#34;,
+        &#39;plotType&#39;: &#34;Breakdown&#34;,
+        &#39;plotCategory&#39;: &#34;Observation Level&#34;,
+        &#39;requiredParams&#39;: [&#34;model&#34;, &#34;observation&#34;]
+    }
+    options = {
+    }
+    def _fit(self, model, observation):
+        row = observation.get_row_for_model(model)
+        if row is None:
+            self.set_message(&#39;Observation is not valid for given model.&#39;)
+            return
+        bd = model.explainer.predict_parts(row, type=&#39;break_down&#39;).result
+        self.data = {
+            &#39;variables&#39;: bd[1:-1].variable_name.tolist(),
+            &#39;variables_value&#39;: bd[1:-1].variable_value.tolist(),
+            &#39;contribution&#39;: bd[1:-1].contribution.tolist(),
+            &#39;intercept&#39;: bd.contribution[0],
+            &#39;prediction&#39;: bd.cumulative.tail(1).iloc[0]
+        }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.BreakDownContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.BreakDownContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.CeterisParibusContainer"><code class="flex name class">
+<span>class <span class="ident">CeterisParibusContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CeterisParibusContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#39;Ceteris Paribus&#39;,
+        &#39;plotType&#39;: &#39;CeterisParibus&#39;,
+        &#39;plotCategory&#39;: &#39;Observation Level&#39;,
+        &#39;requiredParams&#39;: [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;]
+    }
+    options = {
+        &#39;grid_points&#39;: { &#39;default&#39;: 101, &#39;desc&#39;: &#39;Maximum number of points for profile&#39; },
+        &#39;grid_type&#39;: { &#39;default&#39;: &#39;quantile&#39;, &#39;desc&#39;: &#39;grid type &#34;quantile&#34; or &#34;uniform&#34;&#39;}
+    }
+    def _fit(self, model, variable, observation):
+        if not variable.variable in model.variables:
+            raise Exception(&#39;Variable is not a column of explainer&#39;)
+        row = observation.get_row_for_model(model)
+        if row is None:
+            self.set_message(&#39;Observation is not valid for given model.&#39;)
+            return
+        cp = model.explainer.predict_profile(
+            row,
+            variables=variable.variable,
+            grid_points=self.arena.get_option(self.plot_type, &#39;grid_points&#39;),
+            variable_splits_type=self.arena.get_option(self.plot_type, &#39;grid_type&#39;),
+            variable_splits_with_obs=False,
+            verbose=False
+        )
+        if is_numeric_dtype(row[variable.variable]):
+            self.plot_component = &#39;NumericalCeterisParibus&#39;
+        else:
+            self.plot_component = &#39;CategoricalCeterisParibus&#39;
+        self.data = {
+            &#39;x&#39;: cp.result[variable.variable].tolist(),
+            &#39;y&#39;: cp.result[&#39;_yhat_&#39;].tolist(),
+            &#39;variable&#39;: variable.variable,
+            &#39;min&#39;: cp.result[&#39;_yhat_&#39;].min(),
+            &#39;max&#39;: cp.result[&#39;_yhat_&#39;].max(),
+            &#39;observation&#39;: cp.new_observation.iloc[0].to_dict()
+        }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.CeterisParibusContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.CeterisParibusContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.FeatureImportanceContainer"><code class="flex name class">
+<span>class <span class="ident">FeatureImportanceContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FeatureImportanceContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#34;Variable Importance&#34;,
+        &#39;plotType&#39;: &#34;FeatureImportance&#34;,
+        &#39;plotCategory&#39;: &#34;Dataset Level&#34;,
+        &#39;requiredParams&#39;: [&#34;model&#34;]
+    }
+    options = {
+        &#39;N&#39;: { &#39;default&#39;: None, &#39;desc&#39;: &#39;Number of observations to use. None for all.&#39; },
+        &#39;B&#39;: { &#39;default&#39;: 10, &#39;desc&#39;: &#39;Number of permutation rounds to perform each variable&#39; }
+    }
+    def _fit(self, model):
+        fi = model.explainer.model_parts(
+            N=self.arena.get_option(self.plot_type, &#39;N&#39;),
+            B=self.arena.get_option(self.plot_type, &#39;B&#39;)
+        ).permutation
+        def q1(x):
+            return x.quantile(0.25)
+        def q3(x):
+            return x.quantile(0.75)
+        stats = fi.agg([&#39;mean&#39;, &#39;max&#39;, &#39;min&#39;, q1, q3])
+        full_model = stats.loc[&#39;mean&#39;, &#39;_full_model_&#39;]
+        stats = stats.drop([&#39;_baseline_&#39;, &#39;_full_model_&#39;], axis=1) \
+            .sort_values(by=&#39;mean&#39;, axis=1, ascending=False)
+        self.data = {
+            &#39;base&#39;: full_model,
+            &#39;variables&#39;: stats.columns.tolist(),
+            &#39;dropout_loss&#39;: stats.loc[&#39;mean&#39;].tolist(),
+            &#39;min&#39;: stats.loc[&#39;min&#39;].tolist(),
+            &#39;max&#39;: stats.loc[&#39;max&#39;].tolist(),
+            &#39;q1&#39;: stats.loc[&#39;q1&#39;].tolist(),
+            &#39;q3&#39;: stats.loc[&#39;q3&#39;].tolist()
+        }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.FeatureImportanceContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.FeatureImportanceContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.MetricsContainer"><code class="flex name class">
+<span>class <span class="ident">MetricsContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MetricsContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#34;Metrics&#34;,
+        &#39;plotType&#39;: &#34;Metrics&#34;,
+        &#39;plotCategory&#39;: &#34;Model Performance&#34;,
+        &#39;requiredParams&#39;: [&#34;model&#34;]
+    }
+    options = {}
+    def _fit(self, model):
+        perf = model.explainer.model_performance().result
+        self.data = dict(perf.iloc[0])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.MetricsContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.MetricsContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.PartialDependenceContainer"><code class="flex name class">
+<span>class <span class="ident">PartialDependenceContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PartialDependenceContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#34;Partial Dependence&#34;,
+        &#39;plotType&#39;: &#39;PartialDependence&#39;,
+        &#39;plotCategory&#39;: &#39;Dataset Level&#39;,
+        &#39;requiredParams&#39;: [&#39;model&#39;, &#39;variable&#39;]
+    }
+    options = {
+        &#39;grid_type&#39;: { &#39;default&#39;: &#39;quantile&#39;, &#39;desc&#39;: &#39;grid type &#34;quantile&#34; or &#34;uniform&#34;&#39;},
+        &#39;grid_points&#39;: { &#39;default&#39;: 101, &#39;desc&#39;: &#39;Maximum number of points for profile&#39; },
+        &#39;N&#39;: { &#39;default&#39;: 500, &#39;desc&#39;: &#39;Number of observations to use. None for all.&#39; }
+    }
+    def _fit(self, model, variable):
+        if not variable.variable in model.variables:
+            raise Exception(&#39;Variable is not a column of explainer&#39;)
+        if is_numeric_dtype(model.explainer.data[variable.variable]):
+            self.plot_component = &#39;LinearDependence&#39;
+            profile = model.explainer.model_profile(
+                type=&#39;partial&#39;,
+                variables=variable.variable,
+                variable_type=&#39;numerical&#39;,
+                grid_points=self.arena.get_option(self.plot_type, &#39;grid_points&#39;),
+                variable_splits_type=self.arena.get_option(self.plot_type, &#39;grid_type&#39;),
+                N=self.arena.get_option(self.plot_type, &#39;N&#39;),
+                verbose=False
+            )
+        else:
+            self.plot_component = &#39;CategoricalDependence&#39;
+            profile = model.explainer.model_profile(
+                type=&#39;partial&#39;,
+                variables=variable.variable,
+                variable_type=&#39;categorical&#39;,
+                N=self.arena.get_option(self.plot_type, &#39;N&#39;),
+                verbose=False
+            )
+        self.data = {
+            &#39;x&#39;: profile.result[&#39;_x_&#39;].tolist(),
+            &#39;y&#39;: profile.result[&#39;_yhat_&#39;].tolist(),
+            &#39;variable&#39;: variable.variable,
+            &#39;base&#39;: profile.mean_prediction
+        }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.PartialDependenceContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.PartialDependenceContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.ROCContainer"><code class="flex name class">
+<span>class <span class="ident">ROCContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ROCContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#39;Receiver Operating Characterstic&#39;,
+        &#39;plotType&#39;: &#39;ROC&#39;,
+        &#39;plotCategory&#39;: &#39;Model Performance&#39;,
+        &#39;requiredParams&#39;: [&#39;model&#39;]
+    }
+    options = {
+        &#39;grid_points&#39;: { &#39;default&#39;: 101, &#39;desc&#39;: &#39;Maximum number of points for ROC curve&#39; },
+    }
+    def _fit(self, model):
+        exp = model.explainer
+        if exp.model_type != &#39;classification&#39;:
+            self.set_message(&#39;ROC plot is only available for classificators&#39;)
+            return
+
+        y_hat = exp.predict(exp.data) if exp.y_hat is None else exp.y_hat
+        df = pd.DataFrame({ &#39;y&#39;: exp.y.astype(bool), &#39;y_hat&#39;: y_hat }).sort_values(&#39;y_hat&#39;, ascending=False)
+        P_n = np.sum(df.y)
+        N_n = df.shape[0] - P_n
+        if P_n == 0 or N_n == 0:
+            self.set_message(&#39;Provided dataset contains only positive or only negative cases.&#39;, &#39;error&#39;)
+            return
+        grid_points = self.arena.get_option(self.plot_type, &#39;grid_points&#39;)
+        df[&#39;TPR&#39;] = np.cumsum(df.y) / P_n
+        df[&#39;TNR&#39;] = 1 - (np.cumsum(1 - df.y) / N_n)
+        if df.shape[0] &gt; grid_points:
+            df = df.sample(grid_points).sort_values(&#39;y_hat&#39;, ascending=False)
+        self.data = {
+            &#39;cutoff&#39;: df[&#39;y_hat&#39;].tolist(),
+            &#39;specifity&#39;: df[&#39;TNR&#39;].tolist(),
+            &#39;sensivity&#39;: df[&#39;TPR&#39;].tolist()
+        }
+    def test_arena(arena):
+        if type(arena).__name__ != &#39;Arena&#39; or type(arena).__module__ != &#39;dalex.arena.object&#39;:
+            raise Exception(&#39;Invalid Arena argument&#39;)
+        return next((True for model in arena.get_params(&#39;model&#39;) if model.explainer.model_type == &#39;classification&#39;), False)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.ROCContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.ROCContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.arena.plots.ROCContainer.test_arena"><code class="name flex">
+<span>def <span class="ident">test_arena</span></span>(<span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tests if plot can be created for at least one combination of params</p>
+<p>This method searches for params, that can produce valid chart. Displaying
+error messages are not counted as valid. One example of usage are charts for
+classification models. Such charts should override this method and check if
+there is at least one classification model in arena.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Object of class dalex.Arena</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_arena(arena):
+    if type(arena).__name__ != &#39;Arena&#39; or type(arena).__module__ != &#39;dalex.arena.object&#39;:
+        raise Exception(&#39;Invalid Arena argument&#39;)
+    return next((True for model in arena.get_params(&#39;model&#39;) if model.explainer.model_type == &#39;classification&#39;), False)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesContainer"><code class="flex name class">
+<span>class <span class="ident">ShapleyValuesContainer</span></span>
+<span>(</span><span>arena)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ShapleyValuesContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#34;Shapley Values&#34;,
+        &#39;plotType&#39;: &#34;SHAPValues&#34;,
+        &#39;plotCategory&#39;: &#34;Observation Level&#34;,
+        &#39;requiredParams&#39;: [&#34;model&#34;, &#34;observation&#34;]
+    }
+    options = {
+        &#39;B&#39;: { &#39;default&#39;: 10, &#39;desc&#39;: &#39;Number of random paths&#39; }
+    }
+    def _fit(self, model, observation):
+        row = observation.get_row_for_model(model)
+        if row is None:
+            self.set_message(&#39;Observation is not valid for given model.&#39;)
+            return
+        shap = model.explainer.predict_parts(
+            row,
+            type=&#39;shap&#39;,
+            B=self.arena.get_option(self.plot_type, &#39;B&#39;)
+        )
+        intercept = shap.intercept
+        result = shap.result
+        result = result[result.B != 0]
+        def q1(x):
+            return x.quantile(0.25)
+        def q3(x):
+            return x.quantile(0.75)
+        stats = result.groupby([&#39;variable_name&#39;, &#39;variable_value&#39;]) \
+            .agg({&#39;contribution&#39;: [&#39;mean&#39;, &#39;max&#39;, &#39;min&#39;, q1, q3]}) \
+            .contribution
+        stats[&#39;abs&#39;] = stats[&#39;mean&#39;].abs()
+        stats = stats.sort_values(&#39;abs&#39;, ascending=False).reset_index()
+        self.data = {
+            &#39;variables&#39;: stats.variable_name.tolist(),
+            &#39;variables_value&#39;: stats.variable_value.tolist(),
+            &#39;mean&#39;: stats[&#39;mean&#39;].tolist(),
+            &#39;min&#39;: stats[&#39;min&#39;].tolist(),
+            &#39;max&#39;: stats[&#39;max&#39;].tolist(),
+            &#39;q1&#39;: stats.q1.tolist(),
+            &#39;q3&#39;: stats.q3.tolist(),
+            &#39;intercept&#39;: intercept.astype(float)
+        }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.ShapleyValuesContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dalex.arena" href="../index.html">dalex.arena</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dalex.arena.plots.AccumulatedDependenceContainer" href="#dalex.arena.plots.AccumulatedDependenceContainer">AccumulatedDependenceContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.AccumulatedDependenceContainer.info" href="#dalex.arena.plots.AccumulatedDependenceContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.AccumulatedDependenceContainer.options" href="#dalex.arena.plots.AccumulatedDependenceContainer.options">options</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.BreakDownContainer" href="#dalex.arena.plots.BreakDownContainer">BreakDownContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.BreakDownContainer.info" href="#dalex.arena.plots.BreakDownContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.BreakDownContainer.options" href="#dalex.arena.plots.BreakDownContainer.options">options</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.CeterisParibusContainer" href="#dalex.arena.plots.CeterisParibusContainer">CeterisParibusContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.CeterisParibusContainer.info" href="#dalex.arena.plots.CeterisParibusContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.CeterisParibusContainer.options" href="#dalex.arena.plots.CeterisParibusContainer.options">options</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.FeatureImportanceContainer" href="#dalex.arena.plots.FeatureImportanceContainer">FeatureImportanceContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.FeatureImportanceContainer.info" href="#dalex.arena.plots.FeatureImportanceContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.FeatureImportanceContainer.options" href="#dalex.arena.plots.FeatureImportanceContainer.options">options</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.MetricsContainer" href="#dalex.arena.plots.MetricsContainer">MetricsContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.MetricsContainer.info" href="#dalex.arena.plots.MetricsContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.MetricsContainer.options" href="#dalex.arena.plots.MetricsContainer.options">options</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.PartialDependenceContainer" href="#dalex.arena.plots.PartialDependenceContainer">PartialDependenceContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.PartialDependenceContainer.info" href="#dalex.arena.plots.PartialDependenceContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.PartialDependenceContainer.options" href="#dalex.arena.plots.PartialDependenceContainer.options">options</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.ROCContainer" href="#dalex.arena.plots.ROCContainer">ROCContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.ROCContainer.info" href="#dalex.arena.plots.ROCContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.ROCContainer.options" href="#dalex.arena.plots.ROCContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.ROCContainer.test_arena" href="#dalex.arena.plots.ROCContainer.test_arena">test_arena</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.ShapleyValuesContainer" href="#dalex.arena.plots.ShapleyValuesContainer">ShapleyValuesContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.ShapleyValuesContainer.info" href="#dalex.arena.plots.ShapleyValuesContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.ShapleyValuesContainer.options" href="#dalex.arena.plots.ShapleyValuesContainer.options">options</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

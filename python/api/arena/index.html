@@ -1,0 +1,2063 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>dalex.arena API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dalex.arena</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from .object import Arena
+
+__all__ = [
+    &#34;Arena&#34;
+]</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="dalex.arena.object" href="object.html">dalex.arena.object</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="dalex.arena.params" href="params.html">dalex.arena.params</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="dalex.arena.plots" href="plots/index.html">dalex.arena.plots</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="dalex.arena.server" href="server.html">dalex.arena.server</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="dalex.arena.static" href="static.html">dalex.arena.static</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="dalex.arena.Arena"><code class="flex name class">
+<span>class <span class="ident">Arena</span></span>
+<span>(</span><span>precalculate=False, enable_attributes=True, enable_custom_params=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates Arena object</p>
+<p>This class should be used to create Python connector for Arena dashboard. Initialized
+object can work both in static and live mode. Use <code>push_*</code> methods to add your
+models, observations and datasets.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>precalculate</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Enables precalculating plots after using each <code>push_*</code> method.</dd>
+<dt><strong><code>enable_attributes</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Enables attributes of observations and variables. Attributes are required to
+display details of observation in Arena, but it also increases generated
+file size.</dd>
+<dt><strong><code>enable_custom_params</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Enables modififying observations in dashboard. It requires attributes and works
+only in live version.</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>models</code></strong> :&ensp;<code>list</code> of <code>ModelParam objects</code></dt>
+<dd>List of pushed models encapsulated in ModelParam class</dd>
+<dt><strong><code>observations</code></strong> :&ensp;<code>list</code> of <code>ObservationParam objects</code></dt>
+<dd>List of pushed observations encapsulated in ObservationParam class</dd>
+<dt><strong><code>datasets</code></strong> :&ensp;<code>list</code> of <code>DatasetParam objects</code></dt>
+<dd>List of pushed datasets encapsulated in DatasetParam class</dd>
+<dt><strong><code>variables_cache</code></strong> :&ensp;<code>list</code> of <code>VariableParam objects</code></dt>
+<dd>Cached list of VariableParam objects generated using pushed models and datasets</dd>
+<dt><strong><code>server_thread</code></strong> :&ensp;<code>threading.Thread</code></dt>
+<dd>Thread of running server or None otherwise</dd>
+<dt><strong><code>precalculate</code></strong> :&ensp;<code>bool</code></dt>
+<dd>if plots should be precalculated</dd>
+<dt><strong><code>enable_attributes</code></strong> :&ensp;<code>bool</code></dt>
+<dd>if attributes are enabled</dd>
+<dt><strong><code>enable_custom_params</code></strong> :&ensp;<code>bool</code></dt>
+<dd>if modifying observations is enabled</dd>
+<dt><strong><code>timestamp</code></strong> :&ensp;<code>float</code></dt>
+<dd>timestamp of last modification</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>list</code> of <code>PlotContainer objects</code></dt>
+<dd>List of already calculated plots</dd>
+<dt><strong><code>mutex</code></strong> :&ensp;<code>_thread.lock</code></dt>
+<dd>Mutex for params and cache</dd>
+<dt><strong><code>plots</code></strong> :&ensp;<code>list</code> of <code>classes extending PlotContainer</code></dt>
+<dd>List of enabled plots</dd>
+<dt><strong><code>options</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Options for plots</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>For tutorial look at <a href="https://arena.drwhy.ai/docs/guide/first-datasource">https://arena.drwhy.ai/docs/guide/first-datasource</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Arena:
+    &#34;&#34;&#34; Creates Arena object
+
+    This class should be used to create Python connector for Arena dashboard. Initialized
+    object can work both in static and live mode. Use `push_*` methods to add your
+    models, observations and datasets.
+
+    Parameters
+    ----------
+    precalculate : bool
+        Enables precalculating plots after using each `push_*` method.
+    enable_attributes : bool
+        Enables attributes of observations and variables. Attributes are required to
+        display details of observation in Arena, but it also increases generated
+        file size.
+    enable_custom_params : bool
+        Enables modififying observations in dashboard. It requires attributes and works
+        only in live version.
+
+    Attributes
+    --------
+    models : list of ModelParam objects
+        List of pushed models encapsulated in ModelParam class
+    observations : list of ObservationParam objects
+        List of pushed observations encapsulated in ObservationParam class
+    datasets : list of DatasetParam objects
+        List of pushed datasets encapsulated in DatasetParam class
+    variables_cache : list of VariableParam objects
+        Cached list of VariableParam objects generated using pushed models and datasets
+    server_thread : threading.Thread
+        Thread of running server or None otherwise
+    precalculate : bool
+        if plots should be precalculated
+    enable_attributes : bool
+        if attributes are enabled
+    enable_custom_params : bool
+        if modifying observations is enabled
+    timestamp : float
+        timestamp of last modification
+    cache : list of PlotContainer objects
+        List of already calculated plots
+    mutex : _thread.lock
+        Mutex for params and cache
+    plots : list of classes extending PlotContainer
+        List of enabled plots
+    options : dict
+        Options for plots
+
+    Notes
+    --------
+    For tutorial look at https://arena.drwhy.ai/docs/guide/first-datasource
+
+    &#34;&#34;&#34;
+    def __init__(self, precalculate=False, enable_attributes=True, enable_custom_params=True):
+        self.models = []
+        self.observations = []
+        self.datasets = []
+        self.variables_cache = []
+        self.server_thread = None
+        self.precalculate = bool(precalculate)
+        self.enable_attributes = bool(enable_attributes)
+        self.enable_custom_params = bool(enable_custom_params)
+        self.timestamp = datetime.timestamp(datetime.now())
+        self.cache = []
+        self.mutex = threading.Lock()
+        self.plots = [
+            ShapleyValuesContainer,
+            FeatureImportanceContainer,
+            PartialDependenceContainer,
+            AccumulatedDependenceContainer,
+            CeterisParibusContainer,
+            BreakDownContainer,
+            MetricsContainer,
+            ROCContainer
+        ]
+        self.options = {}
+        for plot in self.plots:
+            options = {}
+            for o in plot.options.keys():
+                options[o] = plot.options.get(o).get(&#39;default&#39;)
+            self.options[plot.info.get(&#39;plotType&#39;)] = options
+
+    def get_supported_plots(self):
+        &#34;&#34;&#34;Returns plots classes that can produce at least one valid chart for this Arena.
+
+        Returns
+        -----------
+        List of classes extending PlotContainer
+        &#34;&#34;&#34;
+        return [plot for plot in self.plots if plot.test_arena(self)]
+
+    def run_server(self,
+                   host=&#39;127.0.0.1&#39;,
+                   port=8181,
+                   append_data=False,
+                   arena_url=&#39;https://arena.drwhy.ai/&#39;,
+                   disable_logs=True):
+        &#34;&#34;&#34;Starts server for live mode of Arena
+
+        Parameters
+        -----------
+        host : str
+            ip or hostname for the server
+        port : int
+            port number for the server
+        append_data : bool
+            if generated link should append data to already existing Arena window.
+        arena_url : str
+            URl of Arena dhasboard
+        disable_logs : str
+            if logs should be muted
+
+        Notes
+        --------
+        Read more about data sources https://arena.drwhy.ai/docs/guide/basic-concepts
+
+        Returns
+        -----------
+        Link to Arena
+        &#34;&#34;&#34;
+        if self.server_thread:
+            raise Exception(&#39;Server is already running. To stop ip use arena.stop_server().&#39;)
+        global_check_import(&#39;flask&#39;)
+        global_check_import(&#39;flask_cors&#39;)
+        global_check_import(&#39;requests&#39;)
+        self.server_thread = threading.Thread(target=start_server, args=(self, host, port, disable_logs))
+        self.server_thread.start()
+        if append_data:
+            print(arena_url + &#39;?append=http://&#39; + host + &#39;:&#39; + str(port) + &#39;/&#39;)
+        else:
+            print(arena_url + &#39;?data=http://&#39; + host + &#39;:&#39; + str(port) + &#39;/&#39;)
+
+    def stop_server(self):
+        &#34;&#34;&#34;Stops running server&#34;&#34;&#34;
+        if not self.server_thread:
+            raise Exception(&#39;Server is not running&#39;)
+        self._stop_server()
+        self.server_thread.join()
+        self.server_thread = None
+
+    def update_timestamp(self):
+        &#34;&#34;&#34;Updates timestamp
+
+        Notes
+        -------
+        This function must be called from mutex context
+        &#34;&#34;&#34;
+        now = datetime.now()
+        self.timestamp = datetime.timestamp(now)
+
+    def clear_cache(self, plot_type=None):
+        &#34;&#34;&#34;Clears cache
+        
+        Parameters
+        -----------
+        plot_type : str or None
+            If None all cache is cleared. Otherwise only plots with
+            provided plot_type are removed.
+
+        Notes
+        -------
+        This function must be called from mutex context
+        &#34;&#34;&#34;
+        if plot_type is None:
+            self.cache = []
+        else:
+            self.cache = list(filter(lambda p: p.plot_type != plot_type, self.cache))
+        self.update_timestamp()
+
+    def find_in_cache(self, plot_type, params):
+        &#34;&#34;&#34;Function searches for cached plot
+
+        Parameters
+        -----------
+        plot_type : str
+            Value of plot_type field, that requested plot must have
+        params : dict
+            Keys of this dict are params types (model, observation, variable, dataset)
+            and values are corresponding params labels. Requested plot must have equal
+            params field.
+
+        Returns
+        --------
+        PlotContainer or None
+        &#34;&#34;&#34;
+
+        _filter = lambda p: p.plot_type == plot_type and params == p.params
+        with self.mutex:
+            return next(filter(_filter, self.cache), None)
+    
+    def put_to_cache(self, plot_container):
+        &#34;&#34;&#34;Puts new plot to cache
+
+        Parameters
+        -----------
+        plot_container : PlotContainer
+        &#34;&#34;&#34;
+        if not isinstance(plot_container, PlotContainer):
+            raise Exception(&#39;Invalid plot container&#39;)
+        with self.mutex:
+            self.cache.append(plot_container)
+
+    def fill_cache(self, fixed_params={}):
+        &#34;&#34;&#34;Generates all available plots and cache them
+
+        This function tries to generate all plots that are not cached already and
+        put them to cache. Range of generated plots can be narrow using `fixed_params`
+
+        Parameters
+        -----------
+        fixed_params : dict
+            This dict specifies which plots should be generated. Only those with
+            all keys from `fixed_params` present and having the same value will be
+            calculated.
+        &#34;&#34;&#34;
+        if not isinstance(fixed_params, dict):
+            raise Exception(&#39;Params argument must be a dict&#39;)
+        for plot_class in self.get_supported_plots():
+            required_params = plot_class.info.get(&#39;requiredParams&#39;)
+            # Test if all params fixed by user are used in this plot. If not, then skip it.
+            # This list contains fixed params&#39; types, that are not required by plot.
+            # Loop will be skipped if this list is not empty.
+            if len([k for k in fixed_params.keys() if not k in required_params]) &gt; 0:
+                continue
+            available_params = self.get_available_params()
+            iteration_pools = map(lambda p: available_params.get(p) if fixed_params.get(p) is None else [fixed_params.get(p)], required_params)
+            combinations = [[]]
+            for pool in iteration_pools:
+                combinations = [x + [y] for x in combinations for y in pool]
+            for params_values in combinations:
+                params = dict(zip(required_params, params_values))
+                self.get_plot(plot_type=plot_class.info.get(&#39;plotType&#39;), params_values=params)
+
+    def push_model(self, explainer, precalculate=None):
+        &#34;&#34;&#34;Adds model to Arena
+
+        This method encapsulate explainer in ModelParam object and
+        save appends models fields. When precalculation is enabled
+        triggers filling cache.
+
+        Parameters
+        -----------
+        explainer : dalex.Explainer
+            Explainer created using dalex package
+        precalculate : bool or None
+            Overrides constructor `precalculate` parameter when it is not None.
+            If true, then only plots using this model will be precalculated.
+        &#34;&#34;&#34;
+        if not isinstance(explainer, Explainer):
+            raise Exception(&#39;Invalid Explainer argument&#39;)
+        if explainer.label in self.list_params(&#39;model&#39;):
+            raise Exception(&#39;Explainer with the same label was already added&#39;)
+        precalculate = self.precalculate if precalculate is None else bool(precalculate)
+        param = ModelParam(explainer)
+        with self.mutex:
+            self.update_timestamp()
+            self.models.append(param)
+            self.variables_cache = []
+        if precalculate:
+            self.fill_cache({&#39;model&#39;: param})
+
+    def push_observations(self, observations, precalculate=None):
+        &#34;&#34;&#34;Adds observations to Arena
+
+        Pushed observations will be used to local explainations. Function
+        creates ObservationParam object for each row of pushed dataset. Label
+        for each observation is taken from row name. When precalculation
+        is enabled triggers filling cache.
+
+        Parameters
+        -----------
+        observations : pandas.DataFrame
+            Data frame of observations to be explained using instance level plots.
+            Label for each observation is taken from row name.
+        precalculate : bool or None
+            Overrides constructor `precalculate` parameter when it is not None.
+            If true, then only plots using thease observations will be precalculated.
+        &#34;&#34;&#34;
+        if not isinstance(observations, DataFrame):
+            raise Exception(&#39;Observations argument is not a pandas DataFrame&#39;)
+        if len(observations.index.names) != 1:
+            raise Exception(&#39;Observations argument need to have only one index&#39;)
+        if not observations.index.is_unique:
+            raise Exception(&#39;Observations argument need to have unique indexes&#39;)
+        precalculate = self.precalculate if precalculate is None else bool(precalculate)
+        old_observations = self.list_params(&#39;observation&#39;)
+        observations = observations.set_index(observations.index.astype(str))
+        params_objects = []
+        for x in observations.index:
+            if x in old_observations:
+                raise Exception(&#39;Indexes of observations need to be unique across all observations&#39;)
+            params_objects.append(ObservationParam(dataset=observations, index=x))
+        with self.mutex:
+            self.update_timestamp()
+            self.observations.extend(params_objects)
+        if precalculate:
+            for obs in params_objects:
+                self.fill_cache({&#39;observation&#39;: obs})
+
+    def push_dataset(self, dataset, target, label, precalculate=None):
+        &#34;&#34;&#34;Adds dataset to Arena
+
+        Pushed dataset will visualised using exploratory data analysis plots.
+        Function creates DatasetParam object with specified label and target name.
+        When precalculation is enabled triggers filling cache.
+
+        Parameters
+        -----------
+        dataset : pandas.DataFrame
+            Data frame to be visualised using EDA plots. This
+            dataset should contain target variable.
+        target : str
+            Name of target column
+        label : str
+            Label for this dataset
+        precalculate : bool or None
+            Overrides constructor `precalculate` parameter when it is not None.
+            If true, then only plots using this model will be precalculated.
+        &#34;&#34;&#34;
+        if not isinstance(dataset, DataFrame):
+            raise Exception(&#39;Dataset argument is not a pandas DataFrame&#39;)
+        if len(dataset.columns.names) != 1:
+            raise Exception(&#39;Dataset argument need to have only one level column names&#39;)
+        precalculate = self.precalculate if precalculate is None else bool(precalculate)
+        target = str(target)
+        if target not in dataset.columns:
+            raise Exception(&#39;Target is not a column from dataset&#39;)
+        if (not isinstance(label, str)) or (len(label) == 0):
+            raise Exception(&#39;Label need to be at least one letter&#39;)
+        if label in self.list_params(&#39;dataset&#39;):
+            raise Exception(&#39;Labels need to be unique&#39;)
+        param = DatasetParam(dataset=dataset, label=label, target=target)
+        with self.mutex:
+            self.update_timestamp()
+            self.datasets.append(param)
+            self.variables_cache = []
+        if precalculate:
+            self.fill_cache({&#39;dataset&#39;: param})
+
+    def get_params(self, param_type):
+        &#34;&#34;&#34;Returns list of available params
+
+        Parameters
+        -----------
+        param_type : str
+            One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;]. Params of this type
+            will be returned
+
+        Notes
+        --------
+        Information about params https://arena.drwhy.ai/docs/guide/params
+
+        Returns
+        --------
+        List of Param objects
+        &#34;&#34;&#34;
+        if param_type == &#39;observation&#39;:
+            with self.mutex:
+                return self.observations
+        elif param_type == &#39;variable&#39;:
+            with self.mutex:
+                if not self.variables_cache:
+                    # Extract column names from every dataset in self.dataset list and flatten it
+                    result_datasets = [col for dataset in self.datasets for col in dataset.variables]
+                    # Extract column names from every model in self.models list and flatten it
+                    result_explainers = [col for model in self.models for col in model.variables]
+                    result_str = np.unique(result_datasets + result_explainers).tolist()
+                    self.variables_cache = [VariableParam(x) for x in result_str]
+                    if self.enable_attributes:
+                        for var in self.variables_cache:
+                            try:
+                                for dataset in self.datasets:
+                                    if var.variable in dataset.variables:
+                                        var.update_attributes(dataset.dataset[var.variable])
+                                for model in self.models:
+                                    if var.variable in model.variables:
+                                        var.update_attributes(model.explainer.data[var.variable])
+                            except:
+                                var.clear_attributes()
+                return self.variables_cache
+        elif param_type == &#39;model&#39;:
+            with self.mutex:
+                return self.models
+        elif param_type == &#39;dataset&#39;:
+            with self.mutex:
+                return self.datasets
+        else:
+            raise Exception(&#39;Invalid param type&#39;)
+
+    def list_params(self, param_type):
+        &#34;&#34;&#34;Returns list of available params&#39;s labels
+
+        Parameters
+        -----------
+        param_type : str
+            One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;]. Labels of params
+            of this type will be returned
+
+        Notes
+        --------
+        Information about params https://arena.drwhy.ai/docs/guide/params
+
+        Returns
+        --------
+        List of str
+        &#34;&#34;&#34;
+        return [x.get_label() for x in self.get_params(param_type)]
+
+    def get_available_params(self):
+        &#34;&#34;&#34;Returns dict containing available params of all types
+
+        This method collect result of `get_params` method for each param type into
+        a dict. Keys are param types and values are lists of Param objects.
+
+        Notes
+        --------
+        Information about params https://arena.drwhy.ai/docs/guide/params
+
+        Returns
+        --------
+        dict
+        &#34;&#34;&#34;
+        result = {}
+        for param_type in [&#39;model&#39;, &#39;observation&#39;, &#39;variable&#39;, &#39;dataset&#39;]:
+            result[param_type] = self.get_params(param_type)
+        return result
+
+    def list_available_params(self):
+        &#34;&#34;&#34;Returns dict containing labels of available params of all types
+
+        This methods collect result of `list_params` for each param type into
+        a dict. Keys are param types and values are list of labels.
+
+        Notes
+        --------
+        Information about params https://arena.drwhy.ai/docs/guide/params
+
+        Returns
+        --------
+        dict
+        &#34;&#34;&#34;
+        result = {}
+        for param_type in [&#39;model&#39;, &#39;observation&#39;, &#39;variable&#39;, &#39;dataset&#39;]:
+            result[param_type] = self.list_params(param_type)
+        return result
+    
+    def find_param_value(self, param_type, param_label):
+        &#34;&#34;&#34;Searches for Param object with specified label
+
+        Parameters
+        -----------
+        param_type : str
+            One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;].
+        param_label : str
+            Label of searched param
+
+        Notes
+        --------
+        Information about params https://arena.drwhy.ai/docs/guide/params
+
+        Returns
+        --------
+        Param or None
+        &#34;&#34;&#34;
+        if param_label is None or not isinstance(param_label, str):
+            return None
+        return next((x for x in self.get_params(param_type) if x.get_label() == param_label), None)
+
+    def print_options(self, plot_type=None):
+        &#34;&#34;&#34;Prints available options for plots
+
+        Parameters
+        -----------
+        plot_type : str or None
+            When not None, then only options for plots with this plot_type will
+            be printed.
+
+        Notes
+        --------
+        List of plots with described options for each one https://arena.drwhy.ai/docs/guide/observation-level
+        &#34;&#34;&#34;
+
+        plot = next((x for x in self.plots if x.info.get(&#39;plotType&#39;) == plot_type), None)
+        if plot_type is None or plot is None:
+            for plot in self.plots:
+                self.print_options(plot.info.get(&#39;plotType&#39;))
+            return
+        print(&#39;\n\033[1m&#39; + plot.info.get(&#39;plotType&#39;) + &#39;\033[0m&#39;)
+        print(&#39;---------------------------------&#39;)
+        for o in plot.options.keys():
+            option = plot.options.get(o)
+            value = self.options.get(plot_type).get(o)
+            print(o + &#39;: &#39; + str(value) + &#39;   #&#39; + option.get(&#39;desc&#39;))
+
+    def get_option(self, plot_type, option):
+        &#34;&#34;&#34;Returns value of specified option
+
+        Parameters
+        -----------
+        plot_type : str
+           Type of plot, the option is corresponding to.
+        option : str
+            Name of the option
+
+        Notes
+        --------
+        List of plots with described options for each one https://arena.drwhy.ai/docs/guide/observation-level
+
+        Returns
+        --------
+        None or value of option
+        &#34;&#34;&#34;
+        options = self.options.get(plot_type)
+        if options is None:
+            raise Exception(&#39;Invalid plot_type&#39;)
+        if not option in options.keys():
+            return
+        with self.mutex:
+            return self.options.get(plot_type).get(option)
+
+    def set_option(self, plot_type, option, value):
+        &#34;&#34;&#34;Sets value for the plot option
+
+        Parameters
+        -----------
+        plot_type : str
+            When None, then value will be set for each plot with
+            option of name from `option` argument. Otherwise only
+            for plots with specified type.
+        option : str
+            Name of the option
+        value : *
+            Value to be set
+
+        Notes
+        --------
+        List of plots with described options for each one https://arena.drwhy.ai/docs/guide/observation-level
+        &#34;&#34;&#34;
+        if plot_type is None:
+            for plot in self.plots:
+                self.set_option(plot.info.get(&#39;plotType&#39;), option, value)
+            return
+        options = self.options.get(plot_type)
+        if options is None:
+            raise Exception(&#39;Invalid plot_type&#39;)
+        if not option in options.keys():
+            return
+        with self.mutex:
+            self.options.get(plot_type)[option] = value
+            self.clear_cache(plot_type)
+        if self.precalculate:
+            self.fill_cache()
+
+    def get_plot(self, plot_type, params_values, cache=True):
+        &#34;&#34;&#34;Returns plot for specified type and params
+
+        Function serches for plot in cache, when not present creates
+        requested plot and put it to cache.
+
+        Parameters
+        -----------
+        plot_type : str
+            Type of plot to be generated
+        params_values : dict
+            Dict for param types as keys and Param objects as values
+        cache : bool
+            If serach for plot in cache and put calculated plot into cache.
+
+        Returns
+        --------
+        PlotContainer
+        &#34;&#34;&#34;
+        plot_class = next((c for c in self.plots if c.info.get(&#39;plotType&#39;) == plot_type), None)
+        if plot_class is None:
+            raise Exception(&#39;Not supported plot type&#39;)
+        plot_type = plot_class.info.get(&#39;plotType&#39;)
+        required_params_values = {}
+        required_params_labels = {}
+        for p in plot_class.info.get(&#39;requiredParams&#39;):
+            if params_values.get(p) is None:
+                raise Exception(&#39;Required param is missing&#39;)
+            required_params_values[p] = params_values.get(p)
+            required_params_labels[p] = params_values.get(p).get_label()
+        result = self.find_in_cache(plot_type, required_params_labels) if cache else None
+        if result is None:
+            result = plot_class(self).fit(required_params_values)
+            if cache:
+                self.put_to_cache(result)
+        return result
+
+    def get_params_attributes(self, param_type=None):
+        &#34;&#34;&#34;Returns attributes for all params
+
+        When `param_type` is not None, then function returns list of dicts. Each dict represents
+        one of available attribute for specified param type. Field `name` is attribute name
+        and field `values` is mapped list of available params to list of value of attribute.
+        When `param_type` is None, then function returns dict with keys for each param type and
+        values are lists described above.
+
+        Parameters
+        -----------
+        param_type : str or None
+            One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;] or None. Specifies
+            attributes of which params should be returned.
+
+        Notes
+        --------
+        Attribused are used for dynamicly modifying observations https://arena.drwhy.ai/docs/guide/modifying-observations
+
+        Returns
+        --------
+        dict or list
+        &#34;&#34;&#34;
+
+        if param_type is None:
+            obj = {}
+            for p in [&#39;model&#39;, &#39;observation&#39;, &#39;variable&#39;, &#39;dataset&#39;]:
+                obj[p] = self.get_params_attributes(p)
+            return obj
+        if not self.enable_attributes:
+            return []
+        attrs = Param.get_param_class(param_type).list_attributes(self)
+        array = []
+        for attr in attrs:
+            array.append({
+                &#39;name&#39;: attr,
+                &#39;values&#39;: [param.get_attributes().get(attr) for param in self.get_params(param_type)]
+            })
+        return array
+
+    def get_param_attributes(self, param_type, param_label):
+        &#34;&#34;&#34;Returns attributes for one param
+
+        Function searches for param with specified type and label and
+        returns it&#39;s attributes.
+
+        Parameters
+        -----------
+        param_type : str
+            One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;].
+        param_label : str
+            Label of param
+
+        Notes
+        --------
+        Attribused are used for dynamicly modifying observations https://arena.drwhy.ai/docs/guide/modifying-observations
+
+        Returns
+        --------
+        dict
+        &#34;&#34;&#34;
+
+        if not self.enable_attributes:
+            return {}
+        param_value = self.find_param_value(param_type=param_type, param_label=param_label)
+        if param_value:
+            return param_value.get_attributes()
+        else:
+            return {}
+
+    def save(self, filename=&#34;datasource.json&#34;):
+        &#34;&#34;&#34;Generate all plots and saves them to JSON file
+
+        Function generates only not cached plots.
+
+        Parameters
+        -----------
+        filename : str
+            Path or filename to output file
+
+        Notes
+        --------
+        Read more about data sources https://arena.drwhy.ai/docs/guide/basic-concepts
+
+        Returns
+        --------
+        None
+        &#34;&#34;&#34;
+        with open(filename, &#39;w&#39;) as file:
+            file.write(get_json(self))
+
+    def upload(self, token=None, arena_url=&#39;https://arena.drwhy.ai/&#39;, open_browser=True):
+        &#34;&#34;&#34;Generate all plots and uploads them to GitHub Gist
+
+        Function generates only not cached plots. If token is not provided
+        then function uses OAuth to open GitHub authorization page.
+
+        Parameters
+        -----------
+        token : str or None
+            GitHub personal access token. If token is None, then OAuth is used.
+        arena_url : str
+            Address of Arena dashboard instance
+        open_browser : bool
+            Whether to open Arena after upload.
+
+        Notes
+        --------
+        Read more about data sources https://arena.drwhy.ai/docs/guide/basic-concepts
+
+        Returns
+        --------
+        Link to the Arena
+        &#34;&#34;&#34;
+        global_check_import(&#39;requests&#39;)
+        if token is None:
+            global_check_import(&#39;flask&#39;)
+            global_check_import(&#39;flask_cors&#39;)
+            token = generate_token()
+        data_url = upload_arena(self, token)
+        url = arena_url + &#39;?data=&#39; + data_url
+        if open_browser:
+            webbrowser.open(url)
+        return url</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.arena.Arena.clear_cache"><code class="name flex">
+<span>def <span class="ident">clear_cache</span></span>(<span>self, plot_type=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clears cache</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code> or <code>None</code></dt>
+<dd>If None all cache is cleared. Otherwise only plots with
+provided plot_type are removed.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>This function must be called from mutex context</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear_cache(self, plot_type=None):
+    &#34;&#34;&#34;Clears cache
+    
+    Parameters
+    -----------
+    plot_type : str or None
+        If None all cache is cleared. Otherwise only plots with
+        provided plot_type are removed.
+
+    Notes
+    -------
+    This function must be called from mutex context
+    &#34;&#34;&#34;
+    if plot_type is None:
+        self.cache = []
+    else:
+        self.cache = list(filter(lambda p: p.plot_type != plot_type, self.cache))
+    self.update_timestamp()</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.fill_cache"><code class="name flex">
+<span>def <span class="ident">fill_cache</span></span>(<span>self, fixed_params={})</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates all available plots and cache them</p>
+<p>This function tries to generate all plots that are not cached already and
+put them to cache. Range of generated plots can be narrow using <code>fixed_params</code></p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>fixed_params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>This dict specifies which plots should be generated. Only those with
+all keys from <code>fixed_params</code> present and having the same value will be
+calculated.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fill_cache(self, fixed_params={}):
+    &#34;&#34;&#34;Generates all available plots and cache them
+
+    This function tries to generate all plots that are not cached already and
+    put them to cache. Range of generated plots can be narrow using `fixed_params`
+
+    Parameters
+    -----------
+    fixed_params : dict
+        This dict specifies which plots should be generated. Only those with
+        all keys from `fixed_params` present and having the same value will be
+        calculated.
+    &#34;&#34;&#34;
+    if not isinstance(fixed_params, dict):
+        raise Exception(&#39;Params argument must be a dict&#39;)
+    for plot_class in self.get_supported_plots():
+        required_params = plot_class.info.get(&#39;requiredParams&#39;)
+        # Test if all params fixed by user are used in this plot. If not, then skip it.
+        # This list contains fixed params&#39; types, that are not required by plot.
+        # Loop will be skipped if this list is not empty.
+        if len([k for k in fixed_params.keys() if not k in required_params]) &gt; 0:
+            continue
+        available_params = self.get_available_params()
+        iteration_pools = map(lambda p: available_params.get(p) if fixed_params.get(p) is None else [fixed_params.get(p)], required_params)
+        combinations = [[]]
+        for pool in iteration_pools:
+            combinations = [x + [y] for x in combinations for y in pool]
+        for params_values in combinations:
+            params = dict(zip(required_params, params_values))
+            self.get_plot(plot_type=plot_class.info.get(&#39;plotType&#39;), params_values=params)</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.find_in_cache"><code class="name flex">
+<span>def <span class="ident">find_in_cache</span></span>(<span>self, plot_type, params)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Function searches for cached plot</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Value of plot_type field, that requested plot must have</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Keys of this dict are params types (model, observation, variable, dataset)
+and values are corresponding params labels. Requested plot must have equal
+params field.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>PlotContainer</code> or <code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_in_cache(self, plot_type, params):
+    &#34;&#34;&#34;Function searches for cached plot
+
+    Parameters
+    -----------
+    plot_type : str
+        Value of plot_type field, that requested plot must have
+    params : dict
+        Keys of this dict are params types (model, observation, variable, dataset)
+        and values are corresponding params labels. Requested plot must have equal
+        params field.
+
+    Returns
+    --------
+    PlotContainer or None
+    &#34;&#34;&#34;
+
+    _filter = lambda p: p.plot_type == plot_type and params == p.params
+    with self.mutex:
+        return next(filter(_filter, self.cache), None)</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.find_param_value"><code class="name flex">
+<span>def <span class="ident">find_param_value</span></span>(<span>self, param_type, param_label)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Searches for Param object with specified label</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>param_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>One of ['model', 'variable', 'observation', 'dataset'].</dd>
+<dt><strong><code>param_label</code></strong> :&ensp;<code>str</code></dt>
+<dd>Label of searched param</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Information about params <a href="https://arena.drwhy.ai/docs/guide/params">https://arena.drwhy.ai/docs/guide/params</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Param</code> or <code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_param_value(self, param_type, param_label):
+    &#34;&#34;&#34;Searches for Param object with specified label
+
+    Parameters
+    -----------
+    param_type : str
+        One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;].
+    param_label : str
+        Label of searched param
+
+    Notes
+    --------
+    Information about params https://arena.drwhy.ai/docs/guide/params
+
+    Returns
+    --------
+    Param or None
+    &#34;&#34;&#34;
+    if param_label is None or not isinstance(param_label, str):
+        return None
+    return next((x for x in self.get_params(param_type) if x.get_label() == param_label), None)</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.get_available_params"><code class="name flex">
+<span>def <span class="ident">get_available_params</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns dict containing available params of all types</p>
+<p>This method collect result of <code>get_params</code> method for each param type into
+a dict. Keys are param types and values are lists of Param objects.</p>
+<h2 id="notes">Notes</h2>
+<p>Information about params <a href="https://arena.drwhy.ai/docs/guide/params">https://arena.drwhy.ai/docs/guide/params</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_available_params(self):
+    &#34;&#34;&#34;Returns dict containing available params of all types
+
+    This method collect result of `get_params` method for each param type into
+    a dict. Keys are param types and values are lists of Param objects.
+
+    Notes
+    --------
+    Information about params https://arena.drwhy.ai/docs/guide/params
+
+    Returns
+    --------
+    dict
+    &#34;&#34;&#34;
+    result = {}
+    for param_type in [&#39;model&#39;, &#39;observation&#39;, &#39;variable&#39;, &#39;dataset&#39;]:
+        result[param_type] = self.get_params(param_type)
+    return result</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.get_option"><code class="name flex">
+<span>def <span class="ident">get_option</span></span>(<span>self, plot_type, option)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns value of specified option</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>&nbsp;</dd>
+<dt>Type of plot, the option is corresponding to.</dt>
+<dt><strong><code>option</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the option</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>List of plots with described options for each one <a href="https://arena.drwhy.ai/docs/guide/observation-level">https://arena.drwhy.ai/docs/guide/observation-level</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code> or <code>value</code> of <code>option</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_option(self, plot_type, option):
+    &#34;&#34;&#34;Returns value of specified option
+
+    Parameters
+    -----------
+    plot_type : str
+       Type of plot, the option is corresponding to.
+    option : str
+        Name of the option
+
+    Notes
+    --------
+    List of plots with described options for each one https://arena.drwhy.ai/docs/guide/observation-level
+
+    Returns
+    --------
+    None or value of option
+    &#34;&#34;&#34;
+    options = self.options.get(plot_type)
+    if options is None:
+        raise Exception(&#39;Invalid plot_type&#39;)
+    if not option in options.keys():
+        return
+    with self.mutex:
+        return self.options.get(plot_type).get(option)</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.get_param_attributes"><code class="name flex">
+<span>def <span class="ident">get_param_attributes</span></span>(<span>self, param_type, param_label)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns attributes for one param</p>
+<p>Function searches for param with specified type and label and
+returns it's attributes.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>param_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>One of ['model', 'variable', 'observation', 'dataset'].</dd>
+<dt><strong><code>param_label</code></strong> :&ensp;<code>str</code></dt>
+<dd>Label of param</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Attribused are used for dynamicly modifying observations <a href="https://arena.drwhy.ai/docs/guide/modifying-observations">https://arena.drwhy.ai/docs/guide/modifying-observations</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_param_attributes(self, param_type, param_label):
+    &#34;&#34;&#34;Returns attributes for one param
+
+    Function searches for param with specified type and label and
+    returns it&#39;s attributes.
+
+    Parameters
+    -----------
+    param_type : str
+        One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;].
+    param_label : str
+        Label of param
+
+    Notes
+    --------
+    Attribused are used for dynamicly modifying observations https://arena.drwhy.ai/docs/guide/modifying-observations
+
+    Returns
+    --------
+    dict
+    &#34;&#34;&#34;
+
+    if not self.enable_attributes:
+        return {}
+    param_value = self.find_param_value(param_type=param_type, param_label=param_label)
+    if param_value:
+        return param_value.get_attributes()
+    else:
+        return {}</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.get_params"><code class="name flex">
+<span>def <span class="ident">get_params</span></span>(<span>self, param_type)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns list of available params</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>param_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>One of ['model', 'variable', 'observation', 'dataset']. Params of this type
+will be returned</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Information about params <a href="https://arena.drwhy.ai/docs/guide/params">https://arena.drwhy.ai/docs/guide/params</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List</code> of <code>Param objects</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_params(self, param_type):
+    &#34;&#34;&#34;Returns list of available params
+
+    Parameters
+    -----------
+    param_type : str
+        One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;]. Params of this type
+        will be returned
+
+    Notes
+    --------
+    Information about params https://arena.drwhy.ai/docs/guide/params
+
+    Returns
+    --------
+    List of Param objects
+    &#34;&#34;&#34;
+    if param_type == &#39;observation&#39;:
+        with self.mutex:
+            return self.observations
+    elif param_type == &#39;variable&#39;:
+        with self.mutex:
+            if not self.variables_cache:
+                # Extract column names from every dataset in self.dataset list and flatten it
+                result_datasets = [col for dataset in self.datasets for col in dataset.variables]
+                # Extract column names from every model in self.models list and flatten it
+                result_explainers = [col for model in self.models for col in model.variables]
+                result_str = np.unique(result_datasets + result_explainers).tolist()
+                self.variables_cache = [VariableParam(x) for x in result_str]
+                if self.enable_attributes:
+                    for var in self.variables_cache:
+                        try:
+                            for dataset in self.datasets:
+                                if var.variable in dataset.variables:
+                                    var.update_attributes(dataset.dataset[var.variable])
+                            for model in self.models:
+                                if var.variable in model.variables:
+                                    var.update_attributes(model.explainer.data[var.variable])
+                        except:
+                            var.clear_attributes()
+            return self.variables_cache
+    elif param_type == &#39;model&#39;:
+        with self.mutex:
+            return self.models
+    elif param_type == &#39;dataset&#39;:
+        with self.mutex:
+            return self.datasets
+    else:
+        raise Exception(&#39;Invalid param type&#39;)</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.get_params_attributes"><code class="name flex">
+<span>def <span class="ident">get_params_attributes</span></span>(<span>self, param_type=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns attributes for all params</p>
+<p>When <code>param_type</code> is not None, then function returns list of dicts. Each dict represents
+one of available attribute for specified param type. Field <code>name</code> is attribute name
+and field <code>values</code> is mapped list of available params to list of value of attribute.
+When <code>param_type</code> is None, then function returns dict with keys for each param type and
+values are lists described above.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>param_type</code></strong> :&ensp;<code>str</code> or <code>None</code></dt>
+<dd>One of ['model', 'variable', 'observation', 'dataset'] or None. Specifies
+attributes of which params should be returned.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Attribused are used for dynamicly modifying observations <a href="https://arena.drwhy.ai/docs/guide/modifying-observations">https://arena.drwhy.ai/docs/guide/modifying-observations</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code> or <code>list</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_params_attributes(self, param_type=None):
+    &#34;&#34;&#34;Returns attributes for all params
+
+    When `param_type` is not None, then function returns list of dicts. Each dict represents
+    one of available attribute for specified param type. Field `name` is attribute name
+    and field `values` is mapped list of available params to list of value of attribute.
+    When `param_type` is None, then function returns dict with keys for each param type and
+    values are lists described above.
+
+    Parameters
+    -----------
+    param_type : str or None
+        One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;] or None. Specifies
+        attributes of which params should be returned.
+
+    Notes
+    --------
+    Attribused are used for dynamicly modifying observations https://arena.drwhy.ai/docs/guide/modifying-observations
+
+    Returns
+    --------
+    dict or list
+    &#34;&#34;&#34;
+
+    if param_type is None:
+        obj = {}
+        for p in [&#39;model&#39;, &#39;observation&#39;, &#39;variable&#39;, &#39;dataset&#39;]:
+            obj[p] = self.get_params_attributes(p)
+        return obj
+    if not self.enable_attributes:
+        return []
+    attrs = Param.get_param_class(param_type).list_attributes(self)
+    array = []
+    for attr in attrs:
+        array.append({
+            &#39;name&#39;: attr,
+            &#39;values&#39;: [param.get_attributes().get(attr) for param in self.get_params(param_type)]
+        })
+    return array</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.get_plot"><code class="name flex">
+<span>def <span class="ident">get_plot</span></span>(<span>self, plot_type, params_values, cache=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns plot for specified type and params</p>
+<p>Function serches for plot in cache, when not present creates
+requested plot and put it to cache.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Type of plot to be generated</dd>
+<dt><strong><code>params_values</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dict for param types as keys and Param objects as values</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If serach for plot in cache and put calculated plot into cache.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>PlotContainer</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_plot(self, plot_type, params_values, cache=True):
+    &#34;&#34;&#34;Returns plot for specified type and params
+
+    Function serches for plot in cache, when not present creates
+    requested plot and put it to cache.
+
+    Parameters
+    -----------
+    plot_type : str
+        Type of plot to be generated
+    params_values : dict
+        Dict for param types as keys and Param objects as values
+    cache : bool
+        If serach for plot in cache and put calculated plot into cache.
+
+    Returns
+    --------
+    PlotContainer
+    &#34;&#34;&#34;
+    plot_class = next((c for c in self.plots if c.info.get(&#39;plotType&#39;) == plot_type), None)
+    if plot_class is None:
+        raise Exception(&#39;Not supported plot type&#39;)
+    plot_type = plot_class.info.get(&#39;plotType&#39;)
+    required_params_values = {}
+    required_params_labels = {}
+    for p in plot_class.info.get(&#39;requiredParams&#39;):
+        if params_values.get(p) is None:
+            raise Exception(&#39;Required param is missing&#39;)
+        required_params_values[p] = params_values.get(p)
+        required_params_labels[p] = params_values.get(p).get_label()
+    result = self.find_in_cache(plot_type, required_params_labels) if cache else None
+    if result is None:
+        result = plot_class(self).fit(required_params_values)
+        if cache:
+            self.put_to_cache(result)
+    return result</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.get_supported_plots"><code class="name flex">
+<span>def <span class="ident">get_supported_plots</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns plots classes that can produce at least one valid chart for this Arena.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List</code> of <code>classes extending PlotContainer</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_supported_plots(self):
+    &#34;&#34;&#34;Returns plots classes that can produce at least one valid chart for this Arena.
+
+    Returns
+    -----------
+    List of classes extending PlotContainer
+    &#34;&#34;&#34;
+    return [plot for plot in self.plots if plot.test_arena(self)]</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.list_available_params"><code class="name flex">
+<span>def <span class="ident">list_available_params</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns dict containing labels of available params of all types</p>
+<p>This methods collect result of <code>list_params</code> for each param type into
+a dict. Keys are param types and values are list of labels.</p>
+<h2 id="notes">Notes</h2>
+<p>Information about params <a href="https://arena.drwhy.ai/docs/guide/params">https://arena.drwhy.ai/docs/guide/params</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_available_params(self):
+    &#34;&#34;&#34;Returns dict containing labels of available params of all types
+
+    This methods collect result of `list_params` for each param type into
+    a dict. Keys are param types and values are list of labels.
+
+    Notes
+    --------
+    Information about params https://arena.drwhy.ai/docs/guide/params
+
+    Returns
+    --------
+    dict
+    &#34;&#34;&#34;
+    result = {}
+    for param_type in [&#39;model&#39;, &#39;observation&#39;, &#39;variable&#39;, &#39;dataset&#39;]:
+        result[param_type] = self.list_params(param_type)
+    return result</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.list_params"><code class="name flex">
+<span>def <span class="ident">list_params</span></span>(<span>self, param_type)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns list of available params's labels</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>param_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>One of ['model', 'variable', 'observation', 'dataset']. Labels of params
+of this type will be returned</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Information about params <a href="https://arena.drwhy.ai/docs/guide/params">https://arena.drwhy.ai/docs/guide/params</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List</code> of <code>str</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_params(self, param_type):
+    &#34;&#34;&#34;Returns list of available params&#39;s labels
+
+    Parameters
+    -----------
+    param_type : str
+        One of [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;, &#39;dataset&#39;]. Labels of params
+        of this type will be returned
+
+    Notes
+    --------
+    Information about params https://arena.drwhy.ai/docs/guide/params
+
+    Returns
+    --------
+    List of str
+    &#34;&#34;&#34;
+    return [x.get_label() for x in self.get_params(param_type)]</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.print_options"><code class="name flex">
+<span>def <span class="ident">print_options</span></span>(<span>self, plot_type=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prints available options for plots</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code> or <code>None</code></dt>
+<dd>When not None, then only options for plots with this plot_type will
+be printed.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>List of plots with described options for each one <a href="https://arena.drwhy.ai/docs/guide/observation-level">https://arena.drwhy.ai/docs/guide/observation-level</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def print_options(self, plot_type=None):
+    &#34;&#34;&#34;Prints available options for plots
+
+    Parameters
+    -----------
+    plot_type : str or None
+        When not None, then only options for plots with this plot_type will
+        be printed.
+
+    Notes
+    --------
+    List of plots with described options for each one https://arena.drwhy.ai/docs/guide/observation-level
+    &#34;&#34;&#34;
+
+    plot = next((x for x in self.plots if x.info.get(&#39;plotType&#39;) == plot_type), None)
+    if plot_type is None or plot is None:
+        for plot in self.plots:
+            self.print_options(plot.info.get(&#39;plotType&#39;))
+        return
+    print(&#39;\n\033[1m&#39; + plot.info.get(&#39;plotType&#39;) + &#39;\033[0m&#39;)
+    print(&#39;---------------------------------&#39;)
+    for o in plot.options.keys():
+        option = plot.options.get(o)
+        value = self.options.get(plot_type).get(o)
+        print(o + &#39;: &#39; + str(value) + &#39;   #&#39; + option.get(&#39;desc&#39;))</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.push_dataset"><code class="name flex">
+<span>def <span class="ident">push_dataset</span></span>(<span>self, dataset, target, label, precalculate=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds dataset to Arena</p>
+<p>Pushed dataset will visualised using exploratory data analysis plots.
+Function creates DatasetParam object with specified label and target name.
+When precalculation is enabled triggers filling cache.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dataset</code></strong> :&ensp;<code>pandas.DataFrame</code></dt>
+<dd>Data frame to be visualised using EDA plots. This
+dataset should contain target variable.</dd>
+<dt><strong><code>target</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of target column</dd>
+<dt><strong><code>label</code></strong> :&ensp;<code>str</code></dt>
+<dd>Label for this dataset</dd>
+<dt><strong><code>precalculate</code></strong> :&ensp;<code>bool</code> or <code>None</code></dt>
+<dd>Overrides constructor <code>precalculate</code> parameter when it is not None.
+If true, then only plots using this model will be precalculated.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def push_dataset(self, dataset, target, label, precalculate=None):
+    &#34;&#34;&#34;Adds dataset to Arena
+
+    Pushed dataset will visualised using exploratory data analysis plots.
+    Function creates DatasetParam object with specified label and target name.
+    When precalculation is enabled triggers filling cache.
+
+    Parameters
+    -----------
+    dataset : pandas.DataFrame
+        Data frame to be visualised using EDA plots. This
+        dataset should contain target variable.
+    target : str
+        Name of target column
+    label : str
+        Label for this dataset
+    precalculate : bool or None
+        Overrides constructor `precalculate` parameter when it is not None.
+        If true, then only plots using this model will be precalculated.
+    &#34;&#34;&#34;
+    if not isinstance(dataset, DataFrame):
+        raise Exception(&#39;Dataset argument is not a pandas DataFrame&#39;)
+    if len(dataset.columns.names) != 1:
+        raise Exception(&#39;Dataset argument need to have only one level column names&#39;)
+    precalculate = self.precalculate if precalculate is None else bool(precalculate)
+    target = str(target)
+    if target not in dataset.columns:
+        raise Exception(&#39;Target is not a column from dataset&#39;)
+    if (not isinstance(label, str)) or (len(label) == 0):
+        raise Exception(&#39;Label need to be at least one letter&#39;)
+    if label in self.list_params(&#39;dataset&#39;):
+        raise Exception(&#39;Labels need to be unique&#39;)
+    param = DatasetParam(dataset=dataset, label=label, target=target)
+    with self.mutex:
+        self.update_timestamp()
+        self.datasets.append(param)
+        self.variables_cache = []
+    if precalculate:
+        self.fill_cache({&#39;dataset&#39;: param})</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.push_model"><code class="name flex">
+<span>def <span class="ident">push_model</span></span>(<span>self, explainer, precalculate=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds model to Arena</p>
+<p>This method encapsulate explainer in ModelParam object and
+save appends models fields. When precalculation is enabled
+triggers filling cache.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>explainer</code></strong> :&ensp;<code><a title="dalex.Explainer" href="../index.html#dalex.Explainer">Explainer</a></code></dt>
+<dd>Explainer created using dalex package</dd>
+<dt><strong><code>precalculate</code></strong> :&ensp;<code>bool</code> or <code>None</code></dt>
+<dd>Overrides constructor <code>precalculate</code> parameter when it is not None.
+If true, then only plots using this model will be precalculated.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def push_model(self, explainer, precalculate=None):
+    &#34;&#34;&#34;Adds model to Arena
+
+    This method encapsulate explainer in ModelParam object and
+    save appends models fields. When precalculation is enabled
+    triggers filling cache.
+
+    Parameters
+    -----------
+    explainer : dalex.Explainer
+        Explainer created using dalex package
+    precalculate : bool or None
+        Overrides constructor `precalculate` parameter when it is not None.
+        If true, then only plots using this model will be precalculated.
+    &#34;&#34;&#34;
+    if not isinstance(explainer, Explainer):
+        raise Exception(&#39;Invalid Explainer argument&#39;)
+    if explainer.label in self.list_params(&#39;model&#39;):
+        raise Exception(&#39;Explainer with the same label was already added&#39;)
+    precalculate = self.precalculate if precalculate is None else bool(precalculate)
+    param = ModelParam(explainer)
+    with self.mutex:
+        self.update_timestamp()
+        self.models.append(param)
+        self.variables_cache = []
+    if precalculate:
+        self.fill_cache({&#39;model&#39;: param})</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.push_observations"><code class="name flex">
+<span>def <span class="ident">push_observations</span></span>(<span>self, observations, precalculate=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds observations to Arena</p>
+<p>Pushed observations will be used to local explainations. Function
+creates ObservationParam object for each row of pushed dataset. Label
+for each observation is taken from row name. When precalculation
+is enabled triggers filling cache.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>observations</code></strong> :&ensp;<code>pandas.DataFrame</code></dt>
+<dd>Data frame of observations to be explained using instance level plots.
+Label for each observation is taken from row name.</dd>
+<dt><strong><code>precalculate</code></strong> :&ensp;<code>bool</code> or <code>None</code></dt>
+<dd>Overrides constructor <code>precalculate</code> parameter when it is not None.
+If true, then only plots using thease observations will be precalculated.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def push_observations(self, observations, precalculate=None):
+    &#34;&#34;&#34;Adds observations to Arena
+
+    Pushed observations will be used to local explainations. Function
+    creates ObservationParam object for each row of pushed dataset. Label
+    for each observation is taken from row name. When precalculation
+    is enabled triggers filling cache.
+
+    Parameters
+    -----------
+    observations : pandas.DataFrame
+        Data frame of observations to be explained using instance level plots.
+        Label for each observation is taken from row name.
+    precalculate : bool or None
+        Overrides constructor `precalculate` parameter when it is not None.
+        If true, then only plots using thease observations will be precalculated.
+    &#34;&#34;&#34;
+    if not isinstance(observations, DataFrame):
+        raise Exception(&#39;Observations argument is not a pandas DataFrame&#39;)
+    if len(observations.index.names) != 1:
+        raise Exception(&#39;Observations argument need to have only one index&#39;)
+    if not observations.index.is_unique:
+        raise Exception(&#39;Observations argument need to have unique indexes&#39;)
+    precalculate = self.precalculate if precalculate is None else bool(precalculate)
+    old_observations = self.list_params(&#39;observation&#39;)
+    observations = observations.set_index(observations.index.astype(str))
+    params_objects = []
+    for x in observations.index:
+        if x in old_observations:
+            raise Exception(&#39;Indexes of observations need to be unique across all observations&#39;)
+        params_objects.append(ObservationParam(dataset=observations, index=x))
+    with self.mutex:
+        self.update_timestamp()
+        self.observations.extend(params_objects)
+    if precalculate:
+        for obs in params_objects:
+            self.fill_cache({&#39;observation&#39;: obs})</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.put_to_cache"><code class="name flex">
+<span>def <span class="ident">put_to_cache</span></span>(<span>self, plot_container)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Puts new plot to cache</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>plot_container</code></strong> :&ensp;<code>PlotContainer</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def put_to_cache(self, plot_container):
+    &#34;&#34;&#34;Puts new plot to cache
+
+    Parameters
+    -----------
+    plot_container : PlotContainer
+    &#34;&#34;&#34;
+    if not isinstance(plot_container, PlotContainer):
+        raise Exception(&#39;Invalid plot container&#39;)
+    with self.mutex:
+        self.cache.append(plot_container)</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.run_server"><code class="name flex">
+<span>def <span class="ident">run_server</span></span>(<span>self, host='127.0.0.1', port=8181, append_data=False, arena_url='https://arena.drwhy.ai/', disable_logs=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Starts server for live mode of Arena</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>host</code></strong> :&ensp;<code>str</code></dt>
+<dd>ip or hostname for the server</dd>
+<dt><strong><code>port</code></strong> :&ensp;<code>int</code></dt>
+<dd>port number for the server</dd>
+<dt><strong><code>append_data</code></strong> :&ensp;<code>bool</code></dt>
+<dd>if generated link should append data to already existing Arena window.</dd>
+<dt><strong><code>arena_url</code></strong> :&ensp;<code>str</code></dt>
+<dd>URl of Arena dhasboard</dd>
+<dt><strong><code>disable_logs</code></strong> :&ensp;<code>str</code></dt>
+<dd>if logs should be muted</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Read more about data sources <a href="https://arena.drwhy.ai/docs/guide/basic-concepts">https://arena.drwhy.ai/docs/guide/basic-concepts</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Link to <a title="dalex.arena.Arena" href="#dalex.arena.Arena">Arena</a></code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_server(self,
+               host=&#39;127.0.0.1&#39;,
+               port=8181,
+               append_data=False,
+               arena_url=&#39;https://arena.drwhy.ai/&#39;,
+               disable_logs=True):
+    &#34;&#34;&#34;Starts server for live mode of Arena
+
+    Parameters
+    -----------
+    host : str
+        ip or hostname for the server
+    port : int
+        port number for the server
+    append_data : bool
+        if generated link should append data to already existing Arena window.
+    arena_url : str
+        URl of Arena dhasboard
+    disable_logs : str
+        if logs should be muted
+
+    Notes
+    --------
+    Read more about data sources https://arena.drwhy.ai/docs/guide/basic-concepts
+
+    Returns
+    -----------
+    Link to Arena
+    &#34;&#34;&#34;
+    if self.server_thread:
+        raise Exception(&#39;Server is already running. To stop ip use arena.stop_server().&#39;)
+    global_check_import(&#39;flask&#39;)
+    global_check_import(&#39;flask_cors&#39;)
+    global_check_import(&#39;requests&#39;)
+    self.server_thread = threading.Thread(target=start_server, args=(self, host, port, disable_logs))
+    self.server_thread.start()
+    if append_data:
+        print(arena_url + &#39;?append=http://&#39; + host + &#39;:&#39; + str(port) + &#39;/&#39;)
+    else:
+        print(arena_url + &#39;?data=http://&#39; + host + &#39;:&#39; + str(port) + &#39;/&#39;)</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.save"><code class="name flex">
+<span>def <span class="ident">save</span></span>(<span>self, filename='datasource.json')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate all plots and saves them to JSON file</p>
+<p>Function generates only not cached plots.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path or filename to output file</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Read more about data sources <a href="https://arena.drwhy.ai/docs/guide/basic-concepts">https://arena.drwhy.ai/docs/guide/basic-concepts</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save(self, filename=&#34;datasource.json&#34;):
+    &#34;&#34;&#34;Generate all plots and saves them to JSON file
+
+    Function generates only not cached plots.
+
+    Parameters
+    -----------
+    filename : str
+        Path or filename to output file
+
+    Notes
+    --------
+    Read more about data sources https://arena.drwhy.ai/docs/guide/basic-concepts
+
+    Returns
+    --------
+    None
+    &#34;&#34;&#34;
+    with open(filename, &#39;w&#39;) as file:
+        file.write(get_json(self))</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.set_option"><code class="name flex">
+<span>def <span class="ident">set_option</span></span>(<span>self, plot_type, option, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets value for the plot option</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>When None, then value will be set for each plot with
+option of name from <code>option</code> argument. Otherwise only
+for plots with specified type.</dd>
+<dt><strong><code>option</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the option</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>*</code></dt>
+<dd>Value to be set</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>List of plots with described options for each one <a href="https://arena.drwhy.ai/docs/guide/observation-level">https://arena.drwhy.ai/docs/guide/observation-level</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_option(self, plot_type, option, value):
+    &#34;&#34;&#34;Sets value for the plot option
+
+    Parameters
+    -----------
+    plot_type : str
+        When None, then value will be set for each plot with
+        option of name from `option` argument. Otherwise only
+        for plots with specified type.
+    option : str
+        Name of the option
+    value : *
+        Value to be set
+
+    Notes
+    --------
+    List of plots with described options for each one https://arena.drwhy.ai/docs/guide/observation-level
+    &#34;&#34;&#34;
+    if plot_type is None:
+        for plot in self.plots:
+            self.set_option(plot.info.get(&#39;plotType&#39;), option, value)
+        return
+    options = self.options.get(plot_type)
+    if options is None:
+        raise Exception(&#39;Invalid plot_type&#39;)
+    if not option in options.keys():
+        return
+    with self.mutex:
+        self.options.get(plot_type)[option] = value
+        self.clear_cache(plot_type)
+    if self.precalculate:
+        self.fill_cache()</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.stop_server"><code class="name flex">
+<span>def <span class="ident">stop_server</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Stops running server</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stop_server(self):
+    &#34;&#34;&#34;Stops running server&#34;&#34;&#34;
+    if not self.server_thread:
+        raise Exception(&#39;Server is not running&#39;)
+    self._stop_server()
+    self.server_thread.join()
+    self.server_thread = None</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.update_timestamp"><code class="name flex">
+<span>def <span class="ident">update_timestamp</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Updates timestamp</p>
+<h2 id="notes">Notes</h2>
+<p>This function must be called from mutex context</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_timestamp(self):
+    &#34;&#34;&#34;Updates timestamp
+
+    Notes
+    -------
+    This function must be called from mutex context
+    &#34;&#34;&#34;
+    now = datetime.now()
+    self.timestamp = datetime.timestamp(now)</code></pre>
+</details>
+</dd>
+<dt id="dalex.arena.Arena.upload"><code class="name flex">
+<span>def <span class="ident">upload</span></span>(<span>self, token=None, arena_url='https://arena.drwhy.ai/', open_browser=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate all plots and uploads them to GitHub Gist</p>
+<p>Function generates only not cached plots. If token is not provided
+then function uses OAuth to open GitHub authorization page.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>token</code></strong> :&ensp;<code>str</code> or <code>None</code></dt>
+<dd>GitHub personal access token. If token is None, then OAuth is used.</dd>
+<dt><strong><code>arena_url</code></strong> :&ensp;<code>str</code></dt>
+<dd>Address of Arena dashboard instance</dd>
+<dt><strong><code>open_browser</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to open Arena after upload.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Read more about data sources <a href="https://arena.drwhy.ai/docs/guide/basic-concepts">https://arena.drwhy.ai/docs/guide/basic-concepts</a></p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Link to the <a title="dalex.arena.Arena" href="#dalex.arena.Arena">Arena</a></code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def upload(self, token=None, arena_url=&#39;https://arena.drwhy.ai/&#39;, open_browser=True):
+    &#34;&#34;&#34;Generate all plots and uploads them to GitHub Gist
+
+    Function generates only not cached plots. If token is not provided
+    then function uses OAuth to open GitHub authorization page.
+
+    Parameters
+    -----------
+    token : str or None
+        GitHub personal access token. If token is None, then OAuth is used.
+    arena_url : str
+        Address of Arena dashboard instance
+    open_browser : bool
+        Whether to open Arena after upload.
+
+    Notes
+    --------
+    Read more about data sources https://arena.drwhy.ai/docs/guide/basic-concepts
+
+    Returns
+    --------
+    Link to the Arena
+    &#34;&#34;&#34;
+    global_check_import(&#39;requests&#39;)
+    if token is None:
+        global_check_import(&#39;flask&#39;)
+        global_check_import(&#39;flask_cors&#39;)
+        token = generate_token()
+    data_url = upload_arena(self, token)
+    url = arena_url + &#39;?data=&#39; + data_url
+    if open_browser:
+        webbrowser.open(url)
+    return url</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dalex" href="../index.html">dalex</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="dalex.arena.object" href="object.html">dalex.arena.object</a></code></li>
+<li><code><a title="dalex.arena.params" href="params.html">dalex.arena.params</a></code></li>
+<li><code><a title="dalex.arena.plots" href="plots/index.html">dalex.arena.plots</a></code></li>
+<li><code><a title="dalex.arena.server" href="server.html">dalex.arena.server</a></code></li>
+<li><code><a title="dalex.arena.static" href="static.html">dalex.arena.static</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dalex.arena.Arena" href="#dalex.arena.Arena">Arena</a></code></h4>
+<ul class="two-column">
+<li><code><a title="dalex.arena.Arena.clear_cache" href="#dalex.arena.Arena.clear_cache">clear_cache</a></code></li>
+<li><code><a title="dalex.arena.Arena.fill_cache" href="#dalex.arena.Arena.fill_cache">fill_cache</a></code></li>
+<li><code><a title="dalex.arena.Arena.find_in_cache" href="#dalex.arena.Arena.find_in_cache">find_in_cache</a></code></li>
+<li><code><a title="dalex.arena.Arena.find_param_value" href="#dalex.arena.Arena.find_param_value">find_param_value</a></code></li>
+<li><code><a title="dalex.arena.Arena.get_available_params" href="#dalex.arena.Arena.get_available_params">get_available_params</a></code></li>
+<li><code><a title="dalex.arena.Arena.get_option" href="#dalex.arena.Arena.get_option">get_option</a></code></li>
+<li><code><a title="dalex.arena.Arena.get_param_attributes" href="#dalex.arena.Arena.get_param_attributes">get_param_attributes</a></code></li>
+<li><code><a title="dalex.arena.Arena.get_params" href="#dalex.arena.Arena.get_params">get_params</a></code></li>
+<li><code><a title="dalex.arena.Arena.get_params_attributes" href="#dalex.arena.Arena.get_params_attributes">get_params_attributes</a></code></li>
+<li><code><a title="dalex.arena.Arena.get_plot" href="#dalex.arena.Arena.get_plot">get_plot</a></code></li>
+<li><code><a title="dalex.arena.Arena.get_supported_plots" href="#dalex.arena.Arena.get_supported_plots">get_supported_plots</a></code></li>
+<li><code><a title="dalex.arena.Arena.list_available_params" href="#dalex.arena.Arena.list_available_params">list_available_params</a></code></li>
+<li><code><a title="dalex.arena.Arena.list_params" href="#dalex.arena.Arena.list_params">list_params</a></code></li>
+<li><code><a title="dalex.arena.Arena.print_options" href="#dalex.arena.Arena.print_options">print_options</a></code></li>
+<li><code><a title="dalex.arena.Arena.push_dataset" href="#dalex.arena.Arena.push_dataset">push_dataset</a></code></li>
+<li><code><a title="dalex.arena.Arena.push_model" href="#dalex.arena.Arena.push_model">push_model</a></code></li>
+<li><code><a title="dalex.arena.Arena.push_observations" href="#dalex.arena.Arena.push_observations">push_observations</a></code></li>
+<li><code><a title="dalex.arena.Arena.put_to_cache" href="#dalex.arena.Arena.put_to_cache">put_to_cache</a></code></li>
+<li><code><a title="dalex.arena.Arena.run_server" href="#dalex.arena.Arena.run_server">run_server</a></code></li>
+<li><code><a title="dalex.arena.Arena.save" href="#dalex.arena.Arena.save">save</a></code></li>
+<li><code><a title="dalex.arena.Arena.set_option" href="#dalex.arena.Arena.set_option">set_option</a></code></li>
+<li><code><a title="dalex.arena.Arena.stop_server" href="#dalex.arena.Arena.stop_server">stop_server</a></code></li>
+<li><code><a title="dalex.arena.Arena.update_timestamp" href="#dalex.arena.Arena.update_timestamp">update_timestamp</a></code></li>
+<li><code><a title="dalex.arena.Arena.upload" href="#dalex.arena.Arena.upload">upload</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>
