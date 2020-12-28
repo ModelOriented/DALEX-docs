@@ -90,7 +90,7 @@ integer, the more frequently interactions will be presented (default is <code>1<
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class BreakDown:
+<pre><code class="python">class BreakDown(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable attributions as Break Down
 
     Parameters
@@ -357,6 +357,11 @@ integer, the more frequently interactions will be presented (default is <code>1<
         else:
             return fig</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex._explanation.Explanation</li>
+<li>abc.ABC</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="dalex.predict_explanations.BreakDown.fit"><code class="name flex">
@@ -695,7 +700,7 @@ eg. if there is not enough unique values for a given variable.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CeterisParibus:
+<pre><code class="python">class CeterisParibus(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable profiles as Ceteris Paribus
 
     Parameters
@@ -1013,13 +1018,13 @@ eg. if there is not enough unique values for a given variable.</dd>
                 for _, value in enumerate(fig_points.data):
                     fig.add_trace(value)
                     
-                fig = _theme.fig_update_line_plot(fig, title, y_title, plot_height, &#39;closest&#39;)
+            fig = _theme.fig_update_line_plot(fig, title, y_title, plot_height, &#39;closest&#39;)
 
         else:
             if color==&#34;_label_&#34; and len(_result_df[&#39;_ids_&#39;].unique()) &gt; 1 and len(_result_df[&#39;_label_&#39;].unique()) == 1:
                 warnings.warn(&#34;&#39;color&#39; parameter changed to &#39;_ids_&#39; because there are multiple observations for one model.&#34;)
                 color = &#39;_ids_&#39;
-            elif color==&#34;_label_&#34; and len(_result_df[&#39;_ids_&#39;].unique()) != len(_result_df[&#39;_label_&#39;].unique()): 
+            elif color==&#34;_label_&#34; and len(_result_df[&#39;_ids_&#39;].unique()) &gt; len(_result_df[&#39;_label_&#39;].unique()): 
                 # https://github.com/plotly/plotly.py/issues/2657
                 raise TypeError(&#34;Please pick one observation per label or change the `color` parameter.&#34;)
 
@@ -1049,11 +1054,28 @@ eg. if there is not enough unique values for a given variable.</dd>
                     .update_xaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True,
                                    &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True,
                                    &#39;range&#39;: min_max})
-
-            # add hline https://github.com/plotly/plotly.py/issues/2141
+                    
             for _, bar in enumerate(fig.data):
                 fig.add_vline(x=bar.base[0], layer=&#39;below&#39;,
                               line={&#39;color&#39;: &#34;#371ea3&#34;, &#39;width&#39;: 1.5, &#39;dash&#39;: &#39;dot&#39;})
+                
+            if show_observations:
+                _points_df = _result_df.loc[_result_df[&#39;_original_&#39;] == _result_df[&#39;_x_&#39;], :].copy()
+
+                fig_points = px.scatter(_points_df,
+                                        x=&#39;_yhat_&#39;, y=&#39;_x_&#39;, facet_col=&#39;_vname_&#39;,
+                                        category_orders={&#34;_vname_&#34;: list(variable_names)},
+                                        labels={&#39;_yhat_&#39;: &#39;prediction&#39;, &#39;_label_&#39;: &#39;label&#39;, &#39;_ids_&#39;: &#39;id&#39;},
+                                        custom_data=[&#39;_text_&#39;],
+                                        facet_col_wrap=facet_ncol,
+                                        facet_row_spacing=vertical_spacing,
+                                        facet_col_spacing=horizontal_spacing,
+                                        color_discrete_sequence=[&#34;#371ea3&#34;]) \
+                               .update_traces(dict(marker_size=5*size, opacity=alpha),
+                                              hovertemplate=&#34;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;)
+
+                for _, value in enumerate(fig_points.data):
+                    fig.add_trace(value)
 
             fig = _theme.fig_update_bar_plot(fig, title, y_title, plot_height, &#39;closest&#39;)
             
@@ -1063,6 +1085,11 @@ eg. if there is not enough unique values for a given variable.</dd>
         else:
             return fig</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex._explanation.Explanation</li>
+<li>abc.ABC</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="dalex.predict_explanations.CeterisParibus.fit"><code class="name flex">
@@ -1385,13 +1412,13 @@ be edited or saved using the <code>write_image()</code> method (default is <code
             for _, value in enumerate(fig_points.data):
                 fig.add_trace(value)
                 
-            fig = _theme.fig_update_line_plot(fig, title, y_title, plot_height, &#39;closest&#39;)
+        fig = _theme.fig_update_line_plot(fig, title, y_title, plot_height, &#39;closest&#39;)
 
     else:
         if color==&#34;_label_&#34; and len(_result_df[&#39;_ids_&#39;].unique()) &gt; 1 and len(_result_df[&#39;_label_&#39;].unique()) == 1:
             warnings.warn(&#34;&#39;color&#39; parameter changed to &#39;_ids_&#39; because there are multiple observations for one model.&#34;)
             color = &#39;_ids_&#39;
-        elif color==&#34;_label_&#34; and len(_result_df[&#39;_ids_&#39;].unique()) != len(_result_df[&#39;_label_&#39;].unique()): 
+        elif color==&#34;_label_&#34; and len(_result_df[&#39;_ids_&#39;].unique()) &gt; len(_result_df[&#39;_label_&#39;].unique()): 
             # https://github.com/plotly/plotly.py/issues/2657
             raise TypeError(&#34;Please pick one observation per label or change the `color` parameter.&#34;)
 
@@ -1421,11 +1448,28 @@ be edited or saved using the <code>write_image()</code> method (default is <code
                 .update_xaxes({&#39;type&#39;: &#39;linear&#39;, &#39;gridwidth&#39;: 2, &#39;zeroline&#39;: False, &#39;automargin&#39;: True,
                                &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 3, &#39;fixedrange&#39;: True,
                                &#39;range&#39;: min_max})
-
-        # add hline https://github.com/plotly/plotly.py/issues/2141
+                
         for _, bar in enumerate(fig.data):
             fig.add_vline(x=bar.base[0], layer=&#39;below&#39;,
                           line={&#39;color&#39;: &#34;#371ea3&#34;, &#39;width&#39;: 1.5, &#39;dash&#39;: &#39;dot&#39;})
+            
+        if show_observations:
+            _points_df = _result_df.loc[_result_df[&#39;_original_&#39;] == _result_df[&#39;_x_&#39;], :].copy()
+
+            fig_points = px.scatter(_points_df,
+                                    x=&#39;_yhat_&#39;, y=&#39;_x_&#39;, facet_col=&#39;_vname_&#39;,
+                                    category_orders={&#34;_vname_&#34;: list(variable_names)},
+                                    labels={&#39;_yhat_&#39;: &#39;prediction&#39;, &#39;_label_&#39;: &#39;label&#39;, &#39;_ids_&#39;: &#39;id&#39;},
+                                    custom_data=[&#39;_text_&#39;],
+                                    facet_col_wrap=facet_ncol,
+                                    facet_row_spacing=vertical_spacing,
+                                    facet_col_spacing=horizontal_spacing,
+                                    color_discrete_sequence=[&#34;#371ea3&#34;]) \
+                           .update_traces(dict(marker_size=5*size, opacity=alpha),
+                                          hovertemplate=&#34;%{customdata[0]}&lt;extra&gt;&lt;/extra&gt;&#34;)
+
+            for _, value in enumerate(fig_points.data):
+                fig.add_trace(value)
 
         fig = _theme.fig_update_bar_plot(fig, title, y_title, plot_height, &#39;closest&#39;)
         
@@ -1488,7 +1532,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Shap:
+<pre><code class="python">class Shap(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable attributions as Shapley Values
 
     Parameters
@@ -1755,6 +1799,11 @@ be edited or saved using the <code>write_image()</code> method (default is <code
         else:
             return fig</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex._explanation.Explanation</li>
+<li>abc.ABC</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="dalex.predict_explanations.Shap.fit"><code class="name flex">

@@ -94,7 +94,7 @@ def start_server(arena, host, port, disable_logs):
     @app.route(&#34;/&lt;string:plot_type&gt;&#34;, methods=[&#39;GET&#39;])
     def get_plot(plot_type):
         if plot_type == &#39;timestamp&#39;:
-            return {&#39;timestamp&#39;: arena.timestamp * 1000}
+            return Response(json.dumps({&#39;timestamp&#39;: arena.timestamp * 1000}, default=convert), content_type=&#39;application/json&#39;)
         elif plot_type == &#39;shutdown&#39;:
             if request.args.get(&#39;token&#39;) != shutdown_token:
                 abort(403)
@@ -211,7 +211,7 @@ def start_server(arena, host, port, disable_logs):
     @app.route(&#34;/&lt;string:plot_type&gt;&#34;, methods=[&#39;GET&#39;])
     def get_plot(plot_type):
         if plot_type == &#39;timestamp&#39;:
-            return {&#39;timestamp&#39;: arena.timestamp * 1000}
+            return Response(json.dumps({&#39;timestamp&#39;: arena.timestamp * 1000}, default=convert), content_type=&#39;application/json&#39;)
         elif plot_type == &#39;shutdown&#39;:
             if request.args.get(&#39;token&#39;) != shutdown_token:
                 abort(403)
