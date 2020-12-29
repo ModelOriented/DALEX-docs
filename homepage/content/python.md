@@ -78,7 +78,7 @@ pip install dalex
 # Further documentation
 <card-collection>
 <card image="https://i.ibb.co/5hv67qg/Screenshot-from-2020-12-23-14-59-24.png" title="API Reference" desc="Python documentation with pdoc" url="https://dalex.drwhy.ai/python/api"></card>
-<card image="https://i.ibb.co/hDyxtn6/Screenshot-from-2020-12-23-14-48-16.png" title="Citation" desc="BibTeX format"></card>
+<card image="https://upload.wikimedia.org/wikipedia/commons/3/30/BibTeX_logo.svg" title="Citation" desc="BibTeX format" url="https://dalex.drwhy.ai/python/api/index.html#citation"></card>
 </card-collection>
 
 ## Attributions
