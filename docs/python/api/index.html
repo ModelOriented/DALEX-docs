@@ -61,8 +61,10 @@ The main <code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a><
 <h2 id="citation">Citation</h2>
 <p>If you use <code><a title="dalex" href="#dalex">dalex</a></code>, please cite our paper:</p>
 <pre><code class="language-html">@article{dalex,
-  title={dalex: Responsible Machine Learning with Interactive Explainability and Fairness in Python}, 
-  author={Hubert Baniecki and Wojciech Kretowicz and Piotr Piatyszek and Jakub Wisniewski and Przemyslaw Biecek},
+  title={dalex: Responsible Machine Learning with Interactive
+         Explainability and Fairness in Python},
+  author={Hubert Baniecki and Wojciech Kretowicz and Piotr Piatyszek
+          and Jakub Wisniewski and Przemyslaw Biecek},
   year={2020},
   eprint={2012.14406},
   archivePrefix={arXiv},
@@ -99,7 +101,7 @@ __all__ = [
 
 # specify autocompletion in IPython
 # see comment: https://github.com/ska-telescope/katpoint/commit/ed7e8b9e389ee035073c62c2394975fe71031f88
-# __dir__ docs (Python 3.7!): https://docs.python.org/3.7/library/functions.html#dir 
+# __dir__ docs (Python 3.7!): https://docs.python.org/3.7/library/functions.html#dir
 
 def __dir__():
     &#34;&#34;&#34;IPython tab completion seems to respect this.&#34;&#34;&#34;
@@ -353,7 +355,7 @@ only in live version.</dd>
 
     def clear_cache(self, plot_type=None):
         &#34;&#34;&#34;Clears cache
-        
+
         Parameters
         -----------
         plot_type : str or None
@@ -390,7 +392,7 @@ only in live version.</dd>
         _filter = lambda p: p.plot_type == plot_type and params == p.params
         with self.mutex:
             return next(filter(_filter, self.cache), None)
-    
+
     def put_to_cache(self, plot_container):
         &#34;&#34;&#34;Puts new plot to cache
 
@@ -646,7 +648,7 @@ only in live version.</dd>
         for param_type in [&#39;model&#39;, &#39;observation&#39;, &#39;variable&#39;, &#39;dataset&#39;]:
             result[param_type] = self.list_params(param_type)
         return result
-    
+
     def find_param_value(self, param_type, param_label):
         &#34;&#34;&#34;Searches for Param object with specified label
 
@@ -937,7 +939,7 @@ provided plot_type are removed.</dd>
 </summary>
 <pre><code class="python">def clear_cache(self, plot_type=None):
     &#34;&#34;&#34;Clears cache
-    
+
     Parameters
     -----------
     plot_type : str or None
@@ -2263,7 +2265,7 @@ information.</dd>
                  model_info=None):
 
         # TODO: colorize
-        
+
         helper.verbose_cat(&#34;Preparation of a new explainer is initiated\n&#34;, verbose=verbose)
 
         # REPORT: checks for data
@@ -2452,7 +2454,7 @@ information.</dd>
             raise TypeError(&#34;Wrong type parameter.&#34;)
 
         _predict_parts.fit(self, new_observation, **kwargs)
-        
+
         if label:
             _predict_parts.result[&#39;label&#39;] = label
 
@@ -2536,7 +2538,7 @@ information.</dd>
 
         if label:
             _predict_profile.result[&#39;_label_&#39;] = label
-            
+
         return _predict_profile
 
     def predict_surrogate(self,
@@ -2622,7 +2624,7 @@ information.</dd>
             cutoff=cutoff
         )
         _model_performance.fit(self)
-        
+
         if label:
             _model_performance.result[&#39;label&#39;] = label
 
@@ -2716,10 +2718,10 @@ information.</dd>
                 keep_raw_permutations=keep_raw_permutations,
             )
             _model_parts.fit(self)
-            
+
             if label:
                 _model_parts.result[&#39;label&#39;] = label
-                 
+
         elif _type == &#39;shap_wrapper&#39;:
             _global_checks.global_check_import(&#39;shap&#39;, &#39;SHAP explanations&#39;)
             _model_parts = ShapWrapper(&#39;model_parts&#39;)
@@ -2847,7 +2849,7 @@ information.</dd>
 
         if label:
             _model_profile.result[&#39;_label_&#39;] = label
-                
+
         return _model_profile
 
     def model_diagnostics(self,
@@ -2883,7 +2885,7 @@ information.</dd>
 
         if label:
             _residual_diagnostics.result[&#39;label&#39;] = label
-            
+
         return _residual_diagnostics
 
     def model_surrogate(self,
@@ -2990,7 +2992,7 @@ information.</dd>
         -----------
         GroupFairnessClassification class object (a subclass of _FairnessObject)
             Explanation object containing the main result attribute and the plot method.
-            
+
         It has the following main attributes:
             - result : `pd.DataFrame`
                 Scaled `metric_scores`. The scaling is performed by
@@ -3028,7 +3030,7 @@ information.</dd>
                                               cutoff=cutoff,
                                               label=self.label,
                                               **kwargs)
-        
+
         if label:
              fobject.label = label
 
@@ -3463,7 +3465,7 @@ if not provided by the user, it will be dropped before the dump.</p>
 
     if label:
         _residual_diagnostics.result[&#39;label&#39;] = label
-        
+
     return _residual_diagnostics</code></pre>
 </details>
 </dd>
@@ -3583,7 +3585,7 @@ A float value for each subgroup (key in dict).</li>
     -----------
     GroupFairnessClassification class object (a subclass of _FairnessObject)
         Explanation object containing the main result attribute and the plot method.
-        
+
     It has the following main attributes:
         - result : `pd.DataFrame`
             Scaled `metric_scores`. The scaling is performed by
@@ -3621,7 +3623,7 @@ A float value for each subgroup (key in dict).</li>
                                           cutoff=cutoff,
                                           label=self.label,
                                           **kwargs)
-    
+
     if label:
          fobject.label = label
 
@@ -3774,10 +3776,10 @@ Object class, its attributes, and the plot method depend on the <code>type</code
             keep_raw_permutations=keep_raw_permutations,
         )
         _model_parts.fit(self)
-        
+
         if label:
             _model_parts.result[&#39;label&#39;] = label
-             
+
     elif _type == &#39;shap_wrapper&#39;:
         _global_checks.global_check_import(&#39;shap&#39;, &#39;SHAP explanations&#39;)
         _model_parts = ShapWrapper(&#39;model_parts&#39;)
@@ -3865,7 +3867,7 @@ recall, precision, acc, f1 (default is <code>0.5</code>).</dd>
         cutoff=cutoff
     )
     _model_performance.fit(self)
-    
+
     if label:
         _model_performance.result[&#39;label&#39;] = label
 
@@ -4044,7 +4046,7 @@ around the average <code>y_hat</code> calculated on the data sample).</dd>
 
     if label:
         _model_profile.result[&#39;_label_&#39;] = label
-            
+
     return _model_profile</code></pre>
 </details>
 </dd>
@@ -4358,7 +4360,7 @@ Object class, its attributes, and the plot method depend on the <code>type</code
         raise TypeError(&#34;Wrong type parameter.&#34;)
 
     _predict_parts.fit(self, new_observation, **kwargs)
-    
+
     if label:
         _predict_parts.result[&#39;label&#39;] = label
 
@@ -4494,7 +4496,7 @@ eg. if there is not enough unique values for a given variable.</dd>
 
     if label:
         _predict_profile.result[&#39;_label_&#39;] = label
-        
+
     return _predict_profile</code></pre>
 </details>
 </dd>
