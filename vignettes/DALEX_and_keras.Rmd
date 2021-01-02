@@ -193,11 +193,11 @@ Using he DALEX package we are able to better understand which variables are impo
 
 Model agnostic variable importance is calculated by means of permutations. We simply substract the loss function calculated for validation dataset with permuted values for a single variable from the loss function calculated for validation dataset.
 
-This method is implemented in the `variable_importance()` function.
+This method is implemented in the `model_parts()` function.
 
 ```{r, cache=TRUE}
-vi_titinic_h2o   <- variable_importance(explainer_titanic_h2o)
-vi_titinic_keras <- variable_importance(explainer_titanic_keras)
+vi_titinic_h2o   <- model_parts(explainer_titanic_h2o)
+vi_titinic_keras <- model_parts(explainer_titanic_keras)
 
 # We can compare all models using the generic plot() function.
 
@@ -209,8 +209,8 @@ Length of the interval coresponds to a variable importance. Longer interval mean
 For better comparison of the models we can hook the variabe importance at 0 using the `type="difference"`.
 
 ```{r, cache=TRUE}
-vi_titinic_h2o   <- variable_importance(explainer_titanic_h2o, type="difference")
-vi_titinic_keras <- variable_importance(explainer_titanic_keras, type="difference")
+vi_titinic_h2o   <- model_parts(explainer_titanic_h2o, type="difference")
+vi_titinic_keras <- model_parts(explainer_titanic_keras, type="difference")
 plot(vi_titinic_h2o, vi_titinic_keras)
 ```
 
@@ -224,7 +224,7 @@ Partial Dependence Plots (PDP) are one of the most popular methods for explorati
 
 
 ```{r}
-mp_age_h2o    <-  model_profile(explainer_titanic_h2o, variable =  "Age")
+mp_age_h2o    <- model_profile(explainer_titanic_h2o, variable =  "Age")
 mp_age_keras  <- model_profile(explainer_titanic_keras, variable =  "Age")
 plot(mp_age_h2o, mp_age_keras)
 ```
@@ -247,8 +247,8 @@ Function `predict_parts()` generates variable attributions for selected predicti
 
 
 ```{r, cache=TRUE}
-pp_h2o   <- predict_parts(explainer_titanic_h2o, henry)
-pp_keras <- predict_parts(explainer_titanic_keras, henry_keras)
+pp_h2o   <- predict_parts(explainer_titanic_h2o, henry, type = "break_down")
+pp_keras <- predict_parts(explainer_titanic_keras, henry_keras, type = "break_down")
 
 plot(pp_h2o)
 plot(pp_keras)
