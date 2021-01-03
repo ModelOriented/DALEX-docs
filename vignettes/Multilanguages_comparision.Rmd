@@ -249,10 +249,20 @@ mp1 <- model_parts(r_explain, type = "difference", loss_function = custom_loss_f
 mp2 <- model_parts(h2o_explain, type = "difference", loss_function = custom_loss_function)
 mp3 <- model_parts(py_explain, type = "difference", loss_function = custom_loss_function)
 mp4 <- model_parts(catboost_explain, type = "difference", loss_function = custom_loss_function)
-plot(mp1, mp2, mp3, mp4)
+
+```
+Let's see what features are important in in 2 selected models - created using `h2o` and `sklearn`. 
+
+```{r}
+plot(mp3)
 ```
 
-This time we can see significant difference. `h2o` model figured out correlation between `gender.male` and `gender.female` and dropped one of them. Other models use both of those columns. What is interesting, next four most significant variables are the same for all three of models. 
+```{r}
+plot(mp2)
+```
+
+
+We can see significant difference. `h2o` model figured out correlation between `gender.male` and `gender.female` and dropped one of them. `sklearn` (and other models too) use both of those columns. What is interesting, next four most significant variables are the same. 
 
 ## PDP plots for fare
 
