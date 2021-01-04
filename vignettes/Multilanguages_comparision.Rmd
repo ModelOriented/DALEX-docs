@@ -1,13 +1,17 @@
 ---
 title: "DALEX cross-comparison of of model developed in R, Java and Python"
-author: "Szymon Maksymiuk"
-date: "25 April 2019"
+author: "Szymon Maksymiuk, Jakub Wiśniewski"
+date: "First created in Apr 25, 2019. Updated on Jan 2, 2021"
 output: 
   html_document:
     toc: true  
     toc_float: true
     number_sections: true
+    theme: flatly
+    highlight: kate
+    fig_caption: true
 ---
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library("dplyr")
 library("kableExtra")
@@ -22,11 +26,10 @@ y <- unclass(titanic_test_Y)
 y <- y$survived
 ```
 
-<span style="color:red">Please keep in mind, that [DALEXtra](https://CRAN.R-project.org/package=DALEXtra) now support usage of h2o with dedicated `explain_h2o` function and usage of scikit-learn models imported from Python with dedicated `explain_scikit` function. It is recommended to use them.</span> 
 
 # Introduction
 
-Machine learning models are being developed in different tools and different languages. On one hand it is great as everyone can choose tool that suits his needs, but on another hand it is hard to compare such models in a different way that simply by comparing accuracies.
+Machine learning models are being developed in different tools and different languages. On one hand it is great as everyone can choose tool that suits his needs, but on another hand it is hard to compare such models in a different way that simply by comparing accuracy scores.
 
 In this vignette we will show how `DALEX` can be used for comparison of models across different languages.
 
@@ -39,9 +42,11 @@ We use `titanic` dataset. It is divided into `titanic_test` and `titanic_train` 
 
 
 ```{r}
-kable(titanic_test_X %>% head(), "html") %>% kable_styling("striped") %>%
+kable(titanic_test_X %>% head(), "html") %>%
+  kable_styling("striped") %>%
   scroll_box(width = "100%")
-kable(titanic_train_X %>% head(), "html") %>% kable_styling("striped") %>%
+kable(titanic_train_X %>% head(), "html") %>%
+  kable_styling("striped") %>%
   scroll_box(width = "100%")
 ```
 
@@ -49,7 +54,7 @@ kable(titanic_train_X %>% head(), "html") %>% kable_styling("striped") %>%
 
 ## gbm in R
 
-First, we train R implementation of `gbm` which we will acces thorugh `mlr` package as a wrapper. Specifying most of parameters helps us fiting similiar models accros langugaes, at least in theory.
+First, we train R implementation of `gbm` which we will acces thorugh `mlr` package as a wrapper. Specifying most of parameters helps us fighting similar models across languages, at least in theory.
 
 ```{r message=FALSE, warning=FALSE}
 library("mlr")
@@ -91,12 +96,10 @@ r_catboost <- catboost.train(pool_train,
                params = list(
                  custom_loss = "AUC",
                  iterations = 5000,
-                 learing_rate = 0.001,
                  depth = 4,
                  logging_level = "Silent"
-               )
-               )
-preds <- catboost.predict(r_catboost, pool_test, "Probability")
+               ))
+preds <- catboost.predict(r_catboost, pool_test, prediction_type = "Probability")
 ```
 ```{r}
 mltools::auc_roc(preds, y)
@@ -134,14 +137,18 @@ h2o.auc(h2o.performance(java_h2o_gbm, newdata = titanic_test_h2o))
 
 ## gbm in scikit-learn (python)
 
-Inspection of models that have been created at Python via R is not as hard as it may seem to. It is possbile thanks to two packages. `reticulate` avaiable at R and `pickle` from Python.
+Inspection of models that have been created at Python via R is not as hard as it may seem to. It is possible thanks to two packages. `reticulate` available at R and `pickle` from Python.
 
-```{python eval = FALSE}
+```{python eval = FALSE, warning=FALSE, message=FALSE}
 from pandas import DataFrame, read_csv
 import pandas as pd 
 import pickle
 import sklearn.ensemble
 from sklearn.metrics import auc, accuracy_score, confusion_matrix, mean_squared_error
+
+titanic_train_X = pd.read_csv("titanic_train.csv").drop("survived", axis=1)
+titanic_train_Y = pd.read_csv("titanic_train.csv").survived
+
 model = sklearn.ensemble.GradientBoostingClassifier(
   n_estimators= 5000,
   learning_rate=0.001, 
@@ -153,8 +160,13 @@ pickle.dump(model, open("gbm.pkl", "wb"))
 ```
 
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 library("reticulate")
+
+# if needed install
+# py_install("pandas")
+# py_install("scikit-learn")
+
 python_scikitlearn_gbm <- py_load_object("gbm.pkl", pickle = "pickle")
 preds <- python_scikitlearn_gbm$predict_proba(titanic_test_X)[, 2]
 mltools::auc_roc(preds, y)
@@ -164,29 +176,14 @@ mltools::auc_roc(preds, y)
 
 # Model cross-language comparison
 
-Because all four packages return sligthly diffrent objects, we have to create DALEX wrappers around them. This requires differnt predict functions in order to get plain predicted probabilities vector of of the trained models. 
+Because all four packages return slightly different objects, we have to create DALEX wrappers around them. For 3 of them we will use `DALEXtra` package, and for`catboost` we will use custom predict function. 
 
 ```{r warning=FALSE, message=FALSE}
-# h2o wrapper
-h2o_predict <- function(model, newdata) {
-  newdata_h2o <- as.h2o(newdata)
-  res <- as.data.frame(h2o.predict(model, newdata_h2o))
-  return(as.numeric(res$p1))
-}
+
 # catboost wrapper 
 catboost_predict <- function(object, newdata) {
   newdata_pool <- catboost.load_pool(newdata)
-  catboost.predict(object, newdata_pool, "Probability")
-}
-# mlr wrapper 
-mlr_predict <- function(object, newdata) {
-  pred <- predict(object, newdata = newdata)
-  response <- pred$data[, 1]
-  return(response)
-}
-# python wrapper
-py_predict <- function(model, newdata) {
-  model$predict_proba(newdata)[, 2]
+  return( catboost.predict(object, newdata_pool, prediction_type = "Probability"))
 }
 ```
 
@@ -194,23 +191,35 @@ Now we can create DALEX wrappers around our models.
 
 ```{r warning=FALSE, message=FALSE}
 library("DALEX")
-r_explain <- DALEX::explain(r_gbm,
-  data = titanic_test_X, y = y, label = "gmb (R)",
-  predict_function = mlr_predict
-)
+library("DALEXtra")
+r_explain <- DALEXtra::explain_mlr(r_gbm,
+                            data = titanic_test_X, 
+                            y = y, 
+                            label = "gmb (R)",
+                            type = "classification",
+                            verbose = FALSE)
 catboost_explain <- DALEX::explain(r_catboost,
-  data = titanic_test_X, y = y, label = "CatBoost (R)",
-  predict_function = catboost_predict
-)
-h2o_explain <- DALEX::explain(java_h2o_gbm,
-  data = titanic_test_X, y = y, label = "gbm (h2o/java)",
-  predict_function = h2o_predict
-)
-py_explain <- explain(python_scikitlearn_gbm,
-  data = titanic_test_X, y = y, label = "gbm (python/sklearn)",
-  predict_function = py_predict
-)
+                                   data = titanic_test_X,
+                                   y = y, 
+                                   label = "CatBoost (R)",
+                                   predict_function = catboost_predict,
+                                   type = "classification",
+                                   verbose = FALSE)
+h2o_explain <- DALEXtra::explain_h2o(java_h2o_gbm,
+                              data = titanic_test_X, 
+                              y = y, 
+                              label = "gbm (h2o/java)",
+                              type = "classification",
+                              verbose = FALSE)
+py_explain <- DALEXtra::explain_scikitlearn("gbm.pkl",
+                      data = titanic_test_X, 
+                      y = y, 
+                      label = "gbm (python/sklearn)",
+                      type = "classification",
+                      verbose = FALSE)
 ```
+
+
 
 ## Model performance
 
@@ -225,56 +234,65 @@ plot(
   )
 ```
 
-As we can see, models are quite similiar. The biggest difference is residuals distrubution in [0, 0.13] compartment where R `gbm` has biggest mistake ratio. R is worse in compartment [0.13, 0.25] aswell, but diffence is not as easy to spot as in previous area. `CatBoost`, on the other hand, is the best model for residuals [0, 0.13].
+As we can see, models some models differ from each other altough the *java* and *python* models are quite similar.
 
 ## Variable importance
 
-Here the drop in `1 - AUC` is used to compare variable perforamnce. Keep in mind that when defining `custom_loss_function` you have to provide arguments in correct order. Real values of `y` first and predicted second. 
+Here the drop in `1 - AUC` is used to compare variable performance. Keep in mind that when defining `custom_loss_function` you have to provide arguments in correct order. Real values of `y` first and predicted second. 
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, cache=TRUE}
 custom_loss_function <- function(y, yhat) {
   1 - mltools::auc_roc(yhat, y)
 }
-plot(
-  variable_importance(r_explain, type = "difference", loss_function = custom_loss_function),
-  variable_importance(h2o_explain, type = "difference", loss_function = custom_loss_function),
-  variable_importance(py_explain, type = "difference", loss_function = custom_loss_function),
-  variable_importance(catboost_explain, type = "difference", loss_function = custom_loss_function)
-)
+
+mp1 <- model_parts(r_explain, type = "difference", loss_function = custom_loss_function)
+mp2 <- model_parts(h2o_explain, type = "difference", loss_function = custom_loss_function)
+mp3 <- model_parts(py_explain, type = "difference", loss_function = custom_loss_function)
+mp4 <- model_parts(catboost_explain, type = "difference", loss_function = custom_loss_function)
+
+```
+Let's see what features are important in in 2 selected models - created using `h2o` and `sklearn`. 
+
+```{r}
+plot(mp3)
 ```
 
-This time we can see significant difference. `h2o` model figured out correlation between `gender.male` and `gender.female` and dropped one of them. Other models use both of those columns. What is interesting, next four most significant variables are the same for all three of models. 
+```{r}
+plot(mp2)
+```
+
+
+We can see significant difference. `h2o` model figured out correlation between `gender.male` and `gender.female` and dropped one of them. `sklearn` (and other models too) use both of those columns. What is interesting, next four most significant variables are the same. 
 
 ## PDP plots for fare
 
 ```{r message=FALSE, warning=FALSE}
-library("ingredients")
-pdp_r   <- partial_dependency(r_explain, 
+pdp_r   <- model_profile(r_explain, 
                           variable_splits = list(fare = seq(0,100,0.1)))
-pdp_h2o  <- partial_dependency(h2o_explain, 
+pdp_h2o  <- model_profile(h2o_explain, 
                           variable_splits = list(fare = seq(0,100,0.1)))
-pdp_py <- partial_dependency(py_explain,
+pdp_py <- model_profile(py_explain,
                          variable_splits = list(fare = seq(0,100,0.1)))
-pdp_catboost <- partial_dependency(catboost_explain, 
+pdp_catboost <- model_profile(catboost_explain, 
                          variable_splits = list(fare = seq(0,100,0.1)))
-plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) + xlim(0, 150) + ylim(0, 0.5)
+plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) 
 ```
 
-We can see the difference in how our model behaves for different values of `fare`. Response is similiar only in [0,25] compartment.
+We can see the difference in how our models behave for different values of `fare`.
 
 
 ## PDP plots for age
 
 ```{r message=FALSE, warning=FALSE}
-pdp_r   <- partial_dependency(r_explain, 
+pdp_r   <- model_profile(r_explain, 
                           variable_splits = list(age = seq(0,80,0.1)))
-pdp_h2o  <- partial_dependency(h2o_explain, 
+pdp_h2o  <- model_profile(h2o_explain, 
                           variable_splits = list(age = seq(0,80,0.1)))
-pdp_py <- partial_dependency(py_explain,
+pdp_py <- model_profile(py_explain,
                          variable_splits = list(age = seq(0,80,0.1)))
-pdp_catboost <- partial_dependency(catboost_explain, 
+pdp_catboost <- model_profile(catboost_explain, 
                          variable_splits = list(age = seq(0,80,0.1)))
-plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost) + xlim(0, 80) + ylim(0, 1)
+plot(pdp_r, pdp_h2o, pdp_py, pdp_catboost)
 ```
 
 # Session info
