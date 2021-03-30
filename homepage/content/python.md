@@ -45,6 +45,8 @@ pip install dalex
 <card image="https://miro.medium.com/max/700/1*A6tRQ3-YMTrzP_2Mc-o5oA.png" title="Partial Dependence profile" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-3-partial-dependence-profile-caf8b2ad1c9d"></card>
 <card image="https://miro.medium.com/max/700/1*xhkHBfwuiY2bBpZGFgFhmQ.png" title="Break Down method" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-4-break-down-method-2cd4de43abdd"></card>
 <card image="https://miro.medium.com/max/700/1*lKu_urWnJb8xzWxin2IvPA.png" title="Shapley values" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-5-shapley-values-85ceb4b58c99"></card>
+<card image="https://miro.medium.com/max/1050/1*7UJINC2a04_b_NuEhIOEDg.png" title="LIME method" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-6-lime-method-f6aab0af058a"></card>
+<card image="https://miro.medium.com/max/1050/1*8uLldsKP3UnCYKNuwWa4Ew.png" title="Ceteris Paribus profiles" desc="" url="https://medium.com/responsibleml/basic-xai-with-dalex-part-7-ceteris-paribus-profiles-e84a36edd750"></card>
 </card-collection>
 
 # Fairness
