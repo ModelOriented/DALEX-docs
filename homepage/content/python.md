@@ -4,7 +4,7 @@ description: Learn how to use @nuxt/content.
 ---
 
 <div class="flex bg-white shadow-md p-4 flex-wrap">
-  <img src="/misc/python_logo.png" class="flex-1 max-w-xs" style="transform: scaleX(-1)">
+  <img src="/misc/python-dalex.png" class="flex-1 max-w-xs" style="transform: scaleX(-1)">
   <div class="flex-1">
     <h1 style="padding-top: 0;">
       dalex: Responsible Machine Learning in Python
@@ -34,7 +34,7 @@ pip install dalex
 <card image="/misc/explainability2.png" title="Key features explained" desc="FIFA 20: explain default vs tuned model with dalex" url="https://dalex.drwhy.ai/python-dalex-fifa.html"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" title="How to use dalex with XGBoost" desc="Titanic classification example" url="https://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/e/e5/TensorFlow_Logo_with_text.png" title="How to use dalex with TensorFlow" desc="Happiness regression example" url="https://dalex.drwhy.ai/python-dalex-tensorflow.html"></card>
-<card image="/misc/python_logo.png" title="Compare various models" desc="ft. h2o, autokeras, catboost, lightgbm" url="https://dalex.drwhy.ai/python-dalex-h2o.html"></card>
+<card image="/misc/python-dalex.png" title="Compare various models" desc="ft. h2o, autokeras, catboost, lightgbm" url="https://dalex.drwhy.ai/python-dalex-h2o.html"></card>
 <card image="/misc/explainability3.png" title="More explanations" desc="residuals, shap, lime" url="https://dalex.drwhy.ai/python-dalex-new.html"></card>
 </card-collection>
 
@@ -67,7 +67,7 @@ pip install dalex
 <card image="https://miro.medium.com/max/700/0*gBUkot-iflqCLMNW.png" title="EMA Workshop" desc="Materials from Explanatory Model Analysis Workshop @ eRum 2020" url="https://medium.com/@ModelOriented/materials-from-explanatory-model-analysis-workshop-erum-2020-278d6295f595"></card>
 <card youtube="EcDfSjR2lIw" title="Tools for Explainable AI" desc="Talk about dalex @ X-Europe Webinars 2020"></card>
 <card image="https://i.ibb.co/q0XsnxM/Screenshot-from-2020-12-23-16-04-26.png" title="Hey, ML engineer! Is your model fair?" desc="Poster on fairness @ MLinPL 2020" url="https://github.com/ModelOriented/DALEX-docs/blob/master/workshops/poster-fairness.pdf"></card>
-<card image="/misc/python_logo.png" title="XAI in Python with dalex" desc="Introduction to the dalex package" url="https://medium.com/@ModelOriented/xai-in-python-with-dalex-4b173486aa92">
+<card image="/misc/python-dalex.png" title="XAI in Python with dalex" desc="Introduction to the dalex package" url="https://medium.com/@ModelOriented/xai-in-python-with-dalex-4b173486aa92">
 </card-collection>
 
 # Introductory videos
