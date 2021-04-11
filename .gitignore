@@ -3,6 +3,5 @@
 .RData
 _bookdown_files
 */.ipynb_checkpoints/*
-**.ipynb
 **.pickle
 /jupyter-notebooks/train.csv

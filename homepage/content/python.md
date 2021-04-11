@@ -53,6 +53,7 @@ pip install dalex
 <card-collection>
 <card image="/misc/fairness_card.png" title="Fairness module in dalex" desc="Case study - German Credit data" url="https://dalex.drwhy.ai/python-dalex-fairness.html"></card>
 <card image="/misc/fairness_card.png" title="Tutorial on bias detection" desc="Case study - COMPAS Recidivism data" url="https://dalex.drwhy.ai/python-dalex-fairness2.html"></card>
+<card image="/misc/fairness_card.png" title="Tutorial: fairness in regression" desc="Case study - Communities and Crime data" url="https://dalex.drwhy.ai/python-dalex-fairness-regression.html"></card>
 </card-collection>
 
 # Interactive exploration
