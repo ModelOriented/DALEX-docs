@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>dalex.fairness API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -14,7 +14,8 @@
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
-<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:6em;margin:auto;margin-bottom:.3em}</style>
+<link rel="canonical" href="https://dalex.drwhy.ai/python/api/dalex/fairness/">
 </head>
 <body>
 <main>
@@ -26,11 +27,13 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\__init__.py#L0-L5" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from ._group_fairness.object import GroupFairnessClassification
+<pre><code class="python">from ._group_fairness.object import GroupFairnessClassification, GroupFairnessRegression
 
 __all__ = [
-    &#34;GroupFairnessClassification&#34;
+    &#34;GroupFairnessClassification&#34;,
+    &#34;GroupFairnessRegression&#34;
 ]</code></pre>
 </details>
 </section>
@@ -45,22 +48,25 @@ __all__ = [
 <dl>
 <dt id="dalex.fairness.GroupFairnessClassification"><code class="flex name class">
 <span>class <span class="ident">GroupFairnessClassification</span></span>
-<span>(</span><span>y, y_hat, protected, privileged, label, verbose=False, cutoff=0.5)</span>
+<span>(</span><span>y, y_hat, protected, privileged, label, verbose=False, cutoff=0.5, epsilon=0.8)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L8-L234" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class GroupFairnessClassification(_FairnessObject):
 
-    def __init__(self, y, y_hat, protected, privileged, label, verbose=False, cutoff=0.5):
+    def __init__(self, y, y_hat, protected, privileged, label, verbose=False, cutoff=0.5, epsilon=0.8):
 
         super().__init__(y, y_hat, protected, privileged, verbose)
-
+        checks.check_classification_parameters(y, y_hat, protected, privileged, verbose)
         cutoff = checks.check_cutoff(self.protected, cutoff, verbose)
         self.cutoff = cutoff
+        epsilon = checks.check_epsilon(epsilon)
+        self.epsilon = epsilon
 
         sub_confusion_matrix = utils.SubgroupConfusionMatrix(
             y_true=self.y,
@@ -80,7 +86,7 @@ __all__ = [
         self.result = df_ratios
         self.label = label
 
-    def fairness_check(self, epsilon=0.8, verbose=True):
+    def fairness_check(self, epsilon=None, verbose=True):
         &#34;&#34;&#34;Check if classifier passes various fairness metrics
 
         Fairness check is an easy way to check if the model is fair.
@@ -99,7 +105,7 @@ __all__ = [
             more strict the verdict is. If the ratio of certain unprivileged
             and privileged subgroup is within the `(epsilon, 1/epsilon)` range,
             then there is no discrimination in this metric and for this subgroups
-            (default is `0.8`).
+            (default is `0.8`, which is set during object initialization).
         verbose : bool
             Shows verbose text about potential problems 
             (e.g. `NaN` in model metrics that can cause misinterpretation).
@@ -109,43 +115,13 @@ __all__ = [
         None (prints console output)
 
         &#34;&#34;&#34;
-        epsilon = checks.check_epsilon(epsilon)
-        metric_ratios = self.result
 
-        subgroups = np.unique(self.protected)
-        subgroups_without_privileged = subgroups[subgroups != self.privileged]
-        metric_ratios = metric_ratios.loc[subgroups_without_privileged, utils.fairness_check_metrics()]
-
-        metrics_exceeded = ((metric_ratios &gt; 1 / epsilon) | (epsilon &gt; metric_ratios)).apply(sum, 0)
-
-        names_of_exceeded_metrics = list(metrics_exceeded.index[metrics_exceeded != 0])
-        if len(names_of_exceeded_metrics) &gt;= 2:
-            print(f&#39;Bias detected in {len(names_of_exceeded_metrics)} metrics: {&#34;, &#34;.join(names_of_exceeded_metrics)}&#39;)
-        elif len(names_of_exceeded_metrics) == 1:
-            print(f&#39;Bias detected in {len(names_of_exceeded_metrics)} metric: {names_of_exceeded_metrics[0]}&#39;)
-        else:
-            print(&#34;No bias was detected!&#34;)
-
-        # arbitrary decision
-        if len(names_of_exceeded_metrics) &gt;= 2:
-            conclusion = &#39;is not fair because 2 or more metric scores exceeded acceptable limits set by epsilon&#39;
-        elif len(names_of_exceeded_metrics) == 1:
-            conclusion = &#39;cannot be called fair because 1 metric score exceeded acceptable limits set by epsilon.\n&#39; \
-                         &#39;It does not mean that your model is unfair &#39; \
-                         &#39;but it cannot be automatically approved based on these metrics&#39;
-        else:
-            conclusion = &#39;is fair in terms of checked fairness metrics&#39;
-
-        print(f&#39;\nConclusion: your model {conclusion}.&#39;)
-
-        print(
-            f&#39;\nRatios of metrics, based on \&#39;{self.privileged}\&#39;. Parameter \&#39;epsilon\&#39; was set to {epsilon}&#39;
-            f&#39; and therefore metrics should be within ({epsilon}, {round(1 / epsilon, 3)})&#39;)
-        print(metric_ratios.to_string())
-        if np.isnan(metric_ratios).sum().sum() &gt; 0:
-            helper.verbose_cat(
-                &#39;\nWarning!\nTake into consideration that NaN\&#39;s are present, consider checking \&#39;metric_scores\&#39; &#39;
-                &#39;plot to see the difference&#39;, verbose=verbose)
+        utils.universal_fairness_check(self,
+                                       epsilon,
+                                       verbose,
+                                       num_for_not_fair=2,
+                                       num_for_no_decision=1,
+                                       metrics=utils.fairness_check_metrics())
 
     def plot(self,
              objects=None,
@@ -156,7 +132,7 @@ __all__ = [
         &#34;&#34;&#34;
         Parameters
         -----------
-        objects : GroupFairnessClassification object
+        objects : array_like of GroupFairnessClassification objects
             Additional objects to plot (default is `None`).
         type : str, optional
             Type of the plot. Default is `&#39;fairness_check&#39;`.
@@ -247,58 +223,65 @@ __all__ = [
         other_objects = None
         if objects is not None:
             other_objects = []
+            if not isinstance(objects, (list, tuple)):
+                objects = [objects]
             for obj in objects:
-                if isinstance(obj, self.__class__):
-                    other_objects.append(obj)
+                _global_checks.global_check_object_class(obj, self.__class__)
+                other_objects.append(obj)
             basic_checks.check_other_fairness_objects(self, other_objects)
 
         if type == &#39;fairness_check&#39;:
-            fig = plot.plot_fairness_check(self,
-                                      other_objects=other_objects,
-                                      title=title, **kwargs)
+            fig = plot.plot_fairness_check_clf(self,
+                                               other_objects=other_objects,
+                                               title=title, **kwargs)
 
         elif type == &#34;metric_scores&#34;:
             fig = plot.plot_metric_scores(self,
-                                     other_objects=other_objects,
-                                     title=title,
-                                     **kwargs)
+                                          other_objects=other_objects,
+                                          title=title,
+                                          **kwargs)
 
         # names of plots may be changed
         elif type == &#39;stacked&#39;:
             fig = plot.plot_stacked(self,
-                               other_objects=other_objects,
-                               title=title,
-                               **kwargs)
+                                    other_objects=other_objects,
+                                    title=title,
+                                    **kwargs)
 
         elif type == &#39;radar&#39;:
             fig = plot.plot_radar(self,
-                             other_objects=other_objects,
-                             title=title,
-                             **kwargs)
+                                  other_objects=other_objects,
+                                  title=title,
+                                  **kwargs)
 
         elif type == &#39;performance_and_fairness&#39;:
             fig = plot.plot_performance_and_fairness(self,
-                                                other_objects=other_objects,
-                                                title=title,
-                                                **kwargs)
+                                                     other_objects=other_objects,
+                                                     title=title,
+                                                     **kwargs)
 
         elif type == &#39;heatmap&#39;:
             fig = plot.plot_heatmap(self,
-                               other_objects=other_objects,
-                               title=title,
-                               **kwargs)
+                                    other_objects=other_objects,
+                                    title=title,
+                                    **kwargs)
+        elif type == &#39;density&#39;:
+            fig = plot.plot_density(self,
+                                    other_objects=other_objects,
+                                    title=title,
+                                    **kwargs)
 
         elif type == &#39;ceteris_paribus_cutoff&#39;:
             fig = plot.plot_ceteris_paribus_cutoff(self,
-                                              other_objects=other_objects,
-                                              title=title,
-                                              **kwargs)
+                                                   other_objects=other_objects,
+                                                   title=title,
+                                                   **kwargs)
 
         else:
             raise ParameterCheckError(f&#34;plot type {type} not supported, try other types.&#34;)
 
         if show:
-            fig.show(config=get_default_config())
+            fig.show(config=_theme.get_default_config())
         else:
             return fig</code></pre>
 </details>
@@ -310,7 +293,7 @@ __all__ = [
 <h3>Methods</h3>
 <dl>
 <dt id="dalex.fairness.GroupFairnessClassification.fairness_check"><code class="name flex">
-<span>def <span class="ident">fairness_check</span></span>(<span>self, epsilon=0.8, verbose=True)</span>
+<span>def <span class="ident">fairness_check</span></span>(<span>self, epsilon=None, verbose=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Check if classifier passes various fairness metrics</p>
@@ -328,7 +311,7 @@ Statistical parity and Accuracy equality.</p>
 more strict the verdict is. If the ratio of certain unprivileged
 and privileged subgroup is within the <code>(epsilon, 1/epsilon)</code> range,
 then there is no discrimination in this metric and for this subgroups
-(default is <code>0.8</code>).</dd>
+(default is <code>0.8</code>, which is set during object initialization).</dd>
 <dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Shows verbose text about potential problems
 (e.g. <code>NaN</code> in model metrics that can cause misinterpretation).</dd>
@@ -341,8 +324,9 @@ then there is no discrimination in this metric and for this subgroups
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L37-L72" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def fairness_check(self, epsilon=0.8, verbose=True):
+<pre><code class="python">def fairness_check(self, epsilon=None, verbose=True):
     &#34;&#34;&#34;Check if classifier passes various fairness metrics
 
     Fairness check is an easy way to check if the model is fair.
@@ -361,7 +345,7 @@ then there is no discrimination in this metric and for this subgroups
         more strict the verdict is. If the ratio of certain unprivileged
         and privileged subgroup is within the `(epsilon, 1/epsilon)` range,
         then there is no discrimination in this metric and for this subgroups
-        (default is `0.8`).
+        (default is `0.8`, which is set during object initialization).
     verbose : bool
         Shows verbose text about potential problems 
         (e.g. `NaN` in model metrics that can cause misinterpretation).
@@ -371,43 +355,13 @@ then there is no discrimination in this metric and for this subgroups
     None (prints console output)
 
     &#34;&#34;&#34;
-    epsilon = checks.check_epsilon(epsilon)
-    metric_ratios = self.result
 
-    subgroups = np.unique(self.protected)
-    subgroups_without_privileged = subgroups[subgroups != self.privileged]
-    metric_ratios = metric_ratios.loc[subgroups_without_privileged, utils.fairness_check_metrics()]
-
-    metrics_exceeded = ((metric_ratios &gt; 1 / epsilon) | (epsilon &gt; metric_ratios)).apply(sum, 0)
-
-    names_of_exceeded_metrics = list(metrics_exceeded.index[metrics_exceeded != 0])
-    if len(names_of_exceeded_metrics) &gt;= 2:
-        print(f&#39;Bias detected in {len(names_of_exceeded_metrics)} metrics: {&#34;, &#34;.join(names_of_exceeded_metrics)}&#39;)
-    elif len(names_of_exceeded_metrics) == 1:
-        print(f&#39;Bias detected in {len(names_of_exceeded_metrics)} metric: {names_of_exceeded_metrics[0]}&#39;)
-    else:
-        print(&#34;No bias was detected!&#34;)
-
-    # arbitrary decision
-    if len(names_of_exceeded_metrics) &gt;= 2:
-        conclusion = &#39;is not fair because 2 or more metric scores exceeded acceptable limits set by epsilon&#39;
-    elif len(names_of_exceeded_metrics) == 1:
-        conclusion = &#39;cannot be called fair because 1 metric score exceeded acceptable limits set by epsilon.\n&#39; \
-                     &#39;It does not mean that your model is unfair &#39; \
-                     &#39;but it cannot be automatically approved based on these metrics&#39;
-    else:
-        conclusion = &#39;is fair in terms of checked fairness metrics&#39;
-
-    print(f&#39;\nConclusion: your model {conclusion}.&#39;)
-
-    print(
-        f&#39;\nRatios of metrics, based on \&#39;{self.privileged}\&#39;. Parameter \&#39;epsilon\&#39; was set to {epsilon}&#39;
-        f&#39; and therefore metrics should be within ({epsilon}, {round(1 / epsilon, 3)})&#39;)
-    print(metric_ratios.to_string())
-    if np.isnan(metric_ratios).sum().sum() &gt; 0:
-        helper.verbose_cat(
-            &#39;\nWarning!\nTake into consideration that NaN\&#39;s are present, consider checking \&#39;metric_scores\&#39; &#39;
-            &#39;plot to see the difference&#39;, verbose=verbose)</code></pre>
+    utils.universal_fairness_check(self,
+                                   epsilon,
+                                   verbose,
+                                   num_for_not_fair=2,
+                                   num_for_no_decision=1,
+                                   metrics=utils.fairness_check_metrics())</code></pre>
 </details>
 </dd>
 <dt id="dalex.fairness.GroupFairnessClassification.plot"><code class="name flex">
@@ -416,7 +370,7 @@ then there is no discrimination in this metric and for this subgroups
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>objects</code></strong> :&ensp;<code><a title="dalex.fairness.GroupFairnessClassification" href="#dalex.fairness.GroupFairnessClassification">GroupFairnessClassification</a> object</code></dt>
+<dt><strong><code>objects</code></strong> :&ensp;<code>array_like</code> of <code><a title="dalex.fairness.GroupFairnessClassification" href="#dalex.fairness.GroupFairnessClassification">GroupFairnessClassification</a> objects</code></dt>
 <dd>Additional objects to plot (default is <code>None</code>).</dd>
 <dt><strong><code>type</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>
@@ -509,6 +463,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L74-L234" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -519,7 +474,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
     &#34;&#34;&#34;
     Parameters
     -----------
-    objects : GroupFairnessClassification object
+    objects : array_like of GroupFairnessClassification objects
         Additional objects to plot (default is `None`).
     type : str, optional
         Type of the plot. Default is `&#39;fairness_check&#39;`.
@@ -610,58 +565,366 @@ be edited or saved using the <code>write_image()</code> method (default is <code
     other_objects = None
     if objects is not None:
         other_objects = []
+        if not isinstance(objects, (list, tuple)):
+            objects = [objects]
         for obj in objects:
-            if isinstance(obj, self.__class__):
-                other_objects.append(obj)
+            _global_checks.global_check_object_class(obj, self.__class__)
+            other_objects.append(obj)
         basic_checks.check_other_fairness_objects(self, other_objects)
 
     if type == &#39;fairness_check&#39;:
-        fig = plot.plot_fairness_check(self,
-                                  other_objects=other_objects,
-                                  title=title, **kwargs)
+        fig = plot.plot_fairness_check_clf(self,
+                                           other_objects=other_objects,
+                                           title=title, **kwargs)
 
     elif type == &#34;metric_scores&#34;:
         fig = plot.plot_metric_scores(self,
-                                 other_objects=other_objects,
-                                 title=title,
-                                 **kwargs)
+                                      other_objects=other_objects,
+                                      title=title,
+                                      **kwargs)
 
     # names of plots may be changed
     elif type == &#39;stacked&#39;:
         fig = plot.plot_stacked(self,
-                           other_objects=other_objects,
-                           title=title,
-                           **kwargs)
+                                other_objects=other_objects,
+                                title=title,
+                                **kwargs)
 
     elif type == &#39;radar&#39;:
         fig = plot.plot_radar(self,
-                         other_objects=other_objects,
-                         title=title,
-                         **kwargs)
+                              other_objects=other_objects,
+                              title=title,
+                              **kwargs)
 
     elif type == &#39;performance_and_fairness&#39;:
         fig = plot.plot_performance_and_fairness(self,
-                                            other_objects=other_objects,
-                                            title=title,
-                                            **kwargs)
+                                                 other_objects=other_objects,
+                                                 title=title,
+                                                 **kwargs)
 
     elif type == &#39;heatmap&#39;:
         fig = plot.plot_heatmap(self,
-                           other_objects=other_objects,
-                           title=title,
-                           **kwargs)
+                                other_objects=other_objects,
+                                title=title,
+                                **kwargs)
+    elif type == &#39;density&#39;:
+        fig = plot.plot_density(self,
+                                other_objects=other_objects,
+                                title=title,
+                                **kwargs)
 
     elif type == &#39;ceteris_paribus_cutoff&#39;:
         fig = plot.plot_ceteris_paribus_cutoff(self,
-                                          other_objects=other_objects,
-                                          title=title,
-                                          **kwargs)
+                                               other_objects=other_objects,
+                                               title=title,
+                                               **kwargs)
 
     else:
         raise ParameterCheckError(f&#34;plot type {type} not supported, try other types.&#34;)
 
     if show:
-        fig.show(config=get_default_config())
+        fig.show(config=_theme.get_default_config())
+    else:
+        return fig</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.fairness.GroupFairnessRegression"><code class="flex name class">
+<span>class <span class="ident">GroupFairnessRegression</span></span>
+<span>(</span><span>y, y_hat, protected, privileged, label, epsilon=0.8, verbose=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L237-L344" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class GroupFairnessRegression(_FairnessObject):
+
+    def __init__(self, y, y_hat, protected, privileged, label, epsilon=0.8, verbose=False):
+
+        super().__init__(y, y_hat, protected, privileged, verbose)
+        checks.check_epsilon(epsilon)
+
+        df_ratios = utils.calculate_regression_measures(y, y_hat, protected, privileged)
+
+        self.result = df_ratios
+        self.label = label
+        self.epsilon = epsilon
+
+    def fairness_check(self, epsilon=None, verbose=True):
+        &#34;&#34;&#34;Check if classifier passes various fairness criteria
+
+        Fairness check is an easy way to check if the model is fair.
+        For that, this method uses 3 non-discrimination criteria.
+        The approximations are made to check the conditional independence expressed
+        in form of independence, separation and sufficiency.
+        Model is considered to be fair if all criteria are met.
+        This arbitrary decision is based on epsilon,
+        which defaults to `0.8` (it matches the four-fifths 80% rule).
+
+        Methods in use: Independence, Separation, Sufficiency.
+
+        Parameters
+        -----------
+        epsilon : float, optional
+            Parameter defines acceptable fairness scores. The closer to `1` the
+            more strict the verdict is. If the ratio of certain unprivileged
+            and privileged subgroup is within the `(epsilon, 1/epsilon)` range,
+            then there is no discrimination in this metric and for this subgroups
+            (default is `0.8`, which is set during object initialization).
+        verbose : bool
+            Shows verbose text about potential problems
+            (e.g. `NaN` in model metrics that can cause misinterpretation).
+
+        Returns
+        -----------
+        None (prints console output)
+
+        &#34;&#34;&#34;
+
+        utils.universal_fairness_check(self,
+                                       epsilon,
+                                       verbose,
+                                       num_for_not_fair=1,
+                                       num_for_no_decision=None,
+                                       metrics=[&#39;independence&#39;, &#39;separation&#39;, &#39;sufficiency&#39;])
+
+    def plot(self, objects=None, type=&#39;fairness_check&#39;, title=None, show=True, **kwargs):
+        &#34;&#34;&#34;
+        Parameters
+        -----------
+        objects : array_like of GroupFairnessRegression objects
+            Additional objects to plot (default is `None`).
+        type : str, optional
+            Type of the plot. Default is `&#39;fairness_check&#39;`.
+            When the type of plot is specified, user may provide additional
+            keyword arguments (`**kwargs`) which will be used in creating
+            plot of certain type. Below there is list of types:
+
+            - fairness_check:
+                fairness_check plot visualizes the fairness_check method
+                for one or more GroupFairnessClassification objects.
+                It accepts following keyword arguments:
+                 &#39;epsilon&#39; - which denotes the decision
+                             boundary (like in `fairness_check` method)
+
+            - density:
+                density plot visualizes the output of the model for each
+                subgroup in form of violin plots with boxplots on top of them.
+                It does not accept additional keyword arguments.
+        title : str, optional
+            Title of the plot (default depends on the `type` attribute).
+
+        &#34;&#34;&#34;
+
+        other_objects = None
+        if objects is not None:
+            other_objects = []
+            if not isinstance(objects, (list, tuple)):
+                objects = [objects]
+            for obj in objects:
+                _global_checks.global_check_object_class(obj, self.__class__)
+                other_objects.append(obj)
+            basic_checks.check_other_fairness_objects(self, other_objects)
+
+        if type == &#39;density&#39;:
+            fig = plot.plot_density(self,
+                                    other_objects,
+                                    title=title,
+                                    **kwargs)
+
+        elif type == &#39;fairness_check&#39;:
+            fig = plot.plot_fairness_check_reg(self,
+                                               other_objects=other_objects,
+                                               title=title,
+                                               **kwargs)
+
+        else:
+            raise ParameterCheckError(f&#34;plot type {type} not supported, try other types.&#34;)
+
+        if show:
+            fig.show(config=_theme.get_default_config())
+        else:
+            return fig</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.fairness._basics._base_objects._FairnessObject</li>
+<li>dalex.fairness._basics._base_objects._AbsObject</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.fairness.GroupFairnessRegression.fairness_check"><code class="name flex">
+<span>def <span class="ident">fairness_check</span></span>(<span>self, epsilon=None, verbose=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if classifier passes various fairness criteria</p>
+<p>Fairness check is an easy way to check if the model is fair.
+For that, this method uses 3 non-discrimination criteria.
+The approximations are made to check the conditional independence expressed
+in form of independence, separation and sufficiency.
+Model is considered to be fair if all criteria are met.
+This arbitrary decision is based on epsilon,
+which defaults to <code>0.8</code> (it matches the four-fifths 80% rule).</p>
+<p>Methods in use: Independence, Separation, Sufficiency.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>epsilon</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter defines acceptable fairness scores. The closer to <code>1</code> the
+more strict the verdict is. If the ratio of certain unprivileged
+and privileged subgroup is within the <code>(epsilon, 1/epsilon)</code> range,
+then there is no discrimination in this metric and for this subgroups
+(default is <code>0.8</code>, which is set during object initialization).</dd>
+<dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Shows verbose text about potential problems
+(e.g. <code>NaN</code> in model metrics that can cause misinterpretation).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None (prints console output)</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L250-L286" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def fairness_check(self, epsilon=None, verbose=True):
+    &#34;&#34;&#34;Check if classifier passes various fairness criteria
+
+    Fairness check is an easy way to check if the model is fair.
+    For that, this method uses 3 non-discrimination criteria.
+    The approximations are made to check the conditional independence expressed
+    in form of independence, separation and sufficiency.
+    Model is considered to be fair if all criteria are met.
+    This arbitrary decision is based on epsilon,
+    which defaults to `0.8` (it matches the four-fifths 80% rule).
+
+    Methods in use: Independence, Separation, Sufficiency.
+
+    Parameters
+    -----------
+    epsilon : float, optional
+        Parameter defines acceptable fairness scores. The closer to `1` the
+        more strict the verdict is. If the ratio of certain unprivileged
+        and privileged subgroup is within the `(epsilon, 1/epsilon)` range,
+        then there is no discrimination in this metric and for this subgroups
+        (default is `0.8`, which is set during object initialization).
+    verbose : bool
+        Shows verbose text about potential problems
+        (e.g. `NaN` in model metrics that can cause misinterpretation).
+
+    Returns
+    -----------
+    None (prints console output)
+
+    &#34;&#34;&#34;
+
+    utils.universal_fairness_check(self,
+                                   epsilon,
+                                   verbose,
+                                   num_for_not_fair=1,
+                                   num_for_no_decision=None,
+                                   metrics=[&#39;independence&#39;, &#39;separation&#39;, &#39;sufficiency&#39;])</code></pre>
+</details>
+</dd>
+<dt id="dalex.fairness.GroupFairnessRegression.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>self, objects=None, type='fairness_check', title=None, show=True, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>objects</code></strong> :&ensp;<code>array_like</code> of <code><a title="dalex.fairness.GroupFairnessRegression" href="#dalex.fairness.GroupFairnessRegression">GroupFairnessRegression</a> objects</code></dt>
+<dd>Additional objects to plot (default is <code>None</code>).</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>
+<p>Type of the plot. Default is <code>'fairness_check'</code>.
+When the type of plot is specified, user may provide additional
+keyword arguments (<code>**kwargs</code>) which will be used in creating
+plot of certain type. Below there is list of types:</p>
+<ul>
+<li>
+<p>fairness_check:
+fairness_check plot visualizes the fairness_check method
+for one or more GroupFairnessClassification objects.
+It accepts following keyword arguments:
+'epsilon' - which denotes the decision
+boundary (like in <code>fairness_check</code> method)</p>
+</li>
+<li>
+<p>density:
+density plot visualizes the output of the model for each
+subgroup in form of violin plots with boxplots on top of them.
+It does not accept additional keyword arguments.</p>
+</li>
+</ul>
+</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Title of the plot (default depends on the <code>type</code> attribute).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L288-L344" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def plot(self, objects=None, type=&#39;fairness_check&#39;, title=None, show=True, **kwargs):
+    &#34;&#34;&#34;
+    Parameters
+    -----------
+    objects : array_like of GroupFairnessRegression objects
+        Additional objects to plot (default is `None`).
+    type : str, optional
+        Type of the plot. Default is `&#39;fairness_check&#39;`.
+        When the type of plot is specified, user may provide additional
+        keyword arguments (`**kwargs`) which will be used in creating
+        plot of certain type. Below there is list of types:
+
+        - fairness_check:
+            fairness_check plot visualizes the fairness_check method
+            for one or more GroupFairnessClassification objects.
+            It accepts following keyword arguments:
+             &#39;epsilon&#39; - which denotes the decision
+                         boundary (like in `fairness_check` method)
+
+        - density:
+            density plot visualizes the output of the model for each
+            subgroup in form of violin plots with boxplots on top of them.
+            It does not accept additional keyword arguments.
+    title : str, optional
+        Title of the plot (default depends on the `type` attribute).
+
+    &#34;&#34;&#34;
+
+    other_objects = None
+    if objects is not None:
+        other_objects = []
+        if not isinstance(objects, (list, tuple)):
+            objects = [objects]
+        for obj in objects:
+            _global_checks.global_check_object_class(obj, self.__class__)
+            other_objects.append(obj)
+        basic_checks.check_other_fairness_objects(self, other_objects)
+
+    if type == &#39;density&#39;:
+        fig = plot.plot_density(self,
+                                other_objects,
+                                title=title,
+                                **kwargs)
+
+    elif type == &#39;fairness_check&#39;:
+        fig = plot.plot_fairness_check_reg(self,
+                                           other_objects=other_objects,
+                                           title=title,
+                                           **kwargs)
+
+    else:
+        raise ParameterCheckError(f&#34;plot type {type} not supported, try other types.&#34;)
+
+    if show:
+        fig.show(config=_theme.get_default_config())
     else:
         return fig</code></pre>
 </details>
@@ -673,8 +936,8 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 </article>
 <nav id="sidebar">
 <header>
-<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
-<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+<a class="homelink" rel="home" title="dalex Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt=""> dalex
 </a>
 </header>
 <h1>Index</h1>
@@ -696,13 +959,20 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <li><code><a title="dalex.fairness.GroupFairnessClassification.plot" href="#dalex.fairness.GroupFairnessClassification.plot">plot</a></code></li>
 </ul>
 </li>
+<li>
+<h4><code><a title="dalex.fairness.GroupFairnessRegression" href="#dalex.fairness.GroupFairnessRegression">GroupFairnessRegression</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.fairness.GroupFairnessRegression.fairness_check" href="#dalex.fairness.GroupFairnessRegression.fairness_check">fairness_check</a></code></li>
+<li><code><a title="dalex.fairness.GroupFairnessRegression.plot" href="#dalex.fairness.GroupFairnessRegression.plot">plot</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 </body>
 </html>

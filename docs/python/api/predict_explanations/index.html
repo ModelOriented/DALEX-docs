@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>dalex.predict_explanations API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -14,7 +14,8 @@
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
-<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:6em;margin:auto;margin-bottom:.3em}</style>
+<link rel="canonical" href="https://dalex.drwhy.ai/python/api/dalex/predict_explanations/">
 </head>
 <body>
 <main>
@@ -26,6 +27,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\__init__.py#L0-L8" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from ._break_down.object import BreakDown
 from ._ceteris_paribus.object import CeterisParibus
@@ -89,6 +91,7 @@ integer, the more frequently interactions will be presented (default is <code>1<
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_break_down\object.py#L10-L275" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BreakDown(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable attributions as Break Down
@@ -385,6 +388,7 @@ integer, the more frequently interactions will be presented (default is <code>1<
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_break_down\object.py#L65-L111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self,
         explainer,
@@ -476,6 +480,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_break_down\object.py#L113-L275" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -699,6 +704,7 @@ eg. if there is not enough unique values for a given variable.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_ceteris_paribus\object.py#L12-L395" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class CeterisParibus(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable profiles as Ceteris Paribus
@@ -1117,6 +1123,7 @@ eg. if there is not enough unique values for a given variable.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_ceteris_paribus\object.py#L85-L133" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self,
         explainer,
@@ -1216,6 +1223,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_ceteris_paribus\object.py#L135-L395" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -1531,6 +1539,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_shap\object.py#L9-L275" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Shap(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable attributions as Shapley Values
@@ -1627,7 +1636,8 @@ be edited or saved using the <code>write_image()</code> method (default is <code
             self.path,
             self.keep_distributions,
             self.B,
-            self.processes
+            self.processes,
+            self.random_state
         )
 
     def plot(self,
@@ -1827,6 +1837,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_shap\object.py#L77-L106" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self,
         explainer,
@@ -1855,7 +1866,8 @@ be edited or saved using the <code>write_image()</code> method (default is <code
         self.path,
         self.keep_distributions,
         self.B,
-        self.processes
+        self.processes,
+        self.random_state
     )</code></pre>
 </details>
 </dd>
@@ -1900,6 +1912,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\predict_explanations\_shap\object.py#L108-L275" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -2078,8 +2091,8 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 </article>
 <nav id="sidebar">
 <header>
-<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
-<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+<a class="homelink" rel="home" title="dalex Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt=""> dalex
 </a>
 </header>
 <h1>Index</h1>
@@ -2121,7 +2134,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 </body>
 </html>
