@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>dalex.model_explanations API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -14,7 +14,8 @@
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
-<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:6em;margin:auto;margin-bottom:.3em}</style>
+<link rel="canonical" href="https://dalex.drwhy.ai/python/api/dalex/model_explanations/">
 </head>
 <body>
 <main>
@@ -26,6 +27,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\__init__.py#L0-L10" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from ._aggregated_profiles.object import AggregatedProfiles
 from ._model_performance.object import ModelPerformance
@@ -58,7 +60,7 @@ __all__ = [
 <ul>
 <li>Partial Dependence Profile (average across Ceteris Paribus Profiles),</li>
 <li>Individual Conditional Expectation (local weighted average across CP Profiles),</li>
-<li>Accumulated Local Effects (cummulated average local changes in CP Profiles).</li>
+<li>Accumulated Local Effects (cumulated average local changes in CP Profiles).</li>
 </ul>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -117,13 +119,14 @@ around the average y_hat calculated on the data sample).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_aggregated_profiles\object.py#L11-L330" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AggregatedProfiles(Explanation):
     &#34;&#34;&#34;Calculate model-level variable profiles as Partial or Accumulated Dependence
 
     - Partial Dependence Profile (average across Ceteris Paribus Profiles),
     - Individual Conditional Expectation (local weighted average across CP Profiles),
-    - Accumulated Local Effects (cummulated average local changes in CP Profiles).
+    - Accumulated Local Effects (cumulated average local changes in CP Profiles).
 
     Parameters
     -----------
@@ -467,6 +470,7 @@ around the average y_hat calculated on the data sample).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_aggregated_profiles\object.py#L100-L149" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self,
         ceteris_paribus,
@@ -571,6 +575,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_aggregated_profiles\object.py#L151-L330" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -788,6 +793,7 @@ recall, precision, acc, f1 (default is <code>0.5</code>).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_model_performance\object.py#L9-L175" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ModelPerformance(Explanation):
     &#34;&#34;&#34;Calculate model-level model performance measures
@@ -983,6 +989,7 @@ recall, precision, acc, f1 (default is <code>0.5</code>).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_model_performance\object.py#L47-L118" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, explainer):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -1083,6 +1090,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_model_performance\object.py#L120-L175" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -1170,6 +1178,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_residual_diagnostics\object.py#L10-L167" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ResidualDiagnostics(Explanation):
     &#34;&#34;&#34;Calculate model-level residuals diagnostics
@@ -1301,7 +1310,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 
         _df = pd.concat(_df_list)
 
-        if N and smooth:
+        if isinstance(N, int) and smooth:
             if N &lt; _df.shape[0]:
                 _df = _df.sample(N, random_state=0, replace=False)
 
@@ -1356,6 +1365,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_residual_diagnostics\object.py#L41-L77" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, explainer):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -1435,6 +1445,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_residual_diagnostics\object.py#L79-L167" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -1497,7 +1508,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 
     _df = pd.concat(_df_list)
 
-    if N and smooth:
+    if isinstance(N, int) and smooth:
         if N &lt; _df.shape[0]:
             _df = _df.sample(N, random_state=0, replace=False)
 
@@ -1596,6 +1607,7 @@ before the calculation of variable importance.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_variable_importance\object.py#L10-L361" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class VariableImportance(Explanation):
     &#34;&#34;&#34;Calculate model-level variable importance
@@ -1718,7 +1730,8 @@ before the calculation of variable importance.</dd>
                                                                             self.B,
                                                                             explainer.label,
                                                                             self.processes,
-                                                                            self.keep_raw_permutations)
+                                                                            self.keep_raw_permutations,
+                                                                            self.random_state)
 
     def plot(self,
              objects=None,
@@ -1975,6 +1988,7 @@ before the calculation of variable importance.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_variable_importance\object.py#L105-L132" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, explainer):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -2002,7 +2016,8 @@ before the calculation of variable importance.</dd>
                                                                         self.B,
                                                                         explainer.label,
                                                                         self.processes,
-                                                                        self.keep_raw_permutations)</code></pre>
+                                                                        self.keep_raw_permutations,
+                                                                        self.random_state)</code></pre>
 </details>
 </dd>
 <dt id="dalex.model_explanations.VariableImportance.plot"><code class="name flex">
@@ -2042,6 +2057,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\model_explanations\_variable_importance\object.py#L134-L361" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -2280,8 +2296,8 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 </article>
 <nav id="sidebar">
 <header>
-<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
-<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+<a class="homelink" rel="home" title="dalex Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt=""> dalex
 </a>
 </header>
 <h1>Index</h1>
@@ -2330,7 +2346,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 </body>
 </html>

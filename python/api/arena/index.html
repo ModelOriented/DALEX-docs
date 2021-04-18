@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>dalex.arena API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -14,7 +14,8 @@
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
-<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:6em;margin:auto;margin-bottom:.3em}</style>
+<link rel="canonical" href="https://dalex.drwhy.ai/python/api/dalex/arena/">
 </head>
 <body>
 <main>
@@ -26,6 +27,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\__init__.py#L0-L4" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .object import Arena
 
@@ -121,6 +123,7 @@ only in live version.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L15-L729" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Arena:
     &#34;&#34;&#34; Creates Arena object
@@ -856,6 +859,7 @@ provided plot_type are removed.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L166-L183" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def clear_cache(self, plot_type=None):
     &#34;&#34;&#34;Clears cache
@@ -894,6 +898,7 @@ calculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L218-L247" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fill_cache(self, fixed_params={}):
     &#34;&#34;&#34;Generates all available plots and cache them
@@ -949,6 +954,7 @@ params field.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L185-L204" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def find_in_cache(self, plot_type, params):
     &#34;&#34;&#34;Function searches for cached plot
@@ -994,6 +1000,7 @@ params field.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L462-L482" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def find_param_value(self, param_type, param_label):
     &#34;&#34;&#34;Searches for Param object with specified label
@@ -1035,6 +1042,7 @@ a dict. Keys are param types and values are lists of Param objects.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L424-L441" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_available_params(self):
     &#34;&#34;&#34;Returns dict containing available params of all types
@@ -1079,6 +1087,7 @@ a dict. Keys are param types and values are lists of Param objects.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L510-L534" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_option(self, plot_type, option):
     &#34;&#34;&#34;Returns value of specified option
@@ -1131,6 +1140,7 @@ returns it's attributes.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L646-L674" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_param_attributes(self, param_type, param_label):
     &#34;&#34;&#34;Returns attributes for one param
@@ -1184,6 +1194,7 @@ will be returned</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L355-L403" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_params(self, param_type):
     &#34;&#34;&#34;Returns list of available params
@@ -1262,6 +1273,7 @@ attributes of which params should be returned.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L606-L644" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_params_attributes(self, param_type=None):
     &#34;&#34;&#34;Returns attributes for all params
@@ -1328,6 +1340,7 @@ requested plot and put it to cache.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L569-L604" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_plot(self, plot_type, params_values, cache=True):
     &#34;&#34;&#34;Returns plot for specified type and params
@@ -1380,6 +1393,7 @@ requested plot and put it to cache.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L98-L105" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_supported_plots(self):
     &#34;&#34;&#34;Returns plots classes that can produce at least one valid chart for this Arena.
@@ -1408,6 +1422,7 @@ a dict. Keys are param types and values are list of labels.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L443-L460" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def list_available_params(self):
     &#34;&#34;&#34;Returns dict containing labels of available params of all types
@@ -1450,6 +1465,7 @@ of this type will be returned</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L405-L422" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def list_params(self, param_type):
     &#34;&#34;&#34;Returns list of available params&#39;s labels
@@ -1487,6 +1503,7 @@ be printed.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L484-L508" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def print_options(self, plot_type=None):
     &#34;&#34;&#34;Prints available options for plots
@@ -1539,6 +1556,7 @@ If true, then only plots using this model will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L315-L353" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def push_dataset(self, dataset, target, label, precalculate=None):
     &#34;&#34;&#34;Adds dataset to Arena
@@ -1600,6 +1618,7 @@ If true, then only plots using this model will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L249-L275" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def push_model(self, explainer, precalculate=None):
     &#34;&#34;&#34;Adds model to Arena
@@ -1651,6 +1670,7 @@ If true, then only plots using thease observations will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L277-L313" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def push_observations(self, observations, precalculate=None):
     &#34;&#34;&#34;Adds observations to Arena
@@ -1704,6 +1724,7 @@ If true, then only plots using thease observations will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L206-L216" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def put_to_cache(self, plot_container):
     &#34;&#34;&#34;Puts new plot to cache
@@ -1746,6 +1767,7 @@ If true, then only plots using thease observations will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L107-L146" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def run_server(self,
                host=&#39;127.0.0.1&#39;,
@@ -1810,6 +1832,7 @@ If true, then only plots using thease observations will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L676-L695" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def save(self, filename=&#34;datasource.json&#34;):
     &#34;&#34;&#34;Generate all plots and saves them to JSON file
@@ -1854,6 +1877,7 @@ for plots with specified type.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L536-L567" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def set_option(self, plot_type, option, value):
     &#34;&#34;&#34;Sets value for the plot option
@@ -1897,6 +1921,7 @@ for plots with specified type.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L148-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def stop_server(self):
     &#34;&#34;&#34;Stops running server&#34;&#34;&#34;
@@ -1917,6 +1942,7 @@ for plots with specified type.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L156-L164" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_timestamp(self):
     &#34;&#34;&#34;Updates timestamp
@@ -1955,6 +1981,7 @@ then function uses OAuth to open GitHub authorization page.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\object.py#L697-L729" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def upload(self, token=None, arena_url=&#39;https://arena.drwhy.ai/&#39;, open_browser=True):
     &#34;&#34;&#34;Generate all plots and uploads them to GitHub Gist
@@ -1998,8 +2025,8 @@ then function uses OAuth to open GitHub authorization page.</p>
 </article>
 <nav id="sidebar">
 <header>
-<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
-<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+<a class="homelink" rel="home" title="dalex Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt=""> dalex
 </a>
 </header>
 <h1>Index</h1>
@@ -2058,7 +2085,7 @@ then function uses OAuth to open GitHub authorization page.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 </body>
 </html>

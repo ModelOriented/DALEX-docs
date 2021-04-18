@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>dalex.arena.params API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -14,7 +14,8 @@
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
-<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:10em;margin:auto}</style>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:6em;margin:auto;margin-bottom:.3em}</style>
+<link rel="canonical" href="https://dalex.drwhy.ai/python/api/dalex/arena/params.html">
 </head>
 <body>
 <main>
@@ -26,6 +27,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L0-L128" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from abc import ABC, abstractmethod
 import numpy as np
@@ -177,6 +179,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L40-L54" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class DatasetParam(Param):
     def __init__(self, dataset, label, target):
@@ -209,6 +212,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L52-L54" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def list_attributes(arena):
@@ -226,6 +230,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L50-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_attributes(self):
     return {}</code></pre>
@@ -239,6 +244,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L46-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_label(self):
     return self.label</code></pre>
@@ -252,6 +258,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L48-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_type(self):
     return &#39;dataset&#39;</code></pre>
@@ -269,6 +276,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L25-L38" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ModelParam(Param):
     def __init__(self, explainer):
@@ -300,6 +308,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L36-L38" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def list_attributes(arena):
@@ -317,6 +326,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L34-L35" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_attributes(self):
     return {}</code></pre>
@@ -330,6 +340,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L30-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_label(self):
     return self.explainer.label</code></pre>
@@ -343,6 +354,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L32-L33" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_type(self):
     return &#39;model&#39;</code></pre>
@@ -360,6 +372,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L102-L129" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ObservationParam(Param):
     def __init__(self, dataset, index):
@@ -405,6 +418,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L119-L129" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def list_attributes(arena):
@@ -430,6 +444,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L117-L118" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_attributes(self):
     return dict(self.get_row())</code></pre>
@@ -443,6 +458,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L106-L107" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_label(self):
     return self.index</code></pre>
@@ -456,6 +472,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L110-L111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_row(self):
     return self.dataset.loc[self.index]</code></pre>
@@ -469,6 +486,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L112-L116" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_row_for_model(self, model_param):
     try:
@@ -485,6 +503,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L108-L109" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_type(self):
     return &#39;observation&#39;</code></pre>
@@ -501,6 +520,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L6-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Param(ABC):
     @abstractmethod
@@ -541,6 +561,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L20-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def get_param_class(param_type):
@@ -555,6 +576,7 @@ def get_param_class(param_type):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L16-L19" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 @abstractmethod
@@ -573,6 +595,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L13-L15" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@abstractmethod
 def get_attributes(self):
@@ -587,6 +610,7 @@ def get_attributes(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L10-L12" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@abstractmethod
 def get_label(self):
@@ -601,6 +625,7 @@ def get_label(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L7-L9" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@abstractmethod
 def get_type(self):
@@ -619,6 +644,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L56-L100" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class VariableParam(Param):
     def __init__(self, variable):
@@ -681,6 +707,7 @@ inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L98-L100" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def list_attributes(arena):
@@ -698,6 +725,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L64-L68" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def clear_attributes(self):
     self.type = None
@@ -714,6 +742,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L91-L97" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_attributes(self):
     return {
@@ -732,6 +761,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L60-L61" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_label(self):
     return self.variable</code></pre>
@@ -745,6 +775,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L62-L63" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_type(self):
     return &#39;variable&#39;</code></pre>
@@ -758,6 +789,7 @@ def list_attributes(arena):
 <details class="source">
 <summary>
 <span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\params.py#L69-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_attributes(self, column):
     if is_bool_dtype(column):
@@ -790,8 +822,8 @@ def list_attributes(arena):
 </article>
 <nav id="sidebar">
 <header>
-<a class="homelink" rel="home" title="pdoc Home" href="https://dalex.drwhy.ai/">
-<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt="">
+<a class="homelink" rel="home" title="dalex Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt=""> dalex
 </a>
 </header>
 <h1>Index</h1>
@@ -862,7 +894,7 @@ def list_attributes(arena):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 </body>
 </html>
