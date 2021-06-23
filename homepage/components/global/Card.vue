@@ -28,7 +28,7 @@ export default {
   computed: {
     imageSrc () {
       if (this.image) {
-        return this.image
+        return this.image.startsWith('@/') ? require('~/assets/cards/' + this.image.replace('@/', '')) : this.image
       } else if (this.youtube) {
         return 'https://i3.ytimg.com/vi/' + this.youtube + '/hqdefault.jpg'
       }
