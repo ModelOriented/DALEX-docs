@@ -80,4 +80,10 @@ export default {
   transform: translate(-50%, -50%);
   z-index: 2;
 }
+@media (max-width: 400px) {
+  .card {
+    width: 15rem;
+    height: 20rem;
+  }
+}
 </style>
