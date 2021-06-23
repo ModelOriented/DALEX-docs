@@ -28,7 +28,7 @@ export default {
   computed: {
     imageSrc () {
       if (this.image) {
-        return this.image
+        return this.image.startsWith('@/') ? require('~/assets/cards/' + this.image.replace('@/', '')) : this.image
       } else if (this.youtube) {
         return 'https://i3.ytimg.com/vi/' + this.youtube + '/hqdefault.jpg'
       }
@@ -79,5 +79,11 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
+}
+@media (max-width: 400px) {
+  .card {
+    width: 15rem;
+    height: 20rem;
+  }
 }
 </style>

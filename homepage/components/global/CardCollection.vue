@@ -18,11 +18,11 @@ export default {
   },
   computed: {},
   mounted () {
-    this.scrollMax = this.$refs.list.scrollLeftMax
+    this.scrollMax = this.$refs.list.scrollLeftMax || (this.$refs.list.scrollWidth - this.$refs.list.offsetWidth)
   },
   updated () {
     this.$nextTick(() => {
-      this.scrollMax = this.$refs.list.scrollLeftMax
+      this.scrollMax = this.$refs.list.scrollLeftMax || (this.$refs.list.scrollWidth - this.$refs.list.offsetWidth)
     })
   },
   methods: {
