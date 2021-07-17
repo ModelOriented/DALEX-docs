@@ -28,7 +28,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\server.py#L0-L96" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\server.py#L0-L96" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">import logging
 import sys
@@ -112,7 +112,7 @@ def start_server(arena, host, port, disable_logs):
             abort(403)
             return
         try:
-            result = arena.get_plot(plot_type, params, cache=not custom_params)
+            result = arena.plots_manager.get_plot(plot_type, params, cache=not custom_params)
             return Response(json.dumps(result.serialize(), default=convert), content_type=&#39;application/json&#39;)
         except Exception as e:
             abort(404)
@@ -144,7 +144,7 @@ def start_server(arena, host, port, disable_logs):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\server.py#L9-L11" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\server.py#L9-L11" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def convert(o):
     if isinstance(o, np.generic): return o.item()  
@@ -159,7 +159,7 @@ def start_server(arena, host, port, disable_logs):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\server.py#L13-L97" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\server.py#L13-L97" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def start_server(arena, host, port, disable_logs):
     from flask import Flask, request, abort, Response
@@ -231,7 +231,7 @@ def start_server(arena, host, port, disable_logs):
             abort(403)
             return
         try:
-            result = arena.get_plot(plot_type, params, cache=not custom_params)
+            result = arena.plots_manager.get_plot(plot_type, params, cache=not custom_params)
             return Response(json.dumps(result.serialize(), default=convert), content_type=&#39;application/json&#39;)
         except Exception as e:
             abort(404)
