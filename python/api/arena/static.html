@@ -28,7 +28,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\static.py#L0-L167" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\static.py#L0-L167" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">import json
 import webbrowser
@@ -139,12 +139,12 @@ def get_json(arena):
     --------
     str
     &#34;&#34;&#34;
-    arena.fill_cache()
+    arena.plots_manager.fill_cache()
     result = json.dumps({
         &#39;version&#39;: &#39;1.2.0&#39;,
         &#39;availableParams&#39;: arena.list_available_params(),
         &#39;paramsAttributes&#39;: arena.get_params_attributes(),
-        &#39;data&#39;: list(map(lambda p: p.serialize(), arena.cache))
+        &#39;data&#39;: list(map(lambda p: p.serialize(), arena.plots_manager.cache))
     }, default=convert)
     return result
 
@@ -220,7 +220,7 @@ def upload_arena(arena, token):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\static.py#L119-L134" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\static.py#L119-L134" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def generate_token():
     &#34;&#34;&#34;Starts OAuth authorization and returns token
@@ -258,7 +258,7 @@ def upload_arena(arena, token):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\static.py#L31-L47" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\static.py#L31-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_free_port(n=10):
     &#34;&#34;&#34;Generate random ports and return the first available
@@ -299,7 +299,7 @@ are exported as static data source JSON.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\static.py#L95-L117" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\static.py#L95-L117" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_json(arena):
     &#34;&#34;&#34;Generate static Arena data source in JSON format
@@ -316,12 +316,12 @@ are exported as static data source JSON.</p>
     --------
     str
     &#34;&#34;&#34;
-    arena.fill_cache()
+    arena.plots_manager.fill_cache()
     result = json.dumps({
         &#39;version&#39;: &#39;1.2.0&#39;,
         &#39;availableParams&#39;: arena.list_available_params(),
         &#39;paramsAttributes&#39;: arena.get_params_attributes(),
-        &#39;data&#39;: list(map(lambda p: p.serialize(), arena.cache))
+        &#39;data&#39;: list(map(lambda p: p.serialize(), arena.plots_manager.cache))
     }, default=convert)
     return result</code></pre>
 </details>
@@ -348,7 +348,7 @@ then server is closed and this function returns that token.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\static.py#L49-L93" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\static.py#L49-L93" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def start_authorization_server(host, port):
     &#34;&#34;&#34;Function starts server to cach OAuth redirect
@@ -415,7 +415,7 @@ then server is closed and this function returns that token.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\static.py#L9-L29" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\static.py#L9-L29" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def try_port(port):
     &#34;&#34;&#34;Tests if port is available
@@ -462,7 +462,7 @@ are exported as static data source and uploaded to GitHub Gist.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\static.py#L136-L168" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\static.py#L136-L168" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def upload_arena(arena, token):
     &#34;&#34;&#34;Uploads Arena to GitHub Gist

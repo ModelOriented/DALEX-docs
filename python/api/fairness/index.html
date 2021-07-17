@@ -28,13 +28,16 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\__init__.py#L0-L5" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\__init__.py#L0-L8" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from ._group_fairness.object import GroupFairnessClassification, GroupFairnessRegression
-
+from ._group_fairness.mitigation import reweight, roc_pivot, resample
 __all__ = [
     &#34;GroupFairnessClassification&#34;,
-    &#34;GroupFairnessRegression&#34;
+    &#34;GroupFairnessRegression&#34;,
+    &#34;reweight&#34;,
+    &#34;roc_pivot&#34;,
+    &#34;resample&#34;
 ]</code></pre>
 </details>
 </section>
@@ -43,6 +46,405 @@ __all__ = [
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="dalex.fairness.resample"><code class="name flex">
+<span>def <span class="ident">resample</span></span>(<span>protected, y, type='uniform', probs=None, verbose=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns indices of observations for data.</p>
+<p>Method of bias mitigation. Similarly to 'reweight'
+this method computes desired number of observations just
+if the protected variable was independent from y and
+on this basis decides if this subgroup with certain class
+(favorable or not) should be more or less numerous. Than performs
+oversampling or undersampling depending on the case.
+If type of sampling is set to 'preferential' and probs
+are provided than instead of uniform sampling preferential
+sampling will be performed. Preferential sampling depending on the case
+will sample observations close to border or far from border.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>protected</code></strong> :&ensp;<code>np.ndarray (1d)</code></dt>
+<dd>Vector, preferably 1-dimensional np.ndarray containing strings,
+which denotes the membership to a subgroup.
+NOTE: List and pd.Series are also supported; however, if provided,
+they will be transformed into a np.ndarray (1d) with dtype 'U'.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>pd.Series</code> or <code>pd.DataFrame</code> or <code>np.ndarray (1d)</code></dt>
+<dd>Target variable with outputs / scores. It shall have the same length as <code>protected</code></dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'uniform', 'preferential'}</code></dt>
+<dd>Type indicates what strategy to use when choosing the samples.
+(default is 'uniform')</dd>
+<dt><strong><code>probs</code></strong> :&ensp;<code>np.ndarray (1d)</code></dt>
+<dd>Vector with probabilities for each sample. Note that this should be
+probabilities for favourable outcome. For the best performance they
+should be consistent with 'y' but it is not required. This argument
+is required when using strategy of type 'preferential'</dd>
+<dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Print messages about changes of types in 'y' and 'protected' (default is <code>True</code>).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray (1d)</code></dt>
+<dd>Array with indices for the data.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<pre><code>- &lt;https://link.springer.com/content/pdf/10.1007/s10115-011-0463-8.pdf&gt;
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\mitigation.py#L147-L262" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def resample(protected, y, type = &#39;uniform&#39;, probs = None,  verbose = True):
+    &#34;&#34;&#34;Returns indices of observations for data.
+
+    Method of bias mitigation. Similarly to &#39;reweight&#39;
+    this method computes desired number of observations just
+    if the protected variable was independent from y and
+    on this basis decides if this subgroup with certain class
+    (favorable or not) should be more or less numerous. Than performs
+    oversampling or undersampling depending on the case.
+    If type of sampling is set to &#39;preferential&#39; and probs
+    are provided than instead of uniform sampling preferential
+    sampling will be performed. Preferential sampling depending on the case
+    will sample observations close to border or far from border.
+
+    Parameters
+    -----------
+    protected : np.ndarray (1d)
+        Vector, preferably 1-dimensional np.ndarray containing strings,
+        which denotes the membership to a subgroup.
+        NOTE: List and pd.Series are also supported; however, if provided,
+        they will be transformed into a np.ndarray (1d) with dtype &#39;U&#39;.
+    y : pd.Series or pd.DataFrame or np.ndarray (1d)
+        Target variable with outputs / scores. It shall have the same length as `protected`
+    type : {&#39;uniform&#39;, &#39;preferential&#39;}
+        Type indicates what strategy to use when choosing the samples.
+        (default is &#39;uniform&#39;)
+    probs : np.ndarray (1d)
+        Vector with probabilities for each sample. Note that this should be
+        probabilities for favourable outcome. For the best performance they
+        should be consistent with &#39;y&#39; but it is not required. This argument
+        is required when using strategy of type &#39;preferential&#39;
+    verbose : bool
+        Print messages about changes of types in &#39;y&#39; and &#39;protected&#39; (default is `True`).
+
+    Returns
+    -----------
+    numpy.ndarray (1d)
+        Array with indices for the data.
+
+    Notes
+    -----------
+        - https://link.springer.com/content/pdf/10.1007/s10115-011-0463-8.pdf
+    &#34;&#34;&#34;
+    if type == &#39;preferential&#39; and probs is None:
+        raise ParameterCheckError(&#34;when using type &#39;preferential&#39; probabilities (probs) must be provided&#34;)
+
+    if type not in set([&#39;uniform&#39;, &#39;preferential&#39;]):
+        raise ParameterCheckError(&#34;type must be either &#39;uniform&#39; or &#39;preferential&#39;&#34;)
+
+
+    protected = basic_checks.check_protected(protected, verbose)
+    y = basic_checks.check_y(y, verbose)
+
+    if type == &#39;preferential&#39;:
+        try:
+            probs = np.asarray(probs)
+            helper.verbose_cat(&#34;converted &#39;probs&#39; to numpy array&#34;, verbose=verbose)
+        except Exception:
+            raise ParameterCheckError(&#34;try converting &#39;probs&#39; to 1D numpy array&#34;)
+
+        if probs.ndim != 1 or len(probs) != len(y):
+            raise ParameterCheckError(&#34;probs parameter must 1D numpy array with the same length as y&#34;)
+
+
+    weights = reweight(protected, y, verbose=False)
+
+    expected_size =  dict.fromkeys(np.unique(protected))
+    for key in expected_size.keys():
+        expected_size[key] = dict.fromkeys(np.unique(y))
+
+    for subgroup in expected_size.keys():
+        for value in np.unique(y):
+            case_weights = weights[(subgroup == protected) &amp; (value == y)]
+            case_size = len(case_weights)
+            weight = case_weights[0]
+            expected_size[subgroup][value] = round(case_size * weight)
+
+    indices = []
+
+    for subgroup in expected_size.keys():
+        for value in np.unique(y):
+            current_case = np.arange(len(y))[(protected == subgroup) &amp; (y == value)]
+            expected = expected_size[subgroup][value]
+            actual = np.sum((protected == subgroup) &amp; (y == value))
+            if expected == actual:
+                 indices += list(current_case)
+
+            elif expected &lt; actual:
+                if type == &#39;uniform&#39;:
+                    indices += list(np.random.choice(current_case, expected, replace=False))
+                else:
+                    sorted_current_case = current_case[np.argsort(probs[current_case])]
+                    if value == 0:
+                        indices += list(sorted_current_case[:expected])
+                    if value == 1:
+                        indices += list(sorted_current_case[-expected:])
+            else:
+                if type == &#39;uniform&#39;:
+                    u_ind = list(np.repeat(current_case, expected // actual))
+                    u_ind += list(np.random.choice(current_case, expected % actual))
+
+                    indices += u_ind
+
+                else:
+                    sorted_current_case = current_case[np.argsort(probs[current_case])]
+                    p_ind = list(np.repeat(current_case, expected // actual))
+
+                    if expected % actual != 0:
+                        if value == 0:
+                            p_ind += list(sorted_current_case[-(expected % actual):])
+                        if value == 1:
+                            p_ind += list(sorted_current_case[:(expected % actual)])
+
+                    indices += p_ind
+
+    return np.array(indices)</code></pre>
+</details>
+</dd>
+<dt id="dalex.fairness.reweight"><code class="name flex">
+<span>def <span class="ident">reweight</span></span>(<span>protected, y, verbose=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtain weights for model training and mitigate bias in Statistical Parity.</p>
+<p>Method produces weights for each subgroup for each class.
+Firstly, it assumes that protected variable and class are
+independent and calculates expected probability of this
+certain event (that subgroup == a and class = c).
+Than it calculates the actual probability of this event
+based on empirical data. Finally the weight is quotient
+of those probabilities.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>protected</code></strong> :&ensp;<code>np.ndarray (1d)</code></dt>
+<dd>Vector, preferably 1-dimensional np.ndarray containing strings,
+which denotes the membership to a subgroup.
+NOTE: List and pd.Series are also supported; however, if provided,
+they will be transformed into a np.ndarray (1d) with dtype 'U'.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>pd.Series</code> or <code>pd.DataFrame</code> or <code>np.ndarray (1d)</code></dt>
+<dd>Target variable with outputs / scores. It shall have the same length as <code>protected</code></dd>
+<dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Print messages about changes of types in 'y' and 'protected' (default is <code>True</code>).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray (1d)</code></dt>
+<dd>Array with sample (case) weights</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<ul>
+<li><a href="https://link.springer.com/content/pdf/10.1007/s10115-011-0463-8.pdf">https://link.springer.com/content/pdf/10.1007/s10115-011-0463-8.pdf</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\mitigation.py#L12-L62" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def reweight(protected, y, verbose = True):
+    &#34;&#34;&#34;Obtain weights for model training and mitigate bias in Statistical Parity.
+
+    Method produces weights for each subgroup for each class.
+    Firstly, it assumes that protected variable and class are
+    independent and calculates expected probability of this
+    certain event (that subgroup == a and class = c).
+    Than it calculates the actual probability of this event
+    based on empirical data. Finally the weight is quotient
+    of those probabilities.
+
+    Parameters
+    -----------
+    protected : np.ndarray (1d)
+        Vector, preferably 1-dimensional np.ndarray containing strings,
+        which denotes the membership to a subgroup.
+        NOTE: List and pd.Series are also supported; however, if provided,
+        they will be transformed into a np.ndarray (1d) with dtype &#39;U&#39;.
+    y : pd.Series or pd.DataFrame or np.ndarray (1d)
+        Target variable with outputs / scores. It shall have the same length as `protected`
+    verbose : bool
+        Print messages about changes of types in &#39;y&#39; and &#39;protected&#39; (default is `True`).
+
+    Returns
+    -----------
+    numpy.ndarray (1d)
+        Array with sample (case) weights
+
+    Notes
+    -----------
+    - https://link.springer.com/content/pdf/10.1007/s10115-011-0463-8.pdf
+    &#34;&#34;&#34;
+    y = basic_checks.check_y(y, verbose)
+    protected = basic_checks.check_protected(protected, verbose)
+
+    if not len(y) == len(protected):
+        raise ParameterCheckError(&#34;protected and target (y) must have the same length&#34;)
+
+    weights = np.repeat(None, len(y))
+
+    for subgroup in np.unique(protected):
+        for c in np.unique(y):
+
+            Xs = np.sum(protected == subgroup)
+            Xc = np.sum(y == c)
+            Xsc = np.sum((protected == subgroup) &amp; (c == y))
+            Wsc = (Xs * Xc) / (len(y) * Xsc)
+
+            weights[(protected == subgroup) &amp; (y == c)] = Wsc
+
+    return weights</code></pre>
+</details>
+</dd>
+<dt id="dalex.fairness.roc_pivot"><code class="name flex">
+<span>def <span class="ident">roc_pivot</span></span>(<span>explainer, protected, privileged, cutoff=0.5, theta=0.05, verbose=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reject Option based Classification pivot</p>
+<p>Reject Option based Classifier is post-processing bias
+mitigation method. Method changes the predictions of model
+(probabilities) and returns new explainer with modified 'y_hat'.
+Probabilities that are made for privileged subgroup and are
+favorable, and close to cutoff are pivoted to the other side
+of the cutoff. The opposite happens for unprivileged observations
+(changing unfavorable and close to cutoff observations to favorable
+by pivoting probabilities from left of the cutoff to right).
+By this potentially wrongfully labeled observations are
+assigned different labels. Note that 1 in y in Explainer
+should indicate favorable outcome.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>explainer</code></strong> :&ensp;<code>Explainer</code></dt>
+<dd>Explainer made from classification model.</dd>
+<dt><strong><code>protected</code></strong> :&ensp;<code>np.ndarray (1d)</code></dt>
+<dd>Vector, preferably 1-dimensional np.ndarray containing strings,
+which denotes the membership to a subgroup.
+NOTE: List and pd.Series are also supported; however, if provided,
+they will be transformed into a np.ndarray (1d) with dtype 'U'.</dd>
+<dt><strong><code>privileged</code></strong> :&ensp;<code>str</code></dt>
+<dd>Subgroup that is suspected to have the most privilege.
+It needs to be a string present in <code>protected</code>.</dd>
+<dt><strong><code>cutoff</code></strong> :&ensp;<code>float</code></dt>
+<dd>Threshold for probabilistic output of a classifier.</dd>
+<dt><strong><code>theta</code></strong> :&ensp;<code>float</code></dt>
+<dd>Value that indicates the radius of the area where values
+are pivoted. The default is (0.05) which means that
+the probabilities of privileged class within
+(cutoff, cutoff+ theta)
+will be pivoted to the other
+side of the cutoff. The opposite thing will happen for
+unprivileged subgroup.</dd>
+<dt><strong><code>verbose</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Print messages about changes of types in 'y' and 'protected' (default is <code>True</code>).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Explainer class object</code></dt>
+<dd>Explainer with changed 'y_hat'</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<ul>
+<li><a href="https://ieeexplore.ieee.org/document/6413831/">https://ieeexplore.ieee.org/document/6413831/</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\mitigation.py#L64-L145" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def roc_pivot(explainer, protected, privileged, cutoff = 0.5, theta = 0.05, verbose = True):
+    &#34;&#34;&#34;Reject Option based Classification pivot
+
+    Reject Option based Classifier is post-processing bias
+    mitigation method. Method changes the predictions of model
+    (probabilities) and returns new explainer with modified &#39;y_hat&#39;.
+    Probabilities that are made for privileged subgroup and are
+    favorable, and close to cutoff are pivoted to the other side
+    of the cutoff. The opposite happens for unprivileged observations
+    (changing unfavorable and close to cutoff observations to favorable
+    by pivoting probabilities from left of the cutoff to right).
+    By this potentially wrongfully labeled observations are
+    assigned different labels. Note that 1 in y in Explainer
+    should indicate favorable outcome.
+
+    Parameters
+    -----------
+    explainer: Explainer
+        Explainer made from classification model.
+
+    protected : np.ndarray (1d)
+        Vector, preferably 1-dimensional np.ndarray containing strings,
+        which denotes the membership to a subgroup.
+        NOTE: List and pd.Series are also supported; however, if provided,
+        they will be transformed into a np.ndarray (1d) with dtype &#39;U&#39;.
+    privileged : str
+        Subgroup that is suspected to have the most privilege.
+        It needs to be a string present in `protected`.
+    cutoff: float
+        Threshold for probabilistic output of a classifier.
+    theta: float
+        Value that indicates the radius of the area where values
+        are pivoted. The default is (0.05) which means that
+        the probabilities of privileged class within
+        (cutoff, cutoff+ theta)  will be pivoted to the other
+        side of the cutoff. The opposite thing will happen for
+        unprivileged subgroup.
+    verbose : bool
+        Print messages about changes of types in &#39;y&#39; and &#39;protected&#39; (default is `True`).
+
+    Returns
+    -----------
+    Explainer class object
+        Explainer with changed &#39;y_hat&#39;
+
+    Notes
+    -----------
+    - https://ieeexplore.ieee.org/document/6413831/
+    &#34;&#34;&#34;
+
+
+
+    if not isinstance(explainer, dalex.Explainer):
+        raise ParameterCheckError(&#34;explainer must be of type &#39;Explainer&#39;&#34;)
+
+    if explainer.model_type != &#39;classification&#39;:
+        raise ParameterCheckError(&#34;model in explainer must be binary classification type&#34;)
+
+    # same checking as in epsilon
+    theta = checks.check_epsilon(theta, &#39;theta&#39;)
+    cutoff = checks.check_epsilon(cutoff, &#39;cutoff&#39;)
+
+    protected = basic_checks.check_protected(protected, verbose)
+    privileged = basic_checks.check_privileged(privileged, protected, verbose)
+
+    exp = copy.deepcopy(explainer)
+    probs = exp.y_hat
+
+    if not len(probs) == len(protected):
+        raise ParameterCheckError(&#34;protected and target (y) must have the same length&#34;)
+
+    is_close = np.abs(probs - cutoff) &lt; theta
+    is_privileged = privileged == protected
+    is_favorable = probs &gt; cutoff
+
+    probs[is_close &amp; is_privileged &amp; is_favorable] = cutoff - (probs[is_close &amp; is_privileged &amp; is_favorable] - cutoff)
+    probs[is_close &amp; np.logical_not(is_privileged) &amp; np.logical_not(is_favorable)] = cutoff + (cutoff - probs[is_close &amp; np.logical_not(is_privileged) &amp; np.logical_not(is_favorable)])
+
+    probs[probs &lt; 0] = 0
+    probs[probs &gt; 1] = 1
+
+    return exp</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -56,7 +458,7 @@ __all__ = [
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L8-L234" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\object.py#L8-L234" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class GroupFairnessClassification(_FairnessObject):
 
@@ -325,7 +727,7 @@ then there is no discrimination in this metric and for this subgroups
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L37-L72" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\object.py#L37-L72" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fairness_check(self, epsilon=None, verbose=True):
     &#34;&#34;&#34;Check if classifier passes various fairness metrics
@@ -464,7 +866,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L74-L234" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\object.py#L74-L234" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -640,7 +1042,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L237-L344" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\object.py#L237-L344" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class GroupFairnessRegression(_FairnessObject):
 
@@ -791,7 +1193,7 @@ then there is no discrimination in this metric and for this subgroups
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L250-L286" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\object.py#L250-L286" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fairness_check(self, epsilon=None, verbose=True):
     &#34;&#34;&#34;Check if classifier passes various fairness criteria
@@ -869,7 +1271,7 @@ It does not accept additional keyword arguments.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\fairness\_group_fairness\object.py#L288-L344" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\fairness\_group_fairness\object.py#L288-L344" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self, objects=None, type=&#39;fairness_check&#39;, title=None, show=True, **kwargs):
     &#34;&#34;&#34;
@@ -949,6 +1351,13 @@ It does not accept additional keyword arguments.</p>
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="dalex" href="../index.html">dalex</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="dalex.fairness.resample" href="#dalex.fairness.resample">resample</a></code></li>
+<li><code><a title="dalex.fairness.reweight" href="#dalex.fairness.reweight">reweight</a></code></li>
+<li><code><a title="dalex.fairness.roc_pivot" href="#dalex.fairness.roc_pivot">roc_pivot</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

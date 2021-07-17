@@ -28,7 +28,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\__init__.py#L0-L20" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\__init__.py#L0-L24" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from ._break_down_container import BreakDownContainer
 from ._shapley_values_container import ShapleyValuesContainer
@@ -39,6 +39,8 @@ from ._ceteris_paribus_container import CeterisParibusContainer
 from ._metrics_container import MetricsContainer
 from ._roc_container import ROCContainer
 from ._fairness_check_container import FairnessCheckContainer
+from ._shapley_values_dependence_container import ShapleyValuesDependenceContainer
+from ._shapley_values_variable_importance_container import ShapleyValuesVariableImportanceContainer
 
 __all__ = [
     &#39;ShapleyValuesContainer&#39;,
@@ -49,7 +51,9 @@ __all__ = [
     &#39;BreakDownContainer&#39;,
     &#39;MetricsContainer&#39;,
     &#39;ROCContainer&#39;,
-    &#39;FairnessCheckContainer&#39;
+    &#39;FairnessCheckContainer&#39;,
+    &#39;ShapleyValuesDependenceContainer&#39;,
+    &#39;ShapleyValuesVariableImportanceContainer&#39;
 ]</code></pre>
 </details>
 </section>
@@ -64,14 +68,45 @@ __all__ = [
 <dl>
 <dt id="dalex.arena.plots.AccumulatedDependenceContainer"><code class="flex name class">
 <span>class <span class="ident">AccumulatedDependenceContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_accumulated_dependence_container.py#L4-L40" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_accumulated_dependence_container.py#L4-L41" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AccumulatedDependenceContainer(PlotContainer):
     info = {
@@ -80,6 +115,7 @@ __all__ = [
         &#39;plotCategory&#39;: &#39;Dataset Level&#39;,
         &#39;requiredParams&#39;: [&#39;model&#39;, &#39;variable&#39;]
     }
+    options_category = &#39;AccumulatedDependence&#39;
     options = {
         &#39;grid_type&#39;: { &#39;default&#39;: &#39;quantile&#39;, &#39;desc&#39;: &#39;grid type &#34;quantile&#34; or &#34;uniform&#34;&#39;},
         &#39;grid_points&#39;: { &#39;default&#39;: 101, &#39;desc&#39;: &#39;Maximum number of points for profile&#39; },
@@ -99,9 +135,9 @@ __all__ = [
             variables=variable.variable,
             variable_type=variable_type,
             center=False,
-            grid_points=self.arena.get_option(self.plot_type, &#39;grid_points&#39;),
-            variable_splits_type=self.arena.get_option(self.plot_type, &#39;grid_type&#39;),
-            N=self.arena.get_option(self.plot_type, &#39;N&#39;),
+            grid_points=self.get_option(&#39;grid_points&#39;),
+            variable_splits_type=self.get_option(&#39;grid_type&#39;),
+            N=self.get_option(&#39;N&#39;),
             verbose=False
         )
         self.data = {
@@ -114,6 +150,7 @@ __all__ = [
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -125,18 +162,53 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="dalex.arena.plots.AccumulatedDependenceContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="dalex.arena.plots.BreakDownContainer"><code class="flex name class">
 <span>class <span class="ident">BreakDownContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_break_down_container.py#L3-L24" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_break_down_container.py#L3-L25" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BreakDownContainer(PlotContainer):
     info = {
@@ -145,6 +217,7 @@ __all__ = [
         &#39;plotCategory&#39;: &#34;Observation Level&#34;,
         &#39;requiredParams&#39;: [&#34;model&#34;, &#34;observation&#34;]
     }
+    options_category = &#39;BreakDown&#39;
     options = {
     }
     def _fit(self, model, observation):
@@ -164,6 +237,7 @@ __all__ = [
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -175,18 +249,53 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="dalex.arena.plots.BreakDownContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="dalex.arena.plots.CeterisParibusContainer"><code class="flex name class">
 <span>class <span class="ident">CeterisParibusContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_ceteris_paribus_container.py#L4-L41" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_ceteris_paribus_container.py#L4-L42" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class CeterisParibusContainer(PlotContainer):
     info = {
@@ -195,6 +304,7 @@ __all__ = [
         &#39;plotCategory&#39;: &#39;Observation Level&#39;,
         &#39;requiredParams&#39;: [&#39;model&#39;, &#39;variable&#39;, &#39;observation&#39;]
     }
+    options_category = &#39;CeterisParibus&#39;
     options = {
         &#39;grid_points&#39;: { &#39;default&#39;: 101, &#39;desc&#39;: &#39;Maximum number of points for profile&#39; },
         &#39;grid_type&#39;: { &#39;default&#39;: &#39;quantile&#39;, &#39;desc&#39;: &#39;grid type &#34;quantile&#34; or &#34;uniform&#34;&#39;}
@@ -209,8 +319,8 @@ __all__ = [
         cp = model.explainer.predict_profile(
             row,
             variables=variable.variable,
-            grid_points=self.arena.get_option(self.plot_type, &#39;grid_points&#39;),
-            variable_splits_type=self.arena.get_option(self.plot_type, &#39;grid_type&#39;),
+            grid_points=self.get_option(&#39;grid_points&#39;),
+            variable_splits_type=self.get_option(&#39;grid_type&#39;),
             variable_splits_with_obs=False,
             verbose=False
         )
@@ -230,6 +340,7 @@ __all__ = [
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -241,18 +352,53 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="dalex.arena.plots.CeterisParibusContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="dalex.arena.plots.FairnessCheckContainer"><code class="flex name class">
 <span>class <span class="ident">FairnessCheckContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_fairness_check_container.py#L10-L53" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_fairness_check_container.py#L10-L54" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class FairnessCheckContainer(PlotContainer):
     info = {
@@ -261,6 +407,7 @@ __all__ = [
         &#39;plotCategory&#39;: &#39;Dataset Level&#39;,
         &#39;requiredParams&#39;: [&#39;model&#39;, &#39;variable&#39;]
     }
+    options_category = &#39;Fairness&#39;
     options = {
         &#39;cutoffs&#39;: { &#39;default&#39;: [x / 100 for x in range(5, 100, 5)], &#39;desc&#39;: &#39;List of tested cutoff levels&#39; },
     }
@@ -278,7 +425,7 @@ __all__ = [
             return
 
         output_df = None
-        for cutoff in self.arena.get_option(self.plot_type, &#39;cutoffs&#39;):
+        for cutoff in self.get_option(&#39;cutoffs&#39;):
             cutoff_dict = checks.check_cutoff(protected, cutoff, False)
             sub_confusion_matrix = utils.SubgroupConfusionMatrix(exp.y, y_hat, protected, cutoff_dict)
             sub_confusion_matrix_metrics = utils.SubgroupConfusionMatrixMetrics(sub_confusion_matrix)
@@ -302,6 +449,7 @@ __all__ = [
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -310,6 +458,10 @@ __all__ = [
 <div class="desc"></div>
 </dd>
 <dt id="dalex.arena.plots.FairnessCheckContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.FairnessCheckContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -338,7 +490,7 @@ there is at least one classification model in arena.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_fairness_check_container.py#L50-L53" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_fairness_check_container.py#L51-L54" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def test_arena(arena):
     if type(arena).__name__ != &#39;Arena&#39; or type(arena).__module__ != &#39;dalex.arena.object&#39;:
@@ -350,14 +502,45 @@ there is at least one classification model in arena.</p>
 </dd>
 <dt id="dalex.arena.plots.FeatureImportanceContainer"><code class="flex name class">
 <span>class <span class="ident">FeatureImportanceContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_feature_importance_container.py#L3-L35" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_feature_importance_container.py#L3-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class FeatureImportanceContainer(PlotContainer):
     info = {
@@ -366,14 +549,15 @@ there is at least one classification model in arena.</p>
         &#39;plotCategory&#39;: &#34;Dataset Level&#34;,
         &#39;requiredParams&#39;: [&#34;model&#34;]
     }
+    options_category = &#39;VariableImportance&#39;
     options = {
         &#39;N&#39;: { &#39;default&#39;: None, &#39;desc&#39;: &#39;Number of observations to use. None for all.&#39; },
         &#39;B&#39;: { &#39;default&#39;: 10, &#39;desc&#39;: &#39;Number of permutation rounds to perform each variable&#39; }
     }
     def _fit(self, model):
         fi = model.explainer.model_parts(
-            N=self.arena.get_option(self.plot_type, &#39;N&#39;),
-            B=self.arena.get_option(self.plot_type, &#39;B&#39;)
+            N=self.get_option(&#39;N&#39;),
+            B=self.get_option(&#39;B&#39;)
         ).permutation
         def q1(x):
             return x.quantile(0.25)
@@ -396,6 +580,7 @@ there is at least one classification model in arena.</p>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -407,18 +592,53 @@ there is at least one classification model in arena.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="dalex.arena.plots.FeatureImportanceContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="dalex.arena.plots.MetricsContainer"><code class="flex name class">
 <span>class <span class="ident">MetricsContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_metrics_container.py#L3-L13" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_metrics_container.py#L3-L14" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MetricsContainer(PlotContainer):
     info = {
@@ -427,6 +647,7 @@ there is at least one classification model in arena.</p>
         &#39;plotCategory&#39;: &#34;Model Performance&#34;,
         &#39;requiredParams&#39;: [&#34;model&#34;]
     }
+    options_category = &#39;Metrics&#39;
     options = {}
     def _fit(self, model):
         perf = model.explainer.model_performance().result
@@ -435,6 +656,7 @@ there is at least one classification model in arena.</p>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -446,18 +668,53 @@ there is at least one classification model in arena.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="dalex.arena.plots.MetricsContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="dalex.arena.plots.PartialDependenceContainer"><code class="flex name class">
 <span>class <span class="ident">PartialDependenceContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_partial_dependence_container.py#L4-L44" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_partial_dependence_container.py#L4-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PartialDependenceContainer(PlotContainer):
     info = {
@@ -466,6 +723,7 @@ there is at least one classification model in arena.</p>
         &#39;plotCategory&#39;: &#39;Dataset Level&#39;,
         &#39;requiredParams&#39;: [&#39;model&#39;, &#39;variable&#39;]
     }
+    options_category = &#39;PartialDependence&#39;
     options = {
         &#39;grid_type&#39;: { &#39;default&#39;: &#39;quantile&#39;, &#39;desc&#39;: &#39;grid type &#34;quantile&#34; or &#34;uniform&#34;&#39;},
         &#39;grid_points&#39;: { &#39;default&#39;: 101, &#39;desc&#39;: &#39;Maximum number of points for profile&#39; },
@@ -480,9 +738,9 @@ there is at least one classification model in arena.</p>
                 type=&#39;partial&#39;,
                 variables=variable.variable,
                 variable_type=&#39;numerical&#39;,
-                grid_points=self.arena.get_option(self.plot_type, &#39;grid_points&#39;),
-                variable_splits_type=self.arena.get_option(self.plot_type, &#39;grid_type&#39;),
-                N=self.arena.get_option(self.plot_type, &#39;N&#39;),
+                grid_points=self.get_option(&#39;grid_points&#39;),
+                variable_splits_type=self.get_option(&#39;grid_type&#39;),
+                N=self.get_option(&#39;N&#39;),
                 verbose=False
             )
         else:
@@ -491,7 +749,7 @@ there is at least one classification model in arena.</p>
                 type=&#39;partial&#39;,
                 variables=variable.variable,
                 variable_type=&#39;categorical&#39;,
-                N=self.arena.get_option(self.plot_type, &#39;N&#39;),
+                N=self.get_option(&#39;N&#39;),
                 verbose=False
             )
         self.data = {
@@ -504,6 +762,7 @@ there is at least one classification model in arena.</p>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -515,18 +774,53 @@ there is at least one classification model in arena.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="dalex.arena.plots.PartialDependenceContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </dd>
 <dt id="dalex.arena.plots.ROCContainer"><code class="flex name class">
 <span>class <span class="ident">ROCContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_roc_container.py#L6-L42" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_roc_container.py#L6-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ROCContainer(PlotContainer):
     info = {
@@ -535,6 +829,7 @@ there is at least one classification model in arena.</p>
         &#39;plotCategory&#39;: &#39;Model Performance&#39;,
         &#39;requiredParams&#39;: [&#39;model&#39;]
     }
+    options_category = &#39;ROC&#39;
     options = {
         &#39;grid_points&#39;: { &#39;default&#39;: 101, &#39;desc&#39;: &#39;Maximum number of points for ROC curve&#39; },
     }
@@ -551,7 +846,7 @@ there is at least one classification model in arena.</p>
         if P_n == 0 or N_n == 0:
             self.set_message(&#39;Provided dataset contains only positive or only negative cases.&#39;, &#39;error&#39;)
             return
-        grid_points = self.arena.get_option(self.plot_type, &#39;grid_points&#39;)
+        grid_points = self.get_option(&#39;grid_points&#39;)
         df[&#39;TPR&#39;] = np.cumsum(df.y) / P_n
         df[&#39;TNR&#39;] = 1 - (np.cumsum(1 - df.y) / N_n)
         if df.shape[0] &gt; grid_points:
@@ -569,6 +864,7 @@ there is at least one classification model in arena.</p>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -577,6 +873,10 @@ there is at least one classification model in arena.</p>
 <div class="desc"></div>
 </dd>
 <dt id="dalex.arena.plots.ROCContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.ROCContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -605,7 +905,7 @@ there is at least one classification model in arena.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_roc_container.py#L39-L42" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_roc_container.py#L40-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def test_arena(arena):
     if type(arena).__name__ != &#39;Arena&#39; or type(arena).__module__ != &#39;dalex.arena.object&#39;:
@@ -617,14 +917,45 @@ there is at least one classification model in arena.</p>
 </dd>
 <dt id="dalex.arena.plots.ShapleyValuesContainer"><code class="flex name class">
 <span>class <span class="ident">ShapleyValuesContainer</span></span>
-<span>(</span><span>arena)</span>
+<span>(</span><span>arena, cache=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/2441c55e88b740295d874c46c88f5edce8139e7f/dalex\arena\plots\_shapley_values_container.py#L4-L45" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_shapley_values_container.py#L4-L35" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ShapleyValuesContainer(PlotContainer):
     info = {
@@ -633,31 +964,21 @@ there is at least one classification model in arena.</p>
         &#39;plotCategory&#39;: &#34;Observation Level&#34;,
         &#39;requiredParams&#39;: [&#34;model&#34;, &#34;observation&#34;]
     }
-    options = {
-        &#39;B&#39;: { &#39;default&#39;: 10, &#39;desc&#39;: &#39;Number of random paths&#39; }
-    }
+    options_category = &#39;ShapleyValues&#39;
+    options = {}
     def _fit(self, model, observation):
-        row = observation.get_row_for_model(model)
-        if row is None:
-            self.set_message(&#39;Observation is not valid for given model.&#39;)
+        resource = self.arena.resource_manager.get_resource(&#39;ShapleyValues&#39;, {&#39;model&#39;: model, &#39;observation&#39;: observation}, cache=self.use_cache)
+        try:
+            data, progress, is_done = resource.get_result()
+            if data.get(&#39;stats&#39;) is None:
+                resource.wait_for_update()
+                data, progress, is_done = resource.get_result()
+        except Exception as e:
+            self.set_message(str(e))
             return
-        shap = model.explainer.predict_parts(
-            row,
-            type=&#39;shap&#39;,
-            B=self.arena.get_option(self.plot_type, &#39;B&#39;)
-        )
-        intercept = shap.intercept
-        result = shap.result
-        result = result[result.B != 0]
-        def q1(x):
-            return x.quantile(0.25)
-        def q3(x):
-            return x.quantile(0.75)
-        stats = result.groupby([&#39;variable_name&#39;, &#39;variable_value&#39;]) \
-            .agg({&#39;contribution&#39;: [&#39;mean&#39;, &#39;max&#39;, &#39;min&#39;, q1, q3]}) \
-            .contribution
-        stats[&#39;abs&#39;] = stats[&#39;mean&#39;].abs()
-        stats = stats.sort_values(&#39;abs&#39;, ascending=False).reset_index()
+        self.is_done = is_done
+        self.progress = progress
+        stats = data.get(&#39;stats&#39;).sort_values(&#39;abs&#39;, ascending=False).reset_index()
         self.data = {
             &#39;variables&#39;: stats.variable_name.tolist(),
             &#39;variables_value&#39;: stats.variable_value.tolist(),
@@ -666,12 +987,13 @@ there is at least one classification model in arena.</p>
             &#39;max&#39;: stats[&#39;max&#39;].tolist(),
             &#39;q1&#39;: stats.q1.tolist(),
             &#39;q3&#39;: stats.q3.tolist(),
-            &#39;intercept&#39;: intercept.astype(float)
+            &#39;intercept&#39;: resource.data.get(&#39;intercept&#39;).astype(float)
         }</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -680,6 +1002,226 @@ there is at least one classification model in arena.</p>
 <div class="desc"></div>
 </dd>
 <dt id="dalex.arena.plots.ShapleyValuesContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesDependenceContainer"><code class="flex name class">
+<span>class <span class="ident">ShapleyValuesDependenceContainer</span></span>
+<span>(</span><span>arena, cache=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_shapley_values_dependence_container.py#L5-L45" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class ShapleyValuesDependenceContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#34;Shapley Values Dependence&#34;,
+        &#39;plotType&#39;: &#34;ShapleyValuesDependence&#34;,
+        &#39;plotCategory&#39;: &#34;Dataset Level&#34;,
+        &#39;requiredParams&#39;: [&#34;model&#34;, &#34;variable&#34;]
+    }
+    options_category = &#39;DatasetShapleyValues&#39;
+    options = {}
+    def _fit(self, model, variable):
+        if variable.variable not in model.variables:
+            raise Exception(&#39;Variable is not a column of explainer&#39;)
+        is_numeric = is_numeric_dtype(model.explainer.data[variable.variable])
+        if is_numeric and variable.levels is None:
+            self.plot_component = &#39;LinearShapleyDependence&#39;
+        else:
+            self.plot_component = &#39;CategoricalShapleyDependence&#39;
+        resource = self.arena.resource_manager.get_resource(&#39;DatasetShapleyValues&#39;, {&#39;model&#39;: model}, cache=self.use_cache)
+        try:
+            data, progress, is_done = resource.get_result()
+            if data.get(&#39;result&#39;) is None:
+                resource.wait_for_update()
+                data, progress, is_done = resource.get_result()
+        except Exception as e:
+            self.set_message(str(e))
+            return
+        self.is_done = is_done
+        self.progress = progress
+        result = data.get(&#39;result&#39;)
+        result = result[result[&#39;variable_name&#39;] == variable.variable]
+        stats = result.groupby([&#39;variable_value&#39;, &#39;row&#39;]).agg({&#39;contribution&#39;: [&#39;mean&#39;, &#39;min&#39;, &#39;max&#39;]}).contribution
+        if self.plot_component == &#39;LinearShapleyDependence&#39;:
+            stats = stats.sort_index()
+        transform_index = float if self.plot_component == &#39;LinearShapleyDependence&#39; else str
+        self.data = {
+            &#39;x&#39;: [transform_index(x[0]) for x in stats.index],
+            &#39;mean&#39;: stats[&#39;mean&#39;].values.tolist(),
+            &#39;min&#39;: stats[&#39;min&#39;].values.tolist(),
+            &#39;max&#39;: stats[&#39;max&#39;].values.tolist(),
+            &#39;variable&#39;: variable.variable
+        }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.ShapleyValuesDependenceContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesDependenceContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesDependenceContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesVariableImportanceContainer"><code class="flex name class">
+<span>class <span class="ident">ShapleyValuesVariableImportanceContainer</span></span>
+<span>(</span><span>arena, cache=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class representing a chart.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code><a title="dalex.Arena" href="../../index.html#dalex.Arena">Arena</a></code></dt>
+<dd>Instance of Arena.</dd>
+<dt><strong><code>cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>arena</code></strong> :&ensp;<code>Arena</code></dt>
+<dd>Instance of dalex.Arena</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Display name of chart</dd>
+<dt><strong><code>plot_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of chart type</dd>
+<dt><strong><code>plot_component</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of Arena's component that should render this chart</dd>
+<dt><strong><code>plot_category</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of category of chart</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with required param types as keys and param labels as values.
+This attribute is set when calling fit.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Results of computations are placed there</dd>
+<dt><strong><code>progress</code></strong> :&ensp;<code>float</code></dt>
+<dd>If progress is supprted, then value should be between [0,1]. For other situations -1 value must be set.
+Progress of plot container is based of progress of used resources at the moment of calling fit method.
+This value will not be updated.</dd>
+<dt><strong><code>use_cache</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If this object is allowed to use cache when requesting resources</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\arena\plots\_shapley_values_variable_importance_container.py#L25-L71" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class ShapleyValuesVariableImportanceContainer(PlotContainer):
+    info = {
+        &#39;name&#39;: &#34;Shapley Variable Importance&#34;,
+        &#39;plotType&#39;: &#34;ShapleyValuesVariableImportance&#34;,
+        &#39;plotCategory&#39;: &#34;Dataset Level&#34;,
+        &#39;requiredParams&#39;: [&#34;model&#34;]
+    }
+    options_category = &#39;DatasetShapleyValues&#39;
+    options = {}
+    def _fit(self, model):
+        resource = self.arena.resource_manager.get_resource(&#39;DatasetShapleyValues&#39;, {&#39;model&#39;: model}, cache=self.use_cache)
+        try:
+            data, progress, is_done = resource.get_result()
+            if data.get(&#39;result&#39;) is None:
+                resource.wait_for_update()
+                data, progress, is_done = resource.get_result()
+        except Exception as e:
+            self.set_message(str(e))
+            return
+        self.is_done = is_done
+        self.progress = progress
+        result = data.get(&#39;result&#39;)
+
+        stats = result.groupby([&#39;variable_name&#39;, &#39;row&#39;]) \
+            .agg({&#39;contribution&#39;: [&#39;mean&#39;]}) \
+            .contribution
+        stats[&#39;abs_contribution&#39;] = stats[&#39;mean&#39;].abs()
+        stats = stats.reset_index()
+        box_stats = stats.groupby([&#39;variable_name&#39;]) \
+            .agg({&#39;abs_contribution&#39;: [&#39;mean&#39;, &#39;max&#39;, &#39;min&#39;, &#39;median&#39;, q1, q3, lf, uf]}) \
+            .abs_contribution.sort_values(by=&#39;mean&#39;, ascending=False)
+        outliers1 = stats.loc[stats[&#39;abs_contribution&#39;] &gt; box_stats.uf.loc[stats[&#39;variable_name&#39;]].reset_index(drop=True)]
+        outliers2 = stats.loc[stats[&#39;abs_contribution&#39;] &lt; box_stats.lf.loc[stats[&#39;variable_name&#39;]].reset_index(drop=True)]
+        outliers = pd.concat([outliers1, outliers2]).groupby(&#39;variable_name&#39;)[&#39;abs_contribution&#39;].apply(list).to_dict()
+        self.data = {
+            &#39;variables&#39;: list(box_stats.index),
+            &#39;mean&#39;: box_stats[&#39;mean&#39;].values.tolist(),
+            &#39;median&#39;: box_stats[&#39;median&#39;].values.tolist(),
+            &#39;min&#39;: box_stats[&#39;min&#39;].values.tolist(),
+            &#39;max&#39;: box_stats[&#39;max&#39;].values.tolist(),
+            &#39;q1&#39;: box_stats[&#39;q1&#39;].values.tolist(),
+            &#39;q3&#39;: box_stats[&#39;q3&#39;].values.tolist(),
+            &#39;lf&#39;: box_stats[&#39;lf&#39;].values.tolist(),
+            &#39;uf&#39;: box_stats[&#39;uf&#39;].values.tolist(),
+            &#39;outliers&#39;: outliers,
+            &#39;intercept&#39;: data.get(&#39;intercept&#39;)
+        }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>dalex.arena._plot_container.PlotContainer</li>
+<li>dalex.arena._option_base.OptionBase</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dalex.arena.plots.ShapleyValuesVariableImportanceContainer.info"><code class="name">var <span class="ident">info</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesVariableImportanceContainer.options"><code class="name">var <span class="ident">options</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="dalex.arena.plots.ShapleyValuesVariableImportanceContainer.options_category"><code class="name">var <span class="ident">options_category</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -711,6 +1253,7 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.AccumulatedDependenceContainer.info" href="#dalex.arena.plots.AccumulatedDependenceContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.AccumulatedDependenceContainer.options" href="#dalex.arena.plots.AccumulatedDependenceContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.AccumulatedDependenceContainer.options_category" href="#dalex.arena.plots.AccumulatedDependenceContainer.options_category">options_category</a></code></li>
 </ul>
 </li>
 <li>
@@ -718,6 +1261,7 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.BreakDownContainer.info" href="#dalex.arena.plots.BreakDownContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.BreakDownContainer.options" href="#dalex.arena.plots.BreakDownContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.BreakDownContainer.options_category" href="#dalex.arena.plots.BreakDownContainer.options_category">options_category</a></code></li>
 </ul>
 </li>
 <li>
@@ -725,6 +1269,7 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.CeterisParibusContainer.info" href="#dalex.arena.plots.CeterisParibusContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.CeterisParibusContainer.options" href="#dalex.arena.plots.CeterisParibusContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.CeterisParibusContainer.options_category" href="#dalex.arena.plots.CeterisParibusContainer.options_category">options_category</a></code></li>
 </ul>
 </li>
 <li>
@@ -732,6 +1277,7 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.FairnessCheckContainer.info" href="#dalex.arena.plots.FairnessCheckContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.FairnessCheckContainer.options" href="#dalex.arena.plots.FairnessCheckContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.FairnessCheckContainer.options_category" href="#dalex.arena.plots.FairnessCheckContainer.options_category">options_category</a></code></li>
 <li><code><a title="dalex.arena.plots.FairnessCheckContainer.test_arena" href="#dalex.arena.plots.FairnessCheckContainer.test_arena">test_arena</a></code></li>
 </ul>
 </li>
@@ -740,6 +1286,7 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.FeatureImportanceContainer.info" href="#dalex.arena.plots.FeatureImportanceContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.FeatureImportanceContainer.options" href="#dalex.arena.plots.FeatureImportanceContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.FeatureImportanceContainer.options_category" href="#dalex.arena.plots.FeatureImportanceContainer.options_category">options_category</a></code></li>
 </ul>
 </li>
 <li>
@@ -747,6 +1294,7 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.MetricsContainer.info" href="#dalex.arena.plots.MetricsContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.MetricsContainer.options" href="#dalex.arena.plots.MetricsContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.MetricsContainer.options_category" href="#dalex.arena.plots.MetricsContainer.options_category">options_category</a></code></li>
 </ul>
 </li>
 <li>
@@ -754,6 +1302,7 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.PartialDependenceContainer.info" href="#dalex.arena.plots.PartialDependenceContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.PartialDependenceContainer.options" href="#dalex.arena.plots.PartialDependenceContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.PartialDependenceContainer.options_category" href="#dalex.arena.plots.PartialDependenceContainer.options_category">options_category</a></code></li>
 </ul>
 </li>
 <li>
@@ -761,6 +1310,7 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.ROCContainer.info" href="#dalex.arena.plots.ROCContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.ROCContainer.options" href="#dalex.arena.plots.ROCContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.ROCContainer.options_category" href="#dalex.arena.plots.ROCContainer.options_category">options_category</a></code></li>
 <li><code><a title="dalex.arena.plots.ROCContainer.test_arena" href="#dalex.arena.plots.ROCContainer.test_arena">test_arena</a></code></li>
 </ul>
 </li>
@@ -769,6 +1319,23 @@ there is at least one classification model in arena.</p>
 <ul class="">
 <li><code><a title="dalex.arena.plots.ShapleyValuesContainer.info" href="#dalex.arena.plots.ShapleyValuesContainer.info">info</a></code></li>
 <li><code><a title="dalex.arena.plots.ShapleyValuesContainer.options" href="#dalex.arena.plots.ShapleyValuesContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.ShapleyValuesContainer.options_category" href="#dalex.arena.plots.ShapleyValuesContainer.options_category">options_category</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.ShapleyValuesDependenceContainer" href="#dalex.arena.plots.ShapleyValuesDependenceContainer">ShapleyValuesDependenceContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.ShapleyValuesDependenceContainer.info" href="#dalex.arena.plots.ShapleyValuesDependenceContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.ShapleyValuesDependenceContainer.options" href="#dalex.arena.plots.ShapleyValuesDependenceContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.ShapleyValuesDependenceContainer.options_category" href="#dalex.arena.plots.ShapleyValuesDependenceContainer.options_category">options_category</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dalex.arena.plots.ShapleyValuesVariableImportanceContainer" href="#dalex.arena.plots.ShapleyValuesVariableImportanceContainer">ShapleyValuesVariableImportanceContainer</a></code></h4>
+<ul class="">
+<li><code><a title="dalex.arena.plots.ShapleyValuesVariableImportanceContainer.info" href="#dalex.arena.plots.ShapleyValuesVariableImportanceContainer.info">info</a></code></li>
+<li><code><a title="dalex.arena.plots.ShapleyValuesVariableImportanceContainer.options" href="#dalex.arena.plots.ShapleyValuesVariableImportanceContainer.options">options</a></code></li>
+<li><code><a title="dalex.arena.plots.ShapleyValuesVariableImportanceContainer.options_category" href="#dalex.arena.plots.ShapleyValuesVariableImportanceContainer.options_category">options_category</a></code></li>
 </ul>
 </li>
 </ul>
