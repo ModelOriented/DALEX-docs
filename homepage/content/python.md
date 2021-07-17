@@ -58,7 +58,7 @@ pip install dalex
 <card image="@/fairness_card.png" title="Tutorial: fairness in regression" desc="Case study - Communities and Crime data" url="https://dalex.drwhy.ai/python-dalex-fairness-regression.html"></card>
 </card-collection>
 
-# Interactive exploration
+# Interactive analysis
 <card-collection>
 <card image="https://miro.medium.com/max/1200/1*GjdouIWShHbbcOFkBfZE8Q.png" title="Arena module in dalex" desc="Introduction to the Arena dashboard features" url="https://dalex.drwhy.ai/python-dalex-arena.html"></card>
 <card image="https://i.ibb.co/tDKm43p/Screenshot-from-2020-12-23-16-29-07.png" title="Getting Started & Demos" desc="Arena documentation" url="https://arena.drwhy.ai/docs/guide/basic-concepts"></card>
@@ -80,11 +80,13 @@ pip install dalex
 <card youtube="PuKF2GS4_3Y" title="Break Down in Python" desc=""></card>
 </card-collection>
 
-# Further documentation
+# Documentation
 <card-collection>
 <card image="https://i.ibb.co/5hv67qg/Screenshot-from-2020-12-23-14-59-24.png" title="API Reference" desc="Python documentation with pdoc" url="https://dalex.drwhy.ai/python/api"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/3/30/BibTeX_logo.svg" title="Citation" desc="BibTeX format" url="https://dalex.drwhy.ai/python/api/index.html#citation"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg" title="GitHub" desc="repository with code" url="https://github.com/ModelOriented/DALEX/tree/master/python/dalex"></card>
+<card image="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg" title="How to add a new model?" desc="Developer instruction" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-model.md"></card>
+<card image="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg" title="How to add a new explanation?" desc="Developer instruction" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-explanation.md"></card>
 </card-collection>
 
 ## Attributions
