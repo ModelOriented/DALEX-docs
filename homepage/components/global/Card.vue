@@ -48,8 +48,8 @@ export default {
 </script>
 <style>
 .card {
-  width: 25rem;
-  height: 17rem;
+  width: 22rem;
+  height: 20rem;
   white-space: normal;
   vertical-align: middle;
   cursor: pointer;
@@ -85,5 +85,9 @@ export default {
     width: 15rem;
     height: 20rem;
   }
+}
+
+.object-cover {
+    object-fit: contain !important;
 }
 </style>
