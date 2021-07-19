@@ -48,7 +48,7 @@ export default {
 </script>
 <style>
 .card {
-  width: 23rem;
+  width: 24rem;
   height: 19rem;
   white-space: normal;
   vertical-align: middle;
@@ -58,13 +58,13 @@ export default {
   text-decoration: none !important;
 }
 .card > .preview {
-  height: 10rem;
+  height: 12rem;
   border-bottom: 1px solid #eee;
   overflow: hidden;
   position: relative;
 }
 .card > .preview > img {
-  height: 14rem;
+  height: 12rem;
 }
 .card:hover > .preview > img {
   transform: scale(1.07);
