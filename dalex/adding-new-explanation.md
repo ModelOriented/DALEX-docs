@@ -1,4 +1,4 @@
-# How to add a new explanation
+# How to add a new explanation?
 
 Let's suppose there is some new explanation that is not present in current version of python `dalex`. How to add such explanation to the package with preservance of compliant structure? This list presents general schema of adding a new functionality on an example of [VIVO](https://github.com/ModelOriented/vivo) (Variable Importance via Oscillations). Contents of files will be discussed later.
 
@@ -62,6 +62,8 @@ elif _type == 'vivo':
     ) 
 ```
 
+Finally, one can post an [issue on GitHub](https://github.com/ModelOriented/DALEX/issues/new) and make a [pull request](https://github.com/ModelOriented/DALEX/compare) with the implementation.
+
 ## Contributing
 
-In order to contribute to the main `DALEX` project, you have to fork a repository on Github, commit your changes and create a Pull Request to Master. Each Pull Request's name has to start with `[python]`, has to have a descriptive name (good to have a related open Issue) and has to have a proper badges.
+In order to contribute to the main `dalex` package, you have to fork a repository on Github, commit your changes, and create a Pull Request into the main branch. The Pull Request's name should start with `[python]` followed by a descriptive title (it is best to have a related open Issue).

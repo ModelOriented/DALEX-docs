@@ -85,8 +85,8 @@ pip install dalex
 <card image="https://i.ibb.co/5hv67qg/Screenshot-from-2020-12-23-14-59-24.png" title="API Reference" desc="Python documentation with pdoc" url="https://dalex.drwhy.ai/python/api"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/3/30/BibTeX_logo.svg" title="Citation" desc="BibTeX format" url="https://dalex.drwhy.ai/python/api/index.html#citation"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg" title="GitHub" desc="repository with code" url="https://github.com/ModelOriented/DALEX/tree/master/python/dalex"></card>
-<card image="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg" title="How to add a new model?" desc="Developer instruction" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-model.md"></card>
-<card image="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg" title="How to add a new explanation?" desc="Developer instruction" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-explanation.md"></card>
+<card image="@/instruction.png" title="How to add a new model?" desc="Developer instruction" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-model.md"></card>
+<card image="@/instruction.png" title="How to add a new explanation?" desc="Developer instruction" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-explanation.md"></card>
 </card-collection>
 
 ## Attributions

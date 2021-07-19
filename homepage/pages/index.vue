@@ -88,4 +88,8 @@ export default {
     opacity: 0;
   }
 }
+
+.object-cover {
+    object-fit: contain !important;
+}
 </style>
