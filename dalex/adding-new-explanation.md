@@ -1,6 +1,6 @@
 # How to add a new explanation?
 
-Let's suppose there is some new explanation that is not present in current version of python `dalex`. How to add such explanation to the package with preservance of compliant structure? This list presents general schema of adding a new functionality on an example of [VIVO](https://github.com/ModelOriented/vivo) (Variable Importance via Oscillations). Contents of files will be discussed later.
+Let's suppose there is some new explanation that is not present in current version of the `dalex` Python package. How to add such explanation to the package with preservance of compliant structure? This list presents general schema of adding a new functionality on an example of [VIVO](https://github.com/ModelOriented/vivo) (Variable Importance via Oscillations). Contents of files will be discussed later.
 
 1. Decide whether a new explanation is a `model_explanation` or `predict_explanation`
 2. Create a new subdirectory in `DALEX/python/dalex/dalex/<choice>/` that starts with '_' and has a self-explanatory name, i.e. `DALEX/python/dalex/dalex/predict_explanations/_vivo`
@@ -42,7 +42,7 @@ File `checks.py` has an implementation of explanation-specific function checks t
 
 ### `plot.py`
 
-This file contains functions that are used in a `plot` method in an `object.py` file.
+This file contains functions that are used in the `plot` method in an `object.py` file.
 
 ## Adding a new option to explainer method - details.
 

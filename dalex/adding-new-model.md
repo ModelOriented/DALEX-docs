@@ -32,7 +32,7 @@ def predict_function(model, data):
 
 and then pass this predict function to an `Explainer` object.
 
-## in-package implementation
+## In-package implementation
 
 Implementing a new `predict_function` for a model that `dalex` cannot manage is a first step in order to add it to the package. Why would you want to add this implementation into the main project? Because then, `dalex.Explainer` learns how to recognize this kind of model and you will no longer need to implement a `predict_function` whenever you want to use it.
 
