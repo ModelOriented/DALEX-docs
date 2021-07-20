@@ -2,7 +2,7 @@
 
 Let's suppose there is some new explanation that is not present in current version of the `dalex` Python package. How to add such explanation to the package with preservance of compliant structure? This list presents general schema of adding a new functionality on an example of [VIVO](https://github.com/ModelOriented/vivo) (Variable Importance via Oscillations). Contents of files will be discussed later.
 
-1. Decide whether a new explanation is a `model_explanation` or `predict_explanation`
+1. Decide whether a new explanation is a `model_explanation` or `predict_explanation` (See [Explanatory Model Analysis](https://ema.drwhy.ai/) for reference.)
 2. Create a new subdirectory in `DALEX/python/dalex/dalex/<choice>/` that starts with '_' and has a self-explanatory name, i.e. `DALEX/python/dalex/dalex/predict_explanations/_vivo`
 3. Each directory consists always of 5 files, these files contain actual implementation:
 	* `__init__.py`
@@ -15,22 +15,22 @@ Let's suppose there is some new explanation that is not present in current versi
 	* `DALEX/python/dalex/dalex/<choice>/__init__.py`
 5. Add an option directing to a new explanation in a proper method in `DALEX/python/dalex/dalex/_explainer/object.py`. For example, in case of VIVO, add a new `type` option called `vivo` in `predict_parts` and add a proper `if` statement.
 6. Remember about a proper documentation!
-7. Add tests in file `DALEX/python/dalex/test/test_<new explanation>.py`. For example, `DALEX/python/dalex/test/test_vivo.py` We use `unittest` package for testing.
+7. Add tests in file `DALEX/python/dalex/test/test_<new explanation>.py`. For example, `DALEX/python/dalex/test/test_vivo.py`. We use the `unittest` package for testing.
 
 ## Implementation details
 
 
 ### `object.py`
 
-File `object.py` is supposed to contain definition of explanation class. Instances of this class are returned as results of calling a coresponding explainer method and provide all functionalities required for calculation.
+File `object.py` is supposed to contain definition of explanation class. Instances of this class are returned as results of calling a coresponding `Explainer` method and provide all functionalities required for calculation.
 
-Our `__init__` methods usually do not contain any functionalities except creating object that has a defined task.
+Our `__init__` methods usually don't contain any functionalities except creating an object that has a defined task.
 
-Method `fit` does actual job. We try to keep this method (and generally this file) as short as it is possible. Thus `fit` method sources high-level functionalities from `utils.py` and `checks.py` files. Its first argument (except `self` of course) is always an `explainer` that provides all necessary abstraction.
+Method `fit` does actual job. We try to keep this method (and generally this file) as short as it is possible. Thus the `fit` method sources high-level functionalities from `utils.py` and `checks.py` files. Its first argument (except `self` of course) is always an `Explainer` that provides all necessary abstraction.
 
 Method `plot` is used for plotting the result. Similarly like in `fit` method, this method uses only high-level methods sourced from `plot.py` file.
 
-Method `_repr_html_` simply calls HTML representation of result `pandas` `DataFrame`.
+Method `_repr_html_` simply calls HTML representation of result `pandas.DataFrame`.
 
 ### `utils.py`
 
@@ -44,9 +44,9 @@ File `checks.py` has an implementation of explanation-specific function checks t
 
 This file contains functions that are used in the `plot` method in an `object.py` file.
 
-## Adding a new option to explainer method - details.
+## Adding a new option to the Explainer method
 
-When you have implemented the explanation, now it is time to add this new functionality to the `explainer` and make it available for end users. You have to open `explainer`'s `object.py` file (this can be found here [`DALEX/python/dalex/dalex/_explainer/object.py`](https://github.com/ModelOriented/DALEX/blob/master/python/dalex/dalex/_explainer/object.py)) and find a method that best corresponds to the new explanation. For example, `VIVO` should be added to the `predict_parts` method. Each explanation method has a `type` parameter. Thus in order to add your new implementation, you should add a new `type` value option and add a new `if` statement in this method that redirects to your actual implementation.
+When you have implemented the explanation, now it is time to add this new functionality to `Explainer` and make it available for end users. You have to open the `Explainer`'s `object.py` file (this can be found here [`DALEX/python/dalex/dalex/_explainer/object.py`](https://github.com/ModelOriented/DALEX/blob/master/python/dalex/dalex/_explainer/object.py)) and find a method that best corresponds to the new explanation. For example, `VIVO` should be added to the `predict_parts` method. Each explanation method has a `type` parameter. Thus, in order to add your new implementation, you should add a new `type` value option and add a new `if` statement in this method that redirects to your actual implementation.
 
 ```
 def predict_parts(self,

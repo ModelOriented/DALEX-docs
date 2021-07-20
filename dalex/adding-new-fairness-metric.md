@@ -1,18 +1,19 @@
 # How to add a new fairness metric? 
-Fairness module supports all metrics that are based on the confusion matrix. 
-If user wants to add a custom metric there are certain actions to be performed. 
+Fairness module in `dalex` supports all metrics that are based on the confusion matrix. 
+If the user wants to add a custom metric, there are certain actions to be performed. 
 
 ## Necessary steps
-1. Go to file containing support functions and classes in fairness module `DALEX/python/dalex/dalex/fairness/_group_fairness/utils.py` 
+1. Go to file containing utility functions and classes in the fairness module `DALEX/python/dalex/dalex/fairness/_group_fairness/utils.py` 
 
 2. In a class `SubgroupConfusionMatrixMetrics` add a formula for a metric that depends on confusion matrix and bind it to some variable. This variable should be initialized with `np.nan` just like other metrics. If there is a denominator, be sure that it is greater than zero. Add the variable to `cf_metrics` dict. 
 
 3. Now the new metric is accessible through the fields in the object (eg. `parity_loss`) and through various visualization methods after passing it to the `metrics` parameter. 
 
 ## Adding a new metric to `fairness_check` plot and print
-To add the metric to `fairness_check` plot type and print method there are following actions to be performed. 
 
-1. First to function `fairness_check_metrics()` in `DALEX/python/dalex/dalex/fairness/_group_fairness/utils.py` add your metric or supersede the existing one. 
+To add a new metric into the `fairness_check` plot type and print method there are following actions to be performed. 
+
+1. First to function `fairness_check_metrics()` in `DALEX/python/dalex/dalex/fairness/_group_fairness/utils.py` add your metric or supersede an existing one. 
 
 2. Then in function `plot_fairness_check_clf()` in `DALEX/python/dalex/dalex/fairness/_group_fairness/plot.py` where names of metric are changed, you may also change your name. 
 
@@ -26,3 +27,9 @@ To add a metric to `metric_scores` plot similar steps are needed like in step se
 1. In `DALEX/python/dalex/dalex/fairness/_group_fairness/plot.py` in `plot_metric_scores()` function the metric should be changed/added in *metric choosing and name change* section. 
 
 2. Here, the number of panels is set to 5 so if a new metric is added instead of superseded, there are a little coding to be done. The numbers of refs should be incremented along with panels names change.  
+
+Finally, one can post an [issue on GitHub](https://github.com/ModelOriented/DALEX/issues/new) and make a [pull request](https://github.com/ModelOriented/DALEX/compare) with the implementation.
+
+## Contributing
+
+In order to contribute to the main `dalex` package, you have to fork a repository on Github, commit your changes, and create a Pull Request into the main branch. The Pull Request's name should start with `[python]` followed by a descriptive title (it is best to have a related open Issue).

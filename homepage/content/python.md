@@ -32,6 +32,7 @@ pip install dalex
 
 # Explainability
 <card-collection>
+<card image="@/ema.png" title="Book: Explanatory Model Analysis" desc="With examples in Python." url="https://ema.drwhy.ai"></card>
 <card image="@/explainability1.png" title="Introduction to dalex" desc="Titanic: tutorial and examples" url="https://dalex.drwhy.ai/python-dalex-titanic.html"></card>
 <card image="@/explainability2.png" title="Key features explained" desc="FIFA 20: explain default vs tuned model with dalex" url="https://dalex.drwhy.ai/python-dalex-fifa.html"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" title="How to use dalex with XGBoost" desc="Titanic classification example" url="https://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
@@ -85,8 +86,9 @@ pip install dalex
 <card image="https://i.ibb.co/5hv67qg/Screenshot-from-2020-12-23-14-59-24.png" title="API Reference" desc="Python documentation with pdoc" url="https://dalex.drwhy.ai/python/api"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/3/30/BibTeX_logo.svg" title="Citation" desc="BibTeX format" url="https://dalex.drwhy.ai/python/api/index.html#citation"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_logo_2013.svg" title="GitHub" desc="repository with code" url="https://github.com/ModelOriented/DALEX/tree/master/python/dalex"></card>
-<card image="@/instruction.png" title="How to add a new model?" desc="Developer instruction" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-model.md"></card>
-<card image="@/instruction.png" title="How to add a new explanation?" desc="Developer instruction" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-explanation.md"></card>
+<card image="@/instruction.png" title="How to add a new model?" desc="Developer instruction: model" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-model.md"></card>
+<card image="@/instruction.png" title="How to add a new explanation?" desc="Developer instruction: explanation" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-explanation.md"></card>
+<card image="@/instruction.png" title="How to add a new fairness metric?" desc="Developer instruction: fairness metric" url="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-fairness-metric.md"></card>
 </card-collection>
 
 ## Attributions
