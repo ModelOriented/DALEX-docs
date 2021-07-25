@@ -1,0 +1,201 @@
+---
+title: "DALEX - A great companion of h2o::automl()"
+author: 
+   Hoang Thien Ly
+date: Created on July 7, 2021
+output: 
+  html_document:
+    toc: true  
+    toc_float: true
+    number_sections: true
+    theme: flatly
+    highlight: kate
+    fig_caption: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Introduction:
+After the stage of analyzing data and feature engineering, the challenge of applying machine learning turns out to be seeking for the finest model among various models to your predictive problem. 
+
+Motivated to tackle this craft, the `H2OAutoML` tool was created in order to automatically propose good models for your problem. However, will we be able to display what happened in this black box or be able to have any evidence-based reasons to avoid the reluctance in applying the proposed model? To answer this, in this vignette, we will illuminate the choosing model process with explanation by means of `DALEX` and `modelStudio`.
+
+
+
+
+# Data set
+
+
+```{r,message=FALSE,warning=FALSE}
+library(DALEX)
+library(h2o)
+set.seed(17)
+```
+We will use a dataset named `dragons` which is artificially generated and available in the `DALEX` package. 
+
+Our aim is to solve this regression problem, particularly, predict the year of birth of a dragon based on features such as height, weight, number of scars, colour, year of discovery, number of lost teeth, and life expectancy. Note that, negative values in the year of birth indicate dates B.C and non-negative values indicate dates A.D.
+
+
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+options(width = 150)
+data(dragons)
+head(dragons)
+```
+
+
+
+
+
+# H2O AutoML & problem of choosing model
+
+## Problem defining in h2o::automl()
+
+We run this chunk of code to initialize the H2O environment.
+```{r, message=FALSE, results= 'hide'}
+h2o.init()
+```
+In the step of defining problem, our target "target" is year_of_birth of a dragon, our data frame "df" `dragons` is converted to `H2O DataFrame`.
+
+```{r, message=FALSE,warning=FALSE}
+h2o.no_progress() 
+target <- "year_of_birth"
+df <- as.h2o(dragons)
+```
+
+## Creating model by H2O AutoML
+
+We create a model by `H2O AutoML` by the following code with the maximum time AutoML process be 30 seconds and the maximum number of models to run be 20. If none of these two parameters are specified, max_runtime_secs will be set to 1 hour.
+
+```{r, message=FALSE,results='hide'}
+model_h2o_automl <- h2o.automl(y = target, training_frame = df, max_runtime_secs = 90, max_models = 20)
+```                 
+
+From the cooked `model_h2o_automl`, we can, for instance, get the leader board of finest models for our model in those restrictions of stopping criteria. In this case, the answer is Stacked Ensemble All Models in AutoML, as attached in the table below.
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+leader_board <- h2o.get_leaderboard(model_h2o_automl)
+head(leader_board)
+```
+
+
+# Wrapping things up and explaining with `explain()` function 
+
+## Creating explainer
+Until this step, we all know which model we should choose to get high performance as a result of running `H2O AutoML`. Eventually, to know what function inside the `H2O AutoML`, what important features are,... If all the answers to those questions are obtained, the credibility and transparency of our choice for Machine learning problem would be significantly increased.
+
+Followingly, we will show how to use the `explain()` function from `DALEX` package to answer those riddles coming from the recommended model of `H2O AutoML`.
+
+In the first step of using `DALEX`, we need to conclude the model from `H2O AutoML` with some other important parameters:
+
++ model: the model we obtained from H2O AutoML, in our case is: `model_h2o_automl`.
+
++ data: the validation set, in this case, we will use `dragons_test` dataset without the first column year_of_birth
+
++ y: our target, here is column year_of_birth 
+
+```{r, message=FALSE,warning=FALSE,results='hide'}
+library(DALEXtra)
+explainer_h2o_automl <- DALEXtra::explain_h2o(model = model_h2o_automl, 
+                                              data = dragons_test[,2:8],
+                                              y=dragons_test$year_of_birth,
+                                              label = "h2o automl",
+                                              colorize = FALSE)
+``` 
+
+## Model performance:
+
+Function `model_performance()` calculates the assessment for prediction and residuals for validation dataset.
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+mp_h2o_automl <- model_performance(explainer_h2o_automl)
+mp_h2o_automl
+``` 
+
+Function `plot()` below shows reversed empirical cummulative distribution function for absolute values from residuals.
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+plot(mp_h2o_automl)
+```
+
+We can also use boxplot type to see the distribution of residuals of selected model.
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+plot(mp_h2o_automl,geom="boxplot")
+```
+
+## Variable importance
+By using the `DALEX` package, we are able to deepen our understanding on important variables.
+
+Model agnostic variable importance is calculated by means of permutations. We simply subtract the loss function calculated for the validation dataset with permuted values for a single variable from the loss function calculated for the validation dataset.
+
+This method is implemented in the `model_parts()` function.
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+fe_h2o_automl <- model_parts(explainer_h2o_automl)
+```
+
+The length of the bar represents the importance of that variable. Longer the bar is, more loss is while permuting this variable and keeping the rest, consequently, more important this variable is.
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+plot(fe_h2o_automl)
+```
+
+
+
+
+## Variable response
+
+There are two main types of plots: **Partial Dependence plot** and **Accumulated Local Effects plot** designed for the sake of exploring the relation between a variable with the model outcome (in our case: year_of_birth)
+
+
+### Partial Dependence Plot (PDP)
+
+By the method of **PDP**, we will explore the relation between a continuous variable (in our case: height) with the model output (year_of_birth) 
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+
+pdp_h2o_automl <- model_profile(explainer_h2o_automl,variable = "weight", type="partial")
+
+plot(pdp_h2o_automl)
+```
+
+
+### Accumulated Local Effects plot
+
+**ALE** is an extention of PDP which suits for highly correlated variables.
+
+Function `model_profile()` with parameter type="accumulated" calculate the **ALE** curve for variable weight
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+ale_h2o_automl <- model_profile(explainer_h2o_automl,variable = "weight", type="accumulated")
+plot(ale_h2o_automl)
+```
+
+
+## Prediction understanding:
+
+Model prediction is visualized with **Break Down Plots**, which shows the contribution of each variable presenting in the model. Function `predict_parts()` generates variable attributions for chosen prediction. The `plot()` function shows these attributions. 
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+
+new_date_birth <- dragons_test[1,]
+pb_h2o_automl <- predict_parts(explainer_h2o_automl,new_observation = new_date_birth,type="break_down")
+
+plot(pb_h2o_automl)
+
+```
+
+# Model Studio
+
+We can automate the previous process by using `modelStudio` package. The main `modelStudio()` function computes various (instance and model-level) explanations and produces a customisable dashboard.
+
+```{r, eval=FALSE}
+library(modelStudio)
+modelStudio::modelStudio(explainer_h2o_automl)
+```
+
+# Section info
+
+```{r}
+sessionInfo()
+```

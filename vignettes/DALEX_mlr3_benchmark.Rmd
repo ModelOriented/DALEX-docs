@@ -1,0 +1,161 @@
+---
+title: "Using mlr3::benchmark() with DALEX"
+author: 
+  - Szymon Szmajdziński
+date: July 2021
+output: 
+  html_document:
+    toc: true  
+    toc_float: true
+    number_sections: true
+    theme: flatly
+    highlight: kate
+    fig_caption: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction {-}
+Choosing the best model among many models is not an easy task. Thankfully there are many great packages which can help us and save us some time. One of these packages is `mlr3` with `benchmark()` function. 
+
+In this vignette we will try to use this method and then create an `explainer` using `DALEX` library which enables us to create explanations for machine learning models.
+
+## Libraries and data set {-}
+
+In this use case we will work with apartments data. This data set contains records about apartments in Warsaw. Our task is to predict a price for a square meter for a given apartment. So that is a regression task. 
+
+First we have to specify which libraries we will use.
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+library("DALEX")
+library("DALEXtra")
+library("mlr3")
+set.seed(123)
+```
+
+The apartments data set is included in `DALEX` package so now we can check how our data looks like. 
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+head(apartments)
+```
+
+Now that we have a data set we can start working on choosing model for our task.
+
+## Preparing objects {-}
+
+For choosing the finest model we will use `mlr3` library with `benchmark()` function. But in order to do so we have to create some objects first.
+
+First one is a task. It will contain information about data we use and our target value, so in our case that is the `m2.price` column. To create task object from a data frame we will use `as_task_regr()` function.
+
+Next we will create the learners. We can here specify which models we want to compare. In this case we will use thee models from `mlr3learners` library. List of all available models offered by this library can be found [here](https://mlr3learners.mlr-org.com). 
+
+We will also need to define a resampling strategy, which is used to assess the performance of a learning algorithm. In or case we will use [`3-fold cross-validation`](https://mlr3.mlr-org.com/reference/mlr_resamplings_cv.html). List of all resampling strategies can be found [here](https://mlr3book.mlr-org.com/resampling.html)
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+library(mlr3learners)
+
+apartment_task <- as_task_regr(apartments, target = "m2.price")
+lerners = lrns(c("regr.ranger", "regr.kknn", "regr.lm"))
+resamplings = rsmp("cv", folds = 3)
+```
+
+
+Now let's combine all these objects and create an object called `design` which is a main argument for the benchmark function. Let's see how it looks like.
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+design = benchmark_grid(apartment_task, lerners, resamplings)
+design
+```
+
+We can se that, design object contains three different models, one for each specified learner. 
+
+## Benchmark {-}
+Now we are ready to use benchmark function. We use our design as an argument for this function.
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+bnm <- benchmark(design)
+```
+
+In order to assess performance between models we need to specify the metrics. In our case we will use `RMSE`. It is a common metric for regression tasks. Using the `aggregate()` function we can see the `RMSE` score for our models. 
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+measures = msr("regr.rmse", id = "rmse_test")
+
+tab = bnm$aggregate(measures)
+print(tab)
+```
+
+As we can see the k-NearestNeigbour model has the lowest `RMSE` score so in this case it is the best one. Let's try to extract this model from our benchmark. Firstly we are choosing the best result from `tab` table, then we are extracting a learner from that.
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+rr = tab$resample_result[[2]]
+print(rr)
+final_learner <- rr$learner
+final_learner$train(apartment_task)
+```
+
+
+We have trained model so we can now create an `explainer` to analyze our model deeper.
+
+## DALEX Explainer {-}
+
+Having a trained model makes creating an `explainer` a trivial task. We just need to use a `explain_mlr3()` function from `DALEXtra` package. We specify the model, data, and a target and we are done. We can also label our `explainer.`
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+mlr_expleiner <- explain_mlr3(final_learner, 
+                              data = apartments[2:6], 
+                              y = apartments$m2.price, 
+                              label = "Aparments regresion model", 
+                              verbose = FALSE)
+```
+
+Now we can analyze our model and see how it works.
+
+### Model performance {-}
+
+We can see our model metrics 
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+model_performance(mlr_expleiner)
+```
+
+
+### Feature importance {-}
+We can see which features are the most important ones
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+plot(model_parts(mlr_expleiner))
+```
+
+### Partial dependence plot {-}
+We can also investigate the dependencies between particular variables and the model's output.
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+plot(model_profile(mlr_expleiner, 
+                   variable = "construction.year", type = "partial"))
+```
+
+### Break down profile {-}
+
+Using DALEX we can also analyze the output of a particular observation and see which features contributed most to the final output. We will use breakdown profile in order to do so. 
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+test_apartment <- apartments[1,]
+plot(predict_parts(mlr_expleiner,
+                   new_observation = test_apartment, type = "break_down"))
+```
+
+
+## Session info {-}
+```{r}
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
+
