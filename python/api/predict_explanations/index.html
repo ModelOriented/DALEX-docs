@@ -28,7 +28,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\__init__.py#L0-L8" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\__init__.py#L0-L8" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from ._break_down.object import BreakDown
 from ._ceteris_paribus.object import CeterisParibus
@@ -92,7 +92,7 @@ integer, the more frequently interactions will be presented (default is <code>1<
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_break_down\object.py#L10-L275" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_break_down\object.py#L11-L276" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BreakDown(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable attributions as Break Down
@@ -143,7 +143,7 @@ integer, the more frequently interactions will be presented (default is <code>1<
         self.keep_distributions = keep_distributions
         self.order = _order
         self.interaction_preference = interaction_preference
-        self.result = None
+        self.result = pd.DataFrame()
         self.yhats_distributions = None
 
     def _repr_html_(self):
@@ -389,7 +389,7 @@ integer, the more frequently interactions will be presented (default is <code>1<
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_break_down\object.py#L65-L111" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_break_down\object.py#L66-L112" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self,
         explainer,
@@ -481,7 +481,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_break_down\object.py#L113-L275" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_break_down\object.py#L114-L276" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -705,7 +705,7 @@ eg. if there is not enough unique values for a given variable.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_ceteris_paribus\object.py#L12-L395" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_ceteris_paribus\object.py#L12-L395" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class CeterisParibus(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable profiles as Ceteris Paribus
@@ -773,7 +773,7 @@ eg. if there is not enough unique values for a given variable.</dd>
         self.variable_splits = variable_splits
         self.variable_splits_type = _variable_splits_type
         self.variable_splits_with_obs = variable_splits_with_obs
-        self.result = None
+        self.result = pd.DataFrame()
         self.new_observation = None
         self.processes = _processes
 
@@ -1124,7 +1124,7 @@ eg. if there is not enough unique values for a given variable.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_ceteris_paribus\object.py#L85-L133" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_ceteris_paribus\object.py#L85-L133" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self,
         explainer,
@@ -1224,7 +1224,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_ceteris_paribus\object.py#L135-L395" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_ceteris_paribus\object.py#L135-L395" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -1540,7 +1540,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_shap\object.py#L9-L275" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_shap\object.py#L10-L276" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Shap(Explanation):
     &#34;&#34;&#34;Calculate predict-level variable attributions as Shapley Values
@@ -1600,7 +1600,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
         self.path = _path
         self.keep_distributions = keep_distributions
         self.B = B
-        self.result = None
+        self.result = pd.DataFrame()
         self.yhats_distributions = None
         self.prediction = None
         self.intercept = None
@@ -1838,7 +1838,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_shap\object.py#L77-L106" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_shap\object.py#L78-L107" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self,
         explainer,
@@ -1913,7 +1913,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\predict_explanations\_shap\object.py#L108-L275" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\predict_explanations\_shap\object.py#L109-L276" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
