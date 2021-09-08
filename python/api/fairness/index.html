@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>dalex.fairness API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -28,7 +28,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\__init__.py#L0-L8" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/__init__.py#L1-L9" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from ._group_fairness.object import GroupFairnessClassification, GroupFairnessRegression
 from ._group_fairness.mitigation import reweight, roc_pivot, resample
@@ -94,7 +94,7 @@ is required when using strategy of type 'preferential'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\mitigation.py#L147-L262" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/mitigation.py#L147-L262" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def resample(protected, y, type = &#39;uniform&#39;, probs = None,  verbose = True):
     &#34;&#34;&#34;Returns indices of observations for data.
@@ -250,7 +250,7 @@ they will be transformed into a np.ndarray (1d) with dtype 'U'.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\mitigation.py#L12-L62" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/mitigation.py#L12-L62" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reweight(protected, y, verbose = True):
     &#34;&#34;&#34;Obtain weights for model training and mitigate bias in Statistical Parity.
@@ -358,7 +358,7 @@ unprivileged subgroup.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\mitigation.py#L64-L145" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/mitigation.py#L64-L145" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def roc_pivot(explainer, protected, privileged, cutoff = 0.5, theta = 0.05, verbose = True):
     &#34;&#34;&#34;Reject Option based Classification pivot
@@ -458,7 +458,7 @@ unprivileged subgroup.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\object.py#L8-L234" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/object.py#L8-L234" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class GroupFairnessClassification(_FairnessObject):
 
@@ -727,7 +727,7 @@ then there is no discrimination in this metric and for this subgroups
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\object.py#L37-L72" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/object.py#L37-L72" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fairness_check(self, epsilon=None, verbose=True):
     &#34;&#34;&#34;Check if classifier passes various fairness metrics
@@ -866,7 +866,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\object.py#L74-L234" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/object.py#L74-L234" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -1042,7 +1042,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\object.py#L237-L344" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/object.py#L237-L344" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class GroupFairnessRegression(_FairnessObject):
 
@@ -1193,7 +1193,7 @@ then there is no discrimination in this metric and for this subgroups
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\object.py#L250-L286" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/object.py#L250-L286" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fairness_check(self, epsilon=None, verbose=True):
     &#34;&#34;&#34;Check if classifier passes various fairness criteria
@@ -1271,7 +1271,7 @@ It does not accept additional keyword arguments.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\fairness\_group_fairness\object.py#L288-L344" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/fairness/_group_fairness/object.py#L288-L344" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self, objects=None, type=&#39;fairness_check&#39;, title=None, show=True, **kwargs):
     &#34;&#34;&#34;
@@ -1382,7 +1382,7 @@ It does not accept additional keyword arguments.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

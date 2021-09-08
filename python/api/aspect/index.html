@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>dalex.aspect API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -28,7 +28,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\__init__.py#L0-L12" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/__init__.py#L1-L13" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .object import Aspect
 from ._predict_aspect_importance import PredictAspectImportance
@@ -138,7 +138,7 @@ The hierarchical clustering of variables encoded as a <code>scipy</code> linkage
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L13-L481" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L13-L481" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Aspect:
     &#34;&#34;&#34;Create Aspect
@@ -620,7 +620,7 @@ The hierarchical clustering of variables encoded as a <code>scipy</code> linkage
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L104-L142" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L104-L142" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_aspects(self, h=0.5, n=None):
     from scipy.cluster.hierarchy import fcluster
@@ -702,7 +702,7 @@ the calculation of aspect importance. <code>None</code> means all <code>data</co
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L281-L382" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L281-L382" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_parts(
     self,
@@ -840,7 +840,7 @@ the calculation of aspect importance. <code>None</code> means all <code>data</co
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L439-L481" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L439-L481" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_triplot(
     self,
@@ -915,7 +915,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L144-L189" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L144-L189" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot_dendrogram(
     self,
@@ -1019,7 +1019,7 @@ Iterated over <code>B</code> (default is <code>1</code>, which means no parallel
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L191-L279" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L191-L279" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def predict_parts(
     self,
@@ -1155,7 +1155,7 @@ NOTE: Ignored if <code>type</code> is not <code>'default'</code> or <code>sample
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L384-L437" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L384-L437" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def predict_triplot(
     self,
@@ -1287,7 +1287,7 @@ the calculation of aspect importance.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_model_aspect_importance\object.py#L12-L537" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_model_aspect_importance/object.py#L12-L537" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ModelAspectImportance(VariableImportance):
     &#34;&#34;&#34;Calculate model-level aspect importance
@@ -1843,7 +1843,7 @@ Fit method makes calculations in place and changes the attributes.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_model_aspect_importance\object.py#L116-L169" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_model_aspect_importance/object.py#L116-L169" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, explainer):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -1941,7 +1941,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_model_aspect_importance\object.py#L172-L537" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_model_aspect_importance/object.py#L172-L537" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(
     self,
@@ -2367,7 +2367,7 @@ the calculation of aspect importance. <code>None</code> means all <code>data</co
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_model_triplot\object.py#L12-L441" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_model_triplot/object.py#L12-L441" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ModelTriplot(Explanation):
     &#34;&#34;&#34;Calculate model-level hierarchical aspect importance
@@ -2826,7 +2826,7 @@ Fit method makes calculations in place and changes the attributes.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_model_triplot\object.py#L87-L132" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_model_triplot/object.py#L87-L132" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, aspect):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -2915,7 +2915,7 @@ NOTE: Ignored if <code>widget</code> is <code>True</code>.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_model_triplot\object.py#L134-L441" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_model_triplot/object.py#L134-L441" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(
     self,
@@ -3326,7 +3326,7 @@ before the calculation of aspect importance.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_predict_aspect_importance\object.py#L12-L436" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_predict_aspect_importance/object.py#L12-L436" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PredictAspectImportance(Explanation):
     &#34;&#34;&#34;Calculate predict-level aspect importance
@@ -3782,7 +3782,7 @@ Fit method makes calculations in place and changes the attributes.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_predict_aspect_importance\object.py#L149-L211" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_predict_aspect_importance/object.py#L149-L211" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, explainer, new_observation):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -3894,7 +3894,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_predict_aspect_importance\object.py#L213-L436" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_predict_aspect_importance/object.py#L213-L436" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(
     self,
@@ -4192,7 +4192,7 @@ before the calculation of aspect importance.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_predict_triplot\object.py#L14-L495" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_predict_triplot/object.py#L14-L495" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PredictTriplot(Explanation):
     &#34;&#34;&#34;Calculate predict-level hierarchical aspect importance
@@ -4705,7 +4705,7 @@ Fit method makes calculations in place and changes the attributes.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_predict_triplot\object.py#L105-L169" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_predict_triplot/object.py#L105-L169" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, aspect, new_observation):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -4816,7 +4816,7 @@ NOTE: Ignored if <code>widget</code> is <code>True</code>.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\_predict_triplot\object.py#L171-L495" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/_predict_triplot/object.py#L171-L495" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(
     self,
@@ -5221,7 +5221,7 @@ NOTE: Ignored if <code>widget</code> is <code>True</code>.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>
