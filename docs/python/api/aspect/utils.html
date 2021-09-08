@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>dalex.aspect.utils API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:6em;margin:auto;margin-bottom:.3em}</style>
+<link rel="canonical" href="https://dalex.drwhy.ai/python/api/dalex/aspect/utils.html">
+<link rel="icon" type="image/png" href="https://dalex.drwhy.ai/favicon.svg"/>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dalex.aspect.utils</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L0-L171" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">import numpy as np
+import pandas as pd
+
+from . import checks
+from .. import _global_checks
+
+def calculate_cat_assoc_matrix(data, categorical_variables, n):
+    from scipy.stats import chi2_contingency
+    cat_assoc_matrix = pd.DataFrame(
+        index=categorical_variables, columns=categorical_variables, dtype=float
+    )
+    for i, variable_name_a in enumerate(categorical_variables):
+        for j, variable_name_b in enumerate(categorical_variables):
+            if i &gt; j:
+                continue   # matrix is symmetric
+            elif i == j:
+                cramers_V = 1
+            else:
+                # calculate Cramér’s V with bias correction
+                cont_tab = pd.crosstab(data[variable_name_a], data[variable_name_b])
+                r = cont_tab.shape[0]
+                c = cont_tab.shape[1]
+                chi2_test = chi2_contingency(cont_tab)
+                phi = max(0, (chi2_test[0] / n) - (((r - 1) * (c - 1)) / (n - 1)))
+                r = r - ((r - 1) ** 2 / (n - 1))
+                c = c - ((c - 1) ** 2 / (n - 1))
+                cramers_V = np.sqrt(phi / (min(c, r) - 1))
+                cramers_V = checks.check_assoc_value(cramers_V)
+            cat_assoc_matrix.loc[variable_name_a, variable_name_b] = cramers_V
+            cat_assoc_matrix.loc[variable_name_b, variable_name_a] = cramers_V
+    return cat_assoc_matrix
+
+
+def calculate_cat_num_assoc_matrix(data, categorical_variables, numerical_variables, n):
+    from scipy.stats import kruskal
+    cat_num_assoc_matrix = pd.DataFrame(
+        index=categorical_variables, columns=numerical_variables, dtype=float
+    )
+    for cat_variable_name in categorical_variables:
+        for num_variable_name in numerical_variables:
+            # calculate eta-squared
+            samples = [
+                gr_data[num_variable_name].values
+                for gr_name, gr_data in data.groupby(cat_variable_name, as_index=False)
+            ]
+            kruskal_wallis_test = kruskal(*samples, nan_policy=&#34;omit&#34;)
+            n_samples = len(samples)
+            eta_squared = (kruskal_wallis_test.statistic - n_samples + 1) / (n - n_samples)
+            eta_squared = checks.check_assoc_value(eta_squared)
+            cat_num_assoc_matrix.loc[cat_variable_name, num_variable_name] = eta_squared
+    return cat_num_assoc_matrix
+
+
+def calculate_assoc_matrix(data, corr_method):
+    corr_matrix = abs(data.corr(corr_method)) # get submatrix for only numerical variables
+    numerical_variables = corr_matrix.columns 
+    categorical_variables = list(set(data.columns) - set(numerical_variables))
+    n = len(data)
+    cat_assoc_matrix = calculate_cat_assoc_matrix(data, categorical_variables, n) # get submatrix for only categorical variables
+    cat_num_assoc_matrix = calculate_cat_num_assoc_matrix(          # get submatrix for mixed variables
+        data, categorical_variables, numerical_variables, n
+    )
+    tmp_matrix = pd.concat([corr_matrix, cat_num_assoc_matrix.T], axis=1)
+    tmp_matrix_2 = pd.concat([cat_num_assoc_matrix, cat_assoc_matrix], axis=1)
+    assoc_matrix = pd.concat([tmp_matrix, tmp_matrix_2])
+    return assoc_matrix
+
+
+def calculate_pps_matrix(data, agg_method):
+    _global_checks.global_check_import(&#39;ppscore&#39;, &#39;depend_matrix with PPS calculation&#39;)
+    import ppscore as pps
+    pps_result = pps.matrix(data, sample=None)
+    pps_matrix = pps_result[[&#34;x&#34;, &#34;y&#34;, &#34;ppscore&#34;]].pivot(
+        columns=&#34;x&#34;, index=&#34;y&#34;, values=&#34;ppscore&#34;
+    )
+    pps_matrix.rename_axis(None, axis=1, inplace=True)
+    pps_matrix.rename_axis(None, axis=0, inplace=True)
+    # aggregate values to make symmetric matrix
+    if agg_method == &#34;max&#34;:
+        pps_matrix = np.maximum(pps_matrix, pps_matrix.transpose())
+    if agg_method == &#34;min&#34;:
+        pps_matrix = np.minimum(pps_matrix, pps_matrix.transpose())
+    if agg_method == &#34;mean&#34;:
+        pps_matrix = (pps_matrix + pps_matrix.transpose()) / 2
+    return pps_matrix
+
+
+def calculate_depend_matrix(
+    data, depend_method, corr_method, agg_method
+):
+    depend_matrix = pd.DataFrame()
+    if depend_method == &#34;assoc&#34;:
+        depend_matrix = calculate_assoc_matrix(data, corr_method)
+    if depend_method == &#34;pps&#34;:
+        depend_matrix = calculate_pps_matrix(data, agg_method)
+    if callable(depend_method):
+        try:
+            depend_matrix = depend_method(data)
+        except:
+            raise ValueError(
+                &#34;You have passed wrong callable in depend_method argument. &#34;
+                &#34;&#39;depend_method&#39; is the callable to use for calculating dependency matrix.&#34;
+            )
+    return depend_matrix
+
+
+def calculate_linkage_matrix(depend_matrix, clust_method):
+    from scipy.cluster.hierarchy import linkage
+    from scipy.spatial.distance import squareform
+    dissimilarity = 1 - abs(depend_matrix)
+    ## https://www.kaggle.com/sgalella/correlation-heatmaps-with-hierarchical-clustering?scriptVersionId=24045077&amp;cellId=10
+    linkage_matrix = linkage(squareform(dissimilarity), clust_method)
+
+    return linkage_matrix
+
+
+def get_dendrogram_aspects_ordered(hierarchical_clustering_dendrogram, depend_matrix):
+    # names of variables on axis
+    tick_dict = dict(
+        zip(
+            hierarchical_clustering_dendrogram.layout.yaxis.tickvals,
+            [[var] for var in hierarchical_clustering_dendrogram.layout.yaxis.ticktext]
+        )
+    )
+    d = {k:v for v,k in enumerate(depend_matrix.columns)} # original order of columns
+    
+    # get names of variables for dendrogram traces
+    _aspects_dendrogram_order = []
+    for scatter in hierarchical_clustering_dendrogram.data:
+        vars_list = tick_dict[scatter.y[1]] + tick_dict[scatter.y[2]]
+        vars_list.sort(key=d.get)
+        tick_dict[np.mean(scatter.y[1:3])] = vars_list
+        _aspects_dendrogram_order.append(
+            vars_list
+        )
+    
+    # get min dependency between grouped variables
+    _vars_min_depend, _min_depend = get_min_depend_from_matrix(depend_matrix, _aspects_dendrogram_order)
+
+    return pd.DataFrame({
+        &#34;variable_names&#34;: _aspects_dendrogram_order,
+        &#34;min_depend&#34;: _min_depend,
+        &#34;vars_min_depend&#34;: _vars_min_depend
+    })
+
+
+def get_min_depend_from_matrix(depend_matrix, variables_list): 
+    _vars_min_depend = []
+    _min_depend = []
+    for vars in variables_list:
+        if isinstance(vars, (list, tuple, np.ndarray)):
+            depend_submatrix = abs(depend_matrix).loc[list(vars), list(vars)]
+            _min = np.array(depend_submatrix).min()
+            _min_idx = np.where(depend_submatrix == _min)
+            var_a_idx, var_b_idx = _min_idx[0][0], _min_idx[1][0]
+            _vars_min_depend.append(np.array(depend_submatrix.columns[[var_a_idx, var_b_idx]]))
+            _min_depend.append(_min)
+        else:
+            _vars_min_depend.append(None)
+            _min_depend.append(None)
+    return _vars_min_depend, _min_depend
+
+
+def calculate_min_depend(
+    variables_list,
+    data,
+    depend_method=&#34;assoc&#34;,
+    corr_method=&#34;spearman&#34;,
+    agg_method=&#34;max&#34;,
+): 
+    depend_matrix = calculate_depend_matrix(data, depend_method, corr_method, agg_method)
+    return get_min_depend_from_matrix(depend_matrix, variables_list)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="dalex.aspect.utils.calculate_assoc_matrix"><code class="name flex">
+<span>def <span class="ident">calculate_assoc_matrix</span></span>(<span>data, corr_method)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L54-L66" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def calculate_assoc_matrix(data, corr_method):
+    corr_matrix = abs(data.corr(corr_method)) # get submatrix for only numerical variables
+    numerical_variables = corr_matrix.columns 
+    categorical_variables = list(set(data.columns) - set(numerical_variables))
+    n = len(data)
+    cat_assoc_matrix = calculate_cat_assoc_matrix(data, categorical_variables, n) # get submatrix for only categorical variables
+    cat_num_assoc_matrix = calculate_cat_num_assoc_matrix(          # get submatrix for mixed variables
+        data, categorical_variables, numerical_variables, n
+    )
+    tmp_matrix = pd.concat([corr_matrix, cat_num_assoc_matrix.T], axis=1)
+    tmp_matrix_2 = pd.concat([cat_num_assoc_matrix, cat_assoc_matrix], axis=1)
+    assoc_matrix = pd.concat([tmp_matrix, tmp_matrix_2])
+    return assoc_matrix</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.utils.calculate_cat_assoc_matrix"><code class="name flex">
+<span>def <span class="ident">calculate_cat_assoc_matrix</span></span>(<span>data, categorical_variables, n)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L7-L31" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def calculate_cat_assoc_matrix(data, categorical_variables, n):
+    from scipy.stats import chi2_contingency
+    cat_assoc_matrix = pd.DataFrame(
+        index=categorical_variables, columns=categorical_variables, dtype=float
+    )
+    for i, variable_name_a in enumerate(categorical_variables):
+        for j, variable_name_b in enumerate(categorical_variables):
+            if i &gt; j:
+                continue   # matrix is symmetric
+            elif i == j:
+                cramers_V = 1
+            else:
+                # calculate Cramér’s V with bias correction
+                cont_tab = pd.crosstab(data[variable_name_a], data[variable_name_b])
+                r = cont_tab.shape[0]
+                c = cont_tab.shape[1]
+                chi2_test = chi2_contingency(cont_tab)
+                phi = max(0, (chi2_test[0] / n) - (((r - 1) * (c - 1)) / (n - 1)))
+                r = r - ((r - 1) ** 2 / (n - 1))
+                c = c - ((c - 1) ** 2 / (n - 1))
+                cramers_V = np.sqrt(phi / (min(c, r) - 1))
+                cramers_V = checks.check_assoc_value(cramers_V)
+            cat_assoc_matrix.loc[variable_name_a, variable_name_b] = cramers_V
+            cat_assoc_matrix.loc[variable_name_b, variable_name_a] = cramers_V
+    return cat_assoc_matrix</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.utils.calculate_cat_num_assoc_matrix"><code class="name flex">
+<span>def <span class="ident">calculate_cat_num_assoc_matrix</span></span>(<span>data, categorical_variables, numerical_variables, n)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L34-L51" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def calculate_cat_num_assoc_matrix(data, categorical_variables, numerical_variables, n):
+    from scipy.stats import kruskal
+    cat_num_assoc_matrix = pd.DataFrame(
+        index=categorical_variables, columns=numerical_variables, dtype=float
+    )
+    for cat_variable_name in categorical_variables:
+        for num_variable_name in numerical_variables:
+            # calculate eta-squared
+            samples = [
+                gr_data[num_variable_name].values
+                for gr_name, gr_data in data.groupby(cat_variable_name, as_index=False)
+            ]
+            kruskal_wallis_test = kruskal(*samples, nan_policy=&#34;omit&#34;)
+            n_samples = len(samples)
+            eta_squared = (kruskal_wallis_test.statistic - n_samples + 1) / (n - n_samples)
+            eta_squared = checks.check_assoc_value(eta_squared)
+            cat_num_assoc_matrix.loc[cat_variable_name, num_variable_name] = eta_squared
+    return cat_num_assoc_matrix</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.utils.calculate_depend_matrix"><code class="name flex">
+<span>def <span class="ident">calculate_depend_matrix</span></span>(<span>data, depend_method, corr_method, agg_method)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L88-L104" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def calculate_depend_matrix(
+    data, depend_method, corr_method, agg_method
+):
+    depend_matrix = pd.DataFrame()
+    if depend_method == &#34;assoc&#34;:
+        depend_matrix = calculate_assoc_matrix(data, corr_method)
+    if depend_method == &#34;pps&#34;:
+        depend_matrix = calculate_pps_matrix(data, agg_method)
+    if callable(depend_method):
+        try:
+            depend_matrix = depend_method(data)
+        except:
+            raise ValueError(
+                &#34;You have passed wrong callable in depend_method argument. &#34;
+                &#34;&#39;depend_method&#39; is the callable to use for calculating dependency matrix.&#34;
+            )
+    return depend_matrix</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.utils.calculate_linkage_matrix"><code class="name flex">
+<span>def <span class="ident">calculate_linkage_matrix</span></span>(<span>depend_matrix, clust_method)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L107-L114" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def calculate_linkage_matrix(depend_matrix, clust_method):
+    from scipy.cluster.hierarchy import linkage
+    from scipy.spatial.distance import squareform
+    dissimilarity = 1 - abs(depend_matrix)
+    ## https://www.kaggle.com/sgalella/correlation-heatmaps-with-hierarchical-clustering?scriptVersionId=24045077&amp;cellId=10
+    linkage_matrix = linkage(squareform(dissimilarity), clust_method)
+
+    return linkage_matrix</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.utils.calculate_min_depend"><code class="name flex">
+<span>def <span class="ident">calculate_min_depend</span></span>(<span>variables_list, data, depend_method='assoc', corr_method='spearman', agg_method='max')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L164-L172" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def calculate_min_depend(
+    variables_list,
+    data,
+    depend_method=&#34;assoc&#34;,
+    corr_method=&#34;spearman&#34;,
+    agg_method=&#34;max&#34;,
+): 
+    depend_matrix = calculate_depend_matrix(data, depend_method, corr_method, agg_method)
+    return get_min_depend_from_matrix(depend_matrix, variables_list)</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.utils.calculate_pps_matrix"><code class="name flex">
+<span>def <span class="ident">calculate_pps_matrix</span></span>(<span>data, agg_method)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L69-L85" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def calculate_pps_matrix(data, agg_method):
+    _global_checks.global_check_import(&#39;ppscore&#39;, &#39;depend_matrix with PPS calculation&#39;)
+    import ppscore as pps
+    pps_result = pps.matrix(data, sample=None)
+    pps_matrix = pps_result[[&#34;x&#34;, &#34;y&#34;, &#34;ppscore&#34;]].pivot(
+        columns=&#34;x&#34;, index=&#34;y&#34;, values=&#34;ppscore&#34;
+    )
+    pps_matrix.rename_axis(None, axis=1, inplace=True)
+    pps_matrix.rename_axis(None, axis=0, inplace=True)
+    # aggregate values to make symmetric matrix
+    if agg_method == &#34;max&#34;:
+        pps_matrix = np.maximum(pps_matrix, pps_matrix.transpose())
+    if agg_method == &#34;min&#34;:
+        pps_matrix = np.minimum(pps_matrix, pps_matrix.transpose())
+    if agg_method == &#34;mean&#34;:
+        pps_matrix = (pps_matrix + pps_matrix.transpose()) / 2
+    return pps_matrix</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.utils.get_dendrogram_aspects_ordered"><code class="name flex">
+<span>def <span class="ident">get_dendrogram_aspects_ordered</span></span>(<span>hierarchical_clustering_dendrogram, depend_matrix)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L117-L144" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_dendrogram_aspects_ordered(hierarchical_clustering_dendrogram, depend_matrix):
+    # names of variables on axis
+    tick_dict = dict(
+        zip(
+            hierarchical_clustering_dendrogram.layout.yaxis.tickvals,
+            [[var] for var in hierarchical_clustering_dendrogram.layout.yaxis.ticktext]
+        )
+    )
+    d = {k:v for v,k in enumerate(depend_matrix.columns)} # original order of columns
+    
+    # get names of variables for dendrogram traces
+    _aspects_dendrogram_order = []
+    for scatter in hierarchical_clustering_dendrogram.data:
+        vars_list = tick_dict[scatter.y[1]] + tick_dict[scatter.y[2]]
+        vars_list.sort(key=d.get)
+        tick_dict[np.mean(scatter.y[1:3])] = vars_list
+        _aspects_dendrogram_order.append(
+            vars_list
+        )
+    
+    # get min dependency between grouped variables
+    _vars_min_depend, _min_depend = get_min_depend_from_matrix(depend_matrix, _aspects_dendrogram_order)
+
+    return pd.DataFrame({
+        &#34;variable_names&#34;: _aspects_dendrogram_order,
+        &#34;min_depend&#34;: _min_depend,
+        &#34;vars_min_depend&#34;: _vars_min_depend
+    })</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.utils.get_min_depend_from_matrix"><code class="name flex">
+<span>def <span class="ident">get_min_depend_from_matrix</span></span>(<span>depend_matrix, variables_list)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\utils.py#L147-L161" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_min_depend_from_matrix(depend_matrix, variables_list): 
+    _vars_min_depend = []
+    _min_depend = []
+    for vars in variables_list:
+        if isinstance(vars, (list, tuple, np.ndarray)):
+            depend_submatrix = abs(depend_matrix).loc[list(vars), list(vars)]
+            _min = np.array(depend_submatrix).min()
+            _min_idx = np.where(depend_submatrix == _min)
+            var_a_idx, var_b_idx = _min_idx[0][0], _min_idx[1][0]
+            _vars_min_depend.append(np.array(depend_submatrix.columns[[var_a_idx, var_b_idx]]))
+            _min_depend.append(_min)
+        else:
+            _vars_min_depend.append(None)
+            _min_depend.append(None)
+    return _vars_min_depend, _min_depend</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="dalex Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt=""> dalex
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dalex.aspect" href="index.html">dalex.aspect</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="dalex.aspect.utils.calculate_assoc_matrix" href="#dalex.aspect.utils.calculate_assoc_matrix">calculate_assoc_matrix</a></code></li>
+<li><code><a title="dalex.aspect.utils.calculate_cat_assoc_matrix" href="#dalex.aspect.utils.calculate_cat_assoc_matrix">calculate_cat_assoc_matrix</a></code></li>
+<li><code><a title="dalex.aspect.utils.calculate_cat_num_assoc_matrix" href="#dalex.aspect.utils.calculate_cat_num_assoc_matrix">calculate_cat_num_assoc_matrix</a></code></li>
+<li><code><a title="dalex.aspect.utils.calculate_depend_matrix" href="#dalex.aspect.utils.calculate_depend_matrix">calculate_depend_matrix</a></code></li>
+<li><code><a title="dalex.aspect.utils.calculate_linkage_matrix" href="#dalex.aspect.utils.calculate_linkage_matrix">calculate_linkage_matrix</a></code></li>
+<li><code><a title="dalex.aspect.utils.calculate_min_depend" href="#dalex.aspect.utils.calculate_min_depend">calculate_min_depend</a></code></li>
+<li><code><a title="dalex.aspect.utils.calculate_pps_matrix" href="#dalex.aspect.utils.calculate_pps_matrix">calculate_pps_matrix</a></code></li>
+<li><code><a title="dalex.aspect.utils.get_dendrogram_aspects_ordered" href="#dalex.aspect.utils.get_dendrogram_aspects_ordered">get_dendrogram_aspects_ordered</a></code></li>
+<li><code><a title="dalex.aspect.utils.get_min_depend_from_matrix" href="#dalex.aspect.utils.get_min_depend_from_matrix">get_min_depend_from_matrix</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

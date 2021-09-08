@@ -28,7 +28,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\__init__.py#L0-L10" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\__init__.py#L0-L10" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from ._aggregated_profiles.object import AggregatedProfiles
 from ._model_performance.object import ModelPerformance
@@ -120,7 +120,7 @@ around the average y_hat calculated on the data sample).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_aggregated_profiles\object.py#L11-L330" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_aggregated_profiles\object.py#L11-L330" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AggregatedProfiles(Explanation):
     &#34;&#34;&#34;Calculate model-level variable profiles as Partial or Accumulated Dependence
@@ -203,7 +203,7 @@ around the average y_hat calculated on the data sample).</dd>
         self.variables = _variables
         self.span = span
         self.center = center
-        self.result = None
+        self.result = pd.DataFrame()
         self.mean_prediction = None
         self.raw_profiles = None
         self.random_state = random_state
@@ -471,7 +471,7 @@ around the average y_hat calculated on the data sample).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_aggregated_profiles\object.py#L100-L149" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_aggregated_profiles\object.py#L100-L149" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self,
         ceteris_paribus,
@@ -576,7 +576,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_aggregated_profiles\object.py#L151-L330" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_aggregated_profiles\object.py#L151-L330" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -794,7 +794,7 @@ recall, precision, acc, f1 (default is <code>0.5</code>).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_model_performance\object.py#L9-L175" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_model_performance\object.py#L9-L175" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ModelPerformance(Explanation):
     &#34;&#34;&#34;Calculate model-level model performance measures
@@ -828,7 +828,7 @@ recall, precision, acc, f1 (default is <code>0.5</code>).</dd>
 
         self.cutoff = cutoff
         self.model_type = model_type
-        self.result = None
+        self.result = pd.DataFrame()
         self.residuals = None
 
     def _repr_html_(self):
@@ -990,7 +990,7 @@ recall, precision, acc, f1 (default is <code>0.5</code>).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_model_performance\object.py#L47-L118" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_model_performance\object.py#L47-L118" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, explainer):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -1091,7 +1091,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_model_performance\object.py#L120-L175" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_model_performance\object.py#L120-L175" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -1179,7 +1179,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_residual_diagnostics\object.py#L10-L167" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_residual_diagnostics\object.py#L10-L167" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ResidualDiagnostics(Explanation):
     &#34;&#34;&#34;Calculate model-level residuals diagnostics
@@ -1206,7 +1206,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 
         _variables = checks.check_variables(variables)
 
-        self.result = None
+        self.result = pd.DataFrame()
         self.variables = _variables
 
     def _repr_html_(self):
@@ -1366,7 +1366,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_residual_diagnostics\object.py#L41-L77" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_residual_diagnostics\object.py#L41-L77" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, explainer):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -1446,7 +1446,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_residual_diagnostics\object.py#L79-L167" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_residual_diagnostics\object.py#L79-L167" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -1608,7 +1608,7 @@ before the calculation of variable importance.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_variable_importance\object.py#L10-L361" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_variable_importance\object.py#L10-L361" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class VariableImportance(Explanation):
     &#34;&#34;&#34;Calculate model-level variable importance
@@ -1698,7 +1698,7 @@ before the calculation of variable importance.</dd>
         self.variable_groups = variable_groups
         self.random_state = _random_state
         self.keep_raw_permutations = _keep_raw_permutations
-        self.result = None
+        self.result = pd.DataFrame()
         self.permutation = None
         self.processes = _processes
 
@@ -1942,7 +1942,7 @@ before the calculation of variable importance.</dd>
                     row=i + 1, col=1)
 
                 fig.update_yaxes({&#39;type&#39;: &#39;category&#39;, &#39;autorange&#39;: &#39;reversed&#39;, &#39;gridwidth&#39;: 2, &#39;automargin&#39;: True,
-                                  &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True},
+                                  &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;dtick&#39;:1, &#39;fixedrange&#39;: True},
                                  row=i + 1, col=1)
 
                 fig.update_xaxes(
@@ -1968,6 +1968,10 @@ before the calculation of variable importance.</dd>
 <li>dalex._explanation.Explanation</li>
 <li>abc.ABC</li>
 </ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>dalex.aspect._model_aspect_importance.object.ModelAspectImportance</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="dalex.model_explanations.VariableImportance.fit"><code class="name flex">
@@ -1989,7 +1993,7 @@ before the calculation of variable importance.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_variable_importance\object.py#L105-L132" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_variable_importance\object.py#L105-L132" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fit(self, explainer):
     &#34;&#34;&#34;Calculate the result of explanation
@@ -2058,7 +2062,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/daf33cbe54f0b624973722f4d208cb5edaa55cb4/dalex\model_explanations\_variable_importance\object.py#L134-L361" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\model_explanations\_variable_importance\object.py#L134-L361" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot(self,
          objects=None,
@@ -2268,7 +2272,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
                 row=i + 1, col=1)
 
             fig.update_yaxes({&#39;type&#39;: &#39;category&#39;, &#39;autorange&#39;: &#39;reversed&#39;, &#39;gridwidth&#39;: 2, &#39;automargin&#39;: True,
-                              &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;fixedrange&#39;: True},
+                              &#39;ticks&#39;: &#39;outside&#39;, &#39;tickcolor&#39;: &#39;white&#39;, &#39;ticklen&#39;: 10, &#39;dtick&#39;:1, &#39;fixedrange&#39;: True},
                              row=i + 1, col=1)
 
             fig.update_xaxes(

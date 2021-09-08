@@ -1,0 +1,1708 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>dalex.aspect.object API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:50%;max-height:6em;margin:auto;margin-bottom:.3em}</style>
+<link rel="canonical" href="https://dalex.drwhy.ai/python/api/dalex/aspect/object.html">
+<link rel="icon" type="image/png" href="https://dalex.drwhy.ai/favicon.svg"/>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dalex.aspect.object</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L0-L480" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">import numpy as np
+import pandas as pd
+
+from dalex.aspect._model_aspect_importance.object import ModelAspectImportance
+from dalex.aspect._predict_aspect_importance.object import PredictAspectImportance
+from dalex.aspect._model_triplot.object import ModelTriplot
+from dalex.aspect._predict_triplot.object import PredictTriplot
+
+from . import utils, checks, plot
+from .. import _theme
+
+
+class Aspect:
+    &#34;&#34;&#34;Create Aspect
+
+    Explanation methods that do not take into account dependencies between variables
+    can produce misleading results. This class creates a representation of a model based
+    on an Explainer object. In addition, it calculates the relationships between
+    the variables that can be used to create explanations. Methods of this class produce
+    explanation objects, that contain the main result attribute, and can be visualised
+    using the plot method.
+
+    The `explainer` is the only required parameter.
+
+    Parameters
+    ----------
+    explainer : Explainer object
+        Model wrapper created using the Explainer class.
+    depend_method: {&#39;assoc&#39;, &#39;pps&#39;} or function, optional
+        The method of calculating the dependencies between variables (i.e. the dependency
+        matrix). Default is `&#39;assoc&#39;`, which means the use of statistical association
+        (correlation coefficient, Cramér&#39;s V based on Pearson&#39;s chi-squared statistic 
+        and eta-quared based on Kruskal-Wallis H-statistic);
+        `&#39;pps&#39;` stands for Power Predictive Score.
+        NOTE: When a function is passed, it is called with the `explainer.data` and it
+        must return a symmetric dependency matrix (`pd.DataFrame` with variable names as
+        columns and rows).
+    clust_method : {&#39;complete&#39;, &#39;single&#39;, &#39;average&#39;, &#39;weighted&#39;, &#39;centroid&#39;, &#39;median&#39;, &#39;ward&#39;}, optional
+        The linkage algorithm to use for variables hierarchical clustering
+        (default is `&#39;complete&#39;`).
+    corr_method : {&#39;spearman&#39;, &#39;pearson&#39;, &#39;kendall&#39;}, optional
+        The method of calculating correlation between numerical variables
+        (default is `&#39;spearman&#39;`).
+        NOTE: Ignored if `depend_method` is not `&#39;assoc&#39;`.
+    agg_method : {&#39;max&#39;, &#39;min&#39;, &#39;avg&#39;}, optional
+        The method of aggregating the PPS values for pairs of variables
+        (default is `&#39;max&#39;`).
+        NOTE: Ignored if `depend_method` is not `&#39;pps&#39;`.
+
+    Attributes
+    --------
+    explainer : Explainer object
+        Model wrapper created using the Explainer class.
+    depend_method : {&#39;assoc&#39;, &#39;pps&#39;} or function
+        The method of calculating the dependencies between variables.
+    clust_method : {&#39;complete&#39;, &#39;single&#39;, &#39;average&#39;, &#39;weighted&#39;, &#39;centroid&#39;, &#39;median&#39;, &#39;ward&#39;}
+        The linkage algorithm to use for variables hierarchical clustering.
+    corr_method : {&#39;spearman&#39;, &#39;pearson&#39;, &#39;kendall&#39;}
+        The method of calculating correlation between numerical variables.
+    agg_method : {&#39;max&#39;, &#39;min&#39;, &#39;avg&#39;}
+        The method of aggregating the PPS values for pairs of variables.
+    depend_matrix : pd.DataFrame
+        The dependency matrix (with variable names as columns and rows).
+    linkage_matrix :
+        The hierarchical clustering of variables encoded as a `scipy` linkage matrix.
+
+    Notes
+    -----
+    - assoc, eta-squared: http://tss.awf.poznan.pl/files/3_Trends_Vol21_2014__no1_20.pdf
+    - assoc, Cramér&#39;s V: http://stats.lse.ac.uk/bergsma/pdf/cramerV3.pdf
+    - PPS: https://github.com/8080labs/ppscore
+    - triplot: https://arxiv.org/abs/2104.03403
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        explainer,
+        depend_method=&#34;assoc&#34;,
+        clust_method=&#34;complete&#34;,
+        corr_method=&#34;spearman&#34;,
+        agg_method=&#34;max&#34;,
+    ):  
+        _depend_method, _corr_method, _agg_method = checks.check_method_depend(depend_method, corr_method, agg_method)
+        self.explainer = explainer
+        self.depend_method = _depend_method
+        self.clust_method = clust_method
+        self.corr_method = _corr_method
+        self.agg_method = _agg_method
+        self.depend_matrix = utils.calculate_depend_matrix(
+            self.explainer.data, self.depend_method, self.corr_method, self.agg_method
+        )
+        self.linkage_matrix = utils.calculate_linkage_matrix(
+            self.depend_matrix, clust_method
+        )
+        self._hierarchical_clustering_dendrogram = plot.plot_dendrogram(
+            self.linkage_matrix, self.depend_matrix.columns
+        )
+        self._dendrogram_aspects_ordered = utils.get_dendrogram_aspects_ordered(
+            self._hierarchical_clustering_dendrogram, self.depend_matrix
+        )
+        self._full_hierarchical_aspect_importance = None
+        self._mt_params = None
+
+    def get_aspects(self, h=0.5, n=None):
+        from scipy.cluster.hierarchy import fcluster
+        &#34;&#34;&#34;Form aspects of variables from the hierarchical clustering
+
+        Parameters
+        ----------
+        h : float, optional
+            Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+            between the variables grouped in one aspect (default is `0.5`).
+            NOTE: Ignored if `n` is not `None`.
+        n : int, optional
+            Maximum number of aspects to form 
+            (default is `None`, which means the use of `h` parameter).
+
+        Returns
+        -------
+        dict of lists
+            Variables grouped in aspects, e.g. `{&#39;aspect_1&#39;: [&#39;x1&#39;, &#39;x2&#39;], &#39;aspect_2&#39;: [&#39;y1&#39;, &#39;y2&#39;]}`.
+        &#34;&#34;&#34;
+        if n is None:
+            aspect_label = fcluster(self.linkage_matrix, 1 - h, criterion=&#34;distance&#34;)
+        else:
+            aspect_label = fcluster(self.linkage_matrix, n, criterion=&#34;maxclust&#34;)
+        aspects = pd.DataFrame(
+            {&#34;feature&#34;: self.depend_matrix.columns, &#34;aspect&#34;: aspect_label}
+        )
+        aspects = aspects.groupby(&#34;aspect&#34;)[&#34;feature&#34;].apply(list).reset_index()
+        aspects_dict = {}
+
+        # rename an aspect when there is a single variable in it
+        i = 1
+        for index, row in aspects.iterrows():
+            if len(row[&#34;feature&#34;]) &gt; 1:
+                aspects_dict[f&#34;aspect_{i}&#34;] = row[&#34;feature&#34;]
+                i += 1
+            else:
+                aspects_dict[row[&#34;feature&#34;][0]] = row[&#34;feature&#34;]
+
+        return aspects_dict
+
+    def plot_dendrogram(
+        self,
+        title=&#34;Hierarchical clustering dendrogram&#34;,
+        lines_interspace=20,
+        rounding_function=np.round,
+        digits=3,
+        show=True,
+    ):
+        &#34;&#34;&#34;Plot the hierarchical clustering dendrogram of variables
+
+        Parameters
+        ----------
+        title : str, optional
+            Title of the plot (default is &#34;Hierarchical clustering dendrogram&#34;).
+        lines_interspace : float, optional
+            Interspace between lines of dendrogram in px (default is `20`).
+        rounding_function : function, optional
+            A function that will be used for rounding numbers (default is `np.around`).
+        digits : int, optional
+            Number of decimal places (`np.around`) to round contributions.
+            See `rounding_function` parameter (default is `3`).
+        show : bool, optional
+            `True` shows the plot; `False` returns the plotly Figure object that can
+            be edited or saved using the `write_image()` method (default is `True`).
+
+        Returns
+        -------
+        None or plotly.graph_objects.Figure
+            Return figure that can be edited or saved. See `show` parameter.
+        &#34;&#34;&#34;
+        m = len(self.depend_matrix.columns)
+        plot_height = 78 + 71 + m * lines_interspace + (m + 1) * lines_interspace / 4
+        fig = self._hierarchical_clustering_dendrogram
+        fig = plot.add_text_and_tooltips_to_dendrogram(
+            fig, self._dendrogram_aspects_ordered, rounding_function, digits
+        )
+        fig = plot._add_points_on_dendrogram_traces(fig)
+        fig.update_layout(
+            title={&#34;text&#34;: title, &#34;x&#34;: 0.15},
+            yaxis={&#34;automargin&#34;: True, &#34;autorange&#34;: &#34;reversed&#34;},
+            height=plot_height,
+        )
+        if show:
+            fig.show(config=_theme.get_default_config())
+        else:
+            return fig
+
+    def predict_parts(
+        self,
+        new_observation,
+        variable_groups=None,
+        type=&#34;default&#34;,
+        h=0.5,
+        N=2000,
+        B=25,
+        n_aspects=None,
+        sample_method=&#34;default&#34;,
+        f=2,
+        label=None,
+        processes=1,
+        random_state=None,
+    ):
+        &#34;&#34;&#34;Calculate predict-level aspect importance
+
+        Parameters
+        ----------
+        new_observation : pd.Series or np.ndarray (1d) or pd.DataFrame (1,p)
+            An observation for which a prediction needs to be explained.
+        variable_groups : dict of lists or None
+            Variables grouped in aspects to calculate their importance (default is `None`).
+        type : {&#39;default&#39;, &#39;shap&#39;}, optional
+            Type of aspect importance/attributions (default is `&#39;default&#39;`, which means
+            the use of simplified LIME method).
+        h : float, optional
+            Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+            between the variables grouped in one aspect (default is `0.5`).
+        N : int, optional
+            Number of observations that will be sampled from the `explainer.data` attribute
+            before the calculation of aspect importance (default is `2000`).
+        B : int, optional
+            Parameter specific for `type == &#39;shap&#39;`. Number of random paths to calculate aspect
+            attributions (default is `25`).
+            NOTE: Ignored if `type` is not `&#39;shap&#39;`.
+        n_aspects : int, optional
+            Parameter specific for `type == &#39;default&#39;`. Maximum number of non-zero importances, i.e.
+            coefficients after lasso fitting (default is `None`, which means the linear regression is used).
+            NOTE: Ignored if `type` is not `&#39;default&#39;`.
+        sample_method : {&#39;default&#39;, &#39;binom&#39;}, optional
+            Parameter specific for `type == &#39;default&#39;`. Sampling method for creating binary matrix
+            used as mask for replacing aspects in sampled data (default is `&#39;default&#39;`, which means
+            it randomly replaces one or two zeros per row; `&#39;binom&#39;` replaces random number of zeros
+            per row).
+            NOTE: Ignored if `type` is not `&#39;default&#39;`.
+        f : int, optional
+            Parameter specific for `type == &#39;default&#39;` and `sample_method == &#39;binom&#39;`. Parameter
+            controlling average number of replaced zeros for binomial sampling (default is `2`).
+            NOTE: Ignored if `type` is not `&#39;default&#39;` or `sample_method` is not `&#39;binom&#39;`.
+        label : str, optional
+            Name to appear in result and plots. Overrides default.
+        processes : int, optional
+            Parameter specific for `type == &#39;shap&#39;`. Number of parallel processes to use in calculations.
+            Iterated over `B` (default is `1`, which means no parallel computation).
+        random_state : int, optional
+            Set seed for random number generator (default is random seed).
+
+        Returns
+        -------
+        PredictAspectImportance class object
+            Explanation object containing the main result attribute and the plot method.
+        &#34;&#34;&#34;
+
+        if variable_groups is None:
+            variable_groups = self.get_aspects(h)
+
+        pai = PredictAspectImportance(
+            variable_groups,
+            type,
+            N,
+            B,
+            n_aspects,
+            sample_method,
+            f,
+            self.depend_method,
+            self.corr_method,
+            self.agg_method,
+            processes,
+            random_state,
+            _depend_matrix=self.depend_matrix
+        )
+
+        pai.fit(self.explainer, new_observation)
+
+        if label is not None:
+            pai.result[&#34;label&#34;] = label
+
+        return pai
+
+    def model_parts(
+        self,
+        variable_groups=None,
+        h=0.5,
+        loss_function=None,
+        type=&#34;variable_importance&#34;,
+        N=1000,
+        B=10,
+        processes=1,
+        label=None,
+        random_state=None,
+    ):
+        &#34;&#34;&#34;Calculate model-level aspect importance
+
+        Parameters
+        ----------
+        variable_groups : dict of lists or None
+            Variables grouped in aspects to calculate their importance (default is `None`).
+        h : float, optional
+            Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+            between the variables grouped in one aspect (default is `0.5`).
+        loss_function :  {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
+            If string, then such loss function will be used to assess aspect importance
+            (default is `&#39;rmse&#39;` or `&#39;1-auc&#39;`, depends on `explainer.model_type` attribute).
+        type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;}, optional
+            Type of transformation that will be applied to dropout loss
+            (default is `&#39;variable_importance&#39;`, which is Permutational Variable Importance).
+        N : int, optional
+            Number of observations that will be sampled from the `explainer.data` attribute before
+            the calculation of aspect importance. `None` means all `data` (default is `1000`).
+        B : int, optional
+            Number of permutation rounds to perform on each variable (default is `10`).
+        processes : int, optional
+            Number of parallel processes to use in calculations. Iterated over `B`
+            (default is `1`, which means no parallel computation).
+        label : str, optional
+            Name to appear in result and plots. Overrides default.
+        random_state : int, optional
+            Set seed for random number generator (default is random seed).
+
+        Returns
+        -------
+        ModelAspectImportance class object
+            Explanation object containing the main result attribute and the plot method.
+        &#34;&#34;&#34;
+
+        loss_function = checks.check_method_loss_function(self.explainer, loss_function)
+        mai_result = None
+
+        if variable_groups is None:
+            variable_groups = self.get_aspects(h)
+
+            # get results from triplot if it was precalculated with the same params
+            if self._full_hierarchical_aspect_importance is not None:
+                if (
+                    self._mt_params[&#34;loss_function&#34;] == loss_function
+                    and self._mt_params[&#34;N&#34;] == N
+                    and self._mt_params[&#34;B&#34;] == B
+                    and self._mt_params[&#34;type&#34;] == type
+                ):
+                    h = min(1, h)
+                    h_selected = np.unique(
+                        self._full_hierarchical_aspect_importance.loc[
+                            self._full_hierarchical_aspect_importance.h &gt;= h
+                        ].h
+                    )[0]
+                    mai_result = self._full_hierarchical_aspect_importance.loc[
+                        self._full_hierarchical_aspect_importance.h == h_selected
+                    ]
+
+        ai = ModelAspectImportance(
+            loss_function=loss_function,
+            type=type,
+            N=N,
+            B=B,
+            variable_groups=variable_groups,
+            processes=processes,
+            random_state=random_state,
+            _depend_matrix=self.depend_matrix
+        )
+
+        # calculate if there was no results
+        if mai_result is None:
+            ai.fit(self.explainer)
+        else: 
+            mai_result = mai_result[
+                [
+                    &#34;aspect_name&#34;,
+                    &#34;variable_names&#34;,
+                    &#34;dropout_loss&#34;,
+                    &#34;dropout_loss_change&#34;,
+                    &#34;min_depend&#34;,
+                    &#34;vars_min_depend&#34;,
+                    &#34;label&#34;,
+                ]
+            ]
+            ai.result = mai_result
+
+        if label is not None:
+            ai.result[&#34;label&#34;] = label
+
+        return ai
+
+    def predict_triplot(
+        self,
+        new_observation,
+        type=&#34;default&#34;,
+        N=2000,
+        B=25,
+        sample_method=&#34;default&#34;,
+        f=2,
+        processes=1,
+        random_state=None,
+    ):
+        &#34;&#34;&#34;Calculate predict-level hierarchical aspect importance
+
+        Parameters
+        ----------
+        new_observation : pd.Series or np.ndarray (1d) or pd.DataFrame (1,p)
+            An observation for which a prediction needs to be explained.
+        type : {&#39;default&#39;, &#39;shap&#39;}, optional
+            Type of aspect importance/attributions (default is `&#39;default&#39;`, which means
+            the use of simplified LIME method).
+        N : int, optional
+            Number of observations that will be sampled from the `explainer.data` attribute
+            before the calculation of aspect importance (default is `2000`).
+        B : int, optional
+            Parameter specific for `type == &#39;shap&#39;`. Number of random paths to calculate aspect
+            attributions (default is `25`).
+            NOTE: Ignored if `type` is not `&#39;shap&#39;`.
+        sample_method : {&#39;default&#39;, &#39;binom&#39;}, optional
+            Parameter specific for `type == &#39;default&#39;`. Sampling method for creating binary matrix
+            used as mask for replacing aspects in data (default is `&#39;default&#39;`, which means
+            it randomly replaces one or two zeros per row; `&#39;binom&#39;` replaces random number of zeros
+            per row).
+            NOTE: Ignored if `type` is not `&#39;default&#39;`.
+        f : int, optional
+            Parameter specific for `type == &#39;default&#39;` and `sample_method == &#39;binom&#39;`. Parameter
+            controlling average number of replaced zeros for binomial sampling (default is `2`).
+            NOTE: Ignored if `type` is not `&#39;default&#39;` or `sample_method` is not `&#39;binom&#39;`.
+        processes : int, optional
+            Number of parallel processes to use in calculations. Iterated over `B`
+            (default is `1`, which means no parallel computation).
+        random_state : int, optional
+            Set seed for random number generator (default is random seed).
+
+        Returns
+        -------
+        PredictTriplot class object
+            Explanation object containing the main result attribute and the plot method.
+        &#34;&#34;&#34;
+
+        pt = PredictTriplot(type, N, B, sample_method, f, processes, random_state)
+
+        pt.fit(self, new_observation)
+
+        return pt
+
+    def model_triplot(
+        self,
+        loss_function=None,
+        type=&#34;variable_importance&#34;,
+        N=1000,
+        B=10,
+        processes=1,
+        random_state=None,
+    ):
+        &#34;&#34;&#34;Calculate model-level hierarchical aspect importance
+
+        Parameters
+        ----------
+        loss_function :  {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
+            If string, then such loss function will be used to assess aspect importance
+            (default is `&#39;rmse&#39;` or `&#39;1-auc&#39;`, depends on `explainer.model_type` attribute).
+        type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;}, optional
+            Type of transformation that will be applied to dropout loss
+            (default is `&#39;variable_importance&#39;`, which is Permutational Variable Importance).
+        N : int, optional
+            Number of observations that will be sampled from the `explainer.data` attribute before
+            the calculation of aspect importance. `None` means all `data` (default is `1000`).
+        B : int, optional
+            Number of permutation rounds to perform on each variable (default is `10`).
+        processes : int, optional
+            Number of parallel processes to use in calculations. Iterated over `B`
+            (default is `1`, which means no parallel computation).
+        random_state : int, optional
+            Set seed for random number generator (default is random seed).
+
+        Returns
+        -------
+        ModelTriplot class object
+            Explanation object containing the main result attribute and the plot method.
+        &#34;&#34;&#34;
+
+        
+        loss_function = checks.check_method_loss_function(self.explainer, loss_function) # get proper loss_function for model_type
+        mt = ModelTriplot(loss_function, type, N, B, processes, random_state)
+        self._mt_params = {&#34;loss_function&#34;: loss_function, &#34;type&#34;: type, &#34;N&#34;: N, &#34;B&#34;: B} # save params for future calls of model_parts
+        mt.fit(self)
+
+        return mt</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="dalex.aspect.object.Aspect"><code class="flex name class">
+<span>class <span class="ident">Aspect</span></span>
+<span>(</span><span>explainer, depend_method='assoc', clust_method='complete', corr_method='spearman', agg_method='max')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create Aspect</p>
+<p>Explanation methods that do not take into account dependencies between variables
+can produce misleading results. This class creates a representation of a model based
+on an Explainer object. In addition, it calculates the relationships between
+the variables that can be used to create explanations. Methods of this class produce
+explanation objects, that contain the main result attribute, and can be visualised
+using the plot method.</p>
+<p>The <code>explainer</code> is the only required parameter.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>explainer</code></strong> :&ensp;<code>Explainer object</code></dt>
+<dd>Model wrapper created using the Explainer class.</dd>
+<dt><strong><code>depend_method</code></strong> :&ensp;<code>{'assoc', 'pps'}</code> or <code>function</code>, optional</dt>
+<dd>The method of calculating the dependencies between variables (i.e. the dependency
+matrix). Default is <code>'assoc'</code>, which means the use of statistical association
+(correlation coefficient, Cramér's V based on Pearson's chi-squared statistic
+and eta-quared based on Kruskal-Wallis H-statistic);
+<code>'pps'</code> stands for Power Predictive Score.
+NOTE: When a function is passed, it is called with the <code>explainer.data</code> and it
+must return a symmetric dependency matrix (<code>pd.DataFrame</code> with variable names as
+columns and rows).</dd>
+<dt><strong><code>clust_method</code></strong> :&ensp;<code>{'complete', 'single', 'average', 'weighted', 'centroid', 'median', 'ward'}</code>, optional</dt>
+<dd>The linkage algorithm to use for variables hierarchical clustering
+(default is <code>'complete'</code>).</dd>
+<dt><strong><code>corr_method</code></strong> :&ensp;<code>{'spearman', 'pearson', 'kendall'}</code>, optional</dt>
+<dd>The method of calculating correlation between numerical variables
+(default is <code>'spearman'</code>).
+NOTE: Ignored if <code>depend_method</code> is not <code>'assoc'</code>.</dd>
+<dt><strong><code>agg_method</code></strong> :&ensp;<code>{'max', 'min', 'avg'}</code>, optional</dt>
+<dd>The method of aggregating the PPS values for pairs of variables
+(default is <code>'max'</code>).
+NOTE: Ignored if <code>depend_method</code> is not <code>'pps'</code>.</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>explainer</code></strong> :&ensp;<code>Explainer object</code></dt>
+<dd>Model wrapper created using the Explainer class.</dd>
+<dt><strong><code>depend_method</code></strong> :&ensp;<code>{'assoc', 'pps'}</code> or <code>function</code></dt>
+<dd>The method of calculating the dependencies between variables.</dd>
+<dt><strong><code>clust_method</code></strong> :&ensp;<code>{'complete', 'single', 'average', 'weighted', 'centroid', 'median', 'ward'}</code></dt>
+<dd>The linkage algorithm to use for variables hierarchical clustering.</dd>
+<dt><strong><code>corr_method</code></strong> :&ensp;<code>{'spearman', 'pearson', 'kendall'}</code></dt>
+<dd>The method of calculating correlation between numerical variables.</dd>
+<dt><strong><code>agg_method</code></strong> :&ensp;<code>{'max', 'min', 'avg'}</code></dt>
+<dd>The method of aggregating the PPS values for pairs of variables.</dd>
+<dt><strong><code>depend_matrix</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>The dependency matrix (with variable names as columns and rows).</dd>
+</dl>
+<p>linkage_matrix :
+The hierarchical clustering of variables encoded as a <code>scipy</code> linkage matrix.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>assoc, eta-squared: <a href="http://tss.awf.poznan.pl/files/3_Trends_Vol21_2014__no1_20.pdf">http://tss.awf.poznan.pl/files/3_Trends_Vol21_2014__no1_20.pdf</a></li>
+<li>assoc, Cramér's V: <a href="http://stats.lse.ac.uk/bergsma/pdf/cramerV3.pdf">http://stats.lse.ac.uk/bergsma/pdf/cramerV3.pdf</a></li>
+<li>PPS: <a href="https://github.com/8080labs/ppscore">https://github.com/8080labs/ppscore</a></li>
+<li>triplot: <a href="https://arxiv.org/abs/2104.03403">https://arxiv.org/abs/2104.03403</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L13-L481" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class Aspect:
+    &#34;&#34;&#34;Create Aspect
+
+    Explanation methods that do not take into account dependencies between variables
+    can produce misleading results. This class creates a representation of a model based
+    on an Explainer object. In addition, it calculates the relationships between
+    the variables that can be used to create explanations. Methods of this class produce
+    explanation objects, that contain the main result attribute, and can be visualised
+    using the plot method.
+
+    The `explainer` is the only required parameter.
+
+    Parameters
+    ----------
+    explainer : Explainer object
+        Model wrapper created using the Explainer class.
+    depend_method: {&#39;assoc&#39;, &#39;pps&#39;} or function, optional
+        The method of calculating the dependencies between variables (i.e. the dependency
+        matrix). Default is `&#39;assoc&#39;`, which means the use of statistical association
+        (correlation coefficient, Cramér&#39;s V based on Pearson&#39;s chi-squared statistic 
+        and eta-quared based on Kruskal-Wallis H-statistic);
+        `&#39;pps&#39;` stands for Power Predictive Score.
+        NOTE: When a function is passed, it is called with the `explainer.data` and it
+        must return a symmetric dependency matrix (`pd.DataFrame` with variable names as
+        columns and rows).
+    clust_method : {&#39;complete&#39;, &#39;single&#39;, &#39;average&#39;, &#39;weighted&#39;, &#39;centroid&#39;, &#39;median&#39;, &#39;ward&#39;}, optional
+        The linkage algorithm to use for variables hierarchical clustering
+        (default is `&#39;complete&#39;`).
+    corr_method : {&#39;spearman&#39;, &#39;pearson&#39;, &#39;kendall&#39;}, optional
+        The method of calculating correlation between numerical variables
+        (default is `&#39;spearman&#39;`).
+        NOTE: Ignored if `depend_method` is not `&#39;assoc&#39;`.
+    agg_method : {&#39;max&#39;, &#39;min&#39;, &#39;avg&#39;}, optional
+        The method of aggregating the PPS values for pairs of variables
+        (default is `&#39;max&#39;`).
+        NOTE: Ignored if `depend_method` is not `&#39;pps&#39;`.
+
+    Attributes
+    --------
+    explainer : Explainer object
+        Model wrapper created using the Explainer class.
+    depend_method : {&#39;assoc&#39;, &#39;pps&#39;} or function
+        The method of calculating the dependencies between variables.
+    clust_method : {&#39;complete&#39;, &#39;single&#39;, &#39;average&#39;, &#39;weighted&#39;, &#39;centroid&#39;, &#39;median&#39;, &#39;ward&#39;}
+        The linkage algorithm to use for variables hierarchical clustering.
+    corr_method : {&#39;spearman&#39;, &#39;pearson&#39;, &#39;kendall&#39;}
+        The method of calculating correlation between numerical variables.
+    agg_method : {&#39;max&#39;, &#39;min&#39;, &#39;avg&#39;}
+        The method of aggregating the PPS values for pairs of variables.
+    depend_matrix : pd.DataFrame
+        The dependency matrix (with variable names as columns and rows).
+    linkage_matrix :
+        The hierarchical clustering of variables encoded as a `scipy` linkage matrix.
+
+    Notes
+    -----
+    - assoc, eta-squared: http://tss.awf.poznan.pl/files/3_Trends_Vol21_2014__no1_20.pdf
+    - assoc, Cramér&#39;s V: http://stats.lse.ac.uk/bergsma/pdf/cramerV3.pdf
+    - PPS: https://github.com/8080labs/ppscore
+    - triplot: https://arxiv.org/abs/2104.03403
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        explainer,
+        depend_method=&#34;assoc&#34;,
+        clust_method=&#34;complete&#34;,
+        corr_method=&#34;spearman&#34;,
+        agg_method=&#34;max&#34;,
+    ):  
+        _depend_method, _corr_method, _agg_method = checks.check_method_depend(depend_method, corr_method, agg_method)
+        self.explainer = explainer
+        self.depend_method = _depend_method
+        self.clust_method = clust_method
+        self.corr_method = _corr_method
+        self.agg_method = _agg_method
+        self.depend_matrix = utils.calculate_depend_matrix(
+            self.explainer.data, self.depend_method, self.corr_method, self.agg_method
+        )
+        self.linkage_matrix = utils.calculate_linkage_matrix(
+            self.depend_matrix, clust_method
+        )
+        self._hierarchical_clustering_dendrogram = plot.plot_dendrogram(
+            self.linkage_matrix, self.depend_matrix.columns
+        )
+        self._dendrogram_aspects_ordered = utils.get_dendrogram_aspects_ordered(
+            self._hierarchical_clustering_dendrogram, self.depend_matrix
+        )
+        self._full_hierarchical_aspect_importance = None
+        self._mt_params = None
+
+    def get_aspects(self, h=0.5, n=None):
+        from scipy.cluster.hierarchy import fcluster
+        &#34;&#34;&#34;Form aspects of variables from the hierarchical clustering
+
+        Parameters
+        ----------
+        h : float, optional
+            Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+            between the variables grouped in one aspect (default is `0.5`).
+            NOTE: Ignored if `n` is not `None`.
+        n : int, optional
+            Maximum number of aspects to form 
+            (default is `None`, which means the use of `h` parameter).
+
+        Returns
+        -------
+        dict of lists
+            Variables grouped in aspects, e.g. `{&#39;aspect_1&#39;: [&#39;x1&#39;, &#39;x2&#39;], &#39;aspect_2&#39;: [&#39;y1&#39;, &#39;y2&#39;]}`.
+        &#34;&#34;&#34;
+        if n is None:
+            aspect_label = fcluster(self.linkage_matrix, 1 - h, criterion=&#34;distance&#34;)
+        else:
+            aspect_label = fcluster(self.linkage_matrix, n, criterion=&#34;maxclust&#34;)
+        aspects = pd.DataFrame(
+            {&#34;feature&#34;: self.depend_matrix.columns, &#34;aspect&#34;: aspect_label}
+        )
+        aspects = aspects.groupby(&#34;aspect&#34;)[&#34;feature&#34;].apply(list).reset_index()
+        aspects_dict = {}
+
+        # rename an aspect when there is a single variable in it
+        i = 1
+        for index, row in aspects.iterrows():
+            if len(row[&#34;feature&#34;]) &gt; 1:
+                aspects_dict[f&#34;aspect_{i}&#34;] = row[&#34;feature&#34;]
+                i += 1
+            else:
+                aspects_dict[row[&#34;feature&#34;][0]] = row[&#34;feature&#34;]
+
+        return aspects_dict
+
+    def plot_dendrogram(
+        self,
+        title=&#34;Hierarchical clustering dendrogram&#34;,
+        lines_interspace=20,
+        rounding_function=np.round,
+        digits=3,
+        show=True,
+    ):
+        &#34;&#34;&#34;Plot the hierarchical clustering dendrogram of variables
+
+        Parameters
+        ----------
+        title : str, optional
+            Title of the plot (default is &#34;Hierarchical clustering dendrogram&#34;).
+        lines_interspace : float, optional
+            Interspace between lines of dendrogram in px (default is `20`).
+        rounding_function : function, optional
+            A function that will be used for rounding numbers (default is `np.around`).
+        digits : int, optional
+            Number of decimal places (`np.around`) to round contributions.
+            See `rounding_function` parameter (default is `3`).
+        show : bool, optional
+            `True` shows the plot; `False` returns the plotly Figure object that can
+            be edited or saved using the `write_image()` method (default is `True`).
+
+        Returns
+        -------
+        None or plotly.graph_objects.Figure
+            Return figure that can be edited or saved. See `show` parameter.
+        &#34;&#34;&#34;
+        m = len(self.depend_matrix.columns)
+        plot_height = 78 + 71 + m * lines_interspace + (m + 1) * lines_interspace / 4
+        fig = self._hierarchical_clustering_dendrogram
+        fig = plot.add_text_and_tooltips_to_dendrogram(
+            fig, self._dendrogram_aspects_ordered, rounding_function, digits
+        )
+        fig = plot._add_points_on_dendrogram_traces(fig)
+        fig.update_layout(
+            title={&#34;text&#34;: title, &#34;x&#34;: 0.15},
+            yaxis={&#34;automargin&#34;: True, &#34;autorange&#34;: &#34;reversed&#34;},
+            height=plot_height,
+        )
+        if show:
+            fig.show(config=_theme.get_default_config())
+        else:
+            return fig
+
+    def predict_parts(
+        self,
+        new_observation,
+        variable_groups=None,
+        type=&#34;default&#34;,
+        h=0.5,
+        N=2000,
+        B=25,
+        n_aspects=None,
+        sample_method=&#34;default&#34;,
+        f=2,
+        label=None,
+        processes=1,
+        random_state=None,
+    ):
+        &#34;&#34;&#34;Calculate predict-level aspect importance
+
+        Parameters
+        ----------
+        new_observation : pd.Series or np.ndarray (1d) or pd.DataFrame (1,p)
+            An observation for which a prediction needs to be explained.
+        variable_groups : dict of lists or None
+            Variables grouped in aspects to calculate their importance (default is `None`).
+        type : {&#39;default&#39;, &#39;shap&#39;}, optional
+            Type of aspect importance/attributions (default is `&#39;default&#39;`, which means
+            the use of simplified LIME method).
+        h : float, optional
+            Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+            between the variables grouped in one aspect (default is `0.5`).
+        N : int, optional
+            Number of observations that will be sampled from the `explainer.data` attribute
+            before the calculation of aspect importance (default is `2000`).
+        B : int, optional
+            Parameter specific for `type == &#39;shap&#39;`. Number of random paths to calculate aspect
+            attributions (default is `25`).
+            NOTE: Ignored if `type` is not `&#39;shap&#39;`.
+        n_aspects : int, optional
+            Parameter specific for `type == &#39;default&#39;`. Maximum number of non-zero importances, i.e.
+            coefficients after lasso fitting (default is `None`, which means the linear regression is used).
+            NOTE: Ignored if `type` is not `&#39;default&#39;`.
+        sample_method : {&#39;default&#39;, &#39;binom&#39;}, optional
+            Parameter specific for `type == &#39;default&#39;`. Sampling method for creating binary matrix
+            used as mask for replacing aspects in sampled data (default is `&#39;default&#39;`, which means
+            it randomly replaces one or two zeros per row; `&#39;binom&#39;` replaces random number of zeros
+            per row).
+            NOTE: Ignored if `type` is not `&#39;default&#39;`.
+        f : int, optional
+            Parameter specific for `type == &#39;default&#39;` and `sample_method == &#39;binom&#39;`. Parameter
+            controlling average number of replaced zeros for binomial sampling (default is `2`).
+            NOTE: Ignored if `type` is not `&#39;default&#39;` or `sample_method` is not `&#39;binom&#39;`.
+        label : str, optional
+            Name to appear in result and plots. Overrides default.
+        processes : int, optional
+            Parameter specific for `type == &#39;shap&#39;`. Number of parallel processes to use in calculations.
+            Iterated over `B` (default is `1`, which means no parallel computation).
+        random_state : int, optional
+            Set seed for random number generator (default is random seed).
+
+        Returns
+        -------
+        PredictAspectImportance class object
+            Explanation object containing the main result attribute and the plot method.
+        &#34;&#34;&#34;
+
+        if variable_groups is None:
+            variable_groups = self.get_aspects(h)
+
+        pai = PredictAspectImportance(
+            variable_groups,
+            type,
+            N,
+            B,
+            n_aspects,
+            sample_method,
+            f,
+            self.depend_method,
+            self.corr_method,
+            self.agg_method,
+            processes,
+            random_state,
+            _depend_matrix=self.depend_matrix
+        )
+
+        pai.fit(self.explainer, new_observation)
+
+        if label is not None:
+            pai.result[&#34;label&#34;] = label
+
+        return pai
+
+    def model_parts(
+        self,
+        variable_groups=None,
+        h=0.5,
+        loss_function=None,
+        type=&#34;variable_importance&#34;,
+        N=1000,
+        B=10,
+        processes=1,
+        label=None,
+        random_state=None,
+    ):
+        &#34;&#34;&#34;Calculate model-level aspect importance
+
+        Parameters
+        ----------
+        variable_groups : dict of lists or None
+            Variables grouped in aspects to calculate their importance (default is `None`).
+        h : float, optional
+            Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+            between the variables grouped in one aspect (default is `0.5`).
+        loss_function :  {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
+            If string, then such loss function will be used to assess aspect importance
+            (default is `&#39;rmse&#39;` or `&#39;1-auc&#39;`, depends on `explainer.model_type` attribute).
+        type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;}, optional
+            Type of transformation that will be applied to dropout loss
+            (default is `&#39;variable_importance&#39;`, which is Permutational Variable Importance).
+        N : int, optional
+            Number of observations that will be sampled from the `explainer.data` attribute before
+            the calculation of aspect importance. `None` means all `data` (default is `1000`).
+        B : int, optional
+            Number of permutation rounds to perform on each variable (default is `10`).
+        processes : int, optional
+            Number of parallel processes to use in calculations. Iterated over `B`
+            (default is `1`, which means no parallel computation).
+        label : str, optional
+            Name to appear in result and plots. Overrides default.
+        random_state : int, optional
+            Set seed for random number generator (default is random seed).
+
+        Returns
+        -------
+        ModelAspectImportance class object
+            Explanation object containing the main result attribute and the plot method.
+        &#34;&#34;&#34;
+
+        loss_function = checks.check_method_loss_function(self.explainer, loss_function)
+        mai_result = None
+
+        if variable_groups is None:
+            variable_groups = self.get_aspects(h)
+
+            # get results from triplot if it was precalculated with the same params
+            if self._full_hierarchical_aspect_importance is not None:
+                if (
+                    self._mt_params[&#34;loss_function&#34;] == loss_function
+                    and self._mt_params[&#34;N&#34;] == N
+                    and self._mt_params[&#34;B&#34;] == B
+                    and self._mt_params[&#34;type&#34;] == type
+                ):
+                    h = min(1, h)
+                    h_selected = np.unique(
+                        self._full_hierarchical_aspect_importance.loc[
+                            self._full_hierarchical_aspect_importance.h &gt;= h
+                        ].h
+                    )[0]
+                    mai_result = self._full_hierarchical_aspect_importance.loc[
+                        self._full_hierarchical_aspect_importance.h == h_selected
+                    ]
+
+        ai = ModelAspectImportance(
+            loss_function=loss_function,
+            type=type,
+            N=N,
+            B=B,
+            variable_groups=variable_groups,
+            processes=processes,
+            random_state=random_state,
+            _depend_matrix=self.depend_matrix
+        )
+
+        # calculate if there was no results
+        if mai_result is None:
+            ai.fit(self.explainer)
+        else: 
+            mai_result = mai_result[
+                [
+                    &#34;aspect_name&#34;,
+                    &#34;variable_names&#34;,
+                    &#34;dropout_loss&#34;,
+                    &#34;dropout_loss_change&#34;,
+                    &#34;min_depend&#34;,
+                    &#34;vars_min_depend&#34;,
+                    &#34;label&#34;,
+                ]
+            ]
+            ai.result = mai_result
+
+        if label is not None:
+            ai.result[&#34;label&#34;] = label
+
+        return ai
+
+    def predict_triplot(
+        self,
+        new_observation,
+        type=&#34;default&#34;,
+        N=2000,
+        B=25,
+        sample_method=&#34;default&#34;,
+        f=2,
+        processes=1,
+        random_state=None,
+    ):
+        &#34;&#34;&#34;Calculate predict-level hierarchical aspect importance
+
+        Parameters
+        ----------
+        new_observation : pd.Series or np.ndarray (1d) or pd.DataFrame (1,p)
+            An observation for which a prediction needs to be explained.
+        type : {&#39;default&#39;, &#39;shap&#39;}, optional
+            Type of aspect importance/attributions (default is `&#39;default&#39;`, which means
+            the use of simplified LIME method).
+        N : int, optional
+            Number of observations that will be sampled from the `explainer.data` attribute
+            before the calculation of aspect importance (default is `2000`).
+        B : int, optional
+            Parameter specific for `type == &#39;shap&#39;`. Number of random paths to calculate aspect
+            attributions (default is `25`).
+            NOTE: Ignored if `type` is not `&#39;shap&#39;`.
+        sample_method : {&#39;default&#39;, &#39;binom&#39;}, optional
+            Parameter specific for `type == &#39;default&#39;`. Sampling method for creating binary matrix
+            used as mask for replacing aspects in data (default is `&#39;default&#39;`, which means
+            it randomly replaces one or two zeros per row; `&#39;binom&#39;` replaces random number of zeros
+            per row).
+            NOTE: Ignored if `type` is not `&#39;default&#39;`.
+        f : int, optional
+            Parameter specific for `type == &#39;default&#39;` and `sample_method == &#39;binom&#39;`. Parameter
+            controlling average number of replaced zeros for binomial sampling (default is `2`).
+            NOTE: Ignored if `type` is not `&#39;default&#39;` or `sample_method` is not `&#39;binom&#39;`.
+        processes : int, optional
+            Number of parallel processes to use in calculations. Iterated over `B`
+            (default is `1`, which means no parallel computation).
+        random_state : int, optional
+            Set seed for random number generator (default is random seed).
+
+        Returns
+        -------
+        PredictTriplot class object
+            Explanation object containing the main result attribute and the plot method.
+        &#34;&#34;&#34;
+
+        pt = PredictTriplot(type, N, B, sample_method, f, processes, random_state)
+
+        pt.fit(self, new_observation)
+
+        return pt
+
+    def model_triplot(
+        self,
+        loss_function=None,
+        type=&#34;variable_importance&#34;,
+        N=1000,
+        B=10,
+        processes=1,
+        random_state=None,
+    ):
+        &#34;&#34;&#34;Calculate model-level hierarchical aspect importance
+
+        Parameters
+        ----------
+        loss_function :  {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
+            If string, then such loss function will be used to assess aspect importance
+            (default is `&#39;rmse&#39;` or `&#39;1-auc&#39;`, depends on `explainer.model_type` attribute).
+        type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;}, optional
+            Type of transformation that will be applied to dropout loss
+            (default is `&#39;variable_importance&#39;`, which is Permutational Variable Importance).
+        N : int, optional
+            Number of observations that will be sampled from the `explainer.data` attribute before
+            the calculation of aspect importance. `None` means all `data` (default is `1000`).
+        B : int, optional
+            Number of permutation rounds to perform on each variable (default is `10`).
+        processes : int, optional
+            Number of parallel processes to use in calculations. Iterated over `B`
+            (default is `1`, which means no parallel computation).
+        random_state : int, optional
+            Set seed for random number generator (default is random seed).
+
+        Returns
+        -------
+        ModelTriplot class object
+            Explanation object containing the main result attribute and the plot method.
+        &#34;&#34;&#34;
+
+        
+        loss_function = checks.check_method_loss_function(self.explainer, loss_function) # get proper loss_function for model_type
+        mt = ModelTriplot(loss_function, type, N, B, processes, random_state)
+        self._mt_params = {&#34;loss_function&#34;: loss_function, &#34;type&#34;: type, &#34;N&#34;: N, &#34;B&#34;: B} # save params for future calls of model_parts
+        mt.fit(self)
+
+        return mt</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="dalex.aspect.object.Aspect.get_aspects"><code class="name flex">
+<span>def <span class="ident">get_aspects</span></span>(<span>self, h=0.5, n=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L104-L142" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_aspects(self, h=0.5, n=None):
+    from scipy.cluster.hierarchy import fcluster
+    &#34;&#34;&#34;Form aspects of variables from the hierarchical clustering
+
+    Parameters
+    ----------
+    h : float, optional
+        Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+        between the variables grouped in one aspect (default is `0.5`).
+        NOTE: Ignored if `n` is not `None`.
+    n : int, optional
+        Maximum number of aspects to form 
+        (default is `None`, which means the use of `h` parameter).
+
+    Returns
+    -------
+    dict of lists
+        Variables grouped in aspects, e.g. `{&#39;aspect_1&#39;: [&#39;x1&#39;, &#39;x2&#39;], &#39;aspect_2&#39;: [&#39;y1&#39;, &#39;y2&#39;]}`.
+    &#34;&#34;&#34;
+    if n is None:
+        aspect_label = fcluster(self.linkage_matrix, 1 - h, criterion=&#34;distance&#34;)
+    else:
+        aspect_label = fcluster(self.linkage_matrix, n, criterion=&#34;maxclust&#34;)
+    aspects = pd.DataFrame(
+        {&#34;feature&#34;: self.depend_matrix.columns, &#34;aspect&#34;: aspect_label}
+    )
+    aspects = aspects.groupby(&#34;aspect&#34;)[&#34;feature&#34;].apply(list).reset_index()
+    aspects_dict = {}
+
+    # rename an aspect when there is a single variable in it
+    i = 1
+    for index, row in aspects.iterrows():
+        if len(row[&#34;feature&#34;]) &gt; 1:
+            aspects_dict[f&#34;aspect_{i}&#34;] = row[&#34;feature&#34;]
+            i += 1
+        else:
+            aspects_dict[row[&#34;feature&#34;][0]] = row[&#34;feature&#34;]
+
+    return aspects_dict</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.object.Aspect.model_parts"><code class="name flex">
+<span>def <span class="ident">model_parts</span></span>(<span>self, variable_groups=None, h=0.5, loss_function=None, type='variable_importance', N=1000, B=10, processes=1, label=None, random_state=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate model-level aspect importance</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>variable_groups</code></strong> :&ensp;<code>dict</code> of <code>lists</code> or <code>None</code></dt>
+<dd>Variables grouped in aspects to calculate their importance (default is <code>None</code>).</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+between the variables grouped in one aspect (default is <code>0.5</code>).</dd>
+<dt><strong><code>loss_function</code></strong> :&ensp;<code>{'rmse', '1-auc', 'mse', 'mae', 'mad'}</code> or <code>function</code>, optional</dt>
+<dd>If string, then such loss function will be used to assess aspect importance
+(default is <code>'rmse'</code> or <code>'1-auc'</code>, depends on <code>explainer.model_type</code> attribute).</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'variable_importance', 'ratio', 'difference'}</code>, optional</dt>
+<dd>Type of transformation that will be applied to dropout loss
+(default is <code>'variable_importance'</code>, which is Permutational Variable Importance).</dd>
+<dt><strong><code>N</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of observations that will be sampled from the <code>explainer.data</code> attribute before
+the calculation of aspect importance. <code>None</code> means all <code>data</code> (default is <code>1000</code>).</dd>
+<dt><strong><code>B</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of permutation rounds to perform on each variable (default is <code>10</code>).</dd>
+<dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of parallel processes to use in calculations. Iterated over <code>B</code>
+(default is <code>1</code>, which means no parallel computation).</dd>
+<dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name to appear in result and plots. Overrides default.</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Set seed for random number generator (default is random seed).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ModelAspectImportance class object</code></dt>
+<dd>Explanation object containing the main result attribute and the plot method.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L281-L382" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def model_parts(
+    self,
+    variable_groups=None,
+    h=0.5,
+    loss_function=None,
+    type=&#34;variable_importance&#34;,
+    N=1000,
+    B=10,
+    processes=1,
+    label=None,
+    random_state=None,
+):
+    &#34;&#34;&#34;Calculate model-level aspect importance
+
+    Parameters
+    ----------
+    variable_groups : dict of lists or None
+        Variables grouped in aspects to calculate their importance (default is `None`).
+    h : float, optional
+        Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+        between the variables grouped in one aspect (default is `0.5`).
+    loss_function :  {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
+        If string, then such loss function will be used to assess aspect importance
+        (default is `&#39;rmse&#39;` or `&#39;1-auc&#39;`, depends on `explainer.model_type` attribute).
+    type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;}, optional
+        Type of transformation that will be applied to dropout loss
+        (default is `&#39;variable_importance&#39;`, which is Permutational Variable Importance).
+    N : int, optional
+        Number of observations that will be sampled from the `explainer.data` attribute before
+        the calculation of aspect importance. `None` means all `data` (default is `1000`).
+    B : int, optional
+        Number of permutation rounds to perform on each variable (default is `10`).
+    processes : int, optional
+        Number of parallel processes to use in calculations. Iterated over `B`
+        (default is `1`, which means no parallel computation).
+    label : str, optional
+        Name to appear in result and plots. Overrides default.
+    random_state : int, optional
+        Set seed for random number generator (default is random seed).
+
+    Returns
+    -------
+    ModelAspectImportance class object
+        Explanation object containing the main result attribute and the plot method.
+    &#34;&#34;&#34;
+
+    loss_function = checks.check_method_loss_function(self.explainer, loss_function)
+    mai_result = None
+
+    if variable_groups is None:
+        variable_groups = self.get_aspects(h)
+
+        # get results from triplot if it was precalculated with the same params
+        if self._full_hierarchical_aspect_importance is not None:
+            if (
+                self._mt_params[&#34;loss_function&#34;] == loss_function
+                and self._mt_params[&#34;N&#34;] == N
+                and self._mt_params[&#34;B&#34;] == B
+                and self._mt_params[&#34;type&#34;] == type
+            ):
+                h = min(1, h)
+                h_selected = np.unique(
+                    self._full_hierarchical_aspect_importance.loc[
+                        self._full_hierarchical_aspect_importance.h &gt;= h
+                    ].h
+                )[0]
+                mai_result = self._full_hierarchical_aspect_importance.loc[
+                    self._full_hierarchical_aspect_importance.h == h_selected
+                ]
+
+    ai = ModelAspectImportance(
+        loss_function=loss_function,
+        type=type,
+        N=N,
+        B=B,
+        variable_groups=variable_groups,
+        processes=processes,
+        random_state=random_state,
+        _depend_matrix=self.depend_matrix
+    )
+
+    # calculate if there was no results
+    if mai_result is None:
+        ai.fit(self.explainer)
+    else: 
+        mai_result = mai_result[
+            [
+                &#34;aspect_name&#34;,
+                &#34;variable_names&#34;,
+                &#34;dropout_loss&#34;,
+                &#34;dropout_loss_change&#34;,
+                &#34;min_depend&#34;,
+                &#34;vars_min_depend&#34;,
+                &#34;label&#34;,
+            ]
+        ]
+        ai.result = mai_result
+
+    if label is not None:
+        ai.result[&#34;label&#34;] = label
+
+    return ai</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.object.Aspect.model_triplot"><code class="name flex">
+<span>def <span class="ident">model_triplot</span></span>(<span>self, loss_function=None, type='variable_importance', N=1000, B=10, processes=1, random_state=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate model-level hierarchical aspect importance</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>loss_function</code></strong> :&ensp;<code>{'rmse', '1-auc', 'mse', 'mae', 'mad'}</code> or <code>function</code>, optional</dt>
+<dd>If string, then such loss function will be used to assess aspect importance
+(default is <code>'rmse'</code> or <code>'1-auc'</code>, depends on <code>explainer.model_type</code> attribute).</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'variable_importance', 'ratio', 'difference'}</code>, optional</dt>
+<dd>Type of transformation that will be applied to dropout loss
+(default is <code>'variable_importance'</code>, which is Permutational Variable Importance).</dd>
+<dt><strong><code>N</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of observations that will be sampled from the <code>explainer.data</code> attribute before
+the calculation of aspect importance. <code>None</code> means all <code>data</code> (default is <code>1000</code>).</dd>
+<dt><strong><code>B</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of permutation rounds to perform on each variable (default is <code>10</code>).</dd>
+<dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of parallel processes to use in calculations. Iterated over <code>B</code>
+(default is <code>1</code>, which means no parallel computation).</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Set seed for random number generator (default is random seed).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ModelTriplot class object</code></dt>
+<dd>Explanation object containing the main result attribute and the plot method.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L439-L481" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def model_triplot(
+    self,
+    loss_function=None,
+    type=&#34;variable_importance&#34;,
+    N=1000,
+    B=10,
+    processes=1,
+    random_state=None,
+):
+    &#34;&#34;&#34;Calculate model-level hierarchical aspect importance
+
+    Parameters
+    ----------
+    loss_function :  {&#39;rmse&#39;, &#39;1-auc&#39;, &#39;mse&#39;, &#39;mae&#39;, &#39;mad&#39;} or function, optional
+        If string, then such loss function will be used to assess aspect importance
+        (default is `&#39;rmse&#39;` or `&#39;1-auc&#39;`, depends on `explainer.model_type` attribute).
+    type : {&#39;variable_importance&#39;, &#39;ratio&#39;, &#39;difference&#39;}, optional
+        Type of transformation that will be applied to dropout loss
+        (default is `&#39;variable_importance&#39;`, which is Permutational Variable Importance).
+    N : int, optional
+        Number of observations that will be sampled from the `explainer.data` attribute before
+        the calculation of aspect importance. `None` means all `data` (default is `1000`).
+    B : int, optional
+        Number of permutation rounds to perform on each variable (default is `10`).
+    processes : int, optional
+        Number of parallel processes to use in calculations. Iterated over `B`
+        (default is `1`, which means no parallel computation).
+    random_state : int, optional
+        Set seed for random number generator (default is random seed).
+
+    Returns
+    -------
+    ModelTriplot class object
+        Explanation object containing the main result attribute and the plot method.
+    &#34;&#34;&#34;
+
+    
+    loss_function = checks.check_method_loss_function(self.explainer, loss_function) # get proper loss_function for model_type
+    mt = ModelTriplot(loss_function, type, N, B, processes, random_state)
+    self._mt_params = {&#34;loss_function&#34;: loss_function, &#34;type&#34;: type, &#34;N&#34;: N, &#34;B&#34;: B} # save params for future calls of model_parts
+    mt.fit(self)
+
+    return mt</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.object.Aspect.plot_dendrogram"><code class="name flex">
+<span>def <span class="ident">plot_dendrogram</span></span>(<span>self, title='Hierarchical clustering dendrogram', lines_interspace=20, rounding_function=&lt;function round_&gt;, digits=3, show=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the hierarchical clustering dendrogram of variables</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Title of the plot (default is "Hierarchical clustering dendrogram").</dd>
+<dt><strong><code>lines_interspace</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Interspace between lines of dendrogram in px (default is <code>20</code>).</dd>
+<dt><strong><code>rounding_function</code></strong> :&ensp;<code>function</code>, optional</dt>
+<dd>A function that will be used for rounding numbers (default is <code>np.around</code>).</dd>
+<dt><strong><code>digits</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of decimal places (<code>np.around</code>) to round contributions.
+See <code>rounding_function</code> parameter (default is <code>3</code>).</dd>
+<dt><strong><code>show</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd><code>True</code> shows the plot; <code>False</code> returns the plotly Figure object that can
+be edited or saved using the <code>write_image()</code> method (default is <code>True</code>).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code> or <code>plotly.graph_objects.Figure</code></dt>
+<dd>Return figure that can be edited or saved. See <code>show</code> parameter.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L144-L189" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def plot_dendrogram(
+    self,
+    title=&#34;Hierarchical clustering dendrogram&#34;,
+    lines_interspace=20,
+    rounding_function=np.round,
+    digits=3,
+    show=True,
+):
+    &#34;&#34;&#34;Plot the hierarchical clustering dendrogram of variables
+
+    Parameters
+    ----------
+    title : str, optional
+        Title of the plot (default is &#34;Hierarchical clustering dendrogram&#34;).
+    lines_interspace : float, optional
+        Interspace between lines of dendrogram in px (default is `20`).
+    rounding_function : function, optional
+        A function that will be used for rounding numbers (default is `np.around`).
+    digits : int, optional
+        Number of decimal places (`np.around`) to round contributions.
+        See `rounding_function` parameter (default is `3`).
+    show : bool, optional
+        `True` shows the plot; `False` returns the plotly Figure object that can
+        be edited or saved using the `write_image()` method (default is `True`).
+
+    Returns
+    -------
+    None or plotly.graph_objects.Figure
+        Return figure that can be edited or saved. See `show` parameter.
+    &#34;&#34;&#34;
+    m = len(self.depend_matrix.columns)
+    plot_height = 78 + 71 + m * lines_interspace + (m + 1) * lines_interspace / 4
+    fig = self._hierarchical_clustering_dendrogram
+    fig = plot.add_text_and_tooltips_to_dendrogram(
+        fig, self._dendrogram_aspects_ordered, rounding_function, digits
+    )
+    fig = plot._add_points_on_dendrogram_traces(fig)
+    fig.update_layout(
+        title={&#34;text&#34;: title, &#34;x&#34;: 0.15},
+        yaxis={&#34;automargin&#34;: True, &#34;autorange&#34;: &#34;reversed&#34;},
+        height=plot_height,
+    )
+    if show:
+        fig.show(config=_theme.get_default_config())
+    else:
+        return fig</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.object.Aspect.predict_parts"><code class="name flex">
+<span>def <span class="ident">predict_parts</span></span>(<span>self, new_observation, variable_groups=None, type='default', h=0.5, N=2000, B=25, n_aspects=None, sample_method='default', f=2, label=None, processes=1, random_state=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate predict-level aspect importance</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>new_observation</code></strong> :&ensp;<code>pd.Series</code> or <code>np.ndarray (1d)</code> or <code>pd.DataFrame (1,p)</code></dt>
+<dd>An observation for which a prediction needs to be explained.</dd>
+<dt><strong><code>variable_groups</code></strong> :&ensp;<code>dict</code> of <code>lists</code> or <code>None</code></dt>
+<dd>Variables grouped in aspects to calculate their importance (default is <code>None</code>).</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'default', 'shap'}</code>, optional</dt>
+<dd>Type of aspect importance/attributions (default is <code>'default'</code>, which means
+the use of simplified LIME method).</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+between the variables grouped in one aspect (default is <code>0.5</code>).</dd>
+<dt><strong><code>N</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of observations that will be sampled from the <code>explainer.data</code> attribute
+before the calculation of aspect importance (default is <code>2000</code>).</dd>
+<dt><strong><code>B</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Parameter specific for <code>type == 'shap'</code>. Number of random paths to calculate aspect
+attributions (default is <code>25</code>).
+NOTE: Ignored if <code>type</code> is not <code>'shap'</code>.</dd>
+<dt><strong><code>n_aspects</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Parameter specific for <code>type == 'default'</code>. Maximum number of non-zero importances, i.e.
+coefficients after lasso fitting (default is <code>None</code>, which means the linear regression is used).
+NOTE: Ignored if <code>type</code> is not <code>'default'</code>.</dd>
+<dt><strong><code>sample_method</code></strong> :&ensp;<code>{'default', 'binom'}</code>, optional</dt>
+<dd>Parameter specific for <code>type == 'default'</code>. Sampling method for creating binary matrix
+used as mask for replacing aspects in sampled data (default is <code>'default'</code>, which means
+it randomly replaces one or two zeros per row; <code>'binom'</code> replaces random number of zeros
+per row).
+NOTE: Ignored if <code>type</code> is not <code>'default'</code>.</dd>
+<dt><strong><code>f</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Parameter specific for <code>type == 'default'</code> and <code>sample_method == 'binom'</code>. Parameter
+controlling average number of replaced zeros for binomial sampling (default is <code>2</code>).
+NOTE: Ignored if <code>type</code> is not <code>'default'</code> or <code>sample_method</code> is not <code>'binom'</code>.</dd>
+<dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name to appear in result and plots. Overrides default.</dd>
+<dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Parameter specific for <code>type == 'shap'</code>. Number of parallel processes to use in calculations.
+Iterated over <code>B</code> (default is <code>1</code>, which means no parallel computation).</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Set seed for random number generator (default is random seed).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>PredictAspectImportance class object</code></dt>
+<dd>Explanation object containing the main result attribute and the plot method.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L191-L279" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def predict_parts(
+    self,
+    new_observation,
+    variable_groups=None,
+    type=&#34;default&#34;,
+    h=0.5,
+    N=2000,
+    B=25,
+    n_aspects=None,
+    sample_method=&#34;default&#34;,
+    f=2,
+    label=None,
+    processes=1,
+    random_state=None,
+):
+    &#34;&#34;&#34;Calculate predict-level aspect importance
+
+    Parameters
+    ----------
+    new_observation : pd.Series or np.ndarray (1d) or pd.DataFrame (1,p)
+        An observation for which a prediction needs to be explained.
+    variable_groups : dict of lists or None
+        Variables grouped in aspects to calculate their importance (default is `None`).
+    type : {&#39;default&#39;, &#39;shap&#39;}, optional
+        Type of aspect importance/attributions (default is `&#39;default&#39;`, which means
+        the use of simplified LIME method).
+    h : float, optional
+        Threshold to apply when forming aspects, i.e., the minimum value of the dependency
+        between the variables grouped in one aspect (default is `0.5`).
+    N : int, optional
+        Number of observations that will be sampled from the `explainer.data` attribute
+        before the calculation of aspect importance (default is `2000`).
+    B : int, optional
+        Parameter specific for `type == &#39;shap&#39;`. Number of random paths to calculate aspect
+        attributions (default is `25`).
+        NOTE: Ignored if `type` is not `&#39;shap&#39;`.
+    n_aspects : int, optional
+        Parameter specific for `type == &#39;default&#39;`. Maximum number of non-zero importances, i.e.
+        coefficients after lasso fitting (default is `None`, which means the linear regression is used).
+        NOTE: Ignored if `type` is not `&#39;default&#39;`.
+    sample_method : {&#39;default&#39;, &#39;binom&#39;}, optional
+        Parameter specific for `type == &#39;default&#39;`. Sampling method for creating binary matrix
+        used as mask for replacing aspects in sampled data (default is `&#39;default&#39;`, which means
+        it randomly replaces one or two zeros per row; `&#39;binom&#39;` replaces random number of zeros
+        per row).
+        NOTE: Ignored if `type` is not `&#39;default&#39;`.
+    f : int, optional
+        Parameter specific for `type == &#39;default&#39;` and `sample_method == &#39;binom&#39;`. Parameter
+        controlling average number of replaced zeros for binomial sampling (default is `2`).
+        NOTE: Ignored if `type` is not `&#39;default&#39;` or `sample_method` is not `&#39;binom&#39;`.
+    label : str, optional
+        Name to appear in result and plots. Overrides default.
+    processes : int, optional
+        Parameter specific for `type == &#39;shap&#39;`. Number of parallel processes to use in calculations.
+        Iterated over `B` (default is `1`, which means no parallel computation).
+    random_state : int, optional
+        Set seed for random number generator (default is random seed).
+
+    Returns
+    -------
+    PredictAspectImportance class object
+        Explanation object containing the main result attribute and the plot method.
+    &#34;&#34;&#34;
+
+    if variable_groups is None:
+        variable_groups = self.get_aspects(h)
+
+    pai = PredictAspectImportance(
+        variable_groups,
+        type,
+        N,
+        B,
+        n_aspects,
+        sample_method,
+        f,
+        self.depend_method,
+        self.corr_method,
+        self.agg_method,
+        processes,
+        random_state,
+        _depend_matrix=self.depend_matrix
+    )
+
+    pai.fit(self.explainer, new_observation)
+
+    if label is not None:
+        pai.result[&#34;label&#34;] = label
+
+    return pai</code></pre>
+</details>
+</dd>
+<dt id="dalex.aspect.object.Aspect.predict_triplot"><code class="name flex">
+<span>def <span class="ident">predict_triplot</span></span>(<span>self, new_observation, type='default', N=2000, B=25, sample_method='default', f=2, processes=1, random_state=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate predict-level hierarchical aspect importance</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>new_observation</code></strong> :&ensp;<code>pd.Series</code> or <code>np.ndarray (1d)</code> or <code>pd.DataFrame (1,p)</code></dt>
+<dd>An observation for which a prediction needs to be explained.</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>{'default', 'shap'}</code>, optional</dt>
+<dd>Type of aspect importance/attributions (default is <code>'default'</code>, which means
+the use of simplified LIME method).</dd>
+<dt><strong><code>N</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of observations that will be sampled from the <code>explainer.data</code> attribute
+before the calculation of aspect importance (default is <code>2000</code>).</dd>
+<dt><strong><code>B</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Parameter specific for <code>type == 'shap'</code>. Number of random paths to calculate aspect
+attributions (default is <code>25</code>).
+NOTE: Ignored if <code>type</code> is not <code>'shap'</code>.</dd>
+<dt><strong><code>sample_method</code></strong> :&ensp;<code>{'default', 'binom'}</code>, optional</dt>
+<dd>Parameter specific for <code>type == 'default'</code>. Sampling method for creating binary matrix
+used as mask for replacing aspects in data (default is <code>'default'</code>, which means
+it randomly replaces one or two zeros per row; <code>'binom'</code> replaces random number of zeros
+per row).
+NOTE: Ignored if <code>type</code> is not <code>'default'</code>.</dd>
+<dt><strong><code>f</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Parameter specific for <code>type == 'default'</code> and <code>sample_method == 'binom'</code>. Parameter
+controlling average number of replaced zeros for binomial sampling (default is <code>2</code>).
+NOTE: Ignored if <code>type</code> is not <code>'default'</code> or <code>sample_method</code> is not <code>'binom'</code>.</dd>
+<dt><strong><code>processes</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of parallel processes to use in calculations. Iterated over <code>B</code>
+(default is <code>1</code>, which means no parallel computation).</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Set seed for random number generator (default is random seed).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>PredictTriplot class object</code></dt>
+<dd>Explanation object containing the main result attribute and the plot method.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex\aspect\object.py#L384-L437" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def predict_triplot(
+    self,
+    new_observation,
+    type=&#34;default&#34;,
+    N=2000,
+    B=25,
+    sample_method=&#34;default&#34;,
+    f=2,
+    processes=1,
+    random_state=None,
+):
+    &#34;&#34;&#34;Calculate predict-level hierarchical aspect importance
+
+    Parameters
+    ----------
+    new_observation : pd.Series or np.ndarray (1d) or pd.DataFrame (1,p)
+        An observation for which a prediction needs to be explained.
+    type : {&#39;default&#39;, &#39;shap&#39;}, optional
+        Type of aspect importance/attributions (default is `&#39;default&#39;`, which means
+        the use of simplified LIME method).
+    N : int, optional
+        Number of observations that will be sampled from the `explainer.data` attribute
+        before the calculation of aspect importance (default is `2000`).
+    B : int, optional
+        Parameter specific for `type == &#39;shap&#39;`. Number of random paths to calculate aspect
+        attributions (default is `25`).
+        NOTE: Ignored if `type` is not `&#39;shap&#39;`.
+    sample_method : {&#39;default&#39;, &#39;binom&#39;}, optional
+        Parameter specific for `type == &#39;default&#39;`. Sampling method for creating binary matrix
+        used as mask for replacing aspects in data (default is `&#39;default&#39;`, which means
+        it randomly replaces one or two zeros per row; `&#39;binom&#39;` replaces random number of zeros
+        per row).
+        NOTE: Ignored if `type` is not `&#39;default&#39;`.
+    f : int, optional
+        Parameter specific for `type == &#39;default&#39;` and `sample_method == &#39;binom&#39;`. Parameter
+        controlling average number of replaced zeros for binomial sampling (default is `2`).
+        NOTE: Ignored if `type` is not `&#39;default&#39;` or `sample_method` is not `&#39;binom&#39;`.
+    processes : int, optional
+        Number of parallel processes to use in calculations. Iterated over `B`
+        (default is `1`, which means no parallel computation).
+    random_state : int, optional
+        Set seed for random number generator (default is random seed).
+
+    Returns
+    -------
+    PredictTriplot class object
+        Explanation object containing the main result attribute and the plot method.
+    &#34;&#34;&#34;
+
+    pt = PredictTriplot(type, N, B, sample_method, f, processes, random_state)
+
+    pt.fit(self, new_observation)
+
+    return pt</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="dalex Home" href="https://dalex.drwhy.ai/">
+<img src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/docs/misc/dalex_even.png" alt=""> dalex
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dalex.aspect" href="index.html">dalex.aspect</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dalex.aspect.object.Aspect" href="#dalex.aspect.object.Aspect">Aspect</a></code></h4>
+<ul class="two-column">
+<li><code><a title="dalex.aspect.object.Aspect.get_aspects" href="#dalex.aspect.object.Aspect.get_aspects">get_aspects</a></code></li>
+<li><code><a title="dalex.aspect.object.Aspect.model_parts" href="#dalex.aspect.object.Aspect.model_parts">model_parts</a></code></li>
+<li><code><a title="dalex.aspect.object.Aspect.model_triplot" href="#dalex.aspect.object.Aspect.model_triplot">model_triplot</a></code></li>
+<li><code><a title="dalex.aspect.object.Aspect.plot_dendrogram" href="#dalex.aspect.object.Aspect.plot_dendrogram">plot_dendrogram</a></code></li>
+<li><code><a title="dalex.aspect.object.Aspect.predict_parts" href="#dalex.aspect.object.Aspect.predict_parts">predict_parts</a></code></li>
+<li><code><a title="dalex.aspect.object.Aspect.predict_triplot" href="#dalex.aspect.object.Aspect.predict_triplot">predict_triplot</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
