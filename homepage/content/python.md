@@ -1,6 +1,6 @@
 ---
 title: Python
-description: Learn how to use @nuxt/content.
+description: Python
 ---
 
 <div class="flex bg-white shadow-md p-4 flex-wrap">
@@ -35,10 +35,13 @@ pip install dalex
 <card image="@/ema.png" title="Book: Explanatory Model Analysis" desc="With examples in Python." url="https://ema.drwhy.ai"></card>
 <card image="@/explainability1.png" title="Introduction to dalex" desc="Titanic: tutorial and examples" url="https://dalex.drwhy.ai/python-dalex-titanic.html"></card>
 <card image="@/explainability2.png" title="Key features explained" desc="FIFA 20: explain default vs tuned model with dalex" url="https://dalex.drwhy.ai/python-dalex-fifa.html"></card>
+<card image="@/explainability3.png" title="More explanations" desc="residuals, shap, lime" url="https://dalex.drwhy.ai/python-dalex-new.html"></card>
+</card-collection>
+<card-collection>
+<card image="@/aspect.png" title="Aspect module in dalex" desc="Case study - German Credit data" url="https://dalex.drwhy.ai/python-dalex-aspect.html"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" title="How to use dalex with XGBoost" desc="Titanic classification example" url="https://dalex.drwhy.ai/python-dalex-xgboost.html"></card>
 <card image="https://upload.wikimedia.org/wikipedia/commons/e/e5/TensorFlow_Logo_with_text.png" title="How to use dalex with TensorFlow" desc="Happiness regression example" url="https://dalex.drwhy.ai/python-dalex-tensorflow.html"></card>
 <card image="@/python-dalex.png" title="Compare various models" desc="ft. h2o, autokeras, catboost, lightgbm" url="https://dalex.drwhy.ai/python-dalex-h2o.html"></card>
-<card image="@/explainability3.png" title="More explanations" desc="residuals, shap, lime" url="https://dalex.drwhy.ai/python-dalex-new.html"></card>
 </card-collection>
 
 # Tutorial: Basic XAI
