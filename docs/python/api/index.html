@@ -38,7 +38,7 @@ The main <code><a title="dalex.Explainer" href="#dalex.Explainer">Explainer</a><
 <p>The philosophy behind <code><a title="dalex" href="#dalex">dalex</a></code> explanations is described in the <a href="https://pbiecek.github.io/ema/">Explanatory Model Analysis</a> book.</p>
 <p><a href="http://python.drwhy.ai/"><img alt="" src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/dalex/dalex-diagram.png"></a></p>
 <h2 id="installation">Installation</h2>
-<p>The <code><a title="dalex" href="#dalex">dalex</a></code> package is available <a href="https://pypi.org/project/dalex/">on PyPI</a> and <a href="https://anaconda.org/conda-forge/dalex">conda-forge</a>.</p>
+<p>The <code><a title="dalex" href="#dalex">dalex</a></code> package is available on <a href="https://pypi.org/project/dalex/">PyPI</a> and <a href="https://anaconda.org/conda-forge/dalex">conda-forge</a>.</p>
 <pre><code class="language-console">pip install dalex -U
 
 conda install -c conda-forge dalex
@@ -65,28 +65,34 @@ conda install -c conda-forge dalex
 <li>It is possible to <a href="https://plotly.com/python/#fundamentals">edit the figures</a> and <a href="https://plotly.com/python/static-image-export/">save them</a></li>
 </ul>
 <h2 id="citation">Citation</h2>
-<p>If you use <code><a title="dalex" href="#dalex">dalex</a></code>, please cite <a href="https://arxiv.org/abs/2012.14406">our paper</a>:</p>
-<pre><code class="language-html">@article{dalex,
-  title={{dalex: Responsible Machine Learning with Interactive
-          Explainability and Fairness in Python}},
-  author={Hubert Baniecki and Wojciech Kretowicz and Piotr Piatyszek
-          and Jakub Wisniewski and Przemyslaw Biecek},
-  year={2020},
-  journal={arXiv:2012.14406},
-  url={https://arxiv.org/abs/2012.14406}
+<p>If you use <code><a title="dalex" href="#dalex">dalex</a></code>, please cite our <a href="https://www.jmlr.org/papers/v22/20-1473">JMLR paper</a>:</p>
+<pre><code class="language-html">@article{JMLR:v22:20-1473,
+  author  = {Hubert Baniecki and
+             Wojciech Kretowicz and
+             Piotr Piatyszek and 
+             Jakub Wisniewski and 
+             Przemyslaw Biecek},
+  title   = {dalex: Responsible Machine Learning 
+             with Interactive Explainability and Fairness in Python},
+  journal = {Journal of Machine Learning Research},
+  year    = {2021},
+  volume  = {22},
+  number  = {214},
+  pages   = {1-7},
+  url     = {http://jmlr.org/papers/v22/20-1473.html}
 }
 </code></pre>
 <h2 id="developer">Developer</h2>
 <p>There is a detailed instruction on how to add native support for a <a href="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-model.md">new model/framework</a> into <code><a title="dalex" href="#dalex">dalex</a></code>, and how to add a <a href="https://github.com/ModelOriented/DALEX-docs/blob/master/dalex/adding-new-explanation.md">new explanation method</a>.</p>
-<h3 id="class-diagram">Class diagram</h3>
+<h3 id="class-diagram-v140">Class diagram (v1.4.0)</h3>
 <p><a href="http://python.drwhy.ai/"><img alt="" src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/dalex/dalex-class.png"></a></p>
-<h3 id="folder-structure">Folder structure</h3>
+<h3 id="folder-structure-v130">Folder structure (v1.3.0)</h3>
 <p><a href="http://python.drwhy.ai/" width="70%"><img alt="" src="https://raw.githubusercontent.com/ModelOriented/DALEX-docs/master/dalex/dalex-tree.png"></a></p>
 <hr>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/__init__.py#L1-L41" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/__init__.py#L1-L41" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
 .. include:: ./documentation.md
@@ -230,7 +236,7 @@ only in live version.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L15-L611" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L15-L611" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Arena:
     &#34;&#34;&#34; Creates Arena object
@@ -854,7 +860,7 @@ only in live version.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L374-L394" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L374-L394" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def find_param_value(self, param_type, param_label):
     &#34;&#34;&#34;Searches for Param object with specified label
@@ -896,7 +902,7 @@ a dict. Keys are param types and values are lists of Param objects.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L336-L353" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L336-L353" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_available_params(self):
     &#34;&#34;&#34;Returns dict containing available params of all types
@@ -942,7 +948,7 @@ a dict. Keys are param types and values are lists of Param objects.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L423-L448" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L423-L448" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_option(self, options_category, option):
     &#34;&#34;&#34;Returns value of specified option
@@ -996,7 +1002,7 @@ returns it's attributes.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L528-L556" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L528-L556" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_param_attributes(self, param_type, param_label):
     &#34;&#34;&#34;Returns attributes for one param
@@ -1050,7 +1056,7 @@ will be returned</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L267-L315" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L267-L315" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_params(self, param_type):
     &#34;&#34;&#34;Returns list of available params
@@ -1129,7 +1135,7 @@ attributes of which params should be returned.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L488-L526" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L488-L526" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_params_attributes(self, param_type=None):
     &#34;&#34;&#34;Returns attributes for all params
@@ -1185,7 +1191,7 @@ attributes of which params should be returned.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L93-L100" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L93-L100" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_supported_plots(self):
     &#34;&#34;&#34;Returns plots classes that can produce at least one valid chart for this Arena.
@@ -1214,7 +1220,7 @@ a dict. Keys are param types and values are list of labels.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L355-L372" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L355-L372" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def list_available_params(self):
     &#34;&#34;&#34;Returns dict containing labels of available params of all types
@@ -1257,7 +1263,7 @@ of this type will be returned</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L317-L334" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L317-L334" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def list_params(self, param_type):
     &#34;&#34;&#34;Returns list of available params&#39;s labels
@@ -1295,7 +1301,7 @@ category will be printed.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L396-L421" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L396-L421" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def print_options(self, options_category=None):
     &#34;&#34;&#34;Prints available options for plots
@@ -1349,7 +1355,7 @@ If true, then only plots using this model will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L227-L265" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L227-L265" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def push_dataset(self, dataset, target, label, precalculate=None):
     &#34;&#34;&#34;Adds dataset to Arena
@@ -1411,7 +1417,7 @@ If true, then only plots using this model will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L161-L187" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L161-L187" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def push_model(self, explainer, precalculate=None):
     &#34;&#34;&#34;Adds model to Arena
@@ -1463,7 +1469,7 @@ If true, then only plots using thease observations will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L189-L225" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L189-L225" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def push_observations(self, observations, precalculate=None):
     &#34;&#34;&#34;Adds observations to Arena
@@ -1532,7 +1538,7 @@ If true, then only plots using thease observations will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L102-L141" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L102-L141" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def run_server(self,
                host=&#39;127.0.0.1&#39;,
@@ -1597,7 +1603,7 @@ If true, then only plots using thease observations will be precalculated.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L558-L577" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L558-L577" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def save(self, filename=&#34;datasource.json&#34;):
     &#34;&#34;&#34;Generate all plots and saves them to JSON file
@@ -1644,7 +1650,7 @@ Categories are underlined in the output of arena.print_options()</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L450-L486" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L450-L486" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def set_option(self, options_category, option, value):
     &#34;&#34;&#34;Sets value for the plot option
@@ -1693,7 +1699,7 @@ Categories are underlined in the output of arena.print_options()</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L143-L149" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L143-L149" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def stop_server(self):
     &#34;&#34;&#34;Stops running server&#34;&#34;&#34;
@@ -1714,7 +1720,7 @@ Categories are underlined in the output of arena.print_options()</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L151-L159" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L151-L159" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_timestamp(self):
     &#34;&#34;&#34;Updates timestamp
@@ -1753,7 +1759,7 @@ then function uses OAuth to open GitHub authorization page.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/arena/object.py#L579-L611" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/arena/object.py#L579-L611" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def upload(self, token=None, arena_url=&#39;https://arena.drwhy.ai/&#39;, open_browser=True):
     &#34;&#34;&#34;Generate all plots and uploads them to GitHub Gist
@@ -1857,7 +1863,7 @@ The hierarchical clustering of variables encoded as a <code>scipy</code> linkage
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L13-L481" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/aspect/object.py#L13-L481" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Aspect:
     &#34;&#34;&#34;Create Aspect
@@ -2339,7 +2345,7 @@ The hierarchical clustering of variables encoded as a <code>scipy</code> linkage
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L104-L142" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/aspect/object.py#L104-L142" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_aspects(self, h=0.5, n=None):
     from scipy.cluster.hierarchy import fcluster
@@ -2421,7 +2427,7 @@ the calculation of aspect importance. <code>None</code> means all <code>data</co
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L281-L382" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/aspect/object.py#L281-L382" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_parts(
     self,
@@ -2559,7 +2565,7 @@ the calculation of aspect importance. <code>None</code> means all <code>data</co
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L439-L481" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/aspect/object.py#L439-L481" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_triplot(
     self,
@@ -2634,7 +2640,7 @@ be edited or saved using the <code>write_image()</code> method (default is <code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L144-L189" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/aspect/object.py#L144-L189" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def plot_dendrogram(
     self,
@@ -2738,7 +2744,7 @@ Iterated over <code>B</code> (default is <code>1</code>, which means no parallel
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L191-L279" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/aspect/object.py#L191-L279" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def predict_parts(
     self,
@@ -2874,7 +2880,7 @@ NOTE: Ignored if <code>type</code> is not <code>'default'</code> or <code>sample
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/aspect/object.py#L384-L437" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/aspect/object.py#L384-L437" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def predict_triplot(
     self,
@@ -3023,7 +3029,7 @@ information.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L15-L1056" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L15-L1056" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Explainer:
     &#34;&#34;&#34; Create Model Explainer
@@ -4099,7 +4105,7 @@ values like in Explainer initialization (default is <code>True</code>).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L1023-L1056" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L1023-L1056" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def load(file, use_defaults=True, *args, **kwargs):
@@ -4166,7 +4172,7 @@ values like in Explainer initialization (default is <code>True</code>).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L988-L1021" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L988-L1021" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def loads(data, use_defaults=True, *args, **kwargs):
@@ -4229,7 +4235,7 @@ if not provided by the user, it will be dropped before the dump.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L961-L986" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L961-L986" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dump(self, file, *args, **kwargs):
     &#34;&#34;&#34;Write the pickled representation of the Explainer to the file (pickle)
@@ -4284,7 +4290,7 @@ if not provided by the user, it will be dropped before the dump.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L932-L959" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L932-L959" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dumps(self, *args, **kwargs):
     &#34;&#34;&#34;Return the pickled representation (bytes object) of the Explainer
@@ -4341,7 +4347,7 @@ if not provided by the user, it will be dropped before the dump.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L726-L760" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L726-L760" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_diagnostics(self,
                       variables=None,
@@ -4462,7 +4468,7 @@ A float value for each subgroup (key in dict).</li>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L822-L930" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L822-L930" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_fairness(self,
                    protected,
@@ -4632,7 +4638,7 @@ Object class, its attributes, and the plot method depend on the <code>type</code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L500-L608" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L500-L608" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_parts(self,
                 loss_function=None,
@@ -4773,7 +4779,7 @@ recall, precision, acc, f1 (default is <code>0.5</code>).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L454-L498" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L454-L498" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_performance(self,
                       model_type=None,
@@ -4883,7 +4889,7 @@ around the average <code>y_hat</code> calculated on the data sample).</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L610-L724" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L610-L724" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_profile(self,
                   type=(&#39;partial&#39;, &#39;accumulated&#39;, &#39;conditional&#39;),
@@ -5051,7 +5057,7 @@ sklearn.linear_model.LinearRegression</code></dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L762-L820" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L762-L820" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def model_surrogate(self,
                     type=(&#39;tree&#39;, &#39;linear&#39;),
@@ -5133,7 +5139,7 @@ sklearn.linear_model.LinearRegression</code></dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L169-L187" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L169-L187" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def predict(self, data):
     &#34;&#34;&#34;Make a prediction
@@ -5221,7 +5227,7 @@ Object class, its attributes, and the plot method depend on the <code>type</code
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L211-L328" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L211-L328" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def predict_parts(self,
                   new_observation,
@@ -5393,7 +5399,7 @@ eg. if there is not enough unique values for a given variable.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L330-L409" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L330-L409" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def predict_profile(self,
                     new_observation,
@@ -5509,7 +5515,7 @@ and the LimeTabularExplainer.explain_instance method. Exceptions are:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L411-L452" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L411-L452" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def predict_surrogate(self,
                       new_observation,
@@ -5576,7 +5582,7 @@ and the LimeTabularExplainer.explain_instance method. Exceptions are:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/ModelOriented/DALEX/blob/a0cf46eb51adfd7bb93109f6d2be78dc97a9e62c/dalex/_explainer/object.py#L189-L209" class="git-link">Browse git</a>
+<a href="https://github.com/ModelOriented/DALEX/blob/654f69e45153fe324960d5757b29f10b914c45ff/dalex/_explainer/object.py#L189-L209" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def residual(self, data, y):
     &#34;&#34;&#34;Calculate residuals
@@ -5621,8 +5627,8 @@ and the LimeTabularExplainer.explain_instance method. Exceptions are:
 <li><a href="#plots">Plots</a></li>
 <li><a href="#citation">Citation</a></li>
 <li><a href="#developer">Developer</a><ul>
-<li><a href="#class-diagram">Class diagram</a></li>
-<li><a href="#folder-structure">Folder structure</a></li>
+<li><a href="#class-diagram-v140">Class diagram (v1.4.0)</a></li>
+<li><a href="#folder-structure-v130">Folder structure (v1.3.0)</a></li>
 </ul>
 </li>
 </ul>
