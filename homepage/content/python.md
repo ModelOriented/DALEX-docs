@@ -32,9 +32,10 @@ pip install dalex
 
 # Explainability
 <card-collection>
-<card image="@/ema.png" title="Book: Explanatory Model Analysis" desc="With examples in Python." url="https://ema.drwhy.ai"></card>
+<card image="@/ema.png" title="Explanatory Model Analysis" desc="Book with examples in Python" url="https://ema.drwhy.ai"></card>
 <card image="@/explainability1.png" title="Introduction to dalex" desc="Titanic: tutorial and examples" url="https://dalex.drwhy.ai/python-dalex-titanic.html"></card>
 <card image="@/explainability2.png" title="Key features explained" desc="FIFA 20: explain default vs tuned model with dalex" url="https://dalex.drwhy.ai/python-dalex-fifa.html"></card>
+<card image="@/python-dalex.png" title="Multioutput predictive models" desc="Explaining multiclass classification and multioutput regression" url="https://dalex.drwhy.ai/python-dalex-multioutput.html"></card>
 <card image="@/explainability3.png" title="More explanations" desc="residuals, shap, lime" url="https://dalex.drwhy.ai/python-dalex-new.html"></card>
 </card-collection>
 <card-collection>
